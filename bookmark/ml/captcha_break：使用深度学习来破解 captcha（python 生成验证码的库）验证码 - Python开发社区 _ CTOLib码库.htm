@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://www.ctolib.com/ypwhs-captcha_break.html -->
+<html lang="zh-CN" class="cye-disabled cye-nm gr__ctolib_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><script src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/hm.js"></script><script async="" src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/f.txt"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-7963911354665843",
+          enable_page_level_ads: true
+     });
+</script>
+
+    
+    <title>captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码  - Python开发社区 | CTOLib码库</title>
+ 	<meta name="description" content="captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码。该项目会通过 Keras 搭建一个深度卷积神经网络来识别 captcha 生成的图片验证码，建议使用显卡来运行该项目。">
+    <meta name="keywords" content="机器学习,">
+    <link rel="miphtml" href="https://www.ctolib.com/mip/ypwhs-captcha_break.html">
+    <link rel="amphtml" href="https://www.ctolib.com/amp/ypwhs-captcha_break.html">
+ 
+ 	
+
+ 
+ <meta name="robots" content="index,follow">
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+ <link rel="bookmark" href="https://www.ctolib.com/static/favicon.ico">
+
+	
+
+ 	
+      <link rel="Shortcut icon" href="https://www.ctolib.com/static/favicon.ico">
+     
+      <link rel="stylesheet" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/animate.css" type="text/css">
+      <link href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/bootstrap.min.css" rel="stylesheet">
+      <link href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/font-awesome.min.css" rel="stylesheet">
+ 
+      <link rel="stylesheet" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/app.css" type="text/css">
+      <link rel="stylesheet" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/github.css" type="text/css">
+      <link rel="stylesheet" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/simple-line-icons.css">
+      <!--[if lte IE 7]><script src="icons-lte-ie7.js"></script><![endif]-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<div class="alert alert-danger topframe" role="alert">你的浏览器非常<strong>旧旧旧旧旧旧旧旧了</strong>，升级完浏览器再来吧 <a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+    <![endif]-->
+
+  <script type="text/javascript">
+	 try{
+	　　top.location.hostname;
+	　　if (top.location.hostname != window.location.hostname) {
+	　　　　top.location.href =window.location.href;
+	　　}
+	}
+	catch(e){
+	　　top.location.href = window.location.href;
+	}
+</script>
+    <link rel="stylesheet" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/style111.css" type="text/css">
+    <link rel="stylesheet" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/editormd.preview.min.css"> 
+
+    <style>
+		body { 
+			padding-top: 0px; 
+		}
+		@media screen and (max-width: 767px) 
+		{
+		    body { 
+			    padding-top: 0px; 
+			}
+		   .m-r-xxl{
+			   margin-right: 15px;
+			}
+		}
+	</style>
+</head><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div>
+
+<body data-gr-c-s-loaded="true" style="">
+
+      <a rel="nofollow" class="visible-sm visible-md visible-lg" href="https://www.ctolib.com/article/addbefore?cid=9&amp;cp=67"><div id="addArticle" data-html="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="添加【机器学习】&lt;br&gt;相关项目"><span class="fa fa-pencil-square-o fa-3x pui-text-blue-400"></span></div></a>
+      
+    <div id="wrap">
+      	 
+	 
+      <!-- header -->
+      
+       	 <header id="header" class="navbar  box-shadow">
+       
+          <div class="bg-black ">
+            <div class="container">
+              <div class="navbar-header ">
+                <button class="btn btn-link visible-xs pull-right m-r" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                     <i class="fa fa-bars"></i>
+                </button>
+                <a href="https://www.ctolib.com/" class="navbar-brand m-r-n m-l-n-md">
+                  
+                 	 <img style="max-height:27px;margin-top: -3px;" title="python  | CTOLib码库 " src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/logo-dark.png">
+                  
+                   
+                </a>
+                 
+	      			<div class="m-t visible-xs pull-right">
+		                     <a href="https://www.ctolib.com/usercare/categories" data-toggle="tooltip" data-placement="top" title="" data-original-title="可以设置需要关注的分类">
+		                      <i class="fa fa-fw fa-bookmark-o visible-xs-inline-block"></i>
+		                      <span>我关注的</span>
+		                    </a>
+	      			</div>
+                
+                
+              </div>
+              <div class="collapse navbar-collapse">
+              
+               
+				 
+	                <ul class=" nav navbar-nav m-l-n visible-xs visible-sm visible-md visible-lg visible-xl">
+	
+	                  <li>
+	                    <a href="https://www.ctolib.com/">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span>首页</span>
+	                    </a>
+	                  </li>
+	                  <li>
+	                    <a href="https://www.ctolib.com/python/" title="Python开发">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span>Python开发</span>
+	                    </a>
+	                  </li>	                  
+	                  <li>
+	                    <a href="https://www.ctolib.com/python/topics/" title="Python开发社区">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span>交流社区</span>
+	                    </a>
+	                  </li>
+	                  <li>
+	                    <a href="https://www.ctolib.com/python/docs/" title="Python开发教程">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span>教程</span>
+	                    </a>
+	                  </li>	
+	                 
+	                	<li class="dropdown">        
+						    <a class="dropdown-toggle" data-toggle="dropdown" href="https://www.ctolib.com/ypwhs-captcha_break.html#">
+						      	 <i class="fa fa-fw fa-plus visible-xs-inline-block"></i><span>速查表</span><span class="caret"></span>
+						    </a>
+						    <ul class="dropdown-menu" role="menu">
+						      	
+				                  <li>
+				                    <a href="https://www.ctolib.com/cheatsheets-python_sectool.html">
+				                      <span>渗透测试人员的Python工具箱</span>
+				                    </a>
+				                  </li>
+				                
+				                  <li>
+				                    <a href="https://www.ctolib.com/cheatsheets-Awesome-Python.html">
+				                      <span>Python开发资源速查表</span>
+				                    </a>
+				                  </li>
+				                
+				                  <li>
+				                    <a href="https://www.ctolib.com/cheatsheets-Python-Concurrency-Cheatsheet.html">
+				                      <span>Python并发速查表</span>
+				                    </a>
+				                  </li>
+				                
+				                  <li>
+				                    <a href="https://www.ctolib.com/cheatsheets-Python-cryptography.html">
+				                      <span>Python 加密速查表</span>
+				                    </a>
+				                  </li>
+				                
+				                  <li>
+				                    <a href="https://www.ctolib.com/cheatsheets-Essential-python-ch.html">
+				                      <span>Python 基础速查表</span>
+				                    </a>
+				                  </li>
+				                
+				                  <li>
+				                    <a href="https://www.ctolib.com/cheatsheets-python-ch.html">
+				                      <span>Python 速查表</span>
+				                    </a>
+				                  </li>
+				                
+						    </ul>
+					  </li>
+				  	                  
+ 
+	                  
+	                  <li>
+	                     <a href="https://www.ctolib.com/python/categoriesallsub.html">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span>项目分类</span>
+	                    </a>
+	                  </li>
+	                  
+	                  <li>
+	                    <a href="https://www.ctolib.com/python/popularall.html">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span>热门项目</span>
+	                    </a>
+	                  </li>
+	                  <li>
+	                    <a href="https://www.ctolib.com/python/featuredall.html">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span>活跃项目</span>
+	                    </a>
+	                  </li>
+	
+	                </ul>
+				
+
+
+                <ul class="nav navbar-nav navbar-right m-r-xs">
+                 
+                  <li>
+                    <div class="m-t-sm">
+                      <a rel="nofollow" href="https://www.ctolib.com/user/sign_in/" class="btn btn-black btn-sm ">登录</a>
+                      <a rel="nofollow" href="https://www.ctolib.com/user/sign_up/" class="btn btn-sm btn-success m-l-sm m-b-sm">注册</a>
+                    </div>
+                  </li>
+                 
+                        
+                    
+                </ul>
+
+              </div>
+            </div>
+          </div>
+          <div class="navbar bg-white-only visible-sm visible-md visible-lg">
+            <div class="container">
+              <ul class="nav navbar-nav navbar-right">
+                <li>
+               
+                  <!-- search form -->
+                  <form id="search" action="https://www.ctolib.com/python/search/" method="GET" class="navbar-form navbar-form-sm visible-xs visible-md visible-lg" ui-shift="prependTo" data-target=".navbar-collapse" role="search" ng-controller="TypeaheadDemoCtrl">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input type="text" name="term" ng-model="selected" class="form-control input-sm bg-light no-border  padder" placeholder="搜索...">
+                        <span class="input-group-btn">
+                			<button type="submit" class="btn btn-sm bg-light "><i class="fa fa-search"></i></button>
+             			 </span>
+                      </div>
+					</div>
+                  </form>
+                  <!-- / search form -->
+                </li>
+              </ul>
+			
+              <ul class=" nav navbar-nav m-l-n">
+               	
+                
+                
+                  <li>
+                  	
+	                    <a href="https://www.ctolib.com/python/categories/python-machine-learning.html">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span><i class="fa fa-bar-chart m-r-xs" aria-hidden="true"></i>机器学习</span>
+	                    </a>
+                    
+                  </li>
+                
+                  <li>
+                  	
+	                    <a href="https://www.ctolib.com/python/categories/python-web-crawling.html">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span><i class="fa fa-code m-r-xs" aria-hidden="true"></i>Web爬虫</span>
+	                    </a>
+                    
+                  </li>
+                
+                  <li>
+                  	
+	                    <a href="https://www.ctolib.com/python/categories/python-natural-language-processing.html">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span><i class="fa fa-code m-r-xs" aria-hidden="true"></i>自然语言处理</span>
+	                    </a>
+                    
+                  </li>
+                
+                  <li>
+                  	
+	                    <a href="https://www.ctolib.com/python/categories/python-full-stack-web-frameworks.html">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span><i class="fa fa-code m-r-xs" aria-hidden="true"></i>Web开发框架</span>
+	                    </a>
+                    
+                  </li>
+                
+                  <li>
+                  	
+	                    <a href="https://www.ctolib.com/python/categories/python-imagery.html">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span><i class="fa fa-file-image-o m-r-xs" aria-hidden="true"></i>图片处理</span>
+	                    </a>
+                    
+                  </li>
+                
+                  <li>
+                  	
+	                    <a href="https://www.ctolib.com/python/categories/python-data-validation.html">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span><i class="fa fa-code m-r-xs" aria-hidden="true"></i>数据可视化</span>
+	                    </a>
+                    
+                  </li>
+                
+                 
+	                <li>
+	                   <a href="https://www.ctolib.com/python/categoriesallsub.html">
+	                      <i class="fa fa-fw fa-plus visible-xs-inline-block"></i>
+	                      <span><i class="fa fa-location-arrow m-r-sm" aria-hidden="true"></i>更多...</span>
+	                    </a>
+	                </li>
+                
+              </ul>
+              </div>
+            </div>
+
+        </header>
+        <!-- / header -->
+        <div id="content" class="main-content bg-light">
+        
+            <!-- item header -->
+            <div class="bg-light lter b-b wrapper">
+                <div class="container m-b-xs">
+                    <div>
+                        <div class="row">
+                            <div class="col-sm-9">   
+							  <div style="color: #bbb;border-bottom: 1px dotted #d8d8d8;font-weight:bold;" class="crumb">                         	 
+							   <a href="https://www.ctolib.com/">首页</a> &nbsp;&gt;&nbsp;
+							   <a href="https://www.ctolib.com/python.html" title="">Python开发</a>&nbsp;&gt;&nbsp;
+							   <a href="https://www.ctolib.com/categories/python-machine-learning.html" title="">机器学习</a>
+							  </div>
+							   
+								  	<div style="margin-top: 5px;">
+								  		<a rel="nofollow" title="" data-toggle="tooltip" target="_blank" href="https://github.com/ypwhs" data-original-title="ypwhs "><img itemprop="image" class="pull-left thumb-mmd m-r-md img-rounded" src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/10473170"></a>
+								  	</div>
+							  	
+                                <div style="margin-top: 5px;">
+                                    <h1 class="h3 text-dark m-b-sm" itemprop="name">captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码</h1>
+                                    <span itemprop="description" class="">captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码。该项目会通过 Keras 搭建一个深度卷积神经网络来识别 captcha 生成的图片验证码，建议使用显卡来运行该项目。</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 hidden-xs">
+                            	 <ul style="list-style: none;margin: 0px;">
+			                        <li>
+			                          
+			                            <button type="button" class="btn btn-primary btn-sm" id="sideLike">
+			                            	推荐
+			                           </button>
+			                            &nbsp;&nbsp;<strong id="sideLiked">0</strong> 推荐
+			                        </li>
+			                        <li style="margin-top: 6px">
+			                              <button type="button" id="sideBookmark" class="btn btn-default btn-sm">
+			                              	收藏
+			                              </button>
+			                            &nbsp;&nbsp;<strong id="sideBookmarked">3</strong> 收藏，<strong class="no-stress">1799</strong> 浏览
+			                        </li>
+                    			</ul>
+                            </div>
+                        </div>
+                        <div class="item-menu row m-t-sm b-t m-l-n no-gutter">
+                            <a class="text-md active wrapper-xs m-r-xxl " href="https://www.ctolib.com/ypwhs-captcha_break.html"><i class="fa fa-code" aria-hidden="true"></i> 详细内容</a>
+                            <a class="text-md   wrapper-xs m-r-xxl" href="https://www.ctolib.com/article/comments/78232"><i class="fa fa-info-circle" aria-hidden="true"></i> 评论 <span class="badge icon_2">13</span></a>
+                        	<a class="text-md  wrapper-xs  m-r-xxl" href="https://www.ctolib.com/article/compares/78232">同类相比<i class="fa fa-exchange fa-spin fa-fw"></i><span class="badge icon_3">3053</span></a>
+    						  
+                       		
+                       			<a class="text-md wrapper-xs " href="https://www.ctolib.com/article/wiki/78232"><i class="fa fa-book" aria-hidden="true"></i> 学习教程</a>
+                       		                   
+                        </div>
+	
+                    </div>
+                </div>
+            </div>
+
+            <!-- / item header -->
+            <div class="container m-t-md">
+				
+                <div class="row">
+
+                    <div class="col-sm-9 link-info">
+
+                      <div class="panel panel-default">
+							<div class="pos-rlt">
+								 
+						            
+						            
+						           
+							           	
+						            
+								
+							</div>
+							
+							
+                             <div class="panel-body item-description text-md markdown-body">
+                             
+                            	 <article>  
+									    
+ 									<script async="" src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/f.txt"></script>
+									<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-7963911354665843" data-ad-slot="7239246954"></ins>
+									<script>
+									     (adsbygoogle = window.adsbygoogle || []).push({});
+									</script>
+                           	 	<h1 id="articleHeader0"><a id="user-content-使用深度学习来破解-captcha-验证码" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E4%BD%BF%E7%94%A8%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%9D%A5%E7%A0%B4%E8%A7%A3-captcha-%E9%AA%8C%E8%AF%81%E7%A0%81">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>使用深度学习来破解 captcha 验证码</h1> 
+<p>本项目会通过 Keras 搭建一个深度卷积神经网络来识别 captcha 验证码，建议使用显卡来运行该项目。</p> 
+<p>下面的可视化代码都是在 <code>jupyter notebook</code> 中完成的，如果你希望写成 python 脚本，稍加修改即可正常运行，当然也可以去掉这些可视化代码。Keras 版本：1.2.2。</p> 
+<h1 id="articleHeader1"><a id="user-content-captcha" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#captcha">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>captcha</h1> 
+<p>captcha 是用 python 写的生成验证码的库，它支持图片验证码和语音验证码，我们使用的是它生成图片验证码的功能。</p> 
+<p>首先我们设置我们的验证码格式为数字加大写字母，生成一串验证码试试看：</p> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs cs"><span class="pl-k"><span class="hljs-keyword">from</span></span> captcha.image <span class="pl-k">import</span> ImageCaptcha
+<span class="pl-k">import</span> matplotlib.pyplot <span class="pl-k"><span class="hljs-keyword">as</span></span> plt
+<span class="pl-k">import</span> numpy <span class="pl-k"><span class="hljs-keyword">as</span></span> np
+<span class="pl-k">import</span> random
+
+<span class="pl-k">%</span>matplotlib inline
+<span class="pl-k">%</span>config InlineBackend.figure_format <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">retina</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>
+
+<span class="pl-k">import</span> <span class="hljs-keyword">string</span>
+characters <span class="pl-k">=</span> <span class="hljs-keyword">string</span>.digits <span class="pl-k">+</span> <span class="hljs-keyword">string</span>.<span class="hljs-function">ascii_uppercase
+</span><span class="pl-c1"><span class="hljs-function"><span class="hljs-title">print</span></span></span><span class="hljs-function">(<span class="hljs-params">characters</span>)
+
+width, height, n_len, n_class </span><span class="pl-k">=</span> <span class="pl-c1"><span class="hljs-number">170</span></span>, <span class="pl-c1"><span class="hljs-number">80</span></span>, <span class="pl-c1"><span class="hljs-number">4</span></span>, <span class="pl-c1">len</span>(characters)
+
+generator <span class="pl-k">=</span> ImageCaptcha(<span class="pl-v">width</span><span class="pl-k">=</span>width, <span class="pl-v">height</span><span class="pl-k">=</span>height)
+random_str <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="pl-pds"><span class="hljs-string">'</span></span></span>.<span class="hljs-keyword">join</span>([random.choice(characters) <span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">for</span></span></span><span class="hljs-function"> j </span><span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">in</span></span></span><span class="hljs-function"> </span><span class="pl-c1"><span class="hljs-function"><span class="hljs-title">range</span></span></span><span class="hljs-function">(</span><span class="pl-c1"><span class="hljs-function"><span class="hljs-params"><span class="hljs-number">4</span></span></span></span><span class="hljs-function">)])
+img </span><span class="pl-k">=</span> generator.generate_image(random_str)
+
+plt.imshow(img)
+plt.title(random_str)
+</pre>
+</div> 
+<p><a target="_blank" rel="noopener noreferrer" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/captcha.png"><img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/captcha.png" alt="" style="max-width:100%;"></a></p> 
+<h1 id="articleHeader2"><a id="user-content-数据生成器" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%95%B0%E6%8D%AE%E7%94%9F%E6%88%90%E5%99%A8">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>数据生成器</h1> 
+<p>训练模型的时候，我们可以选择两种方式来生成我们的训练数据，一种是一次性生成几万张图，然后开始训练，一种是定义一个数据生成器，然后利用 <code>fit_generator</code> 函数来训练。</p> 
+<p>第一种方式的好处是训练的时候显卡利用率高，如果你需要经常调参，可以一次生成，多次使用；第二种方式的好处是你不需要生成大量数据，训练过程中可以利用 CPU 生成数据，而且还有一个好处是你可以无限生成数据。</p> 
+<p>我们的数据格式如下：</p> 
+<h2 id="articleHeader3"><a id="user-content-x" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#x">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>X</h2> 
+<p>X 的形状是 <code>(batch_size, height, width, 3)</code>，比如一批生成32个样本，图片宽度为170，高度为80，那么形状就是 <code>(32, 80, 170, 3)</code>，取第一张图就是 <code>X[0]</code>。</p> 
+<h2 id="articleHeader4"><a id="user-content-y" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#y">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>y</h2> 
+<p>y 的形状是四个 <code>(batch_size, n_class)</code>，如果转换成 numpy 的格式，则是 <code>(n_len, batch_size, n_class)</code>，比如一批生成32个样本，验证码的字符有36种，长度是4位，那么它的形状就是4个 <code>(32, 36)</code>，也可以说是 <code>(4, 32, 36)</code>，解码函数在下个代码块。</p> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs python"><span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="pl-en"><span class="hljs-function"><span class="hljs-title">gen</span></span></span><span class="hljs-function"><span class="hljs-params">(</span></span><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">batch_size</span></span></span><span class="pl-k"><span class="hljs-function"><span class="hljs-params">=</span></span></span><span class="pl-c1"><span class="hljs-function"><span class="hljs-params"><span class="hljs-number">32</span></span></span></span><span class="hljs-function"><span class="hljs-params">)</span>:</span>
+    X <span class="pl-k">=</span> np.zeros((batch_size, height, width, <span class="pl-c1"><span class="hljs-number">3</span></span>), <span class="pl-v">dtype</span><span class="pl-k">=</span>np.uint8)
+    y <span class="pl-k">=</span> [np.zeros((batch_size, n_class), <span class="pl-v">dtype</span><span class="pl-k">=</span>np.uint8) <span class="pl-k"><span class="hljs-keyword">for</span></span> i <span class="pl-k"><span class="hljs-keyword">in</span></span> <span class="pl-c1">range</span>(n_len)]
+    generator <span class="pl-k">=</span> ImageCaptcha(<span class="pl-v">width</span><span class="pl-k">=</span>width, <span class="pl-v">height</span><span class="pl-k">=</span>height)
+    <span class="pl-k"><span class="hljs-keyword">while</span></span> <span class="pl-c1"><span class="hljs-keyword">True</span></span>:
+        <span class="pl-k"><span class="hljs-keyword">for</span></span> i <span class="pl-k"><span class="hljs-keyword">in</span></span> <span class="pl-c1">range</span>(batch_size):
+            random_str <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="pl-pds"><span class="hljs-string">'</span></span></span>.join([random.choice(characters) <span class="pl-k"><span class="hljs-keyword">for</span></span> j <span class="pl-k"><span class="hljs-keyword">in</span></span> <span class="pl-c1">range</span>(<span class="pl-c1"><span class="hljs-number">4</span></span>)])
+            X[i] <span class="pl-k">=</span> generator.generate_image(random_str)
+            <span class="pl-k"><span class="hljs-keyword">for</span></span> j, ch <span class="pl-k"><span class="hljs-keyword">in</span></span> <span class="pl-c1">enumerate</span>(random_str):
+                y[j][i, :] <span class="pl-k">=</span> <span class="pl-c1"><span class="hljs-number">0</span></span>
+                y[j][i, characters.find(ch)] <span class="pl-k">=</span> <span class="pl-c1"><span class="hljs-number">1</span></span>
+        <span class="pl-k"><span class="hljs-keyword">yield</span></span> X, y</pre>
+</div> 
+<p>上面就是一个可以无限生成数据的例子，我们将使用这个生成器来训练我们的模型。</p> 
+<h1 id="articleHeader5"><a id="user-content-使用生成器" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E4%BD%BF%E7%94%A8%E7%94%9F%E6%88%90%E5%99%A8">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>使用生成器</h1> 
+<p>生成器的使用方法很简单，只需要用 next 函数即可。下面是一个例子，生成32个数据，然后显示第一个数据。当然，在这里我们还对生成的 One-Hot 编码后的数据进行了解码，首先将它转为 numpy 数组，然后取36个字符中最大的数字的位置，因为神经网络会输出36个字符的概率，然后将概率最大的四个字符的编号转换为字符串。</p> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs python"><span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="pl-en"><span class="hljs-function"><span class="hljs-title">decode</span></span></span><span class="hljs-function"><span class="hljs-params">(</span></span><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">y</span></span></span><span class="hljs-function"><span class="hljs-params">)</span>:</span>
+    y <span class="pl-k">=</span> np.argmax(np.array(y), <span class="pl-v">axis</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-number">2</span></span>)[:,<span class="pl-c1"><span class="hljs-number">0</span></span>]
+    <span class="pl-k"><span class="hljs-keyword">return</span></span> <span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="pl-pds"><span class="hljs-string">'</span></span></span>.join([characters[x] <span class="pl-k"><span class="hljs-keyword">for</span></span> x <span class="pl-k"><span class="hljs-keyword">in</span></span> y])
+
+X, y <span class="pl-k">=</span> <span class="pl-c1">next</span>(gen(<span class="pl-c1"><span class="hljs-number">1</span></span>))
+plt.imshow(X[<span class="pl-c1"><span class="hljs-number">0</span></span>])
+plt.title(decode(y))</pre>
+</div> 
+<h1 id="articleHeader6"><a id="user-content-构建深度卷积神经网络" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%9E%84%E5%BB%BA%E6%B7%B1%E5%BA%A6%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>构建深度卷积神经网络</h1> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs cs"><span class="pl-k"><span class="hljs-keyword">from</span></span> keras.models <span class="pl-k">import</span> <span class="pl-k">*</span>
+<span class="pl-k"><span class="hljs-keyword">from</span></span> keras.layers <span class="pl-k">import</span> <span class="pl-k">*</span>
+
+input_tensor <span class="pl-k">=</span> Input((height, width, <span class="pl-c1"><span class="hljs-number">3</span></span>))
+x <span class="pl-k">=</span> <span class="hljs-function">input_tensor
+</span><span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">for</span></span></span><span class="hljs-function"> i </span><span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">in</span></span></span><span class="hljs-function"> </span><span class="pl-c1"><span class="hljs-function"><span class="hljs-title">range</span></span></span><span class="hljs-function">(</span><span class="pl-c1"><span class="hljs-function"><span class="hljs-params"><span class="hljs-number">4</span></span></span></span><span class="hljs-function">):
+    x </span><span class="pl-k">=</span> Convolution2D(<span class="pl-c1"><span class="hljs-number">32</span></span><span class="pl-k">*</span><span class="pl-c1"><span class="hljs-number">2</span></span><span class="pl-k">**</span>i, <span class="pl-c1"><span class="hljs-number">3</span></span>, <span class="pl-c1"><span class="hljs-number">3</span></span>, <span class="pl-v">activation</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">relu</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)(x)
+    x <span class="pl-k">=</span> Convolution2D(<span class="pl-c1"><span class="hljs-number">32</span></span><span class="pl-k">*</span><span class="pl-c1"><span class="hljs-number">2</span></span><span class="pl-k">**</span>i, <span class="pl-c1"><span class="hljs-number">3</span></span>, <span class="pl-c1"><span class="hljs-number">3</span></span>, <span class="pl-v">activation</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">relu</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)(x)
+    x <span class="pl-k">=</span> MaxPooling2D((<span class="pl-c1"><span class="hljs-number">2</span></span>, <span class="pl-c1"><span class="hljs-number">2</span></span>))(x)
+
+x <span class="pl-k">=</span> Flatten()(x)
+x <span class="pl-k">=</span> Dropout(<span class="pl-c1"><span class="hljs-number">0.25</span></span>)(x)
+x <span class="pl-k">=</span> [Dense(n_class, <span class="pl-v">activation</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">softmax</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>, <span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">c</span><span class="pl-c1"><span class="hljs-string">%d</span></span><span class="pl-pds"><span class="hljs-string">'</span></span></span><span class="pl-k">%</span>(i<span class="pl-k">+</span><span class="pl-c1"><span class="hljs-number">1</span></span>))(x) <span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">for</span></span></span><span class="hljs-function"> i </span><span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">in</span></span></span><span class="hljs-function"> </span><span class="pl-c1"><span class="hljs-function"><span class="hljs-title">range</span></span></span><span class="hljs-function">(</span><span class="pl-c1"><span class="hljs-function"><span class="hljs-params"><span class="hljs-number">4</span></span></span></span><span class="hljs-function">)]
+model </span><span class="pl-k">=</span> Model(<span class="pl-v">input</span><span class="pl-k">=</span>input_tensor, <span class="pl-v">output</span><span class="pl-k">=</span>x)
+
+model.compile(<span class="pl-v">loss</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">categorical_crossentropy</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>,
+              <span class="pl-v">optimizer</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">adadelta</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>,
+              <span class="pl-v">metrics</span><span class="pl-k">=</span>[<span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">accuracy</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>])</pre>
+</div> 
+<p>模型结构很简单，特征提取部分使用的是两个卷积，一个池化的结构，这个结构是学的 VGG16 的结构。之后我们将它 Flatten，然后添加 Dropout ，尽量避免过拟合问题，最后连接四个分类器，每个分类器是36个神经元，输出36个字符的概率。</p> 
+<h1 id="articleHeader7"><a id="user-content-模型可视化" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%A8%A1%E5%9E%8B%E5%8F%AF%E8%A7%86%E5%8C%96">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>模型可视化</h1> 
+<p>得益于 Keras 自带的可视化，我们可以使用几句代码来可视化模型的结构：</p> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs python"><span class="pl-k"><span class="hljs-keyword">from</span></span> keras.utils.visualize_util <span class="pl-k"><span class="hljs-keyword">import</span></span> plot
+<span class="pl-k"><span class="hljs-keyword">from</span></span> IPython.display <span class="pl-k"><span class="hljs-keyword">import</span></span> Image
+
+plot(model, <span class="pl-v">to_file</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">"</span></span><span class="hljs-string">model.png</span><span class="pl-pds"><span class="hljs-string">"</span></span></span>, <span class="pl-v">show_shapes</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-keyword">True</span></span>)
+Image(<span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">model.png</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)</pre>
+</div> 
+<p>这里需要使用 pydot 这个库，以及 graphviz 这个库，在 macOS 系统上安装方法如下：</p> 
+<div class="highlight highlight-source-shell">
+ <pre class="hljs sql">brew <span class="hljs-keyword">install</span> graphviz
+pip <span class="hljs-keyword">install</span> pydot-ng</pre>
+</div> 
+<p><a target="_blank" rel="noopener noreferrer" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/model.png"><img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/model.png" alt="" style="max-width:100%;"></a></p> 
+<p>我们可以看到最后一层卷积层输出的形状是 <code>(1, 6, 256)</code>，已经不能再加卷积层了。</p> 
+<h1 id="articleHeader8"><a id="user-content-训练模型" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>训练模型</h1> 
+<p>训练模型反而是所有步骤里面最简单的一个，直接使用 <code>model.fit_generator</code> 即可，这里的验证集使用了同样的生成器，由于数据是通过生成器随机生成的，所以我们不用考虑数据是否会重复。注意，这段代码在笔记本上可能要耗费一下午时间。如果你想让模型预测得更准确，可以将 <code>nb_epoch</code> 改为 10 或者 20，但它也将耗费成倍的时间。注意我们这里使用了一个小技巧，添加 <code>nb_worker=2</code> 参数让 Keras 自动实现多进程生成数据，摆脱 python 单线程效率低的缺点。</p> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs php">model.fit_generator(gen(), <span class="pl-v">samples_per_epoch</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-number">51200</span></span>, <span class="pl-v">nb_epoch</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-number">5</span></span>, 
+                    <span class="pl-v">nb_worker</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-number">2</span></span>, <span class="pl-v">pickle_safe</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-keyword">True</span></span>, 
+                    <span class="pl-v">validation_data</span><span class="pl-k">=</span>gen(), <span class="pl-v">nb_val_samples</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-number">1280</span></span>)</pre>
+</div> 
+<h1 id="articleHeader9"><a id="user-content-测试模型" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%B5%8B%E8%AF%95%E6%A8%A1%E5%9E%8B">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>测试模型</h1> 
+<p>当我们训练完成以后，可以识别一个验证码试试看：</p> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs ruby">X, y <span class="pl-k">=</span> <span class="pl-c1"><span class="hljs-keyword">next</span></span>(gen(<span class="pl-c1"><span class="hljs-number">1</span></span>))
+y_pred <span class="pl-k">=</span> model.predict(X)
+plt.title(<span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">real: </span><span class="pl-c1"><span class="hljs-string">%s</span></span><span class="pl-cce"><span class="hljs-string">\n</span></span><span class="hljs-string">pred:</span><span class="pl-c1"><span class="hljs-string">%s</span></span><span class="pl-pds"><span class="hljs-string">'</span></span></span><span class="pl-k"><span class="hljs-string">%</span></span><span class="hljs-string">(decode(y)</span>, decode(y_pred)))
+plt.imshow(X[<span class="pl-c1"><span class="hljs-number">0</span></span>], <span class="pl-v">cmap</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">gray</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)</pre>
+</div> 
+<p><a target="_blank" rel="noopener noreferrer" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/test_model.png"><img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/test_model.png" alt="" style="max-width:100%;"></a></p> 
+<h1 id="articleHeader10"><a id="user-content-计算模型总体准确率" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%9E%8B%E6%80%BB%E4%BD%93%E5%87%86%E7%A1%AE%E7%8E%87">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>计算模型总体准确率</h1> 
+<p>模型在训练的时候只会显示每一个字符的准确率，为了统计模型的总体准确率，我们可以写下面的函数：</p> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs python"><span class="pl-k"><span class="hljs-keyword">from</span></span> tqdm <span class="pl-k"><span class="hljs-keyword">import</span></span> tqdm
+<span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="pl-en"><span class="hljs-function"><span class="hljs-title">evaluate</span></span></span><span class="hljs-function"><span class="hljs-params">(</span></span><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">model</span></span></span><span class="hljs-function"><span class="hljs-params">, </span></span><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">batch_num</span></span></span><span class="pl-k"><span class="hljs-function"><span class="hljs-params">=</span></span></span><span class="pl-c1"><span class="hljs-function"><span class="hljs-params"><span class="hljs-number">20</span></span></span></span><span class="hljs-function"><span class="hljs-params">)</span>:</span>
+    batch_acc <span class="pl-k">=</span> <span class="pl-c1"><span class="hljs-number">0</span></span>
+    generator <span class="pl-k">=</span> gen()
+    <span class="pl-k"><span class="hljs-keyword">for</span></span> i <span class="pl-k"><span class="hljs-keyword">in</span></span> tqdm(<span class="pl-c1">range</span>(batch_num)):
+        X, y <span class="pl-k">=</span> <span class="pl-c1">next</span>(generator)
+        y_pred <span class="pl-k">=</span> model.predict(X)
+        y_pred <span class="pl-k">=</span> np.argmax(y_pred, <span class="pl-v">axis</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-number">2</span></span>).T
+        y_true <span class="pl-k">=</span> np.argmax(y, <span class="pl-v">axis</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-number">2</span></span>).T
+        batch_acc <span class="pl-k">+=</span> np.mean(<span class="pl-c1">map</span>(np.array_equal, y_true, y_pred))
+    <span class="pl-k"><span class="hljs-keyword">return</span></span> batch_acc <span class="pl-k">/</span> batch_num
+
+evaluate(model)</pre>
+</div> 
+<p>这里用到了一个库叫做 tqdm，它是一个进度条的库，为的是能够实时反馈进度。然后我们通过一些 numpy 计算去统计我们的准确率，这里计算规则是只要有一个错，那么就不算它对。经过计算，我们的模型的总体准确率在经过五代训练就可以达到 90%，继续训练还可以达到更高的准确率。</p> 
+<h1 id="articleHeader11"><a id="user-content-模型总结" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>模型总结</h1> 
+<p>模型的大小是16MB，在我的笔记本上跑1000张验证码需要用20秒，当然，显卡会更快。对于验证码识别的问题来说，哪怕是10%的准确率也已经称得上破解，毕竟假设100%识别率破解要一个小时，那么10%的识别率也只用十个小时，还算等得起，而我们的识别率有90%，已经可以称得上完全破解了这类验证码。</p> 
+<h1 id="articleHeader12"><a id="user-content-改进" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%94%B9%E8%BF%9B">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>改进</h1> 
+<p>对于这种按顺序书写的文字，我们还有一种方法可以使用，那就是循环神经网络来识别序列。下面我们来了解一下如何使用循环神经网络来识别这类验证码。</p> 
+<h1 id="articleHeader13"><a id="user-content-ctc-loss" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#ctc-loss">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>CTC Loss</h1> 
+<p>这个 loss 是一个特别神奇的 loss，它可以在只知道序列的顺序，不知道具体位置的情况下，让模型收敛。在这方面百度似乎做得很不错，利用它来识别音频信号。（<a href="https://github.com/baidu-research/warp-ctc">warp-ctc</a>）</p> 
+<p><a target="_blank" rel="noopener noreferrer" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/deep-speech-ctc-small.png"><img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/deep-speech-ctc-small.png" alt="" style="max-width:100%;"></a></p> 
+<p>那么在 Keras 里面，CTC Loss 已经内置了，我们直接定义这样一个函数，即可实现 CTC Loss，由于我们使用的是循环神经网络，所以默认丢掉前面两个输出，因为它们通常无意义，且会影响模型的输出。</p> 
+<ul> 
+ <li>y_pred 是模型的输出，是按顺序输出的37个字符的概率，因为我们这里用到了循环神经网络，所以需要一个空白字符的概念；</li> 
+ <li>labels 是验证码，是四个数字；</li> 
+ <li>input_length 表示 y_pred 的长度，我们这里是15；</li> 
+ <li>label_length 表示 labels 的长度，我们这里是4。</li> 
+</ul> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs python"><span class="pl-k"><span class="hljs-keyword">from</span></span> keras <span class="pl-k"><span class="hljs-keyword">import</span></span> backend <span class="pl-k"><span class="hljs-keyword">as</span></span> K
+
+<span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="pl-en"><span class="hljs-function"><span class="hljs-title">ctc_lambda_func</span></span></span><span class="hljs-function"><span class="hljs-params">(</span></span><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">args</span></span></span><span class="hljs-function"><span class="hljs-params">)</span>:</span>
+    y_pred, labels, input_length, label_length <span class="pl-k">=</span> args
+    y_pred <span class="pl-k">=</span> y_pred[:, <span class="pl-c1"><span class="hljs-number">2</span></span>:, :]
+    <span class="pl-k"><span class="hljs-keyword">return</span></span> K.ctc_batch_cost(labels, y_pred, input_length, label_length)</pre>
+</div> 
+<h1 id="articleHeader14"><a id="user-content-模型结构" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>模型结构</h1> 
+<p>我们的模型结构是这样设计的，首先通过卷积神经网络去识别特征，然后经过一个全连接降维，再按水平顺序输入到一种特殊的循环神经网络，叫 GRU，它具有一些特殊的性质，为什么用 GRU 而不用 LSTM 呢？总的来说就是它的效果比 LSTM 好，所以我们用它。</p> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs python"><span class="pl-k"><span class="hljs-keyword">from</span></span> keras.models <span class="pl-k"><span class="hljs-keyword">import</span></span> <span class="pl-k">*</span>
+<span class="pl-k"><span class="hljs-keyword">from</span></span> keras.layers <span class="pl-k"><span class="hljs-keyword">import</span></span> <span class="pl-k">*</span>
+rnn_size <span class="pl-k">=</span> <span class="pl-c1"><span class="hljs-number">128</span></span>
+
+input_tensor <span class="pl-k">=</span> Input((width, height, <span class="pl-c1"><span class="hljs-number">3</span></span>))
+x <span class="pl-k">=</span> input_tensor
+<span class="pl-k"><span class="hljs-keyword">for</span></span> i <span class="pl-k"><span class="hljs-keyword">in</span></span> <span class="pl-c1">range</span>(<span class="pl-c1"><span class="hljs-number">3</span></span>):
+    x <span class="pl-k">=</span> Convolution2D(<span class="pl-c1"><span class="hljs-number">32</span></span>, <span class="pl-c1"><span class="hljs-number">3</span></span>, <span class="pl-c1"><span class="hljs-number">3</span></span>, <span class="pl-v">activation</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">relu</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)(x)
+    x <span class="pl-k">=</span> Convolution2D(<span class="pl-c1"><span class="hljs-number">32</span></span>, <span class="pl-c1"><span class="hljs-number">3</span></span>, <span class="pl-c1"><span class="hljs-number">3</span></span>, <span class="pl-v">activation</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">relu</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)(x)
+    x <span class="pl-k">=</span> MaxPooling2D(<span class="pl-v">pool_size</span><span class="pl-k">=</span>(<span class="pl-c1"><span class="hljs-number">2</span></span>, <span class="pl-c1"><span class="hljs-number">2</span></span>))(x)
+
+conv_shape <span class="pl-k">=</span> x.get_shape()
+x <span class="pl-k">=</span> Reshape(<span class="pl-v">target_shape</span><span class="pl-k">=</span>(<span class="pl-c1">int</span>(conv_shape[<span class="pl-c1"><span class="hljs-number">1</span></span>]), <span class="pl-c1">int</span>(conv_shape[<span class="pl-c1"><span class="hljs-number">2</span></span>]<span class="pl-k">*</span>conv_shape[<span class="pl-c1"><span class="hljs-number">3</span></span>])))(x)
+
+x <span class="pl-k">=</span> Dense(<span class="pl-c1"><span class="hljs-number">32</span></span>, <span class="pl-v">activation</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">relu</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)(x)
+
+gru_1 <span class="pl-k">=</span> GRU(rnn_size, <span class="pl-v">return_sequences</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-keyword">True</span></span>, <span class="pl-v">init</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">he_normal</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>, <span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">gru1</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)(x)
+gru_1b <span class="pl-k">=</span> GRU(rnn_size, <span class="pl-v">return_sequences</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-keyword">True</span></span>, <span class="pl-v">go_backwards</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-keyword">True</span></span>, 
+             <span class="pl-v">init</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">he_normal</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>, <span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">gru1_b</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)(x)
+gru1_merged <span class="pl-k">=</span> merge([gru_1, gru_1b], <span class="pl-v">mode</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">sum</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)
+
+gru_2 <span class="pl-k">=</span> GRU(rnn_size, <span class="pl-v">return_sequences</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-keyword">True</span></span>, <span class="pl-v">init</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">he_normal</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>, <span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">gru2</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)(gru1_merged)
+gru_2b <span class="pl-k">=</span> GRU(rnn_size, <span class="pl-v">return_sequences</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-keyword">True</span></span>, <span class="pl-v">go_backwards</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-keyword">True</span></span>, 
+             <span class="pl-v">init</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">he_normal</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>, <span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">gru2_b</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)(gru1_merged)
+x <span class="pl-k">=</span> merge([gru_2, gru_2b], <span class="pl-v">mode</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">concat</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)
+x <span class="pl-k">=</span> Dropout(<span class="pl-c1"><span class="hljs-number">0.25</span></span>)(x)
+x <span class="pl-k">=</span> Dense(n_class, <span class="pl-v">init</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">he_normal</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>, <span class="pl-v">activation</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">softmax</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)(x)
+base_model <span class="pl-k">=</span> Model(<span class="pl-v">input</span><span class="pl-k">=</span>input_tensor, <span class="pl-v">output</span><span class="pl-k">=</span>x)
+
+labels <span class="pl-k">=</span> Input(<span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">the_labels</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>, <span class="pl-v">shape</span><span class="pl-k">=</span>[n_len], <span class="pl-v">dtype</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">float32</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)
+input_length <span class="pl-k">=</span> Input(<span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">input_length</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>, <span class="pl-v">shape</span><span class="pl-k">=</span>[<span class="pl-c1"><span class="hljs-number">1</span></span>], <span class="pl-v">dtype</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">int64</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)
+label_length <span class="pl-k">=</span> Input(<span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">label_length</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>, <span class="pl-v">shape</span><span class="pl-k">=</span>[<span class="pl-c1"><span class="hljs-number">1</span></span>], <span class="pl-v">dtype</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">int64</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)
+loss_out <span class="pl-k">=</span> Lambda(ctc_lambda_func, <span class="pl-v">output_shape</span><span class="pl-k">=</span>(<span class="pl-c1"><span class="hljs-number">1</span></span>,), 
+                  <span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">ctc</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)([x, labels, input_length, label_length])
+
+model <span class="pl-k">=</span> Model(<span class="pl-v">input</span><span class="pl-k">=</span>[input_tensor, labels, input_length, label_length], <span class="pl-v">output</span><span class="pl-k">=</span>[loss_out])
+model.compile(<span class="pl-v">loss</span><span class="pl-k">=</span>{<span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">ctc</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>: <span class="pl-k"><span class="hljs-keyword">lambda</span></span> <span class="pl-smi">y_true</span>, <span class="pl-smi">y_pred</span>: y_pred}, <span class="pl-v">optimizer</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">adadelta</span><span class="pl-pds"><span class="hljs-string">'</span></span></span>)</pre>
+</div> 
+<h1 id="articleHeader15"><a id="user-content-模型可视化-1" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%A8%A1%E5%9E%8B%E5%8F%AF%E8%A7%86%E5%8C%96-1">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>模型可视化</h1> 
+<p>可视化的代码同上，这里只贴图。</p> 
+<p><a target="_blank" rel="noopener noreferrer" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/model2.png"><img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/model2.png" alt="" style="max-width:100%;"></a></p> 
+<p>可以看到模型比上一个模型复杂了许多，但实际上只是因为输入比较多，所以它显得很大。还有一个值得注意的地方，我们的图片在输入的时候是经过了旋转的，这是因为我们希望以水平方向输入，而图片在 numpy 里默认是这样的形状：(height, width, 3)，因此我们使用了 <code>transpose</code> 函数将图片转为了(width, height, 3)的格式，然后经过各种卷积和降维，变成了 (17, 32)，这里的每个长度为32的向量都代表一个竖条的图片的特征，从左到右，一共有17条。然后我们兵分两路，一路从左到右输入到 GRU，一路从右到左输入到 GRU，然后将他们输出的结果加起来。再兵分两路，还是一路正方向，一路反方向，只不过第二次我们直接将它们的输出连起来，然后经过一个全连接，输出每个字符的概率。</p> 
+<h1 id="articleHeader16"><a id="user-content-数据生成器-1" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%95%B0%E6%8D%AE%E7%94%9F%E6%88%90%E5%99%A8-1">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>数据生成器</h1> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs python"><span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="pl-en"><span class="hljs-function"><span class="hljs-title">gen</span></span></span><span class="hljs-function"><span class="hljs-params">(</span></span><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">batch_size</span></span></span><span class="pl-k"><span class="hljs-function"><span class="hljs-params">=</span></span></span><span class="pl-c1"><span class="hljs-function"><span class="hljs-params"><span class="hljs-number">128</span></span></span></span><span class="hljs-function"><span class="hljs-params">)</span>:</span>
+    X <span class="pl-k">=</span> np.zeros((batch_size, width, height, <span class="pl-c1"><span class="hljs-number">3</span></span>), <span class="pl-v">dtype</span><span class="pl-k">=</span>np.uint8)
+    y <span class="pl-k">=</span> np.zeros((batch_size, n_len), <span class="pl-v">dtype</span><span class="pl-k">=</span>np.uint8)
+    <span class="pl-k"><span class="hljs-keyword">while</span></span> <span class="pl-c1"><span class="hljs-keyword">True</span></span>:
+        generator <span class="pl-k">=</span> ImageCaptcha(<span class="pl-v">width</span><span class="pl-k">=</span>width, <span class="pl-v">height</span><span class="pl-k">=</span>height)
+        <span class="pl-k"><span class="hljs-keyword">for</span></span> i <span class="pl-k"><span class="hljs-keyword">in</span></span> <span class="pl-c1">range</span>(batch_size):
+            random_str <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="pl-pds"><span class="hljs-string">'</span></span></span>.join([random.choice(characters) <span class="pl-k"><span class="hljs-keyword">for</span></span> j <span class="pl-k"><span class="hljs-keyword">in</span></span> <span class="pl-c1">range</span>(<span class="pl-c1"><span class="hljs-number">4</span></span>)])
+            X[i] <span class="pl-k">=</span> np.array(generator.generate_image(random_str)).transpose(<span class="pl-c1"><span class="hljs-number">1</span></span>, <span class="pl-c1"><span class="hljs-number">0</span></span>, <span class="pl-c1"><span class="hljs-number">2</span></span>)
+            y[i] <span class="pl-k">=</span> [characters.find(x) <span class="pl-k"><span class="hljs-keyword">for</span></span> x <span class="pl-k"><span class="hljs-keyword">in</span></span> random_str]
+        <span class="pl-k"><span class="hljs-keyword">yield</span></span> [X, y, np.ones(batch_size)<span class="pl-k">*</span><span class="pl-c1">int</span>(conv_shape[<span class="pl-c1"><span class="hljs-number">1</span></span>]<span class="pl-k"><span class="hljs-number">-</span></span><span class="pl-c1"><span class="hljs-number">2</span></span>), 
+               np.ones(batch_size)<span class="pl-k">*</span>n_len], np.ones(batch_size)</pre>
+</div> 
+<h1 id="articleHeader17"><a id="user-content-评估模型" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E8%AF%84%E4%BC%B0%E6%A8%A1%E5%9E%8B">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>评估模型</h1> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs python"><span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="pl-en"><span class="hljs-function"><span class="hljs-title">evaluate</span></span></span><span class="hljs-function"><span class="hljs-params">(</span></span><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">model</span></span></span><span class="hljs-function"><span class="hljs-params">, </span></span><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">batch_num</span></span></span><span class="pl-k"><span class="hljs-function"><span class="hljs-params">=</span></span></span><span class="pl-c1"><span class="hljs-function"><span class="hljs-params"><span class="hljs-number">10</span></span></span></span><span class="hljs-function"><span class="hljs-params">)</span>:</span>
+    batch_acc <span class="pl-k">=</span> <span class="pl-c1"><span class="hljs-number">0</span></span>
+    generator <span class="pl-k">=</span> gen()
+    <span class="pl-k"><span class="hljs-keyword">for</span></span> i <span class="pl-k"><span class="hljs-keyword">in</span></span> <span class="pl-c1">range</span>(batch_num):
+        [X_test, y_test, _, _], _  <span class="pl-k">=</span> <span class="pl-c1">next</span>(generator)
+        y_pred <span class="pl-k">=</span> base_model.predict(X_test)
+        shape <span class="pl-k">=</span> y_pred[:,<span class="pl-c1"><span class="hljs-number">2</span></span>:,:].shape
+        ctc_decode <span class="pl-k">=</span> K.ctc_decode(y_pred[:,<span class="pl-c1"><span class="hljs-number">2</span></span>:,:], 
+                                  <span class="pl-v">input_length</span><span class="pl-k">=</span>np.ones(shape[<span class="pl-c1"><span class="hljs-number">0</span></span>])<span class="pl-k">*</span>shape[<span class="pl-c1"><span class="hljs-number">1</span></span>])[<span class="pl-c1"><span class="hljs-number">0</span></span>][<span class="pl-c1"><span class="hljs-number">0</span></span>]
+        out <span class="pl-k">=</span> K.get_value(ctc_decode)[:, :<span class="pl-c1"><span class="hljs-number">4</span></span>]
+        <span class="pl-k"><span class="hljs-keyword">if</span></span> out.shape[<span class="pl-c1"><span class="hljs-number">1</span></span>] <span class="pl-k">==</span> <span class="pl-c1"><span class="hljs-number">4</span></span>:
+            batch_acc <span class="pl-k">+=</span> ((y_test <span class="pl-k">==</span> out).sum(<span class="pl-v">axis</span><span class="pl-k">=</span><span class="pl-c1"><span class="hljs-number">1</span></span>) <span class="pl-k">==</span> <span class="pl-c1"><span class="hljs-number">4</span></span>).mean()
+    <span class="pl-k"><span class="hljs-keyword">return</span></span> batch_acc <span class="pl-k">/</span> batch_num</pre>
+</div> 
+<p>我们会通过这个函数来评估我们的模型，和上面的评估标准一样，只有全部正确，我们才算预测正确，中间有个坑，就是模型最开始训练的时候，并不一定会输出四个字符，所以我们如果遇到所有的字符都不到四个的时候，就不计算了，相当于加0，遇到多于4个字符的时候，只取前四个。</p> 
+<h1 id="articleHeader18"><a id="user-content-评估回调" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E8%AF%84%E4%BC%B0%E5%9B%9E%E8%B0%83">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>评估回调</h1> 
+<p>因为 Keras 没有针对这种输出计算准确率的选项，因此我们需要自定义一个回调函数，它会在每一代训练完成的时候计算模型的准确率。</p> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs python"><span class="pl-k"><span class="hljs-keyword">from</span></span> keras.callbacks <span class="pl-k"><span class="hljs-keyword">import</span></span> <span class="pl-k">*</span>
+
+<span class="pl-k"><span class="hljs-class"><span class="hljs-keyword">class</span></span></span><span class="hljs-class"> </span><span class="pl-en"><span class="hljs-class"><span class="hljs-title">Evaluate</span></span></span><span class="hljs-class"><span class="hljs-params">(</span></span><span class="pl-e"><span class="hljs-class"><span class="hljs-params">Callback</span></span></span><span class="hljs-class"><span class="hljs-params">)</span>:</span>
+    <span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="pl-c1"><span class="hljs-function"><span class="hljs-title">__init__</span></span></span><span class="hljs-function"><span class="hljs-params">(</span></span><span class="pl-smi"><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">self</span></span></span></span><span class="hljs-function"><span class="hljs-params">)</span>:</span>
+        <span class="pl-c1">self</span>.accs <span class="pl-k">=</span> []
+    
+    <span class="pl-k"><span class="hljs-function"><span class="hljs-keyword">def</span></span></span><span class="hljs-function"> </span><span class="pl-en"><span class="hljs-function"><span class="hljs-title">on_epoch_end</span></span></span><span class="hljs-function"><span class="hljs-params">(</span></span><span class="pl-smi"><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">self</span></span></span></span><span class="hljs-function"><span class="hljs-params">, </span></span><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">epoch</span></span></span><span class="hljs-function"><span class="hljs-params">, </span></span><span class="pl-smi"><span class="hljs-function"><span class="hljs-params">logs</span></span></span><span class="pl-k"><span class="hljs-function"><span class="hljs-params">=</span></span></span><span class="pl-c1"><span class="hljs-function"><span class="hljs-params">None</span></span></span><span class="hljs-function"><span class="hljs-params">)</span>:</span>
+        acc <span class="pl-k">=</span> evaluate(base_model)<span class="pl-k">*</span><span class="pl-c1"><span class="hljs-number">100</span></span>
+        <span class="pl-c1">self</span>.accs.append(acc)
+        <span class="pl-c1"><span class="hljs-keyword">print</span></span>
+        <span class="pl-c1"><span class="hljs-keyword">print</span></span> <span class="pl-s"><span class="pl-pds"><span class="hljs-string">'</span></span><span class="hljs-string">acc: </span><span class="pl-c1"><span class="hljs-string">%f%%</span></span><span class="pl-pds"><span class="hljs-string">'</span></span></span><span class="pl-k">%</span>acc
+
+evaluator <span class="pl-k">=</span> Evaluate()</pre>
+</div> 
+<h1 id="articleHeader19"><a id="user-content-训练模型-1" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B-1">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>训练模型</h1> 
+<p>由于 CTC Loss 收敛很慢，所以我们需要设置比较大的代数，这里我们设置了100代，然后添加了一个早期停止的回调和我们上面定义的回调，但是第一次训练只训练37代就停了，测试准确率才95%，我又在这个基础上继续训练了一次，停在了25代，得到了98%的准确率，所以一共训练了62代。</p> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs">model.fit_generator(gen(<span class="pl-c1">128</span>), <span class="pl-v">samples_per_epoch</span><span class="pl-k">=</span><span class="pl-c1">51200</span>, <span class="pl-v">nb_epoch</span><span class="pl-k">=</span><span class="pl-c1">200</span>,
+                    <span class="pl-v">callbacks</span><span class="pl-k">=</span>[EarlyStopping(<span class="pl-v">patience</span><span class="pl-k">=</span><span class="pl-c1">10</span>), evaluator],
+                    <span class="pl-v">validation_data</span><span class="pl-k">=</span>gen(), <span class="pl-v">nb_val_samples</span><span class="pl-k">=</span><span class="pl-c1">1280</span>)</pre>
+</div> 
+<p><a target="_blank" rel="noopener noreferrer" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/loss.png"><img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/loss.png" alt="" style="max-width:100%;"></a></p> 
+<h1 id="articleHeader20"><a id="user-content-测试模型-1" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%B5%8B%E8%AF%95%E6%A8%A1%E5%9E%8B-1">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>测试模型</h1> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs markdown">characters2 <span class="pl-k">=</span> characters <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span> <span class="pl-pds">'</span></span>
+[X<span class="hljs-emphasis">_test, y_</span>test, <span class="hljs-emphasis">_, _</span>], _  <span class="pl-k">=</span> <span class="pl-c1">next</span>(gen(<span class="pl-c1">1</span>))
+y<span class="hljs-emphasis">_pred </span><span class="pl-k"><span class="hljs-emphasis">=</span></span><span class="hljs-emphasis"> base_</span>model.predict(X_test)
+y<span class="hljs-emphasis">_pred </span><span class="pl-k"><span class="hljs-emphasis">=</span></span><span class="hljs-emphasis"> y_</span>pred[:,<span class="pl-c1">2</span>:,:]
+out <span class="pl-k">=</span> K.get<span class="hljs-emphasis">_value(K.ctc_</span>decode(y<span class="hljs-emphasis">_pred, </span><span class="pl-v"><span class="hljs-emphasis">input_</span>length</span><span class="pl-k">=</span>np.ones(y<span class="hljs-emphasis">_pred.shape[</span><span class="pl-c1"><span class="hljs-emphasis">0</span></span><span class="hljs-emphasis">])</span><span class="pl-k"><span class="hljs-emphasis">*</span></span><span class="hljs-emphasis">y_</span>pred.shape[<span class="pl-c1"><span class="hljs-string">1</span></span>], )[<span class="pl-c1"><span class="hljs-string">0</span></span>][<span class="pl-c1"><span class="hljs-symbol">0</span></span>])[:, :<span class="pl-c1">4</span>]
+out <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>.join([characters[x] <span class="pl-k">for</span> x <span class="pl-k">in</span> out[<span class="pl-c1">0</span>]])
+y<span class="hljs-emphasis">_true </span><span class="pl-k"><span class="hljs-emphasis">=</span></span><span class="hljs-emphasis"> </span><span class="pl-s"><span class="pl-pds"><span class="hljs-emphasis">'</span></span><span class="pl-pds"><span class="hljs-emphasis">'</span></span></span><span class="hljs-emphasis">.join([characters[x] </span><span class="pl-k"><span class="hljs-emphasis">for</span></span><span class="hljs-emphasis"> x </span><span class="pl-k"><span class="hljs-emphasis">in</span></span><span class="hljs-emphasis"> y_</span>test[<span class="pl-c1">0</span>]])
+
+plt.imshow(X_test[<span class="pl-c1">0</span>].transpose(<span class="pl-c1">1</span>, <span class="pl-c1">0</span>, <span class="pl-c1">2</span>))
+plt.title(<span class="pl-s"><span class="pl-pds">'</span>pred:<span class="pl-pds">'</span></span> <span class="pl-k">+</span> <span class="pl-c1">str</span>(out) <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-cce">\n</span>true: <span class="pl-pds">'</span></span> <span class="pl-k">+</span> <span class="pl-c1">str</span>(y_true))
+
+argmax <span class="pl-k">=</span> np.argmax(y_pred, <span class="pl-v">axis</span><span class="pl-k">=</span><span class="pl-c1">2</span>)[<span class="pl-c1">0</span>]
+<span class="pl-c1">list</span>(<span class="pl-c1">zip</span>(argmax, <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>.join([characters2[x] <span class="pl-k">for</span> x <span class="pl-k">in</span> argmax])))</pre>
+</div> 
+<p>这里随机出来的验证码很厉害，是<code>O0OP</code>，不过更厉害的是模型认出来了。</p> 
+<p><a target="_blank" rel="noopener noreferrer" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/O0OP.png"><img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/O0OP.png" alt="" style="max-width:100%;"></a></p> 
+<h1 id="articleHeader21"><a id="user-content-有趣的问题" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%97%AE%E9%A2%98">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>有趣的问题</h1> 
+<p>我又用之前的模型做了个测试，对于 <code>O0O0</code> 这样丧心病狂的验证码，模型偶尔也能正确识别，这让我非常惊讶，它是真的能识别 O 与 0 的差别呢，还是猜出来的呢？这很难说。</p> 
+<div class="highlight highlight-source-python">
+ <pre class="hljs makefile">generator <span class="pl-k">=</span> ImageCaptcha(<span class="pl-v">width</span><span class="pl-k">=</span>width, <span class="pl-v">height</span><span class="pl-k">=</span>height)
+random_str <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>O0O0<span class="pl-pds">'</span></span>
+X <span class="pl-k">=</span> generator.generate_image(random_str)
+X <span class="pl-k">=</span> np.expand_dims(X, <span class="pl-c1">0</span>)
+
+y_pred <span class="pl-k">=</span> model.predict(X)
+plt.title(<span class="pl-s"><span class="pl-pds">'</span>real: <span class="pl-c1">%s</span><span class="pl-cce">\n</span>pred:<span class="pl-c1">%s</span><span class="pl-pds">'</span></span><span class="pl-k">%</span>(random_str, decode(y_pred)))
+plt.imshow(X[<span class="pl-c1">0</span>], <span class="pl-v">cmap</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>gray<span class="pl-pds">'</span></span>)</pre>
+</div> 
+<p><a target="_blank" rel="noopener noreferrer" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/O0O0.png"><img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/O0O0.png" alt="" style="max-width:100%;"></a></p> 
+<h1 id="articleHeader22"><a id="user-content-总结" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E6%80%BB%E7%BB%93">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>总结</h1> 
+<p>模型的大小是4.7MB，在我的笔记本上跑1000张验证码需要用14秒，平均一秒识别71张，估计可以拼过网速。</p> 
+<p>最后附上一张本模型识别 HACK 。</p> 
+<p><a target="_blank" rel="noopener noreferrer" href="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/HACK.png"><img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/HACK.png" alt="" style="max-width:100%;"></a></p> 
+<h1 id="articleHeader23"><a id="user-content-参考链接" class="anchor" aria-hidden="true" href="https://www.ctolib.com/ypwhs-captcha_break.html#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5">
+  <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+   <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </svg></a>参考链接</h1> 
+<ul> 
+ <li><a href="http://keras-cn.readthedocs.io/en/latest/getting_started/functional_API/" rel="nofollow">http://keras-cn.readthedocs.io/en/latest/getting_started/functional_API/</a></li> 
+ <li><a href="https://github.com/fchollet/keras/blob/master/examples/image_ocr.py">https://github.com/fchollet/keras/blob/master/examples/image_ocr.py</a></li> 
+ <li><a href="http://cs231n.github.io/convolutional-networks/" rel="nofollow">http://cs231n.github.io/convolutional-networks/</a></li> 
+</ul>                      	   
+									<script async="" src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/f.txt"></script>
+									<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-7963911354665843" data-ad-slot="7239246954"></ins>
+									<script>
+									     (adsbygoogle = window.adsbygoogle || []).push({});
+									</script>  
+                                 </article>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" col-sm-3 link-info ">
+                                    
+                       <div class="row panel panel-default">
+                       
+                            <div class="panel-heading font-bold">
+                                	基本信息
+                            </div>
+                            <table class="table table-striped m-b-none">
+                                <tbody>
+                                    <tr>
+                                        <td>分类：<a href="https://www.ctolib.com/categories/python-machine-learning.html" title="">机器学习</a></td>
+                                    </tr>
+                                    <tr>
+                                  
+                                        <td>收录时间：2018-03-01 14:39:14</td>
+                                    </tr>
+
+									 
+                                    <tr>
+                                        
+                                        <td><b>热度与活跃度：<b>
+                                        <span class="label label-info " data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="在【机器学习&lt;/a&gt;】中热门度 &lt;br&gt;  2.6/10 (没变化) ">
+			 								<i class="fa fa-fire" aria-hidden="true"></i><span class="m-l-xs m-r-xs">2.6</span><i class="fa fa-caret-right" aria-hidden="true"></i>
+			 							</span>
+		 						    
+			 							<span class="label label-info  m-l-md m-t-xs" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="活跃度 &lt;br&gt;  0.0/10 (没变化) ">
+			 						   		<i class="fa fa-futbol-o" aria-hidden="true"></i><span class="m-l-xs m-r-xs">0.0</span> <i class="fa fa-caret-right" aria-hidden="true"></i>
+			 							</span>
+                                        </b></b></td>
+                                    </tr>
+                                     
+                                </tbody>
+                            </table>
+                        </div>                     
+                        
+ 					
+
+                         
+                     
+                    
+                    	<div class="row panel panel-default">
+                                                                     
+	                     
+                         <a id="githome" href="https://www.ctolib.com/article/goGitHub/ypwhs-captcha_break.html" rel="nofollow" target="_blank" class="btn btn-danger  btn-block"><i class="fa fa-hand-o-right m-r-xs" aria-hidden="true"></i>访问GitHub主页<i class="fa fa-github m-r-xs" aria-hidden="true"></i></a>
+                    	 
+                            <table class="table table-striped m-b-none">
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fa fa-eye m-r-xs" aria-hidden="true"></i>Watchers：<strong id="Watchers">49</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-star m-r-xs" aria-hidden="true"></i>Star：<strong id="Star">878</strong></td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td><i class="fa fa-code-fork m-r-xs" aria-hidden="true"></i>Fork：<strong id="Fork">285</strong>
+                                         </td>
+                                    </tr>
+                                     <tr>
+                                        <td><i class="fa fa-clock-o m-r-xs" aria-hidden="true"></i>创建时间:<strong id="Fork"> 2017-02-21 22:04:20</strong>
+                                         </td>
+                                    </tr>
+                                      <tr>
+                                        <td><i class="fa fa-clock-o m-r-xs" aria-hidden="true"></i>最后Commits：<strong id="Fork"> 1年前</strong>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                     <tr>
+                                        <td>
+                                        	<div id="lang" style="width: 100%; height: 100px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative; background: transparent;" _echarts_instance_="ec_1553587650199"><div style="position: relative; overflow: hidden; width: 260px; height: 100px;"><canvas width="260" height="100" data-zr-dom-id="zr_0" style="position: absolute; left: 0px; top: 0px; width: 260px; height: 100px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div><div></div></div>
+                                        	
+                                         </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    
+
+
+							<div class="row panel">
+							  <a href="https://www.ctolib.com/user/ctolib.html">  
+							  		
+								  		<div class="panel-heading  h-xs bg-black lter wrapper-lg" style="background:url(backgroundpic/a7295e45gy1fhdrexofgnj20ku0cygol.jpg) center center; background-size:cover;"></div>
+					                
+							  			                
+				               </a>
+				               
+				                <div class="panel-body clearfix m-b-n-md">
+				                  <div class="thumb-lg m-t-n-xxl pull-left">
+					                 <a href="https://www.ctolib.com/user/ctolib.html">
+				                    	<img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/36870dc0250f4351bf27611b9547265c.png" class="profile-avatar-sm">   
+				                    </a>           
+				                  </div>
+				                  <div class="pull-left m-l-sm m-t-n-sm">
+				                  	ctolib<br><span class="text-muted h5">@CEEO.码库</span>
+				                  </div>
+				                </div>
+				                  
+				                  <div class="m-t-md text-center b-t b-light panel-body">
+										被 <span id="sideLiked1">144</span>人关注，获得了351个喜欢
+					      		  </div>
+					      		 <div class=" text-center m-b-xs">
+					      		 		              
+													    <button class="btn btn-primary follow " data-id="1" data-like="">
+															<i class="fa fa-plus" aria-hidden="true"></i><span>关注</span>
+														</button>
+														
+														      		 
+					      		 </div>
+					      		                
+					                <div class="b-t b-light text-center panel-body" style="word-wrap:break-word;">
+											混迹于北京，屌丝程序员一枚
+					                </div>
+				                
+				                
+							  </div>
+   					
+   						                    
+
+                        
+
+   						
+					
+						<p class="aiBar"></p>	
+							<div class="side-box post-nav visible-sm visible-md visible-lg aside-fixed" id="indexdiv">
+		                        <div class="row panel panel-default">
+		                        	<div class="panel-heading font-bold">
+                                		文章目录
+                            		</div>
+                            		<div id="idiv" style="max-height:350px;overflow-y: scroll;overflow:auto;">
+		                           	<ul class="articleIndex"><li><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader0">使用深度学习来破解 captcha 验证码</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader1">captcha</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader2">数据生成器</a></li><li style="list-style:none;"><ul style="padding-left: 18px;"><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader3">X</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader4">y</a></li></ul></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader5">使用生成器</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader6">构建深度卷积神经网络</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader7">模型可视化</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader8">训练模型</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader9">测试模型</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader10">计算模型总体准确率</a></li><li><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader11">模型总结</a></li><li><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader12">改进</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader13">CTC Loss</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader14">模型结构</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader15">模型可视化</a></li><li><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader16">数据生成器</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader17">评估模型</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader18">评估回调</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader19">训练模型</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader20">测试模型</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader21">有趣的问题</a></li><li class=""><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader22">总结</a></li><li class="active"><a href="https://www.ctolib.com/ypwhs-captcha_break.html#articleHeader23">参考链接</a></li></ul>
+		                           	</div>
+		                        </div>
+                        </div>
+                        
+ 
+                    </div>
+
+ 
+ 
+                </div>
+
+
+            </div>
+ 
+			
+            <div class="bg-light lter">
+                <div class="container">
+
+							<div class="row ">
+								<div class="col-md-9">
+									<div class="panel panel-default ">
+									  <!-- Default panel contents -->
+									  <div class="panel-heading"><i class="glyphicon glyphicon-globe"></i>&nbsp;相关教程- <small><a href="https://www.ctolib.com/python/docs/"><i class="fa fa-hand-o-right m-r-xs" aria-hidden="true"></i>更多教程</a></small></div>
+									  
+									    <div class="sb-content">
+											<div class="topic-list">
+												<ul class="list-unstyled">
+													
+														<li class="truncate" style="margin: 5px;">1、<a href="https://www.ctolib.com/docs/sfile/pyguide/index.html" title="Python漫游指南【Python 漫游指南】">Python漫游指南【Python 漫游指南】</a></li>
+													
+														<li class="truncate" style="margin: 5px;">2、<a href="https://www.ctolib.com/docs/sfile/a-byte-of-python/77.html" title="第12章输入/输出|简明Python教程【简明 Python 教程】">第12章输入/输出|简明Python教程【简明 Python 教程】</a></li>
+													
+														<li class="truncate" style="margin: 5px;">3、<a href="https://www.ctolib.com/docs/sfile/a-byte-of-python/71.html" title="类|简明Python教程【简明 Python 教程】">类|简明Python教程【简明 Python 教程】</a></li>
+													
+														<li class="truncate" style="margin: 5px;">4、<a href="https://www.ctolib.com/docs/sfile/violent-python/5.html" title="第五章无线攻击|ViolentPython中文版【Violent Python 中文版】">第五章无线攻击|ViolentPython中文版【Violent Python 中文版】</a></li>
+													
+														<li class="truncate" style="margin: 5px;">5、<a href="https://www.ctolib.com/docs/sfile/violent-python/3.html" title="第三章用python进行调查取证|ViolentPython中文版【Violent Python 中文版】">第三章用python进行调查取证|ViolentPython中文版【Violent Python 中文版】</a></li>
+													
+														<li class="truncate" style="margin: 5px;">6、<a href="https://www.ctolib.com/docs-python-actual-combat-c-index.html" title="python之利用PIL库实现页面的图片验证码及缩略图【Python 实战-从菜鸟到大牛的进阶之路】">python之利用PIL库实现页面的图片验证码及缩略图【Python 实战-从菜鸟到大牛的进阶之路】</a></li>
+													
+														<li class="truncate" style="margin: 5px;">7、<a href="https://www.ctolib.com/docs/sfile/violent-python/2.html" title="第二章用python进行渗透测试|ViolentPython中文版【Violent Python 中文版】">第二章用python进行渗透测试|ViolentPython中文版【Violent Python 中文版】</a></li>
+													
+														<li class="truncate" style="margin: 5px;">8、<a href="https://www.ctolib.com/docs/sfile/Python-master/python5/Cycle.html" title="循环语句|草根学习python【草根学习python】">循环语句|草根学习python【草根学习python】</a></li>
+													
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>	
+							<div class="row ">
+								<div class="col-md-9">
+									<div class="panel panel-default ">
+									  <!-- Default panel contents -->
+									  <div class="panel-heading"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;相关主题- <small><a href="https://www.ctolib.com/python/topics/"><i class="fa fa-hand-o-right m-r-xs" aria-hidden="true"></i>发表话题</a></small></div>
+									  
+									    <div>
+											<div class="topic-list">
+												<ul class="list-unstyled">
+													
+														<li class="truncate" style="margin: 5px;">1、<a target="_blank" href="https://www.ctolib.com/topics-.html" title=""></a></li>
+													
+														<li class="truncate" style="margin: 5px;">2、<a target="_blank" href="https://www.ctolib.com/topics-34561.html" title="python实现douban.fm简易客户端">python实现douban.fm简易客户端</a></li>
+													
+														<li class="truncate" style="margin: 5px;">3、<a target="_blank" href="https://www.ctolib.com/topics-85077.html" title="最全Python爬虫总结">最全Python爬虫总结</a></li>
+													
+														<li class="truncate" style="margin: 5px;">4、<a target="_blank" href="https://www.ctolib.com/topics-130080.html" title="TensorFlow验证码识别">TensorFlow验证码识别</a></li>
+													
+														<li class="truncate" style="margin: 5px;">5、<a target="_blank" href="https://www.ctolib.com/topics-.html" title=""></a></li>
+													
+														<li class="truncate" style="margin: 5px;">6、<a target="_blank" href="https://www.ctolib.com/topics-111460.html" title="中文版python资源全汇总">中文版python资源全汇总</a></li>
+													
+														<li class="truncate" style="margin: 5px;">7、<a target="_blank" href="https://www.ctolib.com/topics-122284.html" title="基于python语言的tensorflow的‘端到端’的字符型验证码识别源码整理(github源码分享)">基于python语言的tensorflow的‘端到端’的字符型验证码识别源码整理(github源码分享)</a></li>
+													
+														<li class="truncate" style="margin: 5px;">8、<a target="_blank" href="https://www.ctolib.com/topics-43032.html" title="Python实现的百度站长自动URL提交小工具">Python实现的百度站长自动URL提交小工具</a></li>
+													
+												</ul>
+											</div>
+										</div>
+									 
+									</div>
+								</div>	
+							</div>	 
+					
+							
+                    <div class="row clear">
+                        <div class="wrapper">
+                            <h3 class="font-thin">相关的项目 - <small><a href="https://www.ctolib.com/article/compares/78232"><i class="fa fa-hand-o-right m-r-xs" aria-hidden="true"></i>更多比较</a></small></h3>	
+                        </div>
+                    </div>
+                    <div class="row m-b-md row-sm">
+ 
+		                
+		                 
+		                  <div class="col-md-3 col-sm-6">
+		                    <div class="item-panel panel b-a">
+		
+		 					<div class="item m-l-n-xxs m-r-n-xxs">				
+								<div class="pos-rlt">
+									  
+							           <div class="ribbon ribbon-danger"><span>Popular</span></div>	 
+							            
+							            
+									
+		 
+									<div class="m-l-sm m-t-sm m-b-xs text-sm pull-left">	   						  
+							 			<i class="fa fa-bars text-muted icon_c1"></i><span class="m-l-xs m-b-sm text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Python开发 - 机器学习"><a href="https://www.ctolib.com/categories/python-machine-learning.html">机器学习</a></span>
+						  			</div>
+						  			 <div class="m-r-sm m-t-sm m-b-xs text-sm pull-right">
+						  			 	
+								    	 
+										   	<i class="fa fa-eye icon_c1"></i><span class="m-l-xs text-muted">550</span>
+										    <i class="fa fa-star-o icon_c1"></i><span class="m-l-xs text-muted">9.7k</span>
+										    <i class="fa fa-code-fork icon_c1"></i><span class="m-l-xs text-muted">1.7k</span>
+								    	
+								    </div>
+							    
+								</div>
+							</div>  
+						  
+								  <hr class="m-b-xs" style="clear:both">
+				 		            <div class="clearfix item-listing-extra">
+							              <div class="m-l-sm m-t-xxs m-r-sm text-md font-bold">
+							              	<a href="https://www.ctolib.com/mozilla-DeepSpeech.html">Project DeepSpeech是一款基于百度深度语音研究论文的开源语音文本引擎</a> 
+							              </div>
+							   		</div>
+						   		
+								   <div class="row no-gutter item-listing-desc">
+				
+								     <div class="m-l-sm m-b-sm m-r-sm m-t-xs ">	   
+								     	
+								     	
+									     	 <a href="https://www.ctolib.com/mozilla-DeepSpeech.html">
+												 <i class="icon icon_1 m-l-xs  m-r-xs">P</i>
+											</a>
+											Project DeepSpeech是一款基于百度深度语音研究论文的开源语音文本引擎，采用机器学习技术训练的模型。 DeepSpeech项目使用Google的TensorFlow项目来实现。
+										
+								     </div>
+								  </div>
+						    
+						   		<div class="row no-gutter item-listing-extra">&nbsp;</div>
+							    <div class="row no-gutter ">
+									<div class="m-l-sm m-t-md  text-sm pull-left">
+					  
+				 						    <span class="label label-info pull-left" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="在【机器学习&lt;/a&gt;】中热门度 &lt;br&gt;  10.0/10 (没变化) ">
+				 						   		<i class="fa fa-fire m-t-xxs2" aria-hidden="true"></i><span class="m-l-xs m-r-xs">10.0</span><i class="fa fa-caret-right" aria-hidden="true"></i>
+				 						   </span>
+				 						   
+				 						    <span class="label label-info  pull-right m-l-xs" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="活跃度 &lt;br&gt;  10.0/10 (没变化) ">
+				 						   		<i class="fa fa-futbol-o m-t-xxs2" aria-hidden="true"></i><span class="m-l-xs m-r-xs">10.0</span> <i class="fa fa-caret-right" aria-hidden="true"></i>
+				 						   </span>
+								  	</div>
+							     
+								   <div class="m-l-sm m-t-md  text-sm pull-right">
+								     <a href="https://www.ctolib.com/user/ctolib.html"><i class="fa fa-user text-muted icon_c1" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="发布者：ctolib"></i></a>&nbsp;
+								     
+						             	<i class="fa fa-clock-o text-muted icon_c1" aria-hidden="true"></i><span class="m-l-xs m-r-xs m-b-sm text-muted" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="最后Commits时间">4天前</span>
+						             
+						             
+						           </div> 	 		    
+							    </div>
+							 
+				        	</div>	
+						</div>
+		               
+		                 
+		                  <div class="col-md-3 col-sm-6">
+		                    <div class="item-panel panel b-a">
+		
+		 					<div class="item m-l-n-xxs m-r-n-xxs">				
+								<div class="pos-rlt">
+									  
+							            
+							            
+							           
+								           	
+							            
+									
+		 
+									<div class="m-l-sm m-t-sm m-b-xs text-sm pull-left">	   						  
+							 			<i class="fa fa-bars text-muted icon_c2"></i><span class="m-l-xs m-b-sm text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Python开发 - 机器学习"><a href="https://www.ctolib.com/categories/python-machine-learning.html">机器学习</a></span>
+						  			</div>
+						  			 <div class="m-r-sm m-t-sm m-b-xs text-sm pull-right">
+						  			 	
+								    	 
+										   	<i class="fa fa-eye icon_c2"></i><span class="m-l-xs text-muted">284</span>
+										    <i class="fa fa-star-o icon_c2"></i><span class="m-l-xs text-muted">9.4k</span>
+										    <i class="fa fa-code-fork icon_c2"></i><span class="m-l-xs text-muted">882</span>
+								    	
+								    </div>
+							    
+								</div>
+							</div>  
+						  
+								  <hr class="m-b-xs" style="clear:both">
+				 		            <div class="clearfix item-listing-extra">
+							              <div class="m-l-sm m-t-xxs m-r-sm text-md font-bold">
+							              	<a href="https://www.ctolib.com/NVIDIA-FastPhotoStyle.html" data-toggle="tooltip" data-placement="bottom" data-html="true" title="" data-original-title="FastPhotoStyle - 将一张照片的样式风格合成到另一张照片 - 基于 Python，一个是 content photo 一个是 style photo，最后合称为一张 ">FastPhotoStyle - 将一张照片的样式风格合成到另一张照片</a> 
+							              </div>
+							   		</div>
+						   		
+								   <div class="row no-gutter item-listing-desc">
+				
+								     <div class="m-l-sm m-b-sm m-r-sm m-t-xs ">	   
+								     	
+								     		<center><img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/javaloading.gif" class="lazy" alt="FastPhotoStyle - 将一张照片的样式风格合成到另一张照片" data-original="https://github.com/NVIDIA/FastPhotoStyle/raw/master/alg_in_action.png" style="max-height: 155px; max-width: 250px; display: block;"></center>
+								     	
+								     	
+								     </div>
+								  </div>
+						    
+						   		<div class="row no-gutter item-listing-extra">&nbsp;</div>
+							    <div class="row no-gutter ">
+									<div class="m-l-sm m-t-md  text-sm pull-left">
+					  
+				 						    <span class="label label-info pull-left" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="在【机器学习&lt;/a&gt;】中热门度 &lt;br&gt;  10.0/10 (没变化) ">
+				 						   		<i class="fa fa-fire m-t-xxs2" aria-hidden="true"></i><span class="m-l-xs m-r-xs">10.0</span><i class="fa fa-caret-right" aria-hidden="true"></i>
+				 						   </span>
+				 						   
+				 						    <span class="label label-info  pull-right m-l-xs" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="活跃度 &lt;br&gt;  0.2/10 (没变化) ">
+				 						   		<i class="fa fa-futbol-o m-t-xxs2" aria-hidden="true"></i><span class="m-l-xs m-r-xs">0.2</span> <i class="fa fa-caret-right" aria-hidden="true"></i>
+				 						   </span>
+								  	</div>
+							     
+								   <div class="m-l-sm m-t-md  text-sm pull-right">
+								     <a href="https://www.ctolib.com/user/ctolib.html"><i class="fa fa-user text-muted icon_c2" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="发布者：ctolib"></i></a>&nbsp;
+								     
+						             	<i class="fa fa-clock-o text-muted icon_c2" aria-hidden="true"></i><span class="m-l-xs m-r-xs m-b-sm text-muted" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="最后Commits时间">26天前</span>
+						             
+						             
+						           </div> 	 		    
+							    </div>
+							 
+				        	</div>	
+						</div>
+		               
+		                 
+		                  <div class="col-md-3 col-sm-6">
+		                    <div class="item-panel panel b-a">
+		
+		 					<div class="item m-l-n-xxs m-r-n-xxs">				
+								<div class="pos-rlt">
+									  
+							            
+							            
+							           
+								           	
+							            
+									
+		 
+									<div class="m-l-sm m-t-sm m-b-xs text-sm pull-left">	   						  
+							 			<i class="fa fa-bars text-muted icon_c3"></i><span class="m-l-xs m-b-sm text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Python开发 - 机器学习"><a href="https://www.ctolib.com/categories/python-machine-learning.html">机器学习</a></span>
+						  			</div>
+						  			 <div class="m-r-sm m-t-sm m-b-xs text-sm pull-right">
+						  			 	
+								    	 
+										   	<i class="fa fa-eye icon_c3"></i><span class="m-l-xs text-muted">712</span>
+										    <i class="fa fa-star-o icon_c3"></i><span class="m-l-xs text-muted">9.2k</span>
+										    <i class="fa fa-code-fork icon_c3"></i><span class="m-l-xs text-muted">3.5k</span>
+								    	
+								    </div>
+							    
+								</div>
+							</div>  
+						  
+								  <hr class="m-b-xs" style="clear:both">
+				 		            <div class="clearfix item-listing-extra">
+							              <div class="m-l-sm m-t-xxs m-r-sm text-md font-bold">
+							              	<a href="https://www.ctolib.com/apachecn-AiLearning.html">AiLearning: 机器学习 - MachineLearning - ML、深度学习 - DeepLearning - DL、自然语言处理 NLP</a> 
+							              </div>
+							   		</div>
+						   		
+								   <div class="row no-gutter item-listing-desc">
+				
+								     <div class="m-l-sm m-b-sm m-r-sm m-t-xs ">	   
+								     	
+								     	
+									     	 <a href="https://www.ctolib.com/apachecn-AiLearning.html">
+												 <i class="icon icon_3 m-l-xs  m-r-xs">A</i>
+											</a>
+											AiLearning: 机器学习 - MachineLearning - ML、深度学习 - DeepLearning - DL、自然语言处理 NLP
+										
+								     </div>
+								  </div>
+						    
+						   		<div class="row no-gutter item-listing-extra">&nbsp;</div>
+							    <div class="row no-gutter ">
+									<div class="m-l-sm m-t-md  text-sm pull-left">
+					  
+				 						    <span class="label label-info pull-left" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="在【机器学习&lt;/a&gt;】中热门度 &lt;br&gt;  10.0/10 (没变化) ">
+				 						   		<i class="fa fa-fire m-t-xxs2" aria-hidden="true"></i><span class="m-l-xs m-r-xs">10.0</span><i class="fa fa-caret-right" aria-hidden="true"></i>
+				 						   </span>
+				 						   
+				 						    <span class="label label-info  pull-right m-l-xs" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="活跃度 &lt;br&gt;  5.0/10 (没变化) ">
+				 						   		<i class="fa fa-futbol-o m-t-xxs2" aria-hidden="true"></i><span class="m-l-xs m-r-xs">5.0</span> <i class="fa fa-caret-right" aria-hidden="true"></i>
+				 						   </span>
+								  	</div>
+							     
+								   <div class="m-l-sm m-t-md  text-sm pull-right">
+								     <a href="https://www.ctolib.com/user/ctolib.html"><i class="fa fa-user text-muted icon_c3" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="发布者：ctolib"></i></a>&nbsp;
+								     
+						             	<i class="fa fa-clock-o text-muted icon_c3" aria-hidden="true"></i><span class="m-l-xs m-r-xs m-b-sm text-muted" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-original-title="最后Commits时间">4天前</span>
+						             
+						             
+						           </div> 	 		    
+							    </div>
+							 
+				        	</div>	
+						</div>
+		               
+
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+        </div>
+   
+
+		<div class="modal fade" id="favModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+		                </button>
+		                <h4 class="modal-title" id="myModalLabel">点击收藏夹收藏</h4>
+		            </div>
+		            <div class="modal-body">
+		            <div style="max-height:350px;overflow-y: scroll;overflow:auto;">
+						<table class="table table-hover" style="overflow: ">
+						
+						</table>
+					</div>
+		            </div>
+		            <div class="modal-footer">
+		                <button type="button" class="btn btn-info" onclick="editFavcatalog(0,&#39;&#39;,&#39;&#39;)">创建收藏夹</button> 
+		            </div>
+		        </div>
+		    </div>
+		</div>
+
+		<div class="modal fade" id="favModalSave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+		                </button>
+		                <h4 class="modal-title" id="myModalLabel">创建收藏夹</h4>
+		            </div>
+		            <form action="https://www.ctolib.com/ypwhs-captcha_break.html" id="favsaveform" class="form-horizontal" method="post">
+		            <div class="modal-body">
+								<div class="form-group">
+						          <label class="col-lg-2 control-label">名称<font color="red">*</font></label>
+						          <div class="col-lg-10">
+						            <input type="text" value="" name="usercatalog.name" id="uname" required="" class="form-control">
+						          </div>
+						        </div>
+								
+						 		<div class="form-group">
+						          <label class="col-lg-2 control-label">描述</label>
+						          <div class="col-lg-10">
+						            <textarea name="usercatalog.desc" id="udesc" class="form-control"></textarea>
+						          </div>
+						        </div>
+							
+		            </div>
+		            <div class="modal-footer">
+		            	<input type="hidden" id="uid" name="usercatalog.id" value="0">
+		                <button type="button" name="savefav" id="savefav" class="btn btn-info">保存</button> 
+		                <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#messageModal">取消</button> 
+		            </div>
+		            </form>
+		        </div>
+		    </div>
+		</div>
+
+		<div class="modal fade" id="weixModalLabel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog" style="width:400px">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+		                </button>
+		                <h4 class="modal-title">赞助我们</h4>
+		            </div>
+		            
+		            <div class="modal-body">
+								<center>
+						          <div>
+						            	谢谢您的支持！您的支持会使我们变得更好<br>同时也能够帮助负担一部分网站的日常开支。<br>
+						            	<img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/weixin.png">
+						            	<div>微信赞赏</div>
+						          </div>
+						     </center>
+		            </div>
+		            <div class="modal-footer"></div>
+		        </div>
+		    </div>
+		</div>
+				
+	
+	
+
+ 
+   <script>
+	var fkLoginWindow;
+	function fkLogin(name)
+	{
+			var popupWidth=500;
+			var popupHeight=550;
+			var xPosition=($(window).width()-popupWidth)/2;
+			var yPosition=($(window).height()-popupHeight)/2;
+	
+			fkLoginWindow=window.open("https://www.ctolib.com/oauth/"+name, 'LgWindow', 
+				"location=1,scrollbars=1,"+
+				"width="+popupWidth+",height="+popupHeight+","+
+				"left="+xPosition+",top="+yPosition);
+	}
+  
+	</script>
+	
+	<div class="pop login-pop" id="login-pop" style="display: none left: 447px; top: 1125.5px; opacity: 1;">	
+		<div class="login-form">
+			<div class="error text-center"></div>
+			<form action="https://www.ctolib.com/ypwhs-captcha_break.html#" method="post" class="form-horizontal" role="form">
+				<div class="form-group">
+					<label for="username" class="col-sm-3 control-label">用户名</label>
+					<div class="col-sm-9 form-input">
+						<input type="text" class="form-control" id="username" name="username" placeholder="请填写用户名或邮箱">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="passwd" class="col-sm-3 control-label">密码</label>
+					<div class="col-sm-9 form-input">
+						<input type="password" class="form-control" id="password" name="password" placeholder="密码">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<div class="checkbox">
+							<label>
+								<input id="rememberme" name="rememberme" type="checkbox" value="1" checked="checked">	记住登录状态
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" id="login-btn" class="btn btn-primary pull-left">登录</button>
+						<div class="forget">
+							<a href="https://www.ctolib.com/user/reset_password/" title="点击找回密码">忘记密码？</a>
+						</div>
+						<div class="register">
+							<span>还不是会员</span><a href="https://www.ctolib.com/user/sign_up/">现在注册</a>
+						</div>
+					</div>
+				</div>
+				
+			 <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<span class="m-l-md">快速登录：</span>
+		 			<button onclick="fkLogin(&#39;github&#39;)" class="btn btn-icon btn-github"><i class="fa fa-github fa-lg"></i></button>
+		 			<button onclick="fkLogin(&#39;weibo&#39;)" class="btn btn-icon btn-pinterest"><i class="fa fa-weibo fa-lg"></i></button>
+	 				<button onclick="fkLogin(&#39;qq&#39;)" class="btn btn-icon btn-twitter"><i class="fa fa-qq fa-lg"></i></button>
+ 				</div>
+				</div>
+				
+			</form>
+		</div>
+	</div>
+	
+	<div id="cto-overlay"></div>
+			
+	
+
+ <!-- footer -->
+  <footer id="footer">
+    <div class="bg-black  ">
+      <div class="container ">
+        <div class="row m-t-xl m-b-xl">
+          <div class="col-sm-3">
+            <h4 class=" m-b-xl text-white font-thin"><span class="font-bold">关注</span> 我们</h4>
+            <div class="m-b-xl">
+              <a rel="nofollow" href="http://weibo.com/ctolib/" target="_blank" class="btn btn-icon btn-rss"><i class="fa fa-lg fa-weibo m-t-xxs"></i></a>
+              <a rel="nofollow" href="https://www.facebook.com/ctolib" target="_blank" class="btn btn-icon btn-facebook"><i class="fa fa-lg fa-facebook m-t-xxs"></i></a>
+              <a rel="nofollow" href="https://twitter.com/ctolib" target="_blank" class="btn btn-icon btn-twitter"><i class="fa fa-lg fa-twitter m-t-xxs"></i></a>
+              <a rel="nofollow" href="https://github.com/ctolib" target="_blank" class="btn btn-icon btn-github"><i class="fa fa-lg fa-github m-t-xxs"></i></a>
+              <a rel="nofollow" href="https://www.ctolib.com/about.html" target="_blank" class="btn btn-icon btn-pinterest"><i class="fa fa-lg fa-rss m-t-xxs"></i></a>
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <h4 class=" m-b text-white font-thin"><span class="font-bold">网站</span>导航</h4>
+            <ul class="list-unstyled ">
+              <li><a href="https://www.ctolib.com/android/">Android开发社区</a></li>
+              <li><a href="https://www.ctolib.com/swift/">Swift开发社区</a></li>
+              <li><a href="https://www.ctolib.com/java/">Java开发社区</a></li>
+              <li><a href="https://www.ctolib.com/python/">Python开发社区</a></li>
+              <li><a href="https://www.ctolib.com/javascript/">JavaScript开发社区</a></li> 
+ 		<li><a href="https://www.ctolib.com/php/">PHP开发社区</a></li>
+ 		<li><a href="https://www.ctolib.com/go/">Go开发社区</a></li>
+ 		<li><a href="https://www.ctolib.com/linux/">Linux开发社区</a></li>
+            </ul>
+          </div>
+          <div class="col-sm-3">
+            <h4 class="m-b text-white font-thin"><span class="font-bold">联系</span> 合作</h4>
+            <ul class="list-unstyled ">
+              <li><a rel="nofollow" href="https://www.ctolib.com/about.html">联系我们</a></li>
+              <li><a rel="nofollow" href="https://www.ctolib.com/about.html">加入我们</a></li>
+              <li><a rel="nofollow" href="https://www.ctolib.com/about.html">建议反馈</a></li>
+               <li><a href="https://www.ctolib.com/cpp/">C/C++开发社区</a></li>
+              <li><a href="https://www.ctolib.com/nodejs/">NodeJS开发社区</a></li>
+              <li><a href="https://www.ctolib.com/ruby/">Ruby开发社区</a></li>
+              <li><a href="https://www.ctolib.com/dotnet/">.Net开发社区</a></li>
+              <li><a href="https://www.ctolib.com/react/">React开发社区</a></li>
+	      	 
+            </ul>          
+          </div>
+
+          <div class="col-sm-3">
+            <h4 class=" m-b text-white font-thin"><span class="font-bold">网站</span> &amp; 相关</h4>
+            <ul class="list-unstyled ">
+              <li><a href="https://www.ctolib.com/about.html">关于我们</a></li>
+              <li><a rel="nofollow" href="https://www.ctolib.com/about.html">帮助中心</a></li>
+              <li><a href="https://www.ctolib.com/markdown.html">编辑器语法</a></li>
+            </ul>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-black lt">
+      <div class="container">
+        <div class="row padder-v">
+          <div class="col-xs-8">
+            <ul class="list-inline">
+	           
+			  <li><a rel="nofollow" href="https://www.ctolib.com/about.html">联系我们</a></li>
+              <li><a rel="nofollow" href="https://www.ctolib.com/about.html">加入我们</a></li>
+              <li><a rel="nofollow" href="https://www.ctolib.com/about.html">建议反馈</a></li>
+              <li><a rel="nofollow" href="http://www.miitbeian.gov.cn/">闽ICP备16010278号</a></li>
+              <li>
+		  		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35020602000173" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/gabn.png" style="float:left;margin: 5px 0px 0px 5px;"><p style="float:left;height:20px;line-height:20px;margin: 5px 0px 0px 5px; color:#939393;">闽公网安备 35020602000173号</p></a>
+	     	  </li>
+		 
+            </ul> 
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- / footer -->
+
+  
+	
+ 
+  <script src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/jquery.min.js"></script>
+ <script src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/bootstrap.min.js"></script>
+  <script src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/jquery.md5.js"></script>  
+  <script src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/highlight.min.js"></script>
+  <script src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/ctolib.js"></script> 
+  <script src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/jquery.lazyload.js"></script>
+
+  <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?d3239686c33ccdb50ddddad9d3df75f4";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	
+	$(function() {
+		$("img.lazy").lazyload({
+		    threshold :100,
+		    effect : "fadeIn"
+		});
+	});
+ </script>
+ 
+
+	<script src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/userevent.js"></script>
+	
+ 	
+	<script type="text/javascript">
+		var fav=0;
+		var login=0;
+		var like=0;
+		var rootpath="";
+		var longurl="/user/sign_in/";
+		$("#sideBookmark").click(function(){
+			if(login==0){
+				openPop("#login-pop");
+			}else{//没有登录
+				if(fav==0){
+					$('#favModal').modal('show');
+				}else{
+					cancleFave();
+				}
+			}
+		});
+
+		$("#btwn").click(function(){
+			console.log($('#weixModalLabel'))
+			$('#weixModalLabel').modal('show');
+		});
+		
+		$("#sideLike").click(function(){
+			if(login==0){
+				openPop("#login-pop");
+			}else{//没有登录
+				if(like==0){
+					likeArticle();
+				}else{
+					cancleLike();
+				}
+			}
+		});
+		
+
+		function cancleLike(){
+			$.ajax({
+				   type: "GET",
+				   url: "/user/likeArticleCancle/78232",
+				   success: function(msg){
+					   like=0;
+					   num=0;
+					   if($("#sideLiked").text()!=''){
+						   num=parseInt($("#sideLiked").text())-1;
+					   }
+					   $("#sideLiked").text(num);
+					   $("#sideLike").text("推荐");
+				   },
+                error: function(data) {
+                   alert("取消失败！");
+                }
+			});
+		}
+
+ 		function likeArticle(){
+			$.ajax({
+				   type: "GET",
+				   url: "/user/likeArticleSave",
+				   data: "articleId="+78232,
+				   success: function(msg){
+					   like=1;
+					   num=1;
+					   if($("#sideLiked").text()!=''){
+						   num=parseInt($("#sideLiked").text())+1;
+					   }
+					   $("#sideLiked").text(num);
+					   $("#sideLike").text("已推荐");
+				   },
+                error: function(data) {
+                   alert("保存失败！");
+                }
+			});
+	 	}
+	 	
+		
+		function cancleFave(){
+			$.ajax({
+				   type: "GET",
+				   url: "/user/favarticleCancle/78232",
+				   success: function(msg){
+					   fav=0;
+					   num=0;
+					   if($("#sideBookmarked").text()!=''){
+					   	num=parseInt($("#sideBookmarked").text())-1;
+					   }
+					   $("#sideBookmarked").text(num);
+					   $("#sideBookmark").text("收藏");
+				   },
+                error: function(data) {
+                   alert("取消失败！");
+                }
+			});
+		}
+
+		 
+		$("button#savefav").click(function(){
+			  if($("#uname").val()!==null){
+					$.ajax({
+						   type: "POST",
+						   url: "/user/saveUserCatalog",
+						   data: $('#favsaveform').serialize(),
+						   success: function(msg){
+							 $('#favModalSave').modal('hide');
+							 $('#favModal').modal('show');
+						   },
+		                   error: function(data) {
+		                      alert("保存失败！");
+		                   }
+					});
+				}else{
+					alert('名称必填!');
+				}
+		});
+
+ 		function favArticle(uid){
+			$.ajax({
+				   type: "GET",
+				   url: "/user/favarticleSave",
+				   data: "usercatalogId="+uid+"&articleId="+78232,
+				   success: function(msg){
+					   fav=1;
+					   if($("#sideBookmarked").text()!=''){
+						   num=parseInt($("#sideBookmarked").text())+1;
+					   }else{
+						   num=1;
+					   }
+					  
+					   $("#sideBookmarked").text(num);
+					   $('#favModal').modal('hide');
+					   $("#sideBookmark").text("已收藏");
+				   },
+                error: function(data) {
+                   alert("保存失败！");
+                }
+			});
+	 	}
+	 	
+ 		function editFavcatalog(id,name,desc){
+ 	 		 $('#uid').val(id);
+ 	 		 $('#udesc').val(desc);
+ 	 		 $('#uname').val(name);
+			 $('#favModalSave').modal('show');
+			 $('#favModal').modal('hide');
+ 	 	}
+
+ 		function delFavcatalog(id){
+ 			if(confirm("确认要删除，该目录下的收藏也将一起删除？")){
+ 				$.ajax({
+ 				   type: "GET",
+ 				   url: "/user/usercatalogDel/"+id,
+ 				   success: function(data){
+ 					$('#md'+id).hide();
+ 				   },
+                   error: function(data) {
+ 						alert("删除失败！");
+                 	}
+ 				});
+ 	 		}
+	 	}
+	 	
+		$('#favModal').on('show.bs.modal', function (event) {
+			var modal = $(this);
+			$.ajax({
+				   type: "GET",
+				   url: "/user/getUserCatalog",
+				   success: function(data){
+					 modal.find('.table').empty();
+					 modal.find('.table').append("<tr><th>名称</th><th>&nbsp;&nbsp;操作</th></tr>");
+					if(data.length==0){
+						 modal.find('.table').append("<tr><td>您还没有收藏夹请先创建！</th><td></td></tr>");
+					}else{
+						$.each(data, function(i,item){
+							modal.find('.table').append("<tr id='md"+item.id+"'><td style='cursor:pointer' onclick='favArticle("+item.id+")'>"+item.name+"&nbsp;&nbsp;<span class='badge'>"+item.numb+"</span></td><td>&nbsp;<a onclick='editFavcatalog(\""+item.id+"\",\""+item.name+"\",\""+item.desc+"\")' title='修改' href='#'><i class='icon-note'></i></a>&nbsp;&nbsp;<a title='删除' onclick='delFavcatalog(\""+item.id+"\")' href='#'><i class='icon-close'></i></a></td></tr>")
+						});
+					}
+				   },
+                   error: function(data) {
+					alert("获取收藏夹失败！");
+                }
+			});
+			
+		});
+	
+	    var setAIActive = function () {
+	        var target_article, hhh, target_articleIndex;
+	        target_article = $("article");
+	        target_articleIndex = $(".articleIndex");
+	        hhh = target_article.find("h1, h2, h3");
+	        window_scroll_top = $(window).scrollTop();
+	        var i=0;
+	        hhh.each(function (index, H) {
+		        i++;
+	            (index < hhh.length - 1) ? next_h_top = hhh.eq(index + 1).offset().top : next_h_top = hhh.last().offset().top;
+	            e = target_articleIndex.find("[href='#" + $(this).attr("id") + "']");
+	           target_articleIndex.find("li").removeClass("active");
+	            if ($(H).offset().top < window_scroll_top + 125 && window_scroll_top + 125 < next_h_top) {
+	                e.parent().addClass("active");
+	                return false;
+	            } else if (hhh.length == index + 1) {
+	                e.parent().addClass("active");
+	                return false;
+	            }
+	        })
+	        if(i==0){
+				$("#indexdiv").remove();;
+		    }
+	    };
+	
+	    var contentIndex = function () {
+	        var e;
+	        return e = function (article, article_index, numb) {
+	            var target_article, collapse, headline, panel_collapse, target_articleIndex, u, d, location_hash;
+	            target_article = $(article);
+	            target_articleIndex = $(article_index);
+	            collapse = target_article.find(".collapse");
+	            panel_collapse = target_article.find(".panel-collapse");
+	            headline = target_article.find("h1, h2, h3");
+	
+	            $(window).scroll(function () {
+	                setAIActive();
+	            });
+	            d = 2;
+	            headline.each(function (e) {
+	                var n, r, i;
+	                i = $(this).text().trim(),
+	                "" !== i && ($(this).attr("id", "articleHeader" + e),
+	                    r = parseInt($(this)[0].tagName.slice(1)),
+	                    n = null,
+	                    0 === e || r === d ?
+	                        (n = $('<li><a href="#articleHeader' + e + '"></a></li>'), n.find("a").text(i), target_articleIndex.append(n)) :
+	                        r > d ?
+	                            (n = $("<li style='list-style:none;'><ul style='padding-left: 18px;'><li><a href=\"#articleHeader" + e + '"></a></li></ul></li>'), n.find("a").text(i), target_articleIndex.append(n), target_articleIndex = n.find("ul")) :
+	                        d > r && (1 === r ? (n = $('<li><a href="#articleHeader' + e + '"></a></li>'), n.find("a").text(i), $(article_index).append(n), target_articleIndex = $(article_index)) :
+	                            (n = $("<li style='list-style:none;'><ul style='padding-left: 18px;'><li><a href=\"#articleHeader" + e + '"></a></li></ul></li>'), n.find("a").text(i), target_articleIndex.parents("ul").parents("ul").length ? (target_articleIndex.parents("ul").parents("ul").append(n), target_articleIndex = n.find("ul")) : (n = $('<li><a href="#articleHeader' + e + '"></a></li>'), n.find("a").text(i), $(article_index).append(n), target_articleIndex = $(article_index)))), d = r)
+	            }), numb && numb(collapse, panel_collapse), location_hash = location.hash, location_hash && $(window).scrollTop($(location_hash).offset().top)
+	        }
+	    };
+	    
+	
+		(function(){
+			var c = new contentIndex();
+			c("article", ".articleIndex");
+			setAIActive();
+	
+	
+			$(window).scroll(function () {
+				if ($(window).scrollTop() > $(".aiBar").offset().top) {
+					$(".post-nav").addClass("aside-fixed");
+				} else {
+					$(".post-nav").removeClass("aside-fixed");
+				}
+			});
+			
+			$(".item-description img").each(function(index, element) {
+				var $width=$(".item-description").width();
+				if ( this.width>$width) {
+					this.height = this.height*$width/this.width;
+					this.width=$width;
+				}
+			});
+	
+		})();
+
+ 
+		  
+		
+			updateGitHub();
+			function updateGitHub(){
+				$.ajax({
+					   type: "POST",
+					   url: "/article/updateGitHub",
+					   data: "articleId=78232"
+				});
+			}
+		
+	</script>
+ 
+
+	
+		<script src="./captcha_break：使用深度学习来破解 captcha（python 生成验证码的库）验证码 - Python开发社区 _ CTOLib码库_files/echarts.min.js"></script>
+	   <script type="text/javascript">
+	   		try{
+	        // 基于准备好的dom，初始化echarts实例
+	        var myChart = echarts.init(document.getElementById('lang'));
+			
+	        // 指定图表的配置项和数据
+			option = {
+			    tooltip : {
+			        trigger: 'item',
+			        formatter: "{a} <br/>{b} : {c} ({d}%)"
+			    },
+			    series : [
+			        {
+			            name: '开发语言占比',
+			            type: 'pie',
+			            radius : '60%',
+			         
+			            data:[
+							{value:100.0, name:'Jupyter Jupyter'}
+			            ],
+			        }
+			    ]
+			};
+	
+	        // 使用刚指定的配置项和数据显示图表。
+	        myChart.setOption(option);
+	   		}catch(e){
+
+		   	}
+	    </script>
+	
+
+
+ 
+
+<div id="toTop" title="回到顶部" style="display: block;"><span class="fa fa-arrow-circle-up fa-3x pui-text-blue-400"></span></div></body><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(240, 243, 244); height: 15559px; width: 1479px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 15559px; width: 1479px;"></div></html>

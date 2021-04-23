@@ -1,0 +1,1285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0054)http://www.ruanyifeng.com/blog/2019/01/table-join.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" id="sixapart-standard" class="cye-disabled cye-nm gr__ruanyifeng_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+<meta name="generator" content="Movable Type  5.2.2">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--link rel="stylesheet" href="http://www.ruanyifeng.com/blog/styles.css" type="text/css" /-->
+<link rel="start" href="http://www.ruanyifeng.com/blog/" title="Home">
+<link rel="alternate" type="application/atom+xml" title="Recent Entries" href="http://feeds.feedburner.com/ruanyifeng">
+<script src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/hm.js"></script><script async="" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/analytics.js"></script><script type="text/javascript" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/mt.js"></script><style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style>
+<!--
+<rdf:RDF xmlns="http://web.resource.org/cc/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<Work rdf:about="http://www.ruanyifeng.com/blog/2018/06/ddos.html">
+<dc:title>DDOS 攻击的防范教程</dc:title>
+<dc:description>一个多月前，我的个人网站遭受 DDOS 攻击，下线了50多个小时。这篇文章就来谈谈，如何应对这种攻击。...</dc:description>
+<dc:creator>阮一峰</dc:creator>
+<dc:date>2018-06-26T17:49:53+08:00</dc:date>
+<license rdf:resource="http://creativecommons.org/licenses/by-nc-nd/3.0/" />
+</Work>
+<License rdf:about="http://creativecommons.org/licenses/by-nc-nd/3.0/">
+</License>
+</rdf:RDF>
+-->
+
+<style>
+body {
+  background-color: #f5f5d5;
+}
+
+#container::before {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: rgba(0,0,0,0.1);
+  text-align: center;
+  content: "本站显示不正常，可能因为您使用了广告拦截器。";
+}
+
+</style>
+<script>
+function loadjscssfile(filename, filetype){
+    if (filetype=="js"){ //if filename is a external JavaScript file
+        var fileref=document.createElement('script')
+        fileref.setAttribute("type","text/javascript")
+        fileref.setAttribute("src", filename)
+    }
+    else if (filetype=="css"){ //if filename is an external CSS file
+        var fileref=document.createElement("link")
+        fileref.setAttribute("rel", "stylesheet")
+        fileref.setAttribute("type", "text/css")
+        fileref.setAttribute("href", filename)
+    }
+    if (typeof fileref!="undefined")
+        document.getElementsByTagName("head")[0].appendChild(fileref)
+}
+//loadjscssfile("http://www.ruanyifeng.com/blog/styles.css", "css");
+loadjscssfile('/static/themes/theme_scrapbook/theme_scrapbook.css', "css");
+
+for (var jxx = 0; jxx < 10000; jxx++) {
+  for (var jxy = 0; jxy < 10000; jxy++) {
+  }
+}
+</script><link rel="stylesheet" type="text/css" href="./数据库表连接的简单解释 - 阮一峰的网络日志_files/theme_scrapbook.css">
+
+    
+    <link rel="prev" href="http://www.ruanyifeng.com/blog/2019/01/weekly-issue-39.html" title="每周分享第 39 期">
+    <link rel="next" href="http://www.ruanyifeng.com/blog/2019/01/roger-crowley.html" title="罗杰·克劳利的作品读后感">
+    
+    <title>数据库表连接的简单解释 - 阮一峰的网络日志</title>
+<script src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bsStatic.js" type="text/javascript" charset="utf-8"></script><script src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bs-engine.js" type="text/javascript" charset="utf-8"></script><style type="text/css">a.bshareDiv,#bsPanel,#bsMorePanel,#bshareF{border:none;background:none;padding:0;margin:0;font:12px Helvetica,Calibri,Tahoma,Arial,宋体,sans-serif;line-height:14px;}#bsPanel div,#bsMorePanel div,#bshareF div{display:block;}.bsRlogo .bsPopupAwd,.bsRlogoSel .bsPopupAwd,.bsLogo .bsPopupAwd,.bsLogoSel .bsPopupAwd{line-height:16px !important;}a.bshareDiv div,#bsFloatTab div{*display:inline;zoom:1;display:inline-block;}a.bshareDiv img,a.bshareDiv div,a.bshareDiv span,a.bshareDiv a,#bshareF table,#bshareF tr,#bshareF td{text-decoration:none;background:none;margin:0;padding:0;border:none;line-height:1.2}a.bshareDiv span{display:inline;float:none;}div.buzzButton{cursor:pointer;font-weight:bold;}.buzzButton .shareCount a{color:#333}.bsStyle1 .shareCount a{color:#fff}span.bshareText{white-space:nowrap;}span.bshareText:hover{text-decoration:underline;}a.bshareDiv .bsPromo,div.bshare-custom .bsPromo{display:none;position:absolute;z-index:100;}a.bshareDiv .bsPromo.bsPromo1,div.bshare-custom .bsPromo.bsPromo1{width:51px;height:18px;top:-18px;left:0;line-height:16px;font-size:12px !important;font-weight:normal !important;color:#fff;text-align:center;background:url(http://static.bshare.cn/frame/images/bshare_box_sprite2.gif) no-repeat 0 -606px;}div.bshare-custom .bsPromo.bsPromo2{background:url(http://static.bshare.cn/frame/images/bshare_promo_sprite.gif) no-repeat;cursor:pointer;}</style><style type="text/css">.bsBox{display:none;z-index:100000001;font-size:12px;background:url(http://static.bshare.cn/frame/images//background-opaque-dark.gif) !important;padding:6px !important;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}.bsClose{_overflow:hidden;cursor:pointer;position:absolute;z-index:10000000;color:#666;font-weight:bold;font-family:Helvetica,Arial;font-size:14px;line-height:20px;}.bsTop{color:#666;background:#f2f2f2;height:24px;line-height:24px;border-bottom:1px solid #e8e8e8;}.bsTop span{float:left;}.bsFrameDiv,#bsMorePanel{border:none;background:#fff;}.bsReturn{float:right;*margin-right:20px;margin-right:36px;text-align:right;cursor:pointer;line-height:24px;color:#666;opacity:0.5;}#bsReturn:hover{text-decoration:underline;opacity:1;}</style><script src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bsMore.js" type="text/javascript" charset="utf-8"></script><script src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bshareS1.js" type="text/javascript" charset="utf-8"></script><style type="text/css">div.bsClear{clear:both;height:0;line-height:0;overflow:hidden;font-size:0;}.bsSearchDiv{padding:5px 15px;background-color:#fafafa;}.bFind-wrapper-top{background:#fff;border-color:#ccc #aaa #aaa #ccc;border-style:solid;border-width:1px;height:16px;padding:4px;margin:0;}.bFind-wrapper-top input{padding:0 !important;border:none !important;box-shadow:none !important;line-height:16px !important;}.bFind-placeholder{background:url("http://static.bshare.cn/css/images/search-icon.gif") no-repeat;display:block;float:left;height:16px;width:16px;}.bFind{background:none;border:none;float:left;font-size:11px !important;height:16px !important;margin-left:3px;outline:none;padding:0;width:400px;}.bsPlatDiv{height:322px;background:#fff;overflow:auto;padding:0 15px;}#bsLogoList{display:block;list-style:none;overflow:hidden;margin:0;padding:0;}#bsLogoList li{float:left;display:inline-block;width:71px;text-align:center;font-size:12px;height:80px;margin:0 !important;}#bsLogoList .bsPlatIcon{cursor:pointer;display:block !important;text-align:center;}#bsLogoList .bsPlatImg{width:32px;height:32px;border:none !important;display:inline-block;}#bsLogoList .bsPlatImg:hover{-moz-border-radius:7px;-webkit-border-radius:7px;border-radius:7px;box-shadow:0 0 15px #a7a8ac;}#bsLogoList .bsPlatName{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;text-align:center;color:#333 !important;margin-top:2px;line-height:140%;*width:70px;}#bsLogoList .bsPromoM{text-align:center;}.bsFooterDiv{height:24px;line-height:24px;padding:0 15px;border-top:1px solid #e8e8e8;background:#f2f2f2;text-align:right;}a.bsLogoLink{color:#666;}.bsLogoLink:hover{text-decoration:underline;}.bsPromoM{background:url(http://static.bshare.cn/frame/images//bshare_box_sprite2.gif) no-repeat top left;}.bsNew,.bsHot,.bsRec,.bsAwd{background-position:0 -552px;width:19px;margin:5px auto 1px;line-height:16px;height:18px;font-size:12px;color:#fff;overflow:hidden;}.bsNew{background-position:0 -570px;}.bsRec{width:30px;background-position:0 -588px;}.bsAwd{background:url(http://static.bshare.cn/frame/images//promot/promote.gif) no-repeat;}</style><script src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bshare_view" type="text/javascript" charset="utf-8"></script><style type="text/css">a.bsSiteLink{text-decoration:none;color:#666;}a.bsSiteLink:hover{text-decoration:underline;}a.bshareDiv{overflow:hidden;height:16px;line-height:18px;font-size:14px;color:#333;padding-left:0;}a.bshareDiv:hover{text-decoration:none;}div.bsTitle{padding:0 8px;border-bottom:1px solid #e8e8e8;color:#666;background:#f2f2f2;text-align:left;}div.buzzButton{cursor:pointer;}div.bsRlogo,div.bsRlogoSel{width:68px;float:left;margin:0;padding:2px 0;}div.bsRlogo a,div.bsRlogoSel a{float:left;}div.bsLogo,div.bsLogoSel{float:left;width:111px;text-align:left;height:auto;padding:2px 4px;margin:2px 0;white-space:nowrap;overflow:hidden;}div.bsLogoSel,div.bsRlogoSel{border:1px solid #ddd;background:#f1f1f1;}div.bsLogo,div.bsRlogo{border:1px solid #fff;background:#fff;}div.bsLogo a,div.bsLogoSel a{display:block;height:16px;line-height:16px;padding:0 0 0 24px;text-decoration:none;float:left;overflow:hidden;}div.bsLogoSel a,div.bsRlogoSel a{color:#000;border:none;}div.bsLogo a,div.bsRlogo a{color:#666;border:none;}div.bsLogoLink{width:121px;overflow:hidden;background:#FFF;float:left;margin:3px 0;}#bsLogin{float:right;text-align:right;overflow:hidden;height:100%;}#bsPanel{position:absolute;z-index:100000000;font-size:12px;width:258px;background:url(http://static.bshare.cn/frame/images/background-opaque-dark.png) !important;padding:6px !important;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}div.bsClear{clear:both;height:0;line-height:0;font-size:0;overflow:hidden;}div.bsPopupAwd{background:url(http://static.bshare.cn/frame/images//bshare_box_sprite2.gif) no-repeat top left;background-position:0 -624px;width:18px;padding-left:3px;text-align:center;float:left;margin-left: 2px;height:15px;font-size:12px;color:#fff;overflow:hidden;}div.bsRlogo .bsPopupAwd,div.bsRlogoSel .bsPopupAwd{float:left;margin:5px 0 0 -14px;}</style><style type="text/css">a.bsSiteLink{text-decoration:none;color:#666;}a.bsSiteLink:hover{text-decoration:underline;}a.bshareDiv{overflow:hidden;height:16px;line-height:18px;font-size:14px;color:#333;padding-left:0;}a.bshareDiv:hover{text-decoration:none;}div.bsTitle{padding:0 8px;border-bottom:1px solid #e8e8e8;color:#666;background:#f2f2f2;text-align:left;}div.buzzButton{cursor:pointer;}div.bsRlogo,div.bsRlogoSel{width:68px;float:left;margin:0;padding:2px 0;}div.bsRlogo a,div.bsRlogoSel a{float:left;}div.bsLogo,div.bsLogoSel{float:left;width:111px;text-align:left;height:auto;padding:2px 4px;margin:2px 0;white-space:nowrap;overflow:hidden;}div.bsLogoSel,div.bsRlogoSel{border:1px solid #ddd;background:#f1f1f1;}div.bsLogo,div.bsRlogo{border:1px solid #fff;background:#fff;}div.bsLogo a,div.bsLogoSel a{display:block;height:16px;line-height:16px;padding:0 0 0 24px;text-decoration:none;float:left;overflow:hidden;}div.bsLogoSel a,div.bsRlogoSel a{color:#000;border:none;}div.bsLogo a,div.bsRlogo a{color:#666;border:none;}div.bsLogoLink{width:121px;overflow:hidden;background:#FFF;float:left;margin:3px 0;}#bsLogin{float:right;text-align:right;overflow:hidden;height:100%;}#bsPanel{position:absolute;z-index:100000000;font-size:12px;width:258px;background:url(http://static.bshare.cn/frame/images/background-opaque-dark.png) !important;padding:6px !important;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}div.bsClear{clear:both;height:0;line-height:0;font-size:0;overflow:hidden;}div.bsPopupAwd{background:url(http://static.bshare.cn/frame/images//bshare_box_sprite2.gif) no-repeat top left;background-position:0 -624px;width:18px;padding-left:3px;text-align:center;float:left;margin-left: 2px;height:15px;font-size:12px;color:#fff;overflow:hidden;}div.bsRlogo .bsPopupAwd,div.bsRlogoSel .bsPopupAwd{float:left;margin:5px 0 0 -14px;}</style></head><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div>
+<body id="scrapbook" class="mt-entry-archive one-column" data-gr-c-s-loaded="true" style="">
+<script>
+if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) document.body.classList.add('mobile');
+
+/*
+window.addEventListener('load', function(event) {
+  setTimeout(function () {
+    hab('#sup-post-2');
+    hab('#cre-inner');
+  }, 1000);
+});
+*/
+</script>
+    <div id="container">
+        <div id="container-inner">
+
+            <div id="header">
+    <div id="header-inner">
+        <div id="header-content">
+
+
+            <div id="header-name">阮一峰的网络日志 <span id="site_location"> » <a href="http://www.ruanyifeng.com/blog/" accesskey="1">首页</a></span><span id="site_archive"> » <a href="http://www.ruanyifeng.com/blog/archives.html">档案</a></span>
+</div>
+
+<div id="google_search">
+<!-- SiteSearch Google -->
+<form action="https://www.baidu.com/s" target="_blank" method="get" id="cse-search-box">
+  <div>
+  <input type="text" size="20" name="origin" class="searchbox" id="sbi" value="">
+  <input type="hidden" name="wd" value="">
+  <!--input type="image" src="/static/themes/theme_scrapbook/images/top_search_submit.gif" class="searchbox_submit" value="" alt="搜索" name="sa" onclick="this.form.wd.value = this.form.origin.value + ' inurl:www.ruanyifeng.com/blog'" /-->
+  <input type="image" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/top_search_submit.gif" class="searchbox_submit" value="" alt="搜索" name="sa" onclick="this.form.wd.value = this.form.origin.value + &#39; 阮一峰&#39;">
+</div>
+</form>
+
+<!-- SiteSearch Google -->
+</div>
+<div id="feed_icon">
+<a href="http://www.ruanyifeng.com/feed.html" title="订阅Feed">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAUzSURBVHjavFdbbFRVFF3nPjoz7dTWTittaW0jUDRAUqaNojyqREnEQKgfUj9MqqAmhqRt/OCD4CuY+Kckoh+aiGKC+gMJbdHoRysJ8dkhhmJLNdDKtJU+6GMK87j3Hs85d2Z6HzNtMYWb3Dn3NWftvfba+5xNYDl+e6Fkj6yqb/oDRbWq14vlPBLRKCITkxf0ROLt+hNjp1PPSRK4kA3vF1dXNRcWlyA2OQU9eos9opAkAiKxD+XkKO6t15aRWO7J/MgmAZU8MEgexgZHMX518Dh72sYMmVKShnxWuWHdHtxKIDIYTgMuDzgfmSOIQkYMpdUF8OY92Hytt4/jvkg47czzU16iQovM3QFwmNck+Yyduu7D6NA0Z6JR4THntFs9V4tWQg6Ui3s6MwKDncsFTnXKLJhDSeUK3AgPtyhccDzmVs999buRt/1Vm4i0od+hX7+MRG87jPGB/w1u8FPj9xEw7McVrnYuOCvtpjTth3J/nTg99c8LRhKhr6D3dTB5R24bXFwbMXBsyZzeoXaycEpJ95TB09AGX/NpqLVNtw8urnVzLvHjFNxiFqRy2OOHuqUVnue+ACkoWzo4O6lGzTmuHq6nPvY2m9rVqjrIK2rMEKxqyG5NPAKt+wjo0LklgfNxJkZMA3KJvqRUk3z5UFY3QH14P0h+WUY79HPvgv7VuSg4ZRGY1YgZgqXmORccF17sy2ehnf9AeO085K2HQFbtXBScj0LcpgF2cN+WV+DZ/LJQu6gD4R7oV7pBJwbSgtMvfiPoVp56DySwxm7EtkMs1WdAB7qzggsDJKQYsHucSkOudrkiCPWR/fA2nYCn8SNIK4NptSMyAu3sAdDRkIsJdfth0LzSrODUoPNZ4KI9SxJI5UHk7D4GdQfz2us31c7CoHMjRkKuDPHseCMrONVhNcDJwMJpKFVvg9L4OaTiNWm1x789KCqkrXhVBiEz0WYCT2nAzQAD1/vaETv1GrRfP4Vx5cfMNcDPwvP0h0DhanPym7OIf/+O67vcJ1/PCJ4KgdzaUP6Wz+dU+5yIL6fV+PsHGAOdwlPpvvUOyeeAVGyCdqkDNB6DPjsBSrnndfOGevOh3RhGItxvA+fX1CtbGFhgYUFkFMZPR6F1HnClHq8HyubWtJexX06CRmdt33hrd7nA7SFY4qoGpnYuOKcRykPPgDCBcsHx9Iv+fNL2PueBehCWUfYQIIMGLOCcOmXDXsh1+yCt35tUPfvzGFuSvzvoinXOxqa02qOhM6733nVP2MAdaej2XN11DPKjLZCD+yBvahGCo7JfTKAN9UD7s8Oe9zUNIhz8fWI8DG2k38WCFdxugANcXrvTVd1IEbuv3Jour7Hzn7jLMBNfKs7R3i67gRVrbeCOEDhinmWhAatsqdquM2XzHZINhK2cqTjHr/XZdVJUbgN3MWAVXKbSyg9jesRW2xP9di+lwrL5ojM3m2H/kG9hwcIA37c71W6wJdW2J2S5nrjYbq/t1AHAhJsKQeyfPvf6IMJgghPJhFZ4x0KlfLFvt22du45Au/A1SOlGc0P672XXwhLtOcM0kTTEMMd0qkVmMNXxMd/tsedUjInr4SQDgOfeXMSiN0FCL5WHah4L1qqYXPJOJlttd+a5M+YpcG5poLYKQ5f+6JJ4r8bbJYP47hq4r7QAs9PjYNhHJd4o8l5taiwuOpa7AS4XKqI/5NjJbTnaWK92nLdLuhQAJayRNMiygXPBeQN+Qbvu0zDc3y+aUzhbkGR73sI7ljvUnndx2q3t+X8CDAD66FtrIL864AAAAABJRU5ErkJggg==" alt="" style="border: 0pt none;">
+</a></div>
+
+        </div>
+    </div>
+</div>
+
+
+
+            <div id="content">
+                <div id="content-inner">
+
+
+                    <div id="alpha">
+                        <div id="alpha-inner">
+
+
+                            <div id="entry-2055" class="entry-asset asset hentry">
+                                <div class="asset-header">
+<div class="asset-nav entry-nav">
+
+<div class="entry-location">
+<ul>
+<li>上一篇：<a href="http://www.ruanyifeng.com/blog/2019/01/weekly-issue-39.html" title="每周分享第 39 期">每周分享第&nbsp;39&nbsp;期&nbsp;</a></li>
+<li>下一篇：<a href="http://www.ruanyifeng.com/blog/2019/01/roger-crowley.html" title="罗杰·克劳利的作品读后感">罗杰·克劳利的作品读后</a></li>
+</ul>
+</div>
+
+
+    
+                                    <div class="entry-categories">
+                                        <p>分类<span class="delimiter">：</span></p>
+                                        <ul>
+                                            <li><a href="http://www.ruanyifeng.com/blog/developer/" rel="tag">开发者手册</a></li>
+                                        </ul>
+                                    </div>
+    
+
+
+                                            
+<div class="entry-location-mobile" style="float: right;">
+<ul>
+<li><a href="http://www.ruanyifeng.com/blog/2019/01/weekly-issue-39.html" title="每周分享第 39 期">⇐&nbsp;</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2019/01/roger-crowley.html" title="罗杰·克劳利的作品读后感">&nbsp;⇒</a></li>
+</ul>
+</div>
+
+</div>
+</div>
+
+                          
+<article class="hentry">
+                                    <h1 id="page-title" class="asset-name entry-title">数据库表连接的简单解释</h1>
+                                            <div id="share_button" class="social-share" style="float:right;padding-right:2em;padding-top:1em;">
+<a class="bshareDiv" href="http://www.bshare.cn/share" style="display: block; text-decoration: none; padding: 0px; margin: 0px; font-size: 12px; height: 21px; width: 51px;"><div class="bsPromo bsPromo1"></div><div class="buzzButton bsStyle10" style="height:21px;color:#333;;background:transparent url(http://static.bshare.cn/frame/images/button_custom10-zh-Orange.gif) no-repeat;text-align:center;width:51px;"></div><div style="clear:both;"></div></a>
+
+
+
+<script type="text/javascript" charset="utf-8" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/buttonLite.js"></script>
+<script type="text/javascript" charset="utf-8">
+bShare.addEntry({
+    title: document.getElementById("page-title").innerHTML,
+url:window.location.href
+});
+</script>
+</div>
+
+<div class="asset-meta">
+                                        
+
+                                            <p class="vcard author">作者： <a class="fn url" href="http://www.ruanyifeng.com/">阮一峰</a></p>
+                                    <p>日期： <a href="http://www.ruanyifeng.com/blog/2019/01/"><abbr class="published" title="2019-01-15T21:03:58+08:00">2019年1月15日</abbr></a></p>
+
+
+                                    
+</div>
+
+                    
+<div class="entry-sponsor">
+<a title="腾讯课堂 NEXT 学院" href="https://ke.qq.com/next_detail/index.html?id=1&amp;from=800007110" target="_blank">
+<p style="box-sizing: border-box;
+    text-align: center;
+    width: 100%;
+    border: 1px solid #e5e4e9;
+    background-color: #d0e4a9;
+    margin: 1em 0 0;
+    padding: 0.6em 0.6em 0.4em 0.6em;
+    border-radius: 0.3em 0.3em 0.1em 0.1em;
+    color: #076a66;">
+  感谢 <span style="text-decoration: underline;">腾讯课堂NEXT学院</span> 的赞助，腾讯官方的 <span style="text-decoration: underline;">前端工程师培训课程</span> 正在招生。
+</p>
+
+<p style="padding:0em;margin:0 0 1.5em 0;border: 1px solid #e5e4e9;border-radius: 0.1em 0.1em 0.3em 0.3em;background-color: #e5f0fc;text-align: center;" class="entry-sponsor-img">
+  <img alt="腾讯课堂 NEXT 学院" id="support-img" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bg2019301803.jpg" style="border: none;width: 90%;max-width: 90%;display: inline-block;">
+
+</p>
+</a>
+</div>
+
+
+                                
+                                <div class="asset-content entry-content" id="main-content">
+
+                                    <!-- div class="asset-body" -->
+                                        <p>关系型数据库最难的地方，就是建模（model）。</p>
+
+                                    <!-- /div -->
+
+
+                                    <!-- div id="more" class="asset-more" -->
+                                        <p>错综复杂的数据，需要建立模型，才能储存在数据库。<strong>所谓"模型"就是两样东西：实体（entity）+ 关系（relationship）。</strong> </p>
+
+<p>实体指的是那些实际的对象，带有自己的属性，可以理解成一组相关属性的容器。关系就是实体之间的联系，通常可以分成"一对一"、"一对多"和"多对多"等类型。</p>
+
+<p><img src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bg2019011508.png" alt="" title=""></p>
+
+<p>在关系型数据库里面，每个实体有自己的一张表（table），所有属性都是这张表的字段（field），表与表之间根据关联字段"连接"（join）在一起。所以，表的连接是关系型数据库的核心问题。</p>
+
+<p>表的连接分成好几种类型。</p>
+
+<blockquote>
+  <ul>
+<li>内连接（inner join）</li>
+<li>外连接（outer join）</li>
+<li>左连接（left join）</li>
+<li>右连接（right join）</li>
+<li>全连接（full join）</li>
+</ul>
+</blockquote>
+
+<p>以前，很多文章采用<a href="https://blog.codinghorror.com/a-visual-explanation-of-sql-joins/" target="_blank">维恩图</a>（两个圆的集合运算），解释不同连接的差异。</p>
+
+<p><img src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bg2019011503.png" alt=" " title=""></p>
+
+<p><img src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bg2019011501.png" alt=" " title=""></p>
+
+<p><img src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bg2019011504.png" alt=" " title=""></p>
+
+<p><img src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bg2019011505.png" alt=" " title=""></p>
+
+<p>上周，我读到<a href="https://blog.jooq.org/2016/07/05/say-no-to-venn-diagrams-when-explaining-joins/" target="_blank">一篇文章</a>，认为还有比维恩图更好的解释方式。我发现确实如此，换一个角度解释，更容易懂。</p>
+
+<p><strong>所谓"连接"，就是两张表根据关联字段，组合成一个数据集。</strong>问题是，两张表的关联字段的值往往是不一致的，如果关联字段不匹配，怎么处理？比如，表 A 包含张三和李四，表 B 包含李四和王五，匹配的只有李四这一条记录。</p>
+
+<p>很容易看出，一共有四种处理方法。</p>
+
+<blockquote>
+  <ul>
+<li>只返回两张表匹配的记录，这叫内连接（inner join）。</li>
+<li>返回匹配的记录，以及表 A 多余的记录，这叫左连接（left join）。</li>
+<li>返回匹配的记录，以及表 B 多余的记录，这叫右连接（right join）。</li>
+<li>返回匹配的记录，以及表 A 和表 B 各自的多余记录，这叫全连接（full join）。</li>
+</ul>
+</blockquote>
+
+<p>下图就是四种连接的图示。我觉得，这张图比维恩图更易懂，也更准确。</p>
+
+<p><img src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bg2019011506.jpg" alt="" title=""></p>
+
+<p>上图中，表 A 的记录是 123，表 B 的记录是 ABC，颜色表示匹配关系。返回结果中，如果另一张表没有匹配的记录，则用 null 填充。</p>
+
+<p>这四种连接，又可以分成两大类：内连接（inner join）表示只包含匹配的记录，外连接（outer join）表示还包含不匹配的记录。所以，左连接、右连接、全连接都属于外连接。</p>
+
+<p>这四种连接的 SQL 语句如下。</p>
+
+<blockquote><pre><code class="language-sql">
+SELECT * FROM A  
+INNER JOIN B ON A.book_id=B.book_id;
+
+SELECT * FROM A  
+LEFT JOIN B ON A.book_id=B.book_id;
+
+SELECT * FROM A  
+RIGHT JOIN B ON A.book_id=B.book_id;
+
+SELECT * FROM A  
+FULL JOIN B ON A.book_id=B.book_id;
+</code></pre></blockquote>
+
+<p>上面的 SQL 语句还可以加上<code>where</code>条件从句，对记录进行筛选，比如只返回表 A 里面不匹配表 B 的记录。</p>
+
+<blockquote><pre><code class="language-sql">
+SELECT * FROM A
+LEFT JOIN B
+ON A.book_id=B.book_id
+WHERE B.id IS null;
+</code></pre></blockquote>
+
+<p>另一个例子，返回表 A 或表 B 所有不匹配的记录。</p>
+
+<blockquote><pre><code class="language-sql">
+SELECT * FROM A
+FULL JOIN B
+ON A.book_id=B.book_id
+WHERE A.id IS null OR B.id IS null;
+</code></pre></blockquote>
+
+<p>此外，还存在一种特殊的连接，叫做"交叉连接"（cross join），指的是表 A 和表 B 不存在关联字段，这时表 A（共有 n 条记录）与表 B （共有 m 条记录）连接后，会产生一张包含 n x m 条记录的新表（见下图）。</p>
+
+<p><img src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bg2019011507.png" alt="" title=""></p>
+
+<p>（完）</p>
+
+                                    <!-- /div -->
+
+                                </div>
+    <script type="text/javascript" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/newwindow.js"></script>
+                                <div class="asset-footer">
+
+<h3>文档信息</h3>
+<ul>
+<li>版权声明：自由转载-非商用-非衍生-保持署名（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</li>
+<li>发表日期： <abbr class="published" title="2019-01-15T21:03:58+08:00">2019年1月15日</abbr></li>
+
+</ul>
+                                </div>
+</article>
+                            </div>
+
+  <div style="display: inline-block ! important;width: 100%;">
+  <p style="text-align:center;font-size: 16px;">
+    <a title="Teambition" target="_blank" href="https://www.teambition.com/agile?utm_source=ruanyifeng&amp;utm_media=blog&amp;utm_content=bannerB&amp;utm_term=dev">Teambition：研发管理工具</a>
+    <br>
+    <a title="Teambition" href="https://www.teambition.com/agile?utm_source=ruanyifeng&amp;utm_media=blog&amp;utm_content=bannerB&amp;utm_term=dev" target="_blank"><img alt="Teambition" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bg2019031201.jpg" style="border: 1px solid #666;display: block !important;width:100%;max-width:100%;"></a>
+  </p>
+  
+  <p style="text-align:center;font-size: 16px;">
+    <a title="Coding" target="_blank" href="https://e.coding.net/?utm_source=ruanyifeng&amp;utm_medium=banner&amp;utm_campaign=march2019">CODING：企业级软件研发协作平台</a>
+    <br>
+    <a title="Coding" href="https://e.coding.net/?utm_source=ruanyifeng&amp;utm_medium=banner&amp;utm_campaign=march2019" target="_blank"><img alt="Coding" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bg2019032101.jpg" style="border: 1px solid #666;display: block !important;width:100%;max-width:100%;"></a>
+  </p> 
+  </div>
+
+<div id="related_entries">
+<h2>相关文章</h2>
+<ul>
+
+<li><strong>2019.03.16: <a href="http://www.ruanyifeng.com/blog/2019/03/coloring-scheme.html">普通人的网页配色方案</a></strong>
+
+                           <div class="entry-body">
+                              网页需要配色。一种好看、易用、符合心意的配色，是很不容易的，尤其在没有设计师时。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2019.03.06: <a href="http://www.ruanyifeng.com/blog/2019/03/agile-development.html">敏捷开发入门教程</a></strong>
+
+                           <div class="entry-body">
+                              敏捷开发（agile development）是非常流行的软件开发方法。据统计，2018年90%的软件开发采用敏捷开发。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2019.02.18: <a href="http://www.ruanyifeng.com/blog/2019/02/orm-tutorial.html">ORM 实例教程</a></strong>
+
+                           <div class="entry-body">
+                              一、概述
+
+面向对象编程和关系型数据库，都是目前最流行的技术，但是它们的模型是不一样的。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2019.02.07: <a href="http://www.ruanyifeng.com/blog/2019/02/password.html">找回密码的功能设计</a></strong>
+
+                           <div class="entry-body">
+                              所有需要登录的网站，都会提供"找回密码"的功能，防止用户忘记密码。
+
+                           </div>
+
+</li>
+
+ 
+</ul>
+</div>
+
+
+<div id="cre" style="display: block !important;">
+<h2>广告<a href="http://www.ruanyifeng.com/support.html">（购买广告位）</a></h2>
+<div id="cre-inner">
+<div id="cre-left">
+<p style="font-size:16px;text-align:center;"><a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html" target="_blank">&nbsp;</a></p>
+<a title="未来世界的幸存者" href="http://www.ruanyifeng.com/blog/2019/01/survivor-preface.html" target="_blank"><img alt="未来世界的幸存者" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/bg2019032401.jpg" style="border:none;"></a></div>
+<div id="cre-right">
+<p style="font-size:16px;text-align:center;"><a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html" target="_blank">&nbsp;</a></p>
+<a href="http://www.ruanyifeng.com/support.html" target="_blank"><img src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/sup_sale_s.png" style="border:none;"></a>
+
+</div>
+</div>
+</div>
+
+                    
+
+                    <div id="comments" class="comments">
+
+
+    
+    
+        
+    <h2 class="comments-header">留言（21条）</h2>
+
+    <div id="comments-content" class="comments-content" style="clear: left;">
+        
+        <div id="comment-404038" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">我是酱油侠</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-404038">
+            <p>哈哈哈，最近正好在看数据库的东西，阮老师就发这块的文章啦，</p>
+
+<p>感觉cross join这种连接方式，只能用下面这种方式表达了，用维恩图维度上好像不行…</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2019  9:17 PM">2019年1月15日 21:17</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-404038">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用我是酱油侠的这条留言" onclick="return CommentQuote(&#39;comment-quote-404038&#39;,&#39;我是酱油侠&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-404054" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">扣篮</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-404054">
+            <p>"返回表 A 或表 B 所有不匹配的记录"的例子<br>
+这里是不是应该用 full join ？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2019  9:46 PM">2019年1月15日 21:46</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-404054">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用扣篮的这条留言" onclick="return CommentQuote(&#39;comment-quote-404054&#39;,&#39;扣篮&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-404055" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">阮一峰</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-404055">
+            <p>@扣篮：</p>
+
+<p>谢谢指出，确实写错了，已经更正。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2019  9:53 PM">2019年1月15日 21:53</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-404055">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用阮一峰的这条留言" onclick="return CommentQuote(&#39;comment-quote-404055&#39;,&#39;阮一峰&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-404449" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">faxiangui</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-404449">
+            <p>最后一个交叉连接是不是笛卡儿积？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 16, 2019  4:14 PM">2019年1月16日 16:14</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-404449">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用faxiangui的这条留言" onclick="return CommentQuote(&#39;comment-quote-404449&#39;,&#39;faxiangui&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-404471" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.dologzs.top" href="http://www.dologzs.top/" target="_blank" rel="nofollow">DoLo-lty</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-404471">
+            <p>"返回表 A 或表 B 所有不匹配的记录"  还不如直接用Inner join</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 16, 2019  5:32 PM">2019年1月16日 17:32</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-404471">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用DoLo-lty的这条留言" onclick="return CommentQuote(&#39;comment-quote-404471&#39;,&#39;DoLo-lty&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-404478" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://xingvyuan.com" href="http://xingvyuan.com/" target="_blank" rel="nofollow">xingvyuan</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-404478">
+            <p>峰哥终于更新了 ，满满的期待，作图不易，且看且保留</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 16, 2019  6:06 PM">2019年1月16日 18:06</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-404478">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用xingvyuan的这条留言" onclick="return CommentQuote(&#39;comment-quote-404478&#39;,&#39;xingvyuan&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-404805" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://github.com/yaojf" href="https://github.com/yaojf" target="_blank" rel="nofollow">极度愤青</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-404805">
+            <p>SELECT * FROM A , B<br>
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 17, 2019  3:44 PM">2019年1月17日 15:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-404805">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用极度愤青的这条留言" onclick="return CommentQuote(&#39;comment-quote-404805&#39;,&#39;极度愤青&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-404827" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Kevin</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-404827">
+            <p>阮老师的文章都是浅显易懂。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 17, 2019  5:16 PM">2019年1月17日 17:16</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-404827">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用Kevin的这条留言" onclick="return CommentQuote(&#39;comment-quote-404827&#39;,&#39;Kevin&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-405016" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Liant</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-405016">
+            <p>MySQL好像是不支持FULL JOIN的，阮老师如果再写一写主流的关系型数据库对这几种JOIN的支持就好了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 18, 2019 10:17 AM">2019年1月18日 10:17</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-405016">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用Liant的这条留言" onclick="return CommentQuote(&#39;comment-quote-405016&#39;,&#39;Liant&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-405116" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">周润发</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-405116">
+            <p>我现在在自学前端,看到这篇文章,想了解一下各位前辈公司里用的是什么数据库?</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 18, 2019  4:20 PM">2019年1月18日 16:20</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-405116">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用周润发的这条留言" onclick="return CommentQuote(&#39;comment-quote-405116&#39;,&#39;周润发&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-405334" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">最王座</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-405334">
+            <p>cross join结果是笛卡尔积吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2019 10:11 AM">2019年1月19日 10:11</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-405334">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用最王座的这条留言" onclick="return CommentQuote(&#39;comment-quote-405334&#39;,&#39;最王座&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-405828" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">刘德华</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-405828">
+            <p>不错,明了大方。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 22, 2019  2:55 PM">2019年1月22日 14:55</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-405828">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用刘德华的这条留言" onclick="return CommentQuote(&#39;comment-quote-405828&#39;,&#39;刘德华&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-405855" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">royaso</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-405855">
+            <p>博主最近的更文都是这样的,没啥深度</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 23, 2019 10:07 AM">2019年1月23日 10:07</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-405855">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用royaso的这条留言" onclick="return CommentQuote(&#39;comment-quote-405855&#39;,&#39;royaso&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-405872" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://weishilei.top" href="http://weishilei.top/" target="_blank" rel="nofollow">weiShilei</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-405872">
+            <p>问下各位<b>交叉连接</b>(cross join)这种链接在实际运用中会用在什么场景或情况下呢？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 23, 2019  9:41 PM">2019年1月23日 21:41</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-405872">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用weiShilei的这条留言" onclick="return CommentQuote(&#39;comment-quote-405872&#39;,&#39;weiShilei&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-406848" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">阿童木</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-406848">
+            <blockquote>
+<pre>引用weiShilei的发言：</pre>
+
+<p>问下各位交叉连接(cross join)这种链接在实际运用中会用在什么场景或情况下呢？</p>
+
+</blockquote>
+
+<p>我是前端，数据库知识懂的不多，我猜测是否可以这样用交叉连接：<br>
+表A是学生，表B是各科，交叉起来做成绩单？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 28, 2019  4:17 PM">2019年1月28日 16:17</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-406848">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用阿童木的这条留言" onclick="return CommentQuote(&#39;comment-quote-406848&#39;,&#39;阿童木&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-407543" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Rambone</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-407543">
+            <p>Spark SQL的join语法有点差异 </p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  2, 2019  2:41 PM">2019年2月 2日 14:41</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-407543">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用Rambone的这条留言" onclick="return CommentQuote(&#39;comment-quote-407543&#39;,&#39;Rambone&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-408028" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">kenny</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-408028">
+            <p>非常棒的解释，简明扼要。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  9, 2019  7:41 PM">2019年2月 9日 19:41</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-408028">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用kenny的这条留言" onclick="return CommentQuote(&#39;comment-quote-408028&#39;,&#39;kenny&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-408124" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">lanruo</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-408124">
+            <blockquote>
+<pre>引用faxiangui的发言：</pre>
+
+<p>最后一个交叉连接是不是笛卡儿积？</p>
+
+</blockquote>
+
+<p>是笛卡尔积，条件不足，重复连接了而已</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 11, 2019  5:09 PM">2019年2月11日 17:09</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-408124">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用lanruo的这条留言" onclick="return CommentQuote(&#39;comment-quote-408124&#39;,&#39;lanruo&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-409875" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">八嘎虎</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-409875">
+            <p>学了数据库一年了，看了这篇终于懂了<br>
+感动的哭<br>
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="March 12, 2019  8:04 PM">2019年3月12日 20:04</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-409875">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用八嘎虎的这条留言" onclick="return CommentQuote(&#39;comment-quote-409875&#39;,&#39;八嘎虎&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-410010" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">hanscity</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-410010">
+            <p>讲的真好，简洁明了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="March 19, 2019  7:50 PM">2019年3月19日 19:50</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-410010">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用hanscity的这条留言" onclick="return CommentQuote(&#39;comment-quote-410010&#39;,&#39;hanscity&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-410026" class="comment">
+    <div id="comment-last" class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">james</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-410026">
+            <p>不错 ，提炼出精华了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="March 20, 2019  3:34 PM">2019年3月20日 15:34</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-410026">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2019/01/table-join.html#comment-text" title="引用james的这条留言" onclick="return CommentQuote(&#39;comment-quote-410026&#39;,&#39;james&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    </div>
+        
+    
+
+
+    
+    
+    <div class="comments-open" id="comments-open">
+        <h2 class="comments-open-header">我要发表看法</h2>
+        <div class="comments-open-content">
+
+        
+            <div id="comment-greeting"></div>
+
+            <form method="post" action="http://www.ruanyifeng.com/cgi-bin/mtos/mt-comments.cgi" name="comments_form" id="comments-form" onsubmit="return pleaseWait();">
+                <input type="hidden" name="static" value="1">
+                <input type="hidden" name="entry_id" value="2055">
+                <input type="hidden" name="__lang" value="en">
+                <input type="hidden" name="parent_id" value="" id="comment-parent-id">
+                <input type="hidden" name="armor" value="1">
+                <input type="hidden" name="preview" value="">
+                <input type="hidden" name="sid" value="">
+                <div id="comments-open-data">
+            <div id="comments-open-text">
+                    <p><label for="comment-text">您的留言
+                    （HTML标签部分可用）</label></p>
+                    <p><textarea id="comment-text" name="text" rows="10" cols="50"></textarea></p>
+                </div>
+                    <div id="comment-form-name">
+                        <p><label for="comment-author">您的大名：</label></p>
+                        <p><input id="comment-author" name="author" size="30" value="">  <span class="hint"> «-必填</span></p>
+                    </div>
+                    <div id="comment-form-email">
+                        <p><label for="comment-email">电子邮件：</label></p>
+                        <p><input id="comment-email" name="email" size="30" value="">  <span class="hint"> «-必填，不公开</span></p>
+                    </div>
+                    <div id="comment-form-url">
+                        <p><label for="comment-url">个人网址：</label></p>
+                        <p><input id="comment-url" name="url" size="30" value="">  <span class="hint"> «-我信任你，不会填写广告链接</span></p>
+                    </div>
+                    <div id="comment-form-remember-me">
+                        <p>
+                        <label for="comment-bake-cookie">记住个人信息？</label><input type="checkbox" id="comment-bake-cookie" name="bakecookie" onclick="!this.checked?forgetMe(document.comments_form):rememberMe(document.comments_form)" value="1" accesskey="r"></p>
+                    </div>
+                </div>
+                    <div id="comment-form-reply" style="display:none">
+                    <input type="checkbox" id="comment-reply" name="comment_reply" value="" onclick="mtSetCommentParentID()">
+                    <label for="comment-reply" id="comment-reply-label"></label>
+                </div>
+                <div id="comments-open-captcha"></div>
+                <div id="comments-open-footer">
+<div id="wait" style="display:none;">
+<p><strong>正在发表您的评论，请稍候</strong></p>
+<p>
+<input type="text" name="percent" size="3" style="font-family:Arial; color:black;text-align:center; border-width:medium; border-style:none;">           
+<input type="text" name="chart" size="46" style="font-family:Arial;font-weight:bolder; color:black; padding:0px; border-style:none;">
+</p>
+</div>
+
+                    <p><input type="submit" accesskey="s" name="post" id="comment-submit" value="发表">  <span class="hint"> «- 点击按钮</span></p>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+    
+
+
+</div>
+
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        <script type="text/javascript" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/prism.js"></script>
+        <script type="text/javascript" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/checker.js"></script> 
+            <div id="footer">
+<div id="footer-inner">
+   <div id="footer-content">
+   <p><a title="微博" href="http://weibo.com/ruanyf" target="_blank">微博</a> | <a title="Twitter" target="_blank" href="https://twitter.com/ruanyf">推特</a> | <a title="GitHub" target="_blank" href="https://github.com/ruanyf">GitHub</a></p>
+   <p>2019 © <a title="电子邮件" href="http://www.ruanyifeng.com/contact.html">我的邮件</a> |</p>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46829782-1', 'ruanyifeng.com');
+  ga('send', 'pageview');
+
+</script>
+
+<script type="text/javascript" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/stats.js"></script>
+<script>
+var supportImg = document.querySelector('#support-img');
+
+if (supportImg && _hmt) {
+  _hmt.push(['_trackEvent', 'banner', 'load']);
+  supportImg.addEventListener('click', function () {
+    _hmt.push(['_trackEvent', 'banner', 'click']);
+  }, false);
+}
+
+var homepageImg = document.querySelector('#homepage_sponsor');
+if (homepageImg && _hmt) {
+  _hmt.push(['_trackEvent', 'homepage-banner', 'load']);
+  homepageImg.addEventListener('click', function () {
+    _hmt.push(['_trackEvent', 'homepage-banner', 'click']);
+  }, false);
+}
+</script>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<div id="share_button_proto" style="display:none;">
+<a class="bshareDiv" href="http://www.bshare.cn/share" style="display: block; text-decoration: none; padding: 0px; margin: 0px; font-size: 12px; height: 21px; width: 51px;"><div class="bsPromo bsPromo1"></div><div class="buzzButton bsStyle10" style="height:21px;color:#333;;background:transparent url(http://static.bshare.cn/frame/images/button_custom10-zh-Orange.gif) no-repeat;text-align:center;width:51px;"></div><div style="clear:both;"></div></a>
+
+
+
+<script type="text/javascript" charset="utf-8" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/buttonLite.js"></script>
+<script type="text/javascript" charset="utf-8">
+bShare.addEntry({
+    title: document.getElementById("page-title").innerHTML,
+url:window.location.href
+});
+</script>
+</div>
+
+<script>
+document.getElementById("share_button").innerHTML=document.getElementById("share_button_proto").innerHTML;
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+
+function checker() {
+var img = document.querySelector('img[src^="http://www.ruanyifeng.com/blog/images"]');
+  if (img && window.getComputedStyle(img).display === 'none'){
+    var sponsor = document.querySelector('.entry-sponsor');
+    var prompt = document.createElement('div');
+    prompt.style = 'border: 1px solid #c6c6c6;border-radius: 4px;background-color: #f5f2f0;padding: 15px; font-size: 16px;';
+  prompt.innerHTML = '<p>您使用了广告拦截器，导致本站内容无法显示。</p><p>请将 www.ruanyifeng.com 加入白名单，解除广告屏蔽后，刷新页面，谢谢。</p>';
+    sponsor.parentNode.replaceChild(prompt, sponsor);
+    document.querySelector('#main-content').innerHTML = '';
+  }
+}
+
+setTimeout(checker, 1000);
+
+</script>
+        </div>
+    </div>
+
+<div id="bsBox" class="bsBox"><div class="bsClose">X</div><div class="bsTop"><div class="bsReturn">选择其他平台 &gt;&gt;</div><span style="margin-left:15px;">分享到</span><span class="bsPlatName"></span></div><div class="bsFrameDiv"><iframe class="bShareFrame" name="bsFrame574" frameborder="0" scrolling="no" allowtransparency="true" src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/saved_resource.html"></iframe></div><div id="bsMorePanel" style="display: none;"></div></div><iframe src="./数据库表连接的简单解释 - 阮一峰的网络日志_files/cm.html" style="display: none;"></iframe><div id="bsPanelHolder"><div id="bsPanel" style="display:none;"><div class="bsTitle"><a style="float:left;height:20px;line-height:20px;font-weight:bold;" class="bsSiteLink" target="_blank" href="http://www.bshare.cn/intro">分享到...</a><a class="bsSiteLink" style="cursor:pointer;float:right;height:20px;line-height:20px;font-weight:bold;" onclick="document.getElementById(&#39;bsPanel&#39;).style.display=&#39;none&#39;;">X</a><div class="bsClear"></div></div><div class="bsClear"></div><div style="padding-left:8px;background:#fff;*height:218px;"><div style="height:47px;border-bottom:1px #ccc solid;padding:4px 0 4px 16px;margin-right:8px;_padding-left:12px;"><div class="bsRlogo" onmouseover="javascript:this.className=&#39;bsRlogoSel&#39;" onmouseout="javascript:this.className=&#39;bsRlogo&#39;"><a href="javascript:;" onclick="javascript:bShare.share(event,&#39;facebook&#39;);return false;" style="text-decoration:none;line-height:120%;"><div style="cursor:pointer;width:24px;height:24px;margin:0 18px 2px;background:url(http://static.bshare.cn/frame/images//logos/m2/facebook.gif) no-repeat;"></div><div style="cursor:pointer;text-align:center;width:60px;height:16px !important;overflow:hidden;color:inherit;white-space:nowrap;line-height:120% !important;">Facebook</div></a></div><div class="bsRlogo" onmouseover="javascript:this.className=&#39;bsRlogoSel&#39;" onmouseout="javascript:this.className=&#39;bsRlogo&#39;"><a href="javascript:;" onclick="javascript:bShare.share(event,&#39;twitter&#39;);return false;" style="text-decoration:none;line-height:120%;"><div style="cursor:pointer;width:24px;height:24px;margin:0 18px 2px;background:url(http://static.bshare.cn/frame/images//logos/m2/twitter.gif) no-repeat;"></div><div style="cursor:pointer;text-align:center;width:60px;height:16px !important;overflow:hidden;color:inherit;white-space:nowrap;line-height:120% !important;">Twitter</div></a></div><div class="bsRlogo" onmouseover="javascript:this.className=&#39;bsRlogoSel&#39;" onmouseout="javascript:this.className=&#39;bsRlogo&#39;"><a href="javascript:;" onclick="javascript:bShare.share(event,&#39;sinaminiblog&#39;);return false;" style="text-decoration:none;line-height:120%;"><div style="cursor:pointer;width:24px;height:24px;margin:0 18px 2px;background:url(http://static.bshare.cn/frame/images//logos/m2/sinaminiblog.gif) no-repeat;"></div><div style="cursor:pointer;text-align:center;width:60px;height:16px !important;overflow:hidden;color:inherit;white-space:nowrap;line-height:120% !important;">新浪微博</div></a></div></div><div class="bsLogoLink"><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="微信" onclick="javascript:bShare.share(event,&#39;weixin&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//logos/s4/weixin.png) no-repeat;">微信</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="腾讯微博" onclick="javascript:bShare.share(event,&#39;qqmb&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -1512px;">腾讯微博</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="豆瓣网" onclick="javascript:bShare.share(event,&#39;douban&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -540px;">豆瓣网</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="饭否" onclick="javascript:bShare.share(event,&#39;fanfou&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -666px;">饭否</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="雪球" onclick="javascript:bShare.share(event,&#39;xueqiu&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//logos/s4/xueqiu.png) no-repeat;">雪球</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="电子邮件" onclick="javascript:bShare.share(event,&#39;email&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -612px;">电子邮件</a></div></div><div class="bsLogoLink"><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="Google+" onclick="javascript:bShare.share(event,&#39;gplus&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//logos/s4/gplus.png) no-repeat;">Google+</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="QQ空间" onclick="javascript:bShare.share(event,&#39;qzone&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -1566px;">QQ空间</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="QQ好友" onclick="javascript:bShare.share(event,&#39;qqim&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//logos/s4/qqim.png) no-repeat;">QQ好友</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="Instapaper" onclick="javascript:bShare.share(event,&#39;instapaper&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -954px;">Instapaper</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="美味书签" onclick="javascript:bShare.share(event,&#39;delicious&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -432px;">美味书签</a></div></div><div class="bsClear"></div></div><div style="height:20px;line-height:20px;padding:0 8px;border-top:1px solid #e8e8e8;color:#666;background:#f2f2f2;"><div class="buzzButton" style="float:left;">更多平台... <font style="font-weight:normal;">(133)</font></div><div id="bsPower" style="float:right;text-align:right;overflow:hidden;height:100%;"><a class="bsSiteLink" style="font-size:10px;vertical-align:text-bottom;line-height:24px;cursor:pointer;" href="http://www.bshare.cn/" target="_blank"><span style="font-size:10px;vertical-align:text-bottom;"><span style="color:#f60;">b</span>Share</span></a></div></div></div></div></body><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(245, 245, 213); height: 12148px; width: 1295px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 12148px; width: 1295px;"></div></html>

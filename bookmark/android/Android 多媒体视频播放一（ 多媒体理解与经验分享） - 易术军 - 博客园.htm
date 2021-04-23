@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)http://www.cnblogs.com/yishujun/p/5378114.html -->
+<html lang="zh-cn" class="cye-disabled cye-nm gr__cnblogs_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+    <title>Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园</title>
+<meta property="og:description" content="前言 说到android的多媒体，一把辛酸一把泪，当初听说会多媒体的比较牛掰，公司也有需求，于是乎我也积极的加入研究android多媒体的行列，记得以前刚接触的时候，最开始还是比较头大的，主要是但是很">
+    <link type="text/css" rel="stylesheet" href="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/bundle-LoveGiveHeart.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/bundle-LoveGiveHeart-mobile.css">
+    <link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/yishujun/rss">
+    <link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/yishujun/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/yishujun/wlwmanifest.xml">
+    <script src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/f.txt"></script><script src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/pubads_impl_rendering_319.js"></script><script async="" src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/analytics.js"></script><script src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/jquery-2.2.0.min.js"></script><style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style>
+    <script>var currentBlogId=176838;var currentBlogApp='yishujun',cb_enable_mathjax=false;var isLogined=false;</script>
+    <script src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/blog-common.js" type="text/javascript"></script>
+<link rel="preload" href="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/f(1).txt" as="script"><script type="text/javascript" src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/f(1).txt"></script><link rel="preload" href="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/f(2).txt" as="script"><script type="text/javascript" src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/f(2).txt"></script><script src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/pubads_impl_319.js" async=""></script><link rel="prefetch" href="http://tpc.googlesyndication.com/safeframe/1-0-32/html/container.html"></head><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div>
+<body data-gr-c-s-loaded="true" style="">
+<a name="top"></a>
+
+
+<!--done-->
+<div id="banner">
+<!--done-->
+<div class="header">
+	<div class="headerText">
+		<a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/yishujun/">易术军</a><br>
+		<div class="headerDis"></div>
+	</div>
+</div>
+</div>
+<div id="main">
+	<!-- right starts -->
+	<div id="right">
+		<div id="right_content">
+			<div id="mylinks">
+				<div id="mystats">
+					
+						<div id="blog_stats">
+<!--done-->
+<div class="blogStats">
+随笔- 34&nbsp;
+文章- 0&nbsp;
+评论- 12&nbsp;
+
+</div></div>
+					
+				</div>
+				<a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a>&nbsp;&nbsp;<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/yishujun/">首页</a>&nbsp;&nbsp;<a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a>&nbsp;&nbsp;<a id="blog_nav_contact" accesskey="9" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/%E6%98%93%E6%9C%AF%E5%86%9B">联系</a>&nbsp;&nbsp;<a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a>&nbsp;&nbsp;<a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/yishujun/rss">订阅</a>&nbsp;<a id="blog_nav_rss_image" href="https://www.cnblogs.com/yishujun/rss"><img src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/xml.gif" alt="订阅"></a>
+			</div>
+			<div id="topics">
+				
+        <div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/yishujun/p/5378114.html">Android 多媒体视频播放一（ 多媒体理解与经验分享）</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><h2>前言&nbsp;</h2>
+<p>&nbsp; 说到android的多媒体，一把辛酸一把泪，当初听说会多媒体的比较牛掰，公司也有需求，于是乎我也积极的加入研究android多媒体的行列，记得以前刚接触的时候，最开始还是比较头大的，主要是但是很多细节比较零散凌乱，无法形成规律模式和合理的解决方案，但是慢慢也虽然接触了久了，很多事情也就明白过来了，接触android三年多四年了，慢慢的也有些学习和做事的体会，多媒体的接触过程更加的强化我的学习规律，因为最近公司事情比较少，基本没有加班，晚上就写写自己的博客，分享下以前学习多媒体过程，下面我也给出我的学习心得吧大家共同交流探讨：</p>
+<h3>第一：学习东西和做事情还是有必要列出个一、二、三来：</h3>
+<p>&nbsp; 做事有先有后有顺序，这样会有调理不会乱，这个体会甚至也潜移默化的影响着我的生活，有时我和别人进行聊天交流的时候也会列出个A、B、C来说明天问题或者自己的观念认知。</p>
+<h3>第二：学习观念的改变和学习规律总结让事半功倍：</h3>
+<p>&nbsp; 每个人都有自己的学习习惯和学习规律，很多时候自己在学习的过程中要经常回忆总结自己一些规律是否有改进的地方；就拿我举例子，记得最初学习就拿着什么就开始学，到处查资料、网上百度这些，教程看来看去的，很担心有什么重要的东西给遗漏了，很多东西都是感觉当时记得但是后面基本全忘了，这个过程让我很痛苦，我花了比别人更多的时间去对某个问题进行分析理解，为什么要忘呢？也可能是资源太多看的东西太多忘了本了，也可能是脑袋装不下，也许是我笔记比较做得不好，平时事情也比较多很多东西也总之就是感觉零零散散的到处都是重点，很多东西也比较凌乱。慢慢的我总结了如下规律：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; （1）常用网络记事本做笔记，进行归类和条理化</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; （2）遇到问题尽量形成解决方案并进行深入的分析探究记录和尽可能写下前后解决的过程和遇到的问题</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; （3）积累小知识点，不要觉得网上能找到就不记录，有些地方只是简单的一两行代码，但是也需要用规范的方法积累，不能小看不要忽略；比如我偶尔会遇到需要把LsitView中间的线去掉，还有就是ListView中的每项需要获得焦点，当初是去网上搜索下并解决了（很简单），我就没有单独做笔记，只是在代码了做了笔记，后来在其他地方要用的的时候，我发现我都记不得当时具体的处理方法（代码），具体以前在哪里用过也不好找太多了，又去网上搜索，感觉真的很浪费时间，像这种小的细节很多，感觉以前遇到过，现在又忘了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; （4）经常分享自己解决方案，并尽可能详细记录，其实很多东西当时明白了没有详细的记录后面又会陌生，这样可以加深自己的理解，比如我对android视频播放，慢慢的就变陌生了，现在我又专门来整理下帮助我加深印象。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; （5）学习和做东西不要走来就进入主题，先要规划从一个新的高度进行入手</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; （6）还是要多花时间去研究某块自己比较感兴趣的知识业务</p>
+<h3>第三：多交流合作，共同进步：</h3>
+<p>&nbsp; android很多东西，谁要真的到处都学都深入去理解还真的学不完，很多东西变化也比较快，要相互交流相互帮助。比如RecyclerView组件，我也是从朋友那里听说的。</p>
+<h3>第四：提高高度，整体把控，去掉枝叶零碎：</h3>
+<p>&nbsp; 学习新的东西的时候很多未知尽量找出解决方案，首先要从基本面入手，特别是新的领域，不要拿着一个东西就使劲学往里面钻，当然很多东西网上资料太多，有很多又不全面，有时候看多了就零散凌乱，当有需要的时候再往里面深入专研。记得最开始学习多媒体的时候，网上一百度FFMPEG、VLC比较完美强大牛逼，我就是追求小小的完美，于是乎我就把精力放在了FFMPEG上面，研究了一天多发现我看不懂，于是去学习JNI，前后搞了一周多，发现FFMPEG里面很多C，对于我android开发的去看C，我只能说无解，勉强能看懂简单的东西，后面小小的尝试了下居然还有自己去优化FFMPEG，于是乎直接放弃，回头看又去拿别人编译好的FFMPEG这些来用。后面回想在整个过程中我发现我暂且不说FFMPEG，我觉得主要的工作还是在做视频播放的基本业务逻辑，但是我开始忽视了很多基本的东西，连很多播放的小细节都无法处理，比如当用手机竖屏拍的视频，播放的时候横屏播放，视频一下子变小了，等等这些如何处理。慢慢东学西学的虽然也学了点但是我觉得我学的东西好凌乱，什么jni、vlc、vitamio、ffmpeg，感觉效率很低很多都是缺乏高度且不实际特别是ffmpeg，最后发现他们其实就是解码和播放引擎不一样，一般的应用只是把视频界面和业务逻辑处理好，调用不同的引擎就可以了，因为在平时项目用的时候很少要对各种格式进行处理，一般情况就是程序中包含了一点小视频，都是普通的格式无需大动干戈，就用android自己的media player或者videoview就可以了，除非是专门做视频方面的android程序，如果是专门做视频处理各种格式，那么会了基本的东西，去用不同的的引擎那就简直是小菜了一碟了，他们的业务基本相差无几，什么播放、暂停、快进、当前进度…，当然如果专门优化库（ffmpeg）另当别论，一般是做C的。</p>
+<p>说了那么多口水话，现在进入正题吧，我也尝试着用我的学习理解思路来展现整个过程，如有补充或者错误请大家积极留言进行补充更改，谢谢！</p>
+<p>&nbsp;</p>
+<h2>首先</h2>
+<p>我们先不谈具体代码和实现过程，代码会让人凌乱，让我们从另一个方向或者高度来学习，先整理下思路，我们来看看android的多媒体有哪些解决方案：</p>
+<p>（1）android SDK自带的 MediaPlayer+SurfaceView或者videoview （简单快速，格式支持少）</p>
+<p>（2）vitamio （简单快速开发，格式支持全面）</p>
+<p>（3）百度媒体云 （简单快速开发，格式支持多）</p>
+<p>（4）ffmpeg （非常折腾，格式支持全面）</p>
+<p>（5）VLC （比较麻烦，格式支持全面）</p>
+<p>（6）Exoplayer （一般般，格式支持少，仅MP4）</p>
+<p>（7）其他还要很多开源的播放器格式支持也比较多，比如 ijkplayer、AwesomePlayer…</p>
+<h2>其次</h2>
+<p>我们来简单的对比下这些解决方案，看看他们的区别和使用选出最适合项目的解决方案：</p>
+<h3>第一：多媒体框架区别</h3>
+<h4>android SDK</h4>
+<p>android SDK自带的播放组件的多媒体框架使用的是OpenCore，播放格式支持</p>
+<p>音频：mp3 wma</p>
+<p>视频：3gp mp4 新的版本好像支持avi（具体支持到什么程度没有测试）</p>
+<p>收音机：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FM:调频收音机（频道、频段)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HTTP:支持该协议网络收音机</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMS:android SDK不支持该协议网络收音机</p>
+<h4>vitamio</h4>
+<p>vitamio是一个第三方的比较强大完美的播放框架，使用的是ffmpeg媒体解析器和最主要的解码器，同时开发了针对不同移动平台的硬解码方案</p>
+<p>支持的播放格式就不多说，可以到官网（<a title="https://www.vitamio.org/" href="https://www.vitamio.org/">https://www.vitamio.org/</a>）去详细查看，反正android SDK支持的它都支持，android SDK不支持的它也支持，无论视频还是音频格式支持以及字幕这些都比较全面。</p>
+<h4>百度媒体云</h4>
+<p>百度媒体云播放器 SDK 内嵌百度自主研发的 T5 播放内核，对目前主流的本地和网络媒体都提供了良好的功能支持</p>
+<p>百度媒体云通过提供一系列HTTP Restful API及跨终端平台SDK，实现包括媒体存储、编码、转码、内容保护、点播、直播、分析、广告以及人脸检测、人脸识别、语音技术等的诸项功能。 当然我们暂时讨论他的播放SDK。</p>
+<h4>ffmpeg</h4>
+<p>ffmpeg是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源框架，支持平台广泛，andorid需要用jni编译。</p>
+<p>至于ffmpeg,小弟就不过多献丑了，大家都比我懂，我也在向别人学习中，我推荐两篇博客给大家吧，他们都出于同一人，反正我是膜拜他了</p>
+<p>第一个：还是符合我的胃口，能照葫芦画瓢&nbsp; <a title="http://blog.csdn.net/leixiaohua1020/article/details/47008825" href="http://blog.csdn.net/leixiaohua1020/article/details/47008825">http://blog.csdn.net/leixiaohua1020/article/details/47008825</a></p>
+<p>第二个：非常的深入&nbsp; <a title="http://blog.csdn.net/leixiaohua1020/article/details/15811977/" href="http://blog.csdn.net/leixiaohua1020/article/details/15811977/">http://blog.csdn.net/leixiaohua1020/article/details/15811977/</a></p>
+<h4>VLC</h4>
+<p>VLC多媒体播放器（最初命名为VideoLAN客户端）是VideoLAN计划的多媒体播放器。它支持众多音频与视频解码器及文件格式，并支持DVD影音光盘，VCD影音光盘及各类流式协议。它也能作为unicast或multicast的流式服务器在IPv4或 IPv6的高速网络连接下使用。它融合了FFmpeg计划的解码器与libdvdcss程序库使其有播放多媒体文件及加密DVD影碟的功能。</p>
+<p>在android平台开发那么就不得不提vlc for android，vlc for android是一款开源安卓播放器，具备播放多媒体文件、光盘、设备以及网络流媒体协议等功能，支持ARMv7 CPU或一个x86 CPU的设备，所有播放控制特性都已经开发完整。也是我们android程序员研究vlc的很好的例子。</p>
+<h4>Exoplayer</h4>
+<p>ExoPlayer是一个google在2014年才推出的介于现有MediaPlayer和自定义媒体播放器之间的预建播放器;但是比原有Mediaplayer更多的扩展能力，由于其基于MediaPlayer API Level 16+开发, 所以其只支持API Level 16+, 即Android 4.1+,</p>
+<p>特点</p>
+<p>（1）相比MediaPlayer具有更多特性和可扩展性:</p>
+<p>（2）支持Dash和Smoothstreaming播放;</p>
+<p>（3）Android4.3+支持DRM(Digital Rights Management);</p>
+<p>（4）丰富的回调API, 可用于自定义播放器定制.</p>
+<p>注意：ExoPlayer 是一个开源项目，它不属于Android framework ，并且是独立于Android SDK独立分发的。该项目包含一个library和一个demo，其中展示了ExoPlayer的简单应用及其高级定制。</p>
+<h4>其他开源播放器</h4>
+<p>其他开源的播放器一般是基于ffmpeg进行开发的。</p>
+<h3>第二：开发或者集成难度</h3>
+<p>根据我的经验来判断，其难度或者集成的时间成本</p>
+<p>FFMPEG ：ffmpeg无疑是里面最难的，成本是最大的，并且里面的优化还得需要非常专业有经验的团队（注意是团队不是个人）来完成。如果有个人要完成此工程那么我只是膜拜你个人能力和情怀，但是不赞成你的这种做法。</p>
+<p>VLC：其实除了ffmpeg最难之外，其他的都算不上有多么难，vlc只是比较麻烦费时间，vlc for android的出现让我们接触它又更加的容易了，但是要处理的事情还是非常的多</p>
+<p>vitamio：个人感觉vitamio是非常成熟第三方的播放器，集成的难度也比较小，并且支持的视频音频格式非常的全面，我很喜欢该框架</p>
+<p>百度媒体云：媒体云播放器来说，单纯的做播放功能集成起来还是非常的方便的，当然如果要做云服务比如需要将视频传到百度云平台进行转码或者加广告这些等等还是需要做很多的事情的</p>
+<p>ExoPlayer：ExoPlayer开发成本还是比较低的，其实和MediaPlayer+SurfaceView差不多，很简单</p>
+<p>其他开源的播放器：我个人认为其他开源播放器已经有demo，开发难度应该比较小，主要是看部署的时候或者使用的时候会不会遇到莫名的错误或者问题，一般情况都是比较ok的，不同的开源他的侧重点不同，但是都满足基本的视频播放多种格式的支持。</p>
+<p>个人觉得开发成本或者集成的难度系数从大到小依次是</p>
+<p>FFMPEG &gt; VLC &gt; 其他开源的播放器 &gt; Exoplayer &gt;= MediaPlayer+SurfaceView &gt; 百度媒体云 &gt;= vitamio&gt; videoView</p>
+<h3>第三：使用费用</h3>
+<p>从官方给出的信息来看，只有vitamio ，百度媒体云 有相关的涉及到使用付费的项目外其他的都无需付费。但是从具体的付费情况来看，百度媒体云只是用他的相关的播放SDK也无需付费，vitamio 分为标准版和至尊版，其中标准版免费限个人开发者使用。</p>
+<p>总结：对于多媒体播放功能除了vitamio需要付费使用，其他的都免费使用。但是如果使用百度云付费的还是比较棒的，能够给我各种分析的报告，也能解决播放流媒体协议问题，因为一般情况下小公司用的是HTTP协议。</p>
+<h2>最后</h2>
+<p>上面介绍了那么多，我们在项目中具体开发的时候到底选用什么样的流媒体解决方案呢？？我给出我的选择规则</p>
+<p>（0）项目是否是专门或者主要做视频播放软件</p>
+<p>（1）确定需要播放什么格式</p>
+<p>（2）老板是否接受付费（vitamio，媒体云），一般情况是不接受</p>
+<p>（3）集成的难度和成本</p>
+<p>根据以上规则：</p>
+<p>如果是该android项目做的是多媒体相关的软件，无论实际情况怎么样，首先得选一个播放格式支持全而多的框架（vlc，其他开源项目、百度媒体云、FFMPEG，vitamio ），这些里面选择。</p>
+<p>如果里面只是简单的嵌套一个小视频并且格式只是简单的低码率的3GP、MP4就直接考虑android自带SDK（ MediaPlayer+SurfaceView或者videoview ）</p>
+<p>如果嵌套一个小视频但是支持的格式比较多个人建议考虑百度云播放SDK（因为集成的成本低且免费）</p>
+<p>如果项目比较特殊需求，比如随时的调整视频质量、支持HTML5、Flash等。这个时候就得具体的选对比相关播放sdk的侧重点来选择（因为涉及的东西太多，我也没有时间和精力具体的去比较，无法给出各种情况比较合理的选择）。</p>
+<p>&nbsp;</p>
+<h2>接下来进入代码篇：从简单的基本入手来一步步走进android的多媒体世界</h2>
+<p>Android 多媒体视频播放二（ MediaPlayer+SurfaceView ）</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="https://www.cnblogs.com/yishujun/category/555009.html" target="_blank">android</a></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(5378114,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow(&#39;f1ef865a-089d-e311-8d02-90b11c0b17d6&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/yishujun/" target="_blank"><img src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/20140225105149.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/yishujun/">易术军</a><br>
+            <a href="http://home.cnblogs.com/u/yishujun/followees">关注 - 1</a><br>
+            <a href="http://home.cnblogs.com/u/yishujun/followers">粉丝 - 6</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;f1ef865a-089d-e311-8d02-90b11c0b17d6&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(5378114,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">2</span>
+    </div>
+    <div class="buryit" onclick="votePost(5378114,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="https://www.cnblogs.com/yishujun/p/5328617.html" class="p_n_p_prefix">« </a> 上一篇：<a href="https://www.cnblogs.com/yishujun/p/5328617.html" title="发布于2016-03-28 12:54">Open Live Writer 安装</a><br><a href="https://www.cnblogs.com/yishujun/p/5391778.html" class="p_n_p_prefix">» </a> 下一篇：<a href="https://www.cnblogs.com/yishujun/p/5391778.html" title="发布于2016-04-14 16:59">Activityn 生命周期</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2016-04-11 13:58</span> <a href="https://www.cnblogs.com/yishujun/">易术军</a> 阅读(<span id="post_view_count">4740</span>) 评论(<span id="post_comment_count">1</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=5378114" rel="nofollow">编辑</a> <a href="http://www.cnblogs.com/yishujun/p/5378114.html#" onclick="AddToWz(5378114);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=176838,cb_entryId=5378114,cb_blogApp=currentBlogApp,cb_blogUserGuid='f1ef865a-089d-e311-8d02-90b11c0b17d6',cb_entryCreatedDate='2016/4/11 13:58:00';loadViewCount(cb_entryId);var cb_postType=1;var isMarkdown=false;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<!--done-->
+<div class="comment">
+<div class="feedback_area_title"><!--共有<span class="cmt_num"></span>评论-->  <!-- <span class="cmt_fct">[<a href="">订阅评论</a>]</span> --></div>
+<div class="feedbackNoItems"></div>
+	
+
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<a href="http://www.cnblogs.com/yishujun/p/5378114.html#3846441" class="layer">#1楼</a><a name="3846441" id="comment_anchor_3846441"></a><span id="comment-maxId" style="display:none;">3846441</span><span id="comment-maxDate" style="display:none;">2017/11/21 15:23:56</span><span class="feedbackName"><a id="a_comment_author_3846441" href="https://www.cnblogs.com/tgyf/" target="_blank">路上的脚印</a> <a href="http://msg.cnblogs.com/send/%E8%B7%AF%E4%B8%8A%E7%9A%84%E8%84%9A%E5%8D%B0" title="发送站内短消息" class="sendMsg2This">&nbsp;</a></span> 在 <span class="comment_date">2017-11-21 15:23</span>说：
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3846441" class="blog_comment_body">正在学这块，总结的不错</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3846441,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3846441,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3846441_avatar" style="display:none;">http://pic.cnblogs.com/face/450484/20150722172450.png</span>
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+			</div>
+		</div>
+	
+</div><div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="http://www.cnblogs.com/yishujun/p/5378114.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/yishujun/p/5378114.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="https://edu.51cto.com/activity/19.html?source=bky" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-51CTO&#39;)">【幸运】99%的人不知道我们有可以帮你薪资翻倍的秘笈！</a><br><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-工控&#39;)">【推荐】超50万C++/C#源码: 大型实时仿真组态图形源码</a><br><a href="https://cloud.baidu.com/campaign/purchase-2019/index.html?track=cp:dsp|pf:pc|pp:chui-bokeyuan-huodong-19caigouji-BCC-neiyeCH-190311|pu:neiyeCH-wenzilian|ci:2019cgj|kw:2105959" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-百度云&#39;)">【推荐】百度云“猪”你开年行大运，红包疯狂拿</a><br><a href="https://ke.qq.com/adActivity.html?name=xiangxueketang2" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-享学&#39;)">【推荐】55K刚面完Java架构师岗，这些技术你必须掌握</a><br></div>
+<div id="opt_under_post"></div>
+<script async="async" src="./Android 多媒体视频播放一（ 多媒体理解与经验分享） - 易术军 - 博客园_files/gpt.js"></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<script>
+  googletag.cmd.push(function() {
+        googletag.defineSlot('/1090369/C1', [300, 250], 'div-gpt-ad-1546353474406-0').addService(googletag.pubads());
+        googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+  });
+</script>
+<div id="cnblogs_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1546353474406-0" style="height: 250px; width: 300px;"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none; width: 300px; height: 250px;"></div></div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>相关博文：</b><br>·  <a href="https://www.cnblogs.com/chhom/p/4765488.html" target="_blank" onclick="clickRecomItmem(4765488)">多媒体播放</a><br>·  <a href="https://www.cnblogs.com/nathan909/p/5295049.html" target="_blank" onclick="clickRecomItmem(5295049)">Android多媒体技术之视频播放</a><br>·  <a href="https://www.cnblogs.com/Mask-D/p/9536611.html" target="_blank" onclick="clickRecomItmem(9536611)">Android手机多媒体——播放音乐视频</a><br>·  <a href="https://www.cnblogs.com/CoderTian/p/6204303.html" target="_blank" onclick="clickRecomItmem(6204303)">【Android 多媒体应用】使用 VideoView 播放视频</a><br>·  <a href="https://www.cnblogs.com/CoderTian/p/6204266.html" target="_blank" onclick="clickRecomItmem(6204266)">【Android 多媒体应用】使用 MediaPlayer 播放视频</a><br></div></div>
+<div id="cnblogs_c2" class="c_ad_block">
+    <div id="div-gpt-ad-1539008685004-0" style="height: 60px; width: 468px;"><div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none; width: 468px; height: 60px;"></div></div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block"><b>最新新闻</b>：<br> ·  <a href="https://news.cnblogs.com/n/622083/" target="_blank">日本消费社会演变史：窥见未来20年的中国</a><br> ·  <a href="https://news.cnblogs.com/n/622111/" target="_blank">气！YouTube删了华人博主们95%的粉丝, 多亏她才得救</a><br> ·  <a href="https://news.cnblogs.com/n/622116/" target="_blank">666元！英伟达史上最便宜AI硬件发布：可运行所有AI模型</a><br> ·  <a href="https://news.cnblogs.com/n/622098/" target="_blank">直播打赏鼻祖：“波西米亚狂想曲”里那场神级演唱会</a><br> ·  <a href="https://news.cnblogs.com/n/622092/" target="_blank">联想控股董事长柳传志：创业CEO要会“拧螺丝”</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+ if(enablePostBottom()) {
+    codeHighlight();
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverT2();
+    deliverC1();
+    deliverC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);  
+}
+</script>
+</div>
+
+    
+			</div>
+			<div id="footer">
+				
+<!--done-->
+Copyright ©2019 易术军
+			</div>
+		</div>
+	</div>
+	<!-- right ends -->
+	<!-- left starts -->
+	<div id="left">
+		<!-- 左侧工具部分 -->
+		<div id="left_content">
+			
+<!--done-->
+<!-- <h1 class="listtitle">公告</h1> -->
+<div class="newsItem">
+	<div id="blog-news"><div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/yishujun/">易术军</a><br>园龄：<a href="https://home.cnblogs.com/u/yishujun/" title="入园时间：2014-02-24">5年</a><br>粉丝：<a href="https://home.cnblogs.com/u/yishujun/followers/">6</a><br>关注：<a href="https://home.cnblogs.com/u/yishujun/followees/">1</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow(&#39;f1ef865a-089d-e311-8d02-90b11c0b17d6&#39;)">+加关注</a></div><script>getFollowStatus('f1ef865a-089d-e311-8d02-90b11c0b17d6')</script></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="calendar"><div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2019/02/01&#39;);return false;">&lt;</a></td><td align="center">2019年3月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2019/04/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">24</td><td class="CalOtherMonthDay" align="center">25</td><td class="CalOtherMonthDay" align="center">26</td><td class="CalOtherMonthDay" align="center">27</td><td class="CalOtherMonthDay" align="center">28</td><td align="center">1</td><td class="CalWeekendDay" align="center">2</td></tr><tr><td class="CalWeekendDay" align="center">3</td><td align="center">4</td><td align="center">5</td><td align="center">6</td><td align="center">7</td><td align="center">8</td><td class="CalWeekendDay" align="center">9</td></tr><tr><td class="CalWeekendDay" align="center">10</td><td align="center">11</td><td align="center">12</td><td align="center">13</td><td align="center">14</td><td align="center">15</td><td class="CalWeekendDay" align="center">16</td></tr><tr><td class="CalWeekendDay" align="center">17</td><td align="center">18</td><td class="CalTodayDay" align="center">19</td><td align="center">20</td><td align="center">21</td><td align="center">22</td><td class="CalWeekendDay" align="center">23</td></tr><tr><td class="CalWeekendDay" align="center">24</td><td align="center">25</td><td align="center">26</td><td align="center">27</td><td align="center">28</td><td align="center">29</td><td class="CalWeekendDay" align="center">30</td></tr><tr><td class="CalWeekendDay" align="center">31</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script></div>
+			
+				<div id="leftcontentcontainer">
+					<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block">
+<div id="sidebar_search" class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="sidebar_search_box">
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+<div id="widget_my_google" class="div_my_zzk"><input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk"></div>
+</div>
+</div>
+
+</div><div id="sidebar_shortcut" class="sidebar-block">
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/yishujun/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="https://www.cnblogs.com/yishujun/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="https://www.cnblogs.com/yishujun/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="https://www.cnblogs.com/yishujun/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="https://www.cnblogs.com/yishujun/tag/" title="我的博客的标签列表">我的标签</a></li>
+<li><a id="itemListLink" onclick="this.blur();WarpClass(&#39;itemListLink&#39;, &#39;itemListLin_con&#39;);return false;" href="http://www.cnblogs.com/yishujun/p/5378114.html#">更多链接</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div></div><div id="sidebar_toptags" class="sidebar-block">
+<h3 class="catListTitle">我的标签</h3>
+<div id="MyTag">
+<ul>
+<li><a href="https://www.cnblogs.com/yishujun/tag/android/">android</a>(5)</li><li><a href="https://www.cnblogs.com/yishujun/tag/jni/">jni</a>(2)</li><li><a href="https://www.cnblogs.com/yishujun/tag/ndk/">ndk</a>(1)</li><li><a href="https://www.cnblogs.com/yishujun/tag/Open%20Live%20Writer/">Open Live Writer</a>(1)</li><li><a href="https://www.cnblogs.com/yishujun/tag/property%20animation/">property animation</a>(1)</li><li><a href="https://www.cnblogs.com/yishujun/tag/selector/">selector</a>(1)</li><li><a href="https://www.cnblogs.com/yishujun/tag/tween/">tween</a>(1)</li><li><a href="https://www.cnblogs.com/yishujun/tag/xml/">xml</a>(1)</li><li><a href="https://www.cnblogs.com/yishujun/tag/%E7%BC%96%E8%BE%91%E5%99%A8/">编辑器</a>(1)</li><li><a href="https://www.cnblogs.com/yishujun/tag/%E5%8D%9A%E5%AE%A2/">博客</a>(1)</li><li><a href="https://www.cnblogs.com/yishujun/tag/">更多</a></li>
+</ul>
+</div></div><div id="sidebar_categories">
+<!--done-->
+
+		<h1 class="catListTitle">随笔分类</h1>
+		
+				<ul class="catList">
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_0" class="listitem" href="https://www.cnblogs.com/yishujun/category/555009.html">android(11)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_1" class="listitem" href="https://www.cnblogs.com/yishujun/category/564182.html">其他(1)</a></li>
+			
+				</ul>
+			
+	
+		<h1 class="catListTitle">随笔档案</h1>
+		
+				<ul class="catList">
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_0" class="listitem" href="https://www.cnblogs.com/yishujun/archive/2016/10.html">2016年10月 (1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_1" class="listitem" href="https://www.cnblogs.com/yishujun/archive/2016/06.html">2016年6月 (6)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_2" class="listitem" href="https://www.cnblogs.com/yishujun/archive/2016/05.html">2016年5月 (3)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_3" class="listitem" href="https://www.cnblogs.com/yishujun/archive/2016/04.html">2016年4月 (11)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_4" class="listitem" href="https://www.cnblogs.com/yishujun/archive/2016/03.html">2016年3月 (1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_5" class="listitem" href="https://www.cnblogs.com/yishujun/archive/2014/12.html">2014年12月 (2)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_6" class="listitem" href="https://www.cnblogs.com/yishujun/archive/2014/06.html">2014年6月 (1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_7" class="listitem" href="https://www.cnblogs.com/yishujun/archive/2014/05.html">2014年5月 (1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_8" class="listitem" href="https://www.cnblogs.com/yishujun/archive/2014/04.html">2014年4月 (1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_9" class="listitem" href="https://www.cnblogs.com/yishujun/archive/2014/03.html">2014年3月 (4)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_10" class="listitem" href="https://www.cnblogs.com/yishujun/archive/2014/02.html">2014年2月 (3)</a></li>
+			
+				</ul>
+			
+	
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<h3 class="catListTitle">最新评论</h3>
+<div class="RecentComment" id="RecentComments">
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/yishujun/p/5378114.html#3846441">1. Re:Android 多媒体视频播放一（ 多媒体理解与经验分享）</a></li>
+        <li class="recent_comment_body">正在学这块，总结的不错</li>
+        <li class="recent_comment_author">--路上的脚印</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/yishujun/p/5328617.html#3413116">2. Re:Open Live Writer 安装</a></li>
+        <li class="recent_comment_body">收到，谢谢</li>
+        <li class="recent_comment_author">--elite_2012</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/yishujun/p/5328617.html#3412635">3. Re:Open Live Writer 安装</a></li>
+        <li class="recent_comment_body">@sun8134谢谢 纠正错误 我尝试了下 是可以的...</li>
+        <li class="recent_comment_author">--易术军</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/yishujun/p/5328617.html#3412634">4. Re:Open Live Writer 安装</a></li>
+        <li class="recent_comment_body">@elite_2012我暂时没有找到，我最近用的时候，也发现了一个非常让我不爽的事情，就是粘贴代码没有格式，不知你是否有相应的插件但是楼上给我纠正了一个错误 live writer win10可以用的......</li>
+        <li class="recent_comment_author">--易术军</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/yishujun/p/5328617.html#3409960">5. Re:Open Live Writer 安装</a></li>
+        <li class="recent_comment_body">@易术军引用@sun8134我的window10安装不起了，writer2012貌似不支持win10，当然还有其他的工具可以用,但是博客园在推荐用Live Writer，既然用不起就看看他的升级版了，......</li>
+        <li class="recent_comment_author">--sun8134</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<h3 class="catListTitle">阅读排行榜</h3>
+<div class="RecentComment" id="TopViewPosts"> 
+	<div id="TopViewPostsBlock"><ul><li><a href="https://www.cnblogs.com/yishujun/p/5559917.html">1. Android 自定义 view（三）—— onDraw 方法理解(17694)</a></li><li><a href="https://www.cnblogs.com/yishujun/p/5560838.html">2. Android 自定义 view（四）—— onMeasure 方法理解(12924)</a></li><li><a href="https://www.cnblogs.com/yishujun/p/5556145.html">3. Android 自定义view（二） —— attr 使用(6176)</a></li><li><a href="https://www.cnblogs.com/yishujun/p/5378114.html">4. Android 多媒体视频播放一（ 多媒体理解与经验分享）(4740)</a></li><li><a href="https://www.cnblogs.com/yishujun/p/5328617.html">5. Open Live Writer 安装(4595)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+<h3 class="catListTitle">评论排行榜</h3>
+<div class="RecentComment" id="TopCommentsPosts">
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="https://www.cnblogs.com/yishujun/p/5328617.html">1. Open Live Writer 安装(7)</a></li><li><a href="https://www.cnblogs.com/yishujun/p/5391778.html">2. Activityn 生命周期(2)</a></li><li><a href="https://www.cnblogs.com/yishujun/p/3628992.html">3. Android下OpenCV的环境搭建(2)</a></li><li><a href="https://www.cnblogs.com/yishujun/p/5378114.html">4. Android 多媒体视频播放一（ 多媒体理解与经验分享）(1)</a></li></ul></div>
+</div></div></div><div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div class="RecentComment">
+	<div id="TopDiggPostsBlock"><ul><li><a href="https://www.cnblogs.com/yishujun/p/5378114.html">1. Android 多媒体视频播放一（ 多媒体理解与经验分享）(2)</a></li><li><a href="https://www.cnblogs.com/yishujun/p/5328617.html">2. Open Live Writer 安装(2)</a></li><li><a href="https://www.cnblogs.com/yishujun/p/5559917.html">3. Android 自定义 view（三）—— onDraw 方法理解(2)</a></li><li><a href="https://www.cnblogs.com/yishujun/p/3564773.html">4. android 使用shape来优化界面效果(1)</a></li></ul></div>
+</div></div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+				</div>
+			
+		</div>
+		<!-- //右侧工具部分 -->
+	</div>
+	<!-- left ends -->	
+	<div class="clear"></div>
+</div>
+
+
+
+
+</body><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 100% 0% / auto no-repeat scroll padding-box border-box rgb(23, 23, 22); height: 4982px; width: 1341px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: url(&quot;http://www.cnblogs.com/skins/LoveGiveHeart/images/bg_body.jpg&quot;) 100% 0% / auto no-repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 4982px; width: 1341px;"></div></html>

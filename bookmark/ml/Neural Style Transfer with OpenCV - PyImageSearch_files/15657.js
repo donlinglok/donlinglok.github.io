@@ -1,0 +1,1 @@
+"use strict";!function(n){n(document).ready(function(){var t=window.location.hash;if(t.length>0&&0==t.indexOf("#comment-"))var e=setInterval(function(){if(n(document).scrollTop()>=n(t)[0].offsetTop){var o=new Function("$",pyISjsAfterComment["function"]);o(n),clearInterval(e)}},100)})}(jQuery);

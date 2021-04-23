@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<!-- saved from url=(0039)https://coolshell.cn/articles/1846.html -->
+<html lang="zh-CN" class="cye-disabled cye-nm gr__coolshell_cn"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width">
+
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="https://coolshell.cn/xmlrpc.php">
+
+<title>MySQL性能优化的最佳20+条经验 | | 酷 壳 - CoolShell</title>
+
+<!-- All in One SEO Pack 2.12 by Michael Torbert of Semper Fi Web Design[340,395] -->
+
+<meta name="keywords" content="database,mysql,php,php脚本,数据库">
+
+<link rel="canonical" href="https://coolshell.cn/articles/1846.html">
+<meta property="og:title" content="MySQL性能优化的最佳20+条经验 | | 酷 壳 - CoolShell">
+<meta property="og:type" content="object">
+<meta property="og:url" content="https://coolshell.cn/articles/1846.html">
+<meta property="og:image" content="https://coolshell.cn/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png">
+<meta property="og:site_name" content="酷 壳 - CoolShell">
+<meta property="og:description" content="今天，数据库的操作越来越成为整个应用的性能瓶颈了，这点对于Web应用尤其明显。关于数据库的性能，这并不只是DBA才需要担心的事，而这更是我们程序员需要去关注的事情。当我们去设计数据库表结构，对操作数据库时（尤其是查表时的SQL语句），我们都需要注意数据操作的性能。这里，我们不会讲过多的SQL语句的优化，而只是针对MySQL这一Web应用最多的数据库。希望下面的这些优化技巧对你有用。 1. 为查询缓存优化你的查询 大多数的MySQL服务器都开启了查询缓存。这是提高性最有效的方法之一，而且这是被MySQL的数据库引擎处理的。当有很多相同的查询被执行了多次的时候，这些查询结果会被放到一个缓存中，这样，后续的相同的查询就不用操作表而直接访问缓存结果了。 这里最主要的问题是，对于程序员来说，这个事情是很容易被忽略的。因为，我们某些查询语句会让MySQL不使用缓存。请看下面的示例： 上面两条SQL语句的差别就是 CURDATE() ，MySQL的查询缓存对这个函数不起作用。所以，像 NOW() 和 RAND() 或是其它的诸如此类的SQL函数都不会开启查询缓存，因为这些函数的返回是会不定的易变的。所以，你所需要的就是用一个变量来代替MySQL的函数，从而开启缓存。 2. EXPLAIN 你的 SELECT 查询 使用 EXPLAIN 关键字可以让你知道MySQL是如何处理你的SQL语句的。这可以帮你分析你的查询语句或是表结构的性能瓶颈。 EXPLAIN 的查询结果还会告诉你你的索引主键被如何利用的，你的数据表是如何被搜索和排序的……等等，等等。 挑一个你的SELECT语句（推荐挑选那个最复杂的，有多表联接的），把关键字EXPLAIN加到前面。你可以使用phpmyadmin来做这个事。然后，你会看到一张表格。下面的这个示例中，我们忘记加上了group_id索引，并且有表联接： 当我们为 group_id 字段加上索引后： 我们可以看到，前一个结果显示搜索了 7883 行，而后一个只是搜索了两个表的 9 和 16 行。查看rows列可以让我们找到潜在的性能问题。 3. 当只要一行数据时使用 LIMIT 1 当你查询表的有些时候，你已经知道结果只会有一条结果，但因为你可能需要去fetch游标，或是你也许会去检查返回的记录数。 在这种情况下，加上 LIMIT 1">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL性能优化的最佳20+条经验 | | 酷 壳 - CoolShell">
+<meta name="twitter:description" content="今天，数据库的操作越来越成为整个应用的性能瓶颈了，这点对于Web应用尤其明显。关于数据库的性能，这并不只是DBA才需要担心的事，而这更是我们程序员需要去关注的事情。当我们去设计数据库表结构，对操作数据库时（尤其是查表时的SQL语句），我们都需要注意数据操作的性能。这里，我们不会讲过多的SQL语句的优化，而只是针对MySQL这一Web应用最多的数据库。希望下面的这些优化技巧对你有用。 1. 为查询缓存优化你的查询 大多数的MySQL服务器都开启了查询缓存。这是提高性最有效的方法之一，而且这是被MySQL的数据库引擎处理的。当有很多相同的查询被执行了多次的时候，这些查询结果会被放到一个缓存中，这样，后续的相同的查询就不用操作表而直接访问缓存结果了。 这里最主要的问题是，对于程序员来说，这个事情是很容易被忽略的。因为，我们某些查询语句会让MySQL不使用缓存。请看下面的示例： 上面两条SQL语句的差别就是 CURDATE() ，MySQL的查询缓存对这个函数不起作用。所以，像 NOW() 和 RAND() 或是其它的诸如此类的SQL函数都不会开启查询缓存，因为这些函数的返回是会不定的易变的。所以，你所需要的就是用一个变量来代替MySQL的函数，从而开启缓存。 2. EXPLAIN 你的 SELECT 查询 使用 EXPLAIN 关键字可以让你知道MySQL是如何处理你的SQL语句的。这可以帮你分析你的查询语句或是表结构的性能瓶颈。 EXPLAIN 的查询结果还会告诉你你的索引主键被如何利用的，你的数据表是如何被搜索和排序的……等等，等等。 挑一个你的SELECT语句（推荐挑选那个最复杂的，有多表联接的），把关键字EXPLAIN加到前面。你可以使用phpmyadmin来做这个事。然后，你会看到一张表格。下面的这个示例中，我们忘记加上了group_id索引，并且有表联接： 当我们为 group_id 字段加上索引后： 我们可以看到，前一个结果显示搜索了 7883 行，而后一个只是搜索了两个表的 9 和 16 行。查看rows列可以让我们找到潜在的性能问题。 3. 当只要一行数据时使用 LIMIT 1 当你查询表的有些时候，你已经知道结果只会有一条结果，但因为你可能需要去fetch游标，或是你也许会去检查返回的记录数。 在这种情况下，加上 LIMIT 1">
+<meta name="twitter:image" content="https://coolshell.cn/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png">
+<!-- /all in one seo pack -->
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="酷 壳 - CoolShell » Feed" href="https://coolshell.cn/feed">
+<link rel="alternate" type="application/rss+xml" title="酷 壳 - CoolShell » 评论Feed" href="https://coolshell.cn/comments/feed">
+<link rel="alternate" type="application/rss+xml" title="酷 壳 - CoolShell » MySQL性能优化的最佳20+条经验评论Feed" href="https://coolshell.cn/articles/1846.html/feed">
+		<script type="text/javascript" async="" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/ga.js"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11.2.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11.2.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/coolshell.cn\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.1.1"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/wp-emoji-release.min.js" type="text/javascript" defer=""></script><style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-postratings-css" href="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/postratings-css.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-pagenavi-css" href="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/pagenavi-css.css" type="text/css" media="all">
+<link rel="stylesheet" id="bootstrap-css" href="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/bootstrap.css" type="text/css" media="all">
+<link rel="stylesheet" id="nisarg-style-css" href="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/style(1).css" type="text/css" media="all">
+<style id="nisarg-style-inline-css" type="text/css">
+	/* Color Scheme */
+
+	/* Accent Color */
+
+	a:active,
+	a:hover,
+	a:focus {
+	    color: #009688;
+	}
+
+	.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+		color: #009688;
+	}
+
+	
+	.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+		color: #009688;			
+	}
+
+	@media (min-width: 768px){
+		.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+			border-top: 4px solid #009688;
+		}		
+	}
+
+	.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {	    
+	    background-color: #009688;
+	}
+
+
+	.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+		color: #009688;
+	}
+
+	.navbar-default .navbar-nav > li > .dropdown-menu > li > a:hover,
+	.navbar-default .navbar-nav > li > .dropdown-menu > li > a:focus {
+		color: #fff;
+		background-color: #009688;
+	}
+
+	.navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+		background-color: #fff;
+		color: #009688;
+	}
+
+	@media (max-width: 767px) {
+		.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
+			background-color: #009688;
+			color: #fff;
+		}
+	}
+
+	.sticky-post{
+	    background: #009688;
+	    color:white;
+	}
+	
+	.entry-title a:hover,
+	.entry-title a:focus{
+	    color: #009688;
+	}
+
+	.entry-header .entry-meta::after{
+	    background: #009688;
+	}
+
+	.fa {
+		color: #009688;
+	}
+
+	.btn-default{
+		border-bottom: 1px solid #009688;
+	}
+
+	.btn-default:hover, .btn-default:focus{
+	    border-bottom: 1px solid #009688;
+	    background-color: #009688;
+	}
+
+	.nav-previous:hover, .nav-next:hover{
+	    border: 1px solid #009688;
+	    background-color: #009688;
+	}
+
+	.next-post a:hover,.prev-post a:hover{
+	    color: #009688;
+	}
+
+	.posts-navigation .next-post a:hover .fa, .posts-navigation .prev-post a:hover .fa{
+	    color: #009688;
+	}
+
+
+	#secondary .widget-title::after{
+		background-color: #009688;
+	    content: "";
+	    position: absolute;
+	    width: 75px;
+	    display: block;
+	    height: 4px;    
+	    bottom: -15px;
+	}
+
+	#secondary .widget a:hover,
+	#secondary .widget a:focus{
+		color: #009688;
+	}
+
+	#secondary .widget_calendar tbody a {
+	    background-color: #009688;
+	    color: #fff;
+	    padding: 0.2em;
+	}
+
+	#secondary .widget_calendar tbody a:hover{
+	    background-color: #009688;
+	    color: #fff;
+	    padding: 0.2em;
+	}	
+
+</style>
+<link rel="stylesheet" id="font-awesome-css" href="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/font-awesome.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="nisarggooglefonts-css" href="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/css" type="text/css" media="all">
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/jquery.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/jquery-migrate.min.js"></script>
+<!--[if lt IE 9]>
+<script type='text/javascript' src='https://coolshell.cn/wp-content/themes/MyNisarg/js/html5shiv.js?ver=3.7.3'></script>
+<![endif]-->
+<link rel="https://api.w.org/" href="https://coolshell.cn/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://coolshell.cn/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://coolshell.cn/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="编程语言汽车" href="https://coolshell.cn/articles/1839.html">
+<link rel="next" title="C 语言整型谜题" href="https://coolshell.cn/articles/1857.html">
+<meta name="generator" content="WordPress 5.1.1">
+<link rel="shortlink" href="https://coolshell.cn/?p=1846">
+<link rel="alternate" type="application/json+oembed" href="https://coolshell.cn/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fcoolshell.cn%2Farticles%2F1846.html">
+<link rel="alternate" type="text/xml+oembed" href="https://coolshell.cn/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fcoolshell.cn%2Farticles%2F1846.html&amp;format=xml">
+		<script type="text/javascript">
+			var _statcounter = _statcounter || [];
+			_statcounter.push({"tags": {"author": "陈皓"}});
+		</script>
+		<script type="text/javascript">
+	window._wp_rp_static_base_url = 'https://wprp.zemanta.com/static/';
+	window._wp_rp_wp_ajax_url = "https://coolshell.cn/wp-admin/admin-ajax.php";
+	window._wp_rp_plugin_version = '3.6.4';
+	window._wp_rp_post_id = '1846';
+	window._wp_rp_num_rel_posts = '6';
+	window._wp_rp_thumbnails = true;
+	window._wp_rp_post_title = 'MySQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9A%84%E6%9C%80%E4%BD%B320%2B%E6%9D%A1%E7%BB%8F%E9%AA%8C';
+	window._wp_rp_post_tags = ['mysql', 'php', 'database', 'php%E8%84%9A%E6%9C%AC', '%E6%95%B0%E6%8D%AE%E5%BA%93', 'china', 'a4', 'countri', 'mysql', 'div', '1', 'alt', 'user', 'limit', 'gt', 'compani', 'int', 'rand', 'state', '16'];
+	window._wp_rp_promoted_content = true;
+</script>
+<link rel="stylesheet" href="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/vertical-m.css">
+
+<style type="text/css">
+        .site-header { background: #1d2b2d; }
+</style>
+
+<link rel="stylesheet" type="text/css" href="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shCore.css"><link rel="stylesheet" type="text/css" href="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shThemeDefault.css"><style type="text/css" id="syntaxhighlighteranchor"></style>
+</head><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div>
+ 
+<body class="post-template-default single single-post postid-1846 single-format-standard group-blog" data-gr-c-s-loaded="true" style="">
+<div id="page" class="hfeed site">
+<header id="masthead" role="banner">
+  
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-left" role="navigation"> 
+      <!-- Brand and toggle get grouped for better mobile display --> 
+      <div class="container" id="navigation_menu">
+        <div class="navbar-header"> 
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"> 
+            <span class="sr-only">Toggle navigation</span> 
+            <span class="icon-bar"></span> 
+            <span class="icon-bar"></span> 
+            <span class="icon-bar"></span> 
+          </button> 
+                    <a class="navbar-brand" href="https://coolshell.cn/"><div class="coolshell_logo"></div>酷 壳 – CoolShell</a>
+        </div> 
+        
+
+          <div class="collapse navbar-collapse navbar-ex1-collapse"><ul id="menu-coolshell" class="nav navbar-nav"><li id="menu-item-17405" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-17405"><a title="首页" href="http://coolshell.cn/">首页</a></li>
+<li id="menu-item-17406" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17406"><a title="推荐文章" href="https://coolshell.cn/featured">推荐文章</a></li>
+<li id="menu-item-17407" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17407"><a title="本站插件" href="https://coolshell.cn/plugins">本站插件</a></li>
+<li id="menu-item-17408" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17408"><a title="留言小本" href="https://coolshell.cn/guestbook">留言小本</a></li>
+<li id="menu-item-17409" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17409"><a title="关于酷壳" href="https://coolshell.cn/about">关于酷壳</a></li>
+<li id="menu-item-17410" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17410"><a title="关于陈皓" href="https://coolshell.cn/haoel">关于陈皓</a></li>
+<li id="menu-item-17582" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-17582"><a title="RSS" href="http://coolshell.cn/feed">RSS</a></li>
+</ul></div>        
+      </div><!--#container-->
+    </nav>
+ 
+
+  <div id="cc_spacer" style="height: 50px;"></div><!-- used to clear fixed navigation by the themes js --> 
+  
+  <div class="site-header">
+<div class="pull-right">
+<a title="把这个链接拖到你的Chrome收藏夹工具栏中" href="javascript:(function(){function c(){var e=document.createElement(&quot;link&quot;);e.setAttribute(&quot;type&quot;,&quot;text/css&quot;);e.setAttribute(&quot;rel&quot;,&quot;stylesheet&quot;);e.setAttribute(&quot;href&quot;,f);e.setAttribute(&quot;class&quot;,l);document.body.appendChild(e)}function h(){var e=document.getElementsByClassName(l);for(var t=0;t&lt;e.length;t++){document.body.removeChild(e[t])}}function p(){var e=document.createElement(&quot;div&quot;);e.setAttribute(&quot;class&quot;,a);document.body.appendChild(e);setTimeout(function(){document.body.removeChild(e)},100)}function d(e){return{height:e.offsetHeight,width:e.offsetWidth}}function v(i){var s=d(i);return s.height&gt;e&amp;&amp;s.height&lt;n&amp;&amp;s.width&gt;t&amp;&amp;s.width&lt;r}function m(e){var t=e;var n=0;while(!!t){n+=t.offsetTop;t=t.offsetParent}return n}function g(){var e=document.documentElement;if(!!window.innerWidth){return window.innerHeight}else if(e&amp;&amp;!isNaN(e.clientHeight)){return e.clientHeight}return 0}function y(){if(window.pageYOffset){return window.pageYOffset}return Math.max(document.documentElement.scrollTop,document.body.scrollTop)}function E(e){var t=m(e);return t&gt;=w&amp;&amp;t&lt;=b+w}function S(){var e=document.createElement(&quot;audio&quot;);e.setAttribute(&quot;class&quot;,l);e.src=i;e.loop=false;e.addEventListener(&quot;canplay&quot;,function(){setTimeout(function(){x(k)},500);setTimeout(function(){N();p();for(var e=0;e&lt;O.length;e++){T(O[e])}},15500)},true);e.addEventListener(&quot;ended&quot;,function(){N();h()},true);e.innerHTML=&quot; &lt;p&gt;If you are reading this, it is because your browser does not support the audio element. We recommend that you get a new browser.&lt;/p&gt; &lt;p&gt;&quot;;document.body.appendChild(e);e.play()}function x(e){e.className+=&quot; &quot;+s+&quot; &quot;+o}function T(e){e.className+=&quot; &quot;+s+&quot; &quot;+u[Math.floor(Math.random()*u.length)]}function N(){var e=document.getElementsByClassName(s);var t=new RegExp(&quot;\\b&quot;+s+&quot;\\b&quot;);for(var n=0;n&lt;e.length;){e[n].className=e[n].className.replace(t,&quot;&quot;)}}var e=30;var t=30;var n=350;var r=350;var i=&quot;//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake.mp3&quot;;var s=&quot;mw-harlem_shake_me&quot;;var o=&quot;im_first&quot;;var u=[&quot;im_drunk&quot;,&quot;im_baked&quot;,&quot;im_trippin&quot;,&quot;im_blown&quot;];var a=&quot;mw-strobe_light&quot;;var f=&quot;//s3.amazonaws.com/moovweb-marketing/playground/harlem-shake-style.css&quot;;var l=&quot;mw_added_css&quot;;var b=g();var w=y();var C=document.getElementsByTagName(&quot;*&quot;);var k=null;for(var L=0;L&lt;C.length;L++){var A=C[L];if(v(A)){if(E(A)){k=A;break}}}if(A===null){console.warn(&quot;Could not find a node of the right size. Please try a different page.&quot;);return}c();S();var O=[];for(var L=0;L&lt;C.length;L++){var A=C[L];if(v(A)){O.push(A)}}})()    ">High一下!</a>
+</div>
+      <div class="site-branding">   
+        <a class="home-link" href="https://coolshell.cn/" title="酷 壳 – CoolShell" rel="home">
+          <h1 class="site-title">酷 壳 – CoolShell</h1>
+          <h2 class="site-description">享受编程和技术所带来的快乐 – Coding Your Ambition</h2>
+        </a>
+      </div><!--.site-branding-->
+  </div><!--.site-header--> 
+</header>    
+
+<div class="container">
+<div class="row">
+<div class="col-md-9 nav-searchbox hidden-lg hidden-md visible-sm-* visible-xs-*">
+  <form role="search" method="get" class="search-form" action="https://coolshell.cn/">
+      <label>
+          <span class="screen-reader-text">Search for:</span>
+          <input type="search" class="search-field" placeholder="Search …" value="" name="s" title="Search for:">
+      </label>
+      <button type="submit" class="search-submit"><span class="screen-reader-text">Search</span></button>
+  </form>
+</div>
+</div>
+</div>
+
+<div id="content" class="site-content">
+    
+    
+    
+
+	<div class="container">
+        <div class="row">
+			<div id="primary" class="col-md-9 content-area">
+				<main id="main" role="main">
+
+				
+					
+<article id="post-1846" class="post-content post-1846 post type-post status-publish format-standard hentry category-phpdev category-datebase tag-database tag-mysql tag-php">
+
+	
+		
+	<header class="entry-header">	
+	
+		<span class="screen-reader-text">MySQL性能优化的最佳20+条经验</span>
+
+					<h1 class="entry-title">MySQL性能优化的最佳20+条经验</h1>
+		
+				<div class="entry-meta">
+			<h5 class="entry-date"><i class="fa fa-calendar-o"></i> <a href="https://coolshell.cn/articles/1846.html" title="18:57" rel="bookmark"><time class="entry-date" datetime="2009-11-27T18:57:33+08:00" pubdate="">2009年11月27日 </time></a><span class="byline"><span class="sep"></span><i class="fa fa-user"></i>
+<span class="author vcard"><a class="url fn n" href="https://coolshell.cn/articles/author/haoel" title="View all posts by 陈皓" rel="author">陈皓</a></span></span> <i class="fa fa-comments-o"></i><span class="screen-reader-text">评论 </span> <a href="https://coolshell.cn/articles/1846.html#comments" class="comments-link">162 条评论</a> <i class="fa fa-users" style="margin-left:10px;"></i> 184,876 人阅读</h5>
+		</div><!-- .entry-meta -->
+			</header><!-- .entry-header -->
+	
+			<div class="entry-content">
+
+				<p>今天，数据库的操作越来越成为整个应用的性能瓶颈了，这点对于Web应用尤其明显。关于数据库的性能，这并不只是DBA才需要担心的事，而这更是我们程序员需要去关注的事情。当我们去设计数据库表结构，对操作数据库时（尤其是查表时的SQL语句），我们都需要注意数据操作的性能。这里，我们不会讲过多的SQL语句的优化，而只是针对MySQL这一Web应用最多的数据库。希望下面的这些优化技巧对你有用。</p>
+<h4>1. 为查询缓存优化你的查询</h4>
+<p>大多数的MySQL服务器都开启了查询缓存。这是提高性最有效的方法之一，而且这是被MySQL的数据库引擎处理的。当有很多相同的查询被执行了多次的时候，这些查询结果会被放到一个缓存中，这样，后续的相同的查询就不用操作表而直接访问缓存结果了。</p>
+<p>这里最主要的问题是，对于程序员来说，这个事情是很容易被忽略的。因为，我们某些查询语句会让MySQL不使用缓存。请看下面的示例：</p>
+<div><div id="highlighter_808777" class="syntaxhighlighter coolshell_syntaxhighlighter php"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="php comments">// 查询缓存不开启</code></div><div class="line number2 index1 alt1"><code class="php variable">$r</code> <code class="php plain">= mysql_query(</code><code class="php string">"SELECT username FROM user WHERE signup_date &gt;= CURDATE()"</code><code class="php plain">);</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="php comments">// 开启查询缓存</code></div><div class="line number5 index4 alt2"><code class="php variable">$today</code> <code class="php plain">= </code><code class="php functions">date</code><code class="php plain">(</code><code class="php string">"Y-m-d"</code><code class="php plain">);</code></div><div class="line number6 index5 alt1"><code class="php variable">$r</code> <code class="php plain">= mysql_query(</code><code class="php string">"SELECT username FROM user WHERE signup_date &gt;= '$today'"</code><code class="php plain">);</code></div></div></td></tr></tbody></table></div></div>
+<p>上面两条SQL语句的差别就是 CURDATE() ，MySQL的查询缓存对这个函数不起作用。所以，像 NOW() 和 RAND() 或是其它的诸如此类的SQL函数都不会开启查询缓存，因为这些函数的返回是会不定的易变的。所以，你所需要的就是用一个变量来代替MySQL的函数，从而开启缓存。</p>
+<p><span id="more-1846"></span></p>
+<h4>2. EXPLAIN 你的 SELECT 查询</h4>
+<p>使用 <a href="http://dev.mysql.com/doc/refman/5.0/en/explain.html" target="_blank">EXPLAIN</a> 关键字可以让你知道MySQL是如何处理你的SQL语句的。这可以帮你分析你的查询语句或是表结构的性能瓶颈。</p>
+<p>EXPLAIN 的查询结果还会告诉你你的索引主键被如何利用的，你的数据表是如何被搜索和排序的……等等，等等。</p>
+<p>挑一个你的SELECT语句（推荐挑选那个最复杂的，有多表联接的），把关键字EXPLAIN加到前面。你可以使用phpmyadmin来做这个事。然后，你会看到一张表格。下面的这个示例中，我们忘记加上了group_id索引，并且有表联接：</p>
+<div class="tutorial_image"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/unoptimized_explain.jpg" border="0" alt=""></div>
+<p>当我们为 group_id 字段加上索引后：</p>
+<div class="tutorial_image"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/optimized_explain.jpg" border="0" alt=""></div>
+<p>我们可以看到，前一个结果显示搜索了 7883 行，而后一个只是搜索了两个表的 9 和 16 行。查看rows列可以让我们找到潜在的性能问题。</p>
+<h4>3. 当只要一行数据时使用 LIMIT 1</h4>
+<p>当你查询表的有些时候，你已经知道结果只会有一条结果，但因为你可能需要去fetch游标，或是你也许会去检查返回的记录数。</p>
+<p>在这种情况下，加上 LIMIT 1 可以增加性能。这样一样，MySQL数据库引擎会在找到一条数据后停止搜索，而不是继续往后查少下一条符合记录的数据。</p>
+<p>下面的示例，只是为了找一下是否有“中国”的用户，很明显，后面的会比前面的更有效率。（请注意，第一条中是Select *，第二条是Select 1）</p>
+<div><div id="highlighter_134454" class="syntaxhighlighter coolshell_syntaxhighlighter php"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="php comments">// 没有效率的：</code></div><div class="line number2 index1 alt1"><code class="php variable">$r</code> <code class="php plain">= mysql_query(</code><code class="php string">"SELECT * FROM user WHERE country = 'China'"</code><code class="php plain">);</code></div><div class="line number3 index2 alt2"><code class="php keyword">if</code> <code class="php plain">(mysql_num_rows(</code><code class="php variable">$r</code><code class="php plain">) &gt; 0) {</code></div><div class="line number4 index3 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php comments">// ...</code></div><div class="line number5 index4 alt2"><code class="php plain">}</code></div><div class="line number6 index5 alt1">&nbsp;</div><div class="line number7 index6 alt2"><code class="php comments">// 有效率的：</code></div><div class="line number8 index7 alt1"><code class="php variable">$r</code> <code class="php plain">= mysql_query(</code><code class="php string">"SELECT 1 FROM user WHERE country = 'China' LIMIT 1"</code><code class="php plain">);</code></div><div class="line number9 index8 alt2"><code class="php keyword">if</code> <code class="php plain">(mysql_num_rows(</code><code class="php variable">$r</code><code class="php plain">) &gt; 0) {</code></div><div class="line number10 index9 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php comments">// ...</code></div><div class="line number11 index10 alt2"><code class="php plain">}</code></div></div></td></tr></tbody></table></div></div>
+<h4>4. 为搜索字段建索引</h4>
+<p>索引并不一定就是给主键或是唯一的字段。如果在你的表中，有某个字段你总要会经常用来做搜索，那么，请为其建立索引吧。</p>
+<div class="tutorial_image"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/search_index.jpg" border="0" alt=""></div>
+<p>从上图你可以看到那个搜索字串 “last_name LIKE ‘a%'”，一个是建了索引，一个是没有索引，性能差了4倍左右。</p>
+<p>另外，你应该也需要知道什么样的搜索是不能使用正常的索引的。例如，当你需要在一篇大的文章中搜索一个词时，如： “WHERE post_content LIKE ‘%apple%'”，索引可能是没有意义的。你可能需要使用<a href="http://dev.mysql.com/doc/refman/5.1/en/fulltext-search.html" target="_blank">MySQL全文索引</a> 或是自己做一个索引（比如说：搜索关键词或是Tag什么的）</p>
+<h4>5. 在Join表的时候使用相当类型的例，并将其索引</h4>
+<p>如果你的应用程序有很多 JOIN 查询，你应该确认两个表中Join的字段是被建过索引的。这样，MySQL内部会启动为你优化Join的SQL语句的机制。</p>
+<p>而且，这些被用来Join的字段，应该是相同的类型的。例如：如果你要把 DECIMAL 字段和一个 INT 字段Join在一起，MySQL就无法使用它们的索引。对于那些STRING类型，还需要有相同的字符集才行。（两个表的字符集有可能不一样）</p>
+<div><div id="highlighter_79283" class="syntaxhighlighter coolshell_syntaxhighlighter php"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="php comments">// 在state中查找company</code></div><div class="line number2 index1 alt1"><code class="php variable">$r</code> <code class="php plain">= mysql_query("SELECT company_name FROM users</code></div><div class="line number3 index2 alt2"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php plain">LEFT JOIN companies ON (users.state = companies.state)</code></div><div class="line number4 index3 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php plain">WHERE users.id = </code><code class="php variable">$user_id</code><code class="php plain">");</code></div><div class="line number5 index4 alt2">&nbsp;</div><div class="line number6 index5 alt1"><code class="php comments">// 两个 state 字段应该是被建过索引的，而且应该是相当的类型，相同的字符集。</code></div></div></td></tr></tbody></table></div></div>
+<h4>6. 千万不要 ORDER BY RAND()</h4>
+<p>想打乱返回的数据行？随机挑一个数据？真不知道谁发明了这种用法，但很多新手很喜欢这样用。但你确不了解这样做有多么可怕的性能问题。</p>
+<p>如果你真的想把返回的数据行打乱了，你有N种方法可以达到这个目的。这样使用只让你的数据库的性能呈指数级的下降。这里的问题是：MySQL会不得不去执行RAND()函数（很耗CPU时间），而且这是为了每一行记录去记行，然后再对其排序。就算是你用了Limit 1也无济于事（因为要排序）</p>
+<p>下面的示例是随机挑一条记录</p>
+<div><div id="highlighter_216970" class="syntaxhighlighter coolshell_syntaxhighlighter php"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="php comments">// 千万不要这样做：</code></div><div class="line number2 index1 alt1"><code class="php variable">$r</code> <code class="php plain">= mysql_query(</code><code class="php string">"SELECT username FROM user ORDER BY RAND() LIMIT 1"</code><code class="php plain">);</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="php comments">// 这要会更好：</code></div><div class="line number5 index4 alt2"><code class="php variable">$r</code> <code class="php plain">= mysql_query(</code><code class="php string">"SELECT count(*) FROM user"</code><code class="php plain">);</code></div><div class="line number6 index5 alt1"><code class="php variable">$d</code> <code class="php plain">= mysql_fetch_row(</code><code class="php variable">$r</code><code class="php plain">);</code></div><div class="line number7 index6 alt2"><code class="php variable">$rand</code> <code class="php plain">= mt_rand(0,</code><code class="php variable">$d</code><code class="php plain">[0] - 1);</code></div><div class="line number8 index7 alt1">&nbsp;</div><div class="line number9 index8 alt2"><code class="php variable">$r</code> <code class="php plain">= mysql_query(</code><code class="php string">"SELECT username FROM user LIMIT $rand, 1"</code><code class="php plain">);</code></div></div></td></tr></tbody></table></div></div>
+<h4>7. 避免 SELECT *</h4>
+<p>从数据库里读出越多的数据，那么查询就会变得越慢。并且，如果你的数据库服务器和WEB服务器是两台独立的服务器的话，这还会增加网络传输的负载。</p>
+<p>所以，你应该养成一个需要什么就取什么的好的习惯。</p>
+<div><div id="highlighter_748494" class="syntaxhighlighter coolshell_syntaxhighlighter php"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="php comments">// 不推荐</code></div><div class="line number2 index1 alt1"><code class="php variable">$r</code> <code class="php plain">= mysql_query(</code><code class="php string">"SELECT * FROM user WHERE user_id = 1"</code><code class="php plain">);</code></div><div class="line number3 index2 alt2"><code class="php variable">$d</code> <code class="php plain">= mysql_fetch_assoc(</code><code class="php variable">$r</code><code class="php plain">);</code></div><div class="line number4 index3 alt1"><code class="php functions">echo</code> <code class="php string">"Welcome {$d['username']}"</code><code class="php plain">;</code></div><div class="line number5 index4 alt2">&nbsp;</div><div class="line number6 index5 alt1"><code class="php comments">// 推荐</code></div><div class="line number7 index6 alt2"><code class="php variable">$r</code> <code class="php plain">= mysql_query(</code><code class="php string">"SELECT username FROM user WHERE user_id = 1"</code><code class="php plain">);</code></div><div class="line number8 index7 alt1"><code class="php variable">$d</code> <code class="php plain">= mysql_fetch_assoc(</code><code class="php variable">$r</code><code class="php plain">);</code></div><div class="line number9 index8 alt2"><code class="php functions">echo</code> <code class="php string">"Welcome {$d['username']}"</code><code class="php plain">;</code></div></div></td></tr></tbody></table></div></div>
+<h4>8. 永远为每张表设置一个ID</h4>
+<p>我们应该为数据库里的每张表都设置一个ID做为其主键，而且最好的是一个INT型的（推荐使用UNSIGNED），并设置上自动增加的AUTO_INCREMENT标志。</p>
+<p>就算是你 users 表有一个主键叫 “email”的字段，你也别让它成为主键。使用 VARCHAR 类型来当主键会使用得性能下降。另外，在你的程序中，你应该使用表的ID来构造你的数据结构。</p>
+<p>而且，在MySQL数据引擎下，还有一些操作需要使用主键，在这些情况下，主键的性能和设置变得非常重要，比如，集群，分区……</p>
+<p>在这里，只有一个情况是例外，那就是“关联表”的“外键”，也就是说，这个表的主键，通过若干个别的表的主键构成。我们把这个情况叫做“外键”。比如：有一个“学生表”有学生的ID，有一个“课程表”有课程ID，那么，“成绩表”就是“关联表”了，其关联了学生表和课程表，在成绩表中，学生ID和课程ID叫“外键”其共同组成主键。</p>
+<h4>9. 使用 ENUM 而不是 VARCHAR</h4>
+<p><a href="http://dev.mysql.com/doc/refman/5.0/en/enum.html" target="_blank">ENUM</a> 类型是非常快和紧凑的。在实际上，其保存的是 TINYINT，但其外表上显示为字符串。这样一来，用这个字段来做一些选项列表变得相当的完美。</p>
+<p>如果你有一个字段，比如“性别”，“国家”，“民族”，“状态”或“部门”，你知道这些字段的取值是有限而且固定的，那么，你应该使用 ENUM 而不是 VARCHAR。</p>
+<p>MySQL也有一个“建议”（见第十条）告诉你怎么去重新组织你的表结构。当你有一个 VARCHAR 字段时，这个建议会告诉你把其改成 ENUM 类型。使用 PROCEDURE ANALYSE() 你可以得到相关的建议。</p>
+<h4>10. 从 PROCEDURE ANALYSE() 取得建议</h4>
+<p><a href="http://dev.mysql.com/doc/refman/5.0/en/procedure-analyse.html" target="_blank">PROCEDURE ANALYSE()</a> 会让 MySQL 帮你去分析你的字段和其实际的数据，并会给你一些有用的建议。只有表中有实际的数据，这些建议才会变得有用，因为要做一些大的决定是需要有数据作为基础的。</p>
+<p>例如，如果你创建了一个 INT 字段作为你的主键，然而并没有太多的数据，那么，PROCEDURE ANALYSE()会建议你把这个字段的类型改成 MEDIUMINT 。或是你使用了一个 VARCHAR 字段，因为数据不多，你可能会得到一个让你把它改成 ENUM 的建议。这些建议，都是可能因为数据不够多，所以决策做得就不够准。</p>
+<p>在phpmyadmin里，你可以在查看表时，点击 “Propose table structure” 来查看这些建议</p>
+<div class="tutorial_image"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/suggestions.jpg" border="0" alt=""></div>
+<p>一定要注意，这些只是建议，只有当你的表里的数据越来越多时，这些建议才会变得准确。一定要记住，你才是最终做决定的人。</p>
+<h4>11. 尽可能的使用 NOT NULL</h4>
+<p>除非你有一个很特别的原因去使用 NULL 值，你应该总是让你的字段保持 NOT NULL。这看起来好像有点争议，请往下看。</p>
+<p>首先，问问你自己“Empty”和“NULL”有多大的区别（如果是INT，那就是0和NULL）？如果你觉得它们之间没有什么区别，那么你就不要使用NULL。（你知道吗？在 Oracle 里，NULL 和 Empty 的字符串是一样的！)</p>
+<p>不要以为 NULL 不需要空间，其需要额外的空间，并且，在你进行比较的时候，你的程序会更复杂。 当然，这里并不是说你就不能使用NULL了，现实情况是很复杂的，依然会有些情况下，你需要使用NULL值。</p>
+<p>下面摘自MySQL自己的文档：</p>
+<blockquote><p>“NULL columns require additional space in the row to record whether their values are NULL. For MyISAM tables, each NULL column takes one bit extra, rounded up to the nearest byte.”</p></blockquote>
+<h4>12. Prepared Statements</h4>
+<p>Prepared Statements很像存储过程，是一种运行在后台的SQL语句集合，我们可以从使用 prepared statements 获得很多好处，无论是性能问题还是安全问题。</p>
+<p>Prepared Statements 可以检查一些你绑定好的变量，这样可以保护你的程序不会受到“SQL注入式”攻击。当然，你也可以手动地检查你的这些变量，然而，手动的检查容易出问题，而且很经常会被程序员忘了。当我们使用一些framework或是ORM的时候，这样的问题会好一些。</p>
+<p>在性能方面，当一个相同的查询被使用多次的时候，这会为你带来可观的性能优势。你可以给这些Prepared Statements定义一些参数，而MySQL只会解析一次。</p>
+<p>虽然最新版本的MySQL在传输Prepared Statements是使用二进制形势，所以这会使得网络传输非常有效率。</p>
+<p>当然，也有一些情况下，我们需要避免使用Prepared Statements，因为其不支持查询缓存。但据说版本5.1后支持了。</p>
+<p>在PHP中要使用prepared statements，你可以查看其使用手册：<a href="http://php.net/manual/en/book.mysqli.php" target="_blank">mysqli 扩展</a> 或是使用数据库抽象层，如： <a href="http://us.php.net/manual/en/book.pdo.php" target="_blank">PDO</a>.</p>
+<div><div id="highlighter_976710" class="syntaxhighlighter coolshell_syntaxhighlighter php"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div><div class="line number18 index17 alt1">18</div><div class="line number19 index18 alt2">19</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="php comments">// 创建 prepared statement</code></div><div class="line number2 index1 alt1"><code class="php keyword">if</code> <code class="php plain">(</code><code class="php variable">$stmt</code> <code class="php plain">= </code><code class="php variable">$mysqli</code><code class="php plain">-&gt;prepare(</code><code class="php string">"SELECT username FROM user WHERE state=?"</code><code class="php plain">)) {</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php comments">// 绑定参数</code></div><div class="line number5 index4 alt2"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php variable">$stmt</code><code class="php plain">-&gt;bind_param(</code><code class="php string">"s"</code><code class="php plain">, </code><code class="php variable">$state</code><code class="php plain">);</code></div><div class="line number6 index5 alt1">&nbsp;</div><div class="line number7 index6 alt2"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php comments">// 执行</code></div><div class="line number8 index7 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php variable">$stmt</code><code class="php plain">-&gt;execute();</code></div><div class="line number9 index8 alt2">&nbsp;</div><div class="line number10 index9 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php comments">// 绑定结果</code></div><div class="line number11 index10 alt2"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php variable">$stmt</code><code class="php plain">-&gt;bind_result(</code><code class="php variable">$username</code><code class="php plain">);</code></div><div class="line number12 index11 alt1">&nbsp;</div><div class="line number13 index12 alt2"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php comments">// 移动游标</code></div><div class="line number14 index13 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php variable">$stmt</code><code class="php plain">-&gt;fetch();</code></div><div class="line number15 index14 alt2">&nbsp;</div><div class="line number16 index15 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php plain">printf(</code><code class="php string">"%s is from %s\n"</code><code class="php plain">, </code><code class="php variable">$username</code><code class="php plain">, </code><code class="php variable">$state</code><code class="php plain">);</code></div><div class="line number17 index16 alt2">&nbsp;</div><div class="line number18 index17 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php variable">$stmt</code><code class="php plain">-&gt;close();</code></div><div class="line number19 index18 alt2"><code class="php plain">}</code></div></div></td></tr></tbody></table></div></div>
+<h4>13. 无缓冲的查询</h4>
+<p>正常的情况下，当你在当你在你的脚本中执行一个SQL语句的时候，你的程序会停在那里直到没这个SQL语句返回，然后你的程序再往下继续执行。你可以使用无缓冲查询来改变这个行为。</p>
+<p>关于这个事情，在PHP的文档中有一个非常不错的说明： <a href="http://php.net/manual/en/function.mysql-unbuffered-query.php" target="_blank">mysql_unbuffered_query()</a> 函数：</p>
+<blockquote><p>“mysql_unbuffered_query() sends the SQL query query to MySQL without automatically fetching and buffering the result rows as mysql_query() does. This saves a considerable amount of memory with SQL queries that produce large result sets, and you can start working on the result set immediately after the first row has been retrieved as you don’t have to wait until the complete SQL query has been performed.”</p></blockquote>
+<p>上面那句话翻译过来是说，mysql_unbuffered_query() 发送一个SQL语句到MySQL而并不像mysql_query()一样去自动fethch和缓存结果。这会相当节约很多可观的内存，尤其是那些会产生大量结果的查询语句，并且，你不需要等到所有的结果都返回，只需要第一行数据返回的时候，你就可以开始马上开始工作于查询结果了。</p>
+<p>然而，这会有一些限制。因为你要么把所有行都读走，或是你要在进行下一次的查询前调用 <a href="http://us2.php.net/manual/en/function.mysql-free-result.php" target="_blank">mysql_free_result()</a> 清除结果。而且， <a href="http://us2.php.net/manual/en/function.mysql-num-rows.php" target="_blank">mysql_num_rows()</a> 或 <a href="http://us2.php.net/manual/en/function.mysql-data-seek.php" target="_blank">mysql_data_seek()</a> 将无法使用。所以，是否使用无缓冲的查询你需要仔细考虑。</p>
+<h4>14. 把IP地址存成 UNSIGNED INT</h4>
+<p>很多程序员都会创建一个 VARCHAR(15) 字段来存放字符串形式的IP而不是整形的IP。如果你用整形来存放，只需要4个字节，并且你可以有定长的字段。而且，这会为你带来查询上的优势，尤其是当你需要使用这样的WHERE条件：IP between ip1 and ip2。</p>
+<p>我们必需要使用UNSIGNED INT，因为 IP地址会使用整个32位的无符号整形。</p>
+<p>而你的查询，你可以使用 <a href="http://dev.mysql.com/doc/refman/5.0/en/miscellaneous-functions.html#function_inet-aton" target="_blank">INET_ATON()</a> 来把一个字符串IP转成一个整形，并使用 <a href="http://dev.mysql.com/doc/refman/5.0/en/miscellaneous-functions.html#function_inet-ntoa" target="_blank">INET_NTOA()</a> 把一个整形转成一个字符串IP。在PHP中，也有这样的函数 <a href="http://php.net/manual/en/function.ip2long.php" target="_blank">ip2long()</a> 和 <a href="http://us.php.net/manual/en/function.long2ip.php" target="_blank">long2ip()</a>。</p>
+<div><div id="highlighter_359705" class="syntaxhighlighter coolshell_syntaxhighlighter php"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="php variable">$r</code> <code class="php plain">= </code><code class="php string">"UPDATE users SET ip = INET_ATON('{$_SERVER['REMOTE_ADDR']}') WHERE user_id = $user_id"</code><code class="php plain">;</code></div></div></td></tr></tbody></table></div></div>
+<h4>15. 固定长度的表会更快</h4>
+<p>如果表中的所有字段都是“固定长度”的，整个表会被认为是 <a href="http://dev.mysql.com/doc/refman/5.1/en/static-format.html" target="_blank">“static” 或 “fixed-length”</a>。 例如，表中没有如下类型的字段： VARCHAR，TEXT，BLOB。只要你包括了其中一个这些字段，那么这个表就不是“固定长度静态表”了，这样，MySQL 引擎会用另一种方法来处理。</p>
+<p>固定长度的表会提高性能，因为MySQL搜寻得会更快一些，因为这些固定的长度是很容易计算下一个数据的偏移量的，所以读取的自然也会很快。而如果字段不是定长的，那么，每一次要找下一条的话，需要程序找到主键。</p>
+<p>并且，固定长度的表也更容易被缓存和重建。不过，唯一的副作用是，固定长度的字段会浪费一些空间，因为定长的字段无论你用不用，他都是要分配那么多的空间。</p>
+<p>使用“垂直分割”技术（见下一条），你可以分割你的表成为两个一个是定长的，一个则是不定长的。</p>
+<h4>16. 垂直分割</h4>
+<p>“垂直分割”是一种把数据库中的表按列变成几张表的方法，这样可以降低表的复杂度和字段的数目，从而达到优化的目的。（以前，在银行做过项目，见过一张表有100多个字段，很恐怖）</p>
+<p><strong>示例一</strong>：在Users表中有一个字段是家庭地址，这个字段是可选字段，相比起，而且你在数据库操作的时候除了个人信息外，你并不需要经常读取或是改写这个字段。那么，为什么不把他放到另外一张表中呢？ 这样会让你的表有更好的性能，大家想想是不是，大量的时候，我对于用户表来说，只有用户ID，用户名，口令，用户角色等会被经常使用。小一点的表总是会有好的性能。</p>
+<p><strong>示例二</strong>： 你有一个叫 “last_login” 的字段，它会在每次用户登录时被更新。但是，每次更新时会导致该表的查询缓存被清空。所以，你可以把这个字段放到另一个表中，这样就不会影响你对用户ID，用户名，用户角色的不停地读取了，因为查询缓存会帮你增加很多性能。</p>
+<p>另外，你需要注意的是，这些被分出去的字段所形成的表，你不会经常性地去Join他们，不然的话，这样的性能会比不分割时还要差，而且，会是极数级的下降。</p>
+<h4>17. 拆分大的 DELETE 或 INSERT 语句</h4>
+<p>如果你需要在一个在线的网站上去执行一个大的 DELETE 或 INSERT 查询，你需要非常小心，要避免你的操作让你的整个网站停止相应。因为这两个操作是会锁表的，表一锁住了，别的操作都进不来了。</p>
+<p>Apache 会有很多的子进程或线程。所以，其工作起来相当有效率，而我们的服务器也不希望有太多的子进程，线程和数据库链接，这是极大的占服务器资源的事情，尤其是内存。</p>
+<p>如果你把你的表锁上一段时间，比如30秒钟，那么对于一个有很高访问量的站点来说，这30秒所积累的访问进程/线程，数据库链接，打开的文件数，可能不仅仅会让你泊WEB服务Crash，还可能会让你的整台服务器马上掛了。</p>
+<p>所以，如果你有一个大的处理，你定你一定把其拆分，使用 LIMIT 条件是一个好的方法。下面是一个示例：</p>
+<div><div id="highlighter_565148" class="syntaxhighlighter coolshell_syntaxhighlighter php"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="php keyword">while</code> <code class="php plain">(1) {</code></div><div class="line number2 index1 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php comments">//每次只做1000条</code></div><div class="line number3 index2 alt2"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php plain">mysql_query(</code><code class="php string">"DELETE FROM logs WHERE log_date &lt;= '2009-11-01' LIMIT 1000"</code><code class="php plain">);</code></div><div class="line number4 index3 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php keyword">if</code> <code class="php plain">(mysql_affected_rows() == 0) {</code></div><div class="line number5 index4 alt2"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php comments">// 没得可删了，退出！</code></div><div class="line number6 index5 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php keyword">break</code><code class="php plain">;</code></div><div class="line number7 index6 alt2"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php plain">}</code></div><div class="line number8 index7 alt1"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php comments">// 每次都要休息一会儿</code></div><div class="line number9 index8 alt2"><code class="php spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="php plain">usleep(50000);</code></div><div class="line number10 index9 alt1"><code class="php plain">}</code></div></div></td></tr></tbody></table></div></div>
+<h4>18. 越小的列会越快</h4>
+<p>对于大多数的数据库引擎来说，硬盘操作可能是最重大的瓶颈。所以，把你的数据变得紧凑会对这种情况非常有帮助，因为这减少了对硬盘的访问。</p>
+<p>参看 MySQL 的文档 <a href="http://dev.mysql.com/doc/refman/5.0/en/storage-requirements.html" target="_blank">Storage Requirements</a> 查看所有的数据类型。</p>
+<p>如果一个表只会有几列罢了（比如说字典表，配置表），那么，我们就没有理由使用 INT 来做主键，使用 MEDIUMINT, SMALLINT 或是更小的 TINYINT 会更经济一些。如果你不需要记录时间，使用 DATE 要比 DATETIME 好得多。</p>
+<p>当然，你也需要留够足够的扩展空间，不然，你日后来干这个事，你会死的很难看，参看<a href="http://news.slashdot.org/article.pl?sid=06/11/09/1534204" target="_blank">Slashdot的例子</a>（2009年11月06日），一个简单的ALTER TABLE语句花了3个多小时，因为里面有一千六百万条数据。</p>
+<h4>19. 选择正确的存储引擎</h4>
+<p>在 MySQL 中有两个存储引擎 MyISAM 和 InnoDB，每个引擎都有利有弊。酷壳以前文章《<a href="https://coolshell.cn/articles/652.html" target="_blank">MySQL: InnoDB 还是 MyISAM?</a>》讨论和这个事情。</p>
+<p>MyISAM 适合于一些需要大量查询的应用，但其对于有大量写操作并不是很好。甚至你只是需要update一个字段，整个表都会被锁起来，而别的进程，就算是读进程都无法操作直到读操作完成。另外，MyISAM 对于 SELECT COUNT(*) 这类的计算是超快无比的。</p>
+<p>InnoDB 的趋势会是一个非常复杂的存储引擎，对于一些小的应用，它会比 MyISAM 还慢。他是它支持“行锁” ，于是在写操作比较多的时候，会更优秀。并且，他还支持更多的高级应用，比如：事务。</p>
+<p>下面是MySQL的手册</p>
+<ul>
+<li><a href="http://dev.mysql.com/doc/refman/5.1/en/myisam-storage-engine.html">target=”_blank”MyISAM Storage Engine</a></li>
+<li><a href="http://dev.mysql.com/doc/refman/5.1/en/innodb.html" target="_blank">InnoDB Storage Engine</a></li>
+</ul>
+<h4>20. 使用一个对象关系映射器（Object Relational Mapper）</h4>
+<p>使用 ORM (Object Relational Mapper)，你能够获得可靠的性能增涨。一个ORM可以做的所有事情，也能被手动的编写出来。但是，这需要一个高级专家。</p>
+<p>ORM 的最重要的是“Lazy Loading”，也就是说，只有在需要的去取值的时候才会去真正的去做。但你也需要小心这种机制的副作用，因为这很有可能会因为要去创建很多很多小的查询反而会降低性能。</p>
+<p>ORM 还可以把你的SQL语句打包成一个事务，这会比单独执行他们快得多得多。</p>
+<p>目前，个人最喜欢的PHP的ORM是：<a href="http://www.doctrine-project.org/" target="_blank">Doctrine</a>。</p>
+<h4>21. 小心“永久链接”</h4>
+<p>“永久链接”的目的是用来减少重新创建MySQL链接的次数。当一个链接被创建了，它会永远处在连接的状态，就算是数据库操作已经结束了。而且，自从我们的Apache开始重用它的子进程后——也就是说，下一次的HTTP请求会重用Apache的子进程，并重用相同的 MySQL 链接。</p>
+<ul>
+<li><a href="http://php.net/manual/en/function.mysql-pconnect.php" target="_blank">PHP手册：mysql_pconnect() </a></li>
+</ul>
+<p>在理论上来说，这听起来非常的不错。但是从个人经验（也是大多数人的）上来说，这个功能制造出来的麻烦事更多。因为，你只有有限的链接数，内存问题，文件句柄数，等等。</p>
+<p>而且，Apache 运行在极端并行的环境中，会创建很多很多的了进程。这就是为什么这种“永久链接”的机制工作地不好的原因。在你决定要使用“永久链接”之前，你需要好好地考虑一下你的整个系统的架构。</p>
+<p>文章：<a href="http://net.tutsplus.com/tutorials/other/top-20-mysql-best-practices/" target="_blank">来源</a></p>
+<p>（全文完）<!--
+
+<p align="center"><a href= target=_blank><img src=""></a></p>
+
+ --></p>
+<p align="center"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/qrcode_for_gh_dd9d8c843f20_860-300x300.jpg"><br>关注CoolShell微信公众账号可以在手机端搜索文章</p>
+<div style="margin-top: 15px; font-size: 11px;color: #cc0000;">
+<p align="center"><strong>（转载本站文章请注明作者和出处 <a href="https://coolshell.cn/">酷 壳 – CoolShell</a> ，请勿用于任何商业用途）</strong></p></div>
+<div style="text-align:center;padding:0px;font-size: 14px;margin-bottom: 50px;">——=== <b>访问 <a href="http://coolshell.cn/404/" target="_blank">酷壳404页面</a> 寻找遗失儿童。</b> ===——</div>
+
+<div class="wp_rp_wrap  wp_rp_vertical_m" id="wp_rp_first"><div class="wp_rp_content"><h3 class="related_post_title">相关文章</h3><ul class="related_post wp_rp"><li data-position="0" data-poid="in-652" data-post-type="none"><a href="https://coolshell.cn/articles/652.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/4.jpg" alt="MySQL: InnoDB 还是 MyISAM?" width="150" height="150"></a><a href="https://coolshell.cn/articles/652.html" class="wp_rp_title">MySQL: InnoDB 还是 MyISAM?</a></li><li data-position="1" data-poid="in-4795" data-post-type="none"><a href="https://coolshell.cn/articles/4795.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/28.jpg" alt="开源中最好的Web开发的资源" width="150" height="150"></a><a href="https://coolshell.cn/articles/4795.html" class="wp_rp_title">开源中最好的Web开发的资源</a></li><li data-position="2" data-poid="in-1889" data-post-type="none"><a href="https://coolshell.cn/articles/1889.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/sql.where_.clause-150x150.jpg" alt="SQL的Where语句" width="150" height="150"></a><a href="https://coolshell.cn/articles/1889.html" class="wp_rp_title">SQL的Where语句</a></li><li data-position="3" data-poid="in-3684" data-post-type="none"><a href="https://coolshell.cn/articles/3684.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/1128-150x150.jpg" alt="Web开发人员速查卡" width="150" height="150"></a><a href="https://coolshell.cn/articles/3684.html" class="wp_rp_title">Web开发人员速查卡</a></li><li data-position="4" data-poid="in-5826" data-post-type="none"><a href="https://coolshell.cn/articles/5826.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/12.jpg" alt="千万别用MongoDB？真的吗？！" width="150" height="150"></a><a href="https://coolshell.cn/articles/5826.html" class="wp_rp_title">千万别用MongoDB？真的吗？！</a></li><li data-position="5" data-poid="in-7490" data-post-type="none"><a href="https://coolshell.cn/articles/7490.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/f1-150x150.jpg" alt="性能调优攻略" width="150" height="150"></a><a href="https://coolshell.cn/articles/7490.html" class="wp_rp_title">性能调优攻略</a></li></ul></div></div>
+<div id="post-ratings-1846" class="post-ratings" itemscope="" itemtype="http://schema.org/Article" data-nonce="8c4cf6f0f9"><img id="rating_1846_1" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/rating_on.gif" alt="好烂啊" title="好烂啊" onmouseover="current_rating(1846, 1, &#39;好烂啊&#39;);" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;"><img id="rating_1846_2" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/rating_on.gif" alt="有点差" title="有点差" onmouseover="current_rating(1846, 2, &#39;有点差&#39;);" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;"><img id="rating_1846_3" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/rating_on.gif" alt="凑合看看" title="凑合看看" onmouseover="current_rating(1846, 3, &#39;凑合看看&#39;);" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;"><img id="rating_1846_4" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/rating_on.gif" alt="还不错" title="还不错" onmouseover="current_rating(1846, 4, &#39;还不错&#39;);" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;"><img id="rating_1846_5" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/rating_half.gif" alt="很精彩" title="很精彩" onmouseover="current_rating(1846, 5, &#39;很精彩&#39;);" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;"> (<strong>47</strong> 人打了分，平均分： <strong>4.70</strong> )<br><span class="post-ratings-text" id="ratings_1846_text"></span><meta itemprop="headline" content="MySQL性能优化的最佳20+条经验"><meta itemprop="description" content="今天，数据库的操作越来越成为整个应用的性能瓶颈了，这点对于Web应用尤其明显。关于数据库的性能，这并不只是DBA才需要担心的事，而这更是我们程序员需要去关注的事情。当我们去设计数据库表结构，对操作数据库时（尤其是查表时的SQL语句），我们都需要注意数据操作的性能。这里，我们不会讲过多的SQL语句的优化，而只是针对MySQL这一Web应用最多的数据库。希望下面的这些优化技巧对你有用。
+1. 为查询..."><meta itemprop="datePublished" content="2009-11-27T18:57:33+00:00"><meta itemprop="dateModified" content="2009-11-28T08:29:19+00:00"><meta itemprop="url" content="https://coolshell.cn/articles/1846.html"><meta itemprop="author" content="陈皓"><meta itemprop="mainEntityOfPage" content="https://coolshell.cn/articles/1846.html"><div style="display: none;" itemprop="publisher" itemscope="" itemtype="https://schema.org/Organization"><meta itemprop="name" content="酷 壳 - CoolShell"><div itemprop="logo" itemscope="" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content=""></div></div><div style="display: none;" itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating"><meta itemprop="bestRating" content="5"><meta itemprop="worstRating" content="1"><meta itemprop="ratingValue" content="4.7"><meta itemprop="ratingCount" content="47"></div></div><div id="post-ratings-1846-loading" class="post-ratings-loading">
+			<img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/loading.gif" width="16" height="16" class="post-ratings-image">Loading...</div>
+							</div><!-- .entry-content -->
+
+	<footer class="entry-footer">
+		<hr><div class="row"><div class="col-md-6 cattegories"><span class="cat-links"><i class="fa fa-folder-open"></i>
+		 <a href="https://coolshell.cn/category/proglanguage/phpdev" rel="category tag">PHP脚本</a>, <a href="https://coolshell.cn/category/datebase" rel="category tag">数据库</a></span></div><div class="col-md-6 tags"><span class="tags-links"><i class="fa fa-tags"></i> <a href="https://coolshell.cn/tag/database" rel="tag">Database</a>, <a href="https://coolshell.cn/tag/mysql" rel="tag">MySQL</a>, <a href="https://coolshell.cn/tag/php" rel="tag">PHP</a></span></div></div>	</footer><!-- .entry-footer -->
+</article><!-- #post-## -->
+    <!-- related posts START -->
+    <div id="related_posts">
+<div class="wp_rp_wrap  wp_rp_vertical_m"><div class="wp_rp_content"><h3 class="related_post_title">相关文章</h3><ul class="related_post wp_rp"><li data-position="0" data-poid="in-652" data-post-type="none"><a href="https://coolshell.cn/articles/652.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/4.jpg" alt="MySQL: InnoDB 还是 MyISAM?" width="150" height="150"></a><a href="https://coolshell.cn/articles/652.html" class="wp_rp_title">MySQL: InnoDB 还是 MyISAM?</a></li><li data-position="1" data-poid="in-4795" data-post-type="none"><a href="https://coolshell.cn/articles/4795.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/28.jpg" alt="开源中最好的Web开发的资源" width="150" height="150"></a><a href="https://coolshell.cn/articles/4795.html" class="wp_rp_title">开源中最好的Web开发的资源</a></li><li data-position="2" data-poid="in-1889" data-post-type="none"><a href="https://coolshell.cn/articles/1889.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/sql.where_.clause-150x150.jpg" alt="SQL的Where语句" width="150" height="150"></a><a href="https://coolshell.cn/articles/1889.html" class="wp_rp_title">SQL的Where语句</a></li><li data-position="3" data-poid="in-3684" data-post-type="none"><a href="https://coolshell.cn/articles/3684.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/1128-150x150.jpg" alt="Web开发人员速查卡" width="150" height="150"></a><a href="https://coolshell.cn/articles/3684.html" class="wp_rp_title">Web开发人员速查卡</a></li><li data-position="4" data-poid="in-5826" data-post-type="none"><a href="https://coolshell.cn/articles/5826.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/12.jpg" alt="千万别用MongoDB？真的吗？！" width="150" height="150"></a><a href="https://coolshell.cn/articles/5826.html" class="wp_rp_title">千万别用MongoDB？真的吗？！</a></li><li data-position="5" data-poid="in-7490" data-post-type="none"><a href="https://coolshell.cn/articles/7490.html" class="wp_rp_thumbnail"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/f1-150x150.jpg" alt="性能调优攻略" width="150" height="150"></a><a href="https://coolshell.cn/articles/7490.html" class="wp_rp_title">性能调优攻略</a></li></ul></div></div>
+</div><div class="fixed"></div>    <!-- related posts END -->
+				</main><!-- #main -->				
+
+				<div class="post-navigation">				
+						<nav class="navigation" role="navigation">
+		<h2 class="screen-reader-text">Post navigation</h2>
+		<div class="nav-links">
+			<div class="row">
+			<!-- Get Next Post -->
+			
+						<div class="col-md-6 next-post">
+			<a class="" href="https://coolshell.cn/articles/1857.html"><span class="next-prev-text"><i class="fa fa-angle-left"></i>
+  上一篇</span><br>C 语言整型谜题</a>
+			</div>
+						
+			<!-- Get Previous Post -->
+			
+							<div class="col-md-6 prev-post">
+				<a class="" href="https://coolshell.cn/articles/1839.html"><span class="next-prev-text">下一篇 <i class="fa fa-angle-right"></i>
+</span><br>编程语言汽车</a>
+				</div>
+						
+			</div>
+		</div><!-- .nav-links -->
+	</nav><!-- .navigation-->
+					</div>
+
+				<div class="post-comments">
+					
+<div id="comments" class="comments-area">
+
+			<h2 class="comments-title">
+			《<span>MySQL性能优化的最佳20+条经验</span>》的相关评论		</h2>
+
+		<ol class="comment-list">
+					<li id="comment-1913411" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback： <a href="http://www.zm07.cn/2017/03/08/%e5%b7%a6%e8%80%b3%e6%9c%b5%e8%80%97%e5%ad%90%e7%bb%99%e5%87%ba%e7%9a%84%e5%ad%a6%e4%b9%a0%e6%8c%87%e5%8d%97/" rel="external nofollow" class="url">左耳朵耗子给出的学习指南 – 知识信息库</a> 			</div>
+		</li><!-- #comment-## -->
+		<li id="comment-1914469" class="pingback odd alt thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback： <a href="http://www.qimeng.org/p/65290" rel="external nofollow" class="url">从代码级别的技术细节入手，看性能优化怎么做 – 启蒙</a> 			</div>
+		</li><!-- #comment-## -->
+		<li id="comment-1914836" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback： <a href="http://www.iszhou.com/2017/07/03/6%e4%b8%aa%e6%9c%89%e7%94%a8%e7%9a%84mysql%e8%af%ad%e5%8f%a5/" rel="external nofollow" class="url">6个有用的MYSQL语句-iszhou</a> 			</div>
+		</li><!-- #comment-## -->
+		<li id="comment-1917666" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-1917666" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt="" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/47e7c485ac4094a15a708ac13f6372e8.jpeg" srcset="https://secure.gravatar.com/avatar/47e7c485ac4094a15a708ac13f6372e8?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<b class="fn">leo</b><span class="says">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://coolshell.cn/articles/1846.html/comment-page-4#comment-1917666">
+							<time datetime="2017-09-16T19:34:45+08:00">
+								2017年09月16日 19:34							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>NOT NULL 是使用myiasm吧，innodb 会更节省空间</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://coolshell.cn/articles/1846.html?replytocom=1917666#respond" data-commentid="1917666" data-postid="1846" data-belowelement="div-comment-1917666" data-respondelement="respond" aria-label="回复给leo">回复</a></div>			</article><!-- .comment-body -->
+		</li><!-- #comment-## -->
+		<li id="comment-1920589" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback： <a href="http://mysql1.psmeimei.com/?p=21607" rel="external nofollow" class="url">mysql杂记 – MySql数据库设计</a> 			</div>
+		</li><!-- #comment-## -->
+		<li id="comment-1926739" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-1926739" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt="" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/caad1f16d5109dedcd3c165540789529.png" srcset="https://secure.gravatar.com/avatar/caad1f16d5109dedcd3c165540789529?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<b class="fn">Jason</b><span class="says">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://coolshell.cn/articles/1846.html/comment-page-4#comment-1926739">
+							<time datetime="2018-04-08T17:53:23+08:00">
+								2018年04月08日 17:53							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>重温学习。</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://coolshell.cn/articles/1846.html?replytocom=1926739#respond" data-commentid="1926739" data-postid="1846" data-belowelement="div-comment-1926739" data-respondelement="respond" aria-label="回复给Jason">回复</a></div>			</article><!-- .comment-body -->
+		</li><!-- #comment-## -->
+		<li id="comment-1928483" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback： <a href="https://b.abczn.com/archives/1347" rel="external nofollow" class="url">秘籍-26条MySQL性能优化的最佳经验 - Free-Abc智能</a> 			</div>
+		</li><!-- #comment-## -->
+		<li id="comment-1942618" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-1942618" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt="" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/876e69835e687a00424028bee34bcce5.png" srcset="https://secure.gravatar.com/avatar/876e69835e687a00424028bee34bcce5?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<b class="fn">eliefly</b><span class="says">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://coolshell.cn/articles/1846.html/comment-page-4#comment-1942618">
+							<time datetime="2018-11-10T16:14:54+08:00">
+								2018年11月10日 16:14							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>很好的文章，刚看完高性能mysql，这些建议一眼看懂。另书中建议，查询缓存也要消耗资源做很多事，还很多失效的情况，除非能证明有效，否则建议禁用查询缓存。</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://coolshell.cn/articles/1846.html?replytocom=1942618#respond" data-commentid="1942618" data-postid="1846" data-belowelement="div-comment-1942618" data-respondelement="respond" aria-label="回复给eliefly">回复</a></div>			</article><!-- .comment-body -->
+		</li><!-- #comment-## -->
+		<li id="comment-1945635" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback： <a href="http://photo.itmeseji.com/2018/11/29/php%e9%9d%a2%e8%af%95%e6%80%bb%e7%bb%93/" rel="external nofollow" class="url">PHP面试总结 – 1</a> 			</div>
+		</li><!-- #comment-## -->
+		<li id="comment-1948898" class="pingback odd alt thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback： <a href="http://blog.lijin100.com/?p=282" rel="external nofollow" class="url">MySQL优化步骤 – LiJin's Blog</a> 			</div>
+		</li><!-- #comment-## -->
+		<li id="comment-1950161" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback： <a href="https://www.xuansu.org/2018/04/%e7%a8%8b%e5%ba%8f%e5%91%98%e7%bb%83%e7%ba%a7%e4%b9%8b%e8%b7%af/" rel="external nofollow" class="url">程序员练级之路 | 萱苏茶肆</a> 			</div>
+		</li><!-- #comment-## -->
+		<li id="comment-1978022" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-1978022" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt="" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/77fc2a55ad457eea6c81231817c931af.png" srcset="https://secure.gravatar.com/avatar/77fc2a55ad457eea6c81231817c931af?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<b class="fn">zhangchunji</b><span class="says">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://coolshell.cn/articles/1846.html/comment-page-4#comment-1978022">
+							<time datetime="2019-03-18T10:11:50+08:00">
+								2019年03月18日 10:11							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>无缓冲的查询<br>
+正常的情况下，当你在当你在<br>
+这个地方, 应该是有个语病:)</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://coolshell.cn/articles/1846.html?replytocom=1978022#respond" data-commentid="1978022" data-postid="1846" data-belowelement="div-comment-1978022" data-respondelement="respond" aria-label="回复给zhangchunji">回复</a></div>			</article><!-- .comment-body -->
+		</li><!-- #comment-## -->
+		</ol><!-- .comment-list -->
+
+				<nav class="navigation comment-navigation" role="navigation">
+		<h2 class="screen-reader-text">Comment navigation</h2>
+		<div class="nav-links">
+			                                <div id="commentnavi">
+                        <span class="pages"><i class="fa fa-comments"></i> 评论分页</span>
+                        <div id="commentpager">
+                            <a class="prev page-numbers" href="https://coolshell.cn/articles/1846.html/comment-page-3#comments">« 上一页</a>
+<a class="page-numbers" href="https://coolshell.cn/articles/1846.html/comment-page-1#comments">1</a>
+<a class="page-numbers" href="https://coolshell.cn/articles/1846.html/comment-page-2#comments">2</a>
+<a class="page-numbers" href="https://coolshell.cn/articles/1846.html/comment-page-3#comments">3</a>
+<span aria-current="page" class="page-numbers current">4</span>                            <span id="cp_post_id">1846</span>
+                        </div>
+                        <div class="fixed"></div>
+                    </div>
+            		</div><!-- .nav-links -->
+		</nav><!-- .comment-navigation -->
+		
+		
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">发表评论 <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://coolshell.cn/articles/1846.html#respond" style="display:none;">取消回复</a></small></h3>			<form action="https://coolshell.cn/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
+				<p class="comment-notes"><span id="email-notes">电子邮件地址不会被公开。</span> 必填项已用<span class="required">*</span>标注</p><p class="comment-form-comment"><label for="comment">评论</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">姓名 <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">电子邮件 <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">站点</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200"></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="发表评论"> <input type="hidden" name="comment_post_ID" value="1846" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="2ad0a53e79"></p><p style="display: none;"></p>			<input type="hidden" id="ak_js" name="ak_js" value="1553507451633"></form>
+			</div><!-- #respond -->
+	
+</div><!-- #comments -->
+				</div>			
+
+				
+				
+			</div><!-- #primary -->
+
+			<div id="secondary" class="col-md-3 hidden-sm hidden-xs sidebar widget-area" role="complementary">
+        <aside id="search-3" class="widget widget_search">
+<form role="search" method="get" class="search-form" action="https://coolshell.cn/">
+	<label>
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" class="search-field" placeholder="Search …" value="" name="s" title="Search for:">
+	</label>
+	<button type="submit" class="search-submit"><span class="screen-reader-text">Search</span></button>
+</form>
+</aside><aside id="text-400151744" class="widget widget_text"><h4 class="widget-title">本站公告</h4>			<div class="textwidget"><p align="center"><img src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/qrcode_for_gh_dd9d8c843f20_860-300x300.jpg" height="200" weight="200" alt="微信公众号" title="微信公众号"></p>
+
+<iframe width="100%" class="share_self" frameborder="0" scrolling="no" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/index.html"></iframe>
+
+<p align="center" style="background-color: #777;padding: 5px;color: white;font-weight: bold;border: solid 1px black;text-shadow: 0px 0px 3px black;"> <a href="https://coolshell.cn/404/" target="_self" style="color: #FFE249;">酷壳404页面</a> <br>寻找遗失儿童！</p>
+
+
+
+<!--<p>酷壳建议大家多使用RSS访问阅读（本站已经是全文输出，推荐使用cloud.feedly.com 或 digg.com）。有相关事宜欢迎电邮：haoel(at)hotmail.com。最后，感谢大家对酷壳的支持和体谅！</p>--></div>
+		</aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h4 class="widget-title">最新文章</h4>		<ul>
+											<li>
+					<a href="https://coolshell.cn/articles/19219.html">打造高效的工作环境 – Shell 篇</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/19085.html">谈谈我的“三观”</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/18654.html">记一次Kubernetes/Docker网络排障</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/18360.html">程序员练级攻略（2018)  与我的专栏</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/18246.html">关于我”极客时间“的专栏</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/18190.html">Go语言、Docker 和新技术</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/18140.html">关于Facebook 的 React 专利许可证</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/18094.html">如何免费的让网站启用HTTPS</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/18024.html">API设计原则 – Qt官网的设计实践总结</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17998.html">Linux PID 1 和 Systemd</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17972.html">我看绩效考核</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17929.html">Go语言的修饰器编程</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17757.html">如何重构“箭头型”代码</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17737.html">AWS 的 S3 故障回顾和思考</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17680.html">从Gitlab误删除数据库想到的</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17634.html">Chrome开发者工具的小技巧</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17607.html">从 MongoDB “赎金事件” 看安全问题</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17583.html">技术人员的发展之路</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17524.html">如何读懂并写出装逼的函数式代码</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17497.html">什么是工程师文化？</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17459.html">关于高可用的系统</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17446.html">这多年来我一直在钻研的技术</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17416.html">缓存更新的套路</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17391.html">为什么我不在微信公众号上写文章</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17381.html">性能测试应该怎么做？</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17295.html">让我们来谈谈分工</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17225.html">Cuckoo Filter：设计与实现</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17200.html">Docker基础技术：DeviceMapper</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17061.html">Docker基础技术：AUFS</a>
+									</li>
+											<li>
+					<a href="https://coolshell.cn/articles/17049.html">Docker基础技术：Linux CGroup</a>
+									</li>
+					</ul>
+		</aside><aside id="views-4" class="widget widget_views"><h4 class="widget-title">全站热门</h4><ul>
+<li><a href="https://coolshell.cn/articles/4990.html" title="程序员技术练级攻略 - 9,808,646 人阅读">程序员技术练级攻略</a></li><li><a href="https://coolshell.cn/articles/5426.html" title="简明 Vim 练级攻略 - 912,500 人阅读">简明 Vim 练级攻略</a></li><li><a href="https://coolshell.cn/articles/9070.html" title="AWK 简明教程 - 321,040 人阅读">AWK 简明教程</a></li><li><a href="https://coolshell.cn/articles/11564.html" title="TCP 的那些事儿（上） - 286,513 人阅读">TCP 的那些事儿（上）</a></li><li><a href="https://coolshell.cn/articles/7186.html" title="做个环保主义的程序员 - 273,064 人阅读">做个环保主义的程序员</a></li><li><a href="https://coolshell.cn/articles/4102.html" title="如何学好C语言 - 256,039 人阅读">如何学好C语言</a></li><li><a href="https://coolshell.cn/articles/9104.html" title="sed 简明教程 - 248,441 人阅读">sed 简明教程</a></li><li><a href="https://coolshell.cn/articles/10590.html" title="二维码的生成细节和原理 - 229,926 人阅读">二维码的生成细节和原理</a></li><li><a href="https://coolshell.cn/articles/8883.html" title="应该知道的Linux技巧 - 213,455 人阅读">应该知道的Linux技巧</a></li><li><a href="https://coolshell.cn/articles/10688.html" title="编程能力与编程年龄 - 208,499 人阅读">编程能力与编程年龄</a></li><li><a href="https://coolshell.cn/articles/2250.html" title="“21天教你学会C++” - 200,994 人阅读">“21天教你学会C++”</a></li><li><a href="https://coolshell.cn/articles/9308.html" title="“作环保的程序员，从不用百度开始” - 199,006 人阅读">“作环保的程序员，从不用百度开始”</a></li><li><a href="https://coolshell.cn/articles/914.html" title="6个变态的C语言Hello World程序 - 185,274 人阅读">6个变态的C语言Hello World程序</a></li><li><a href="https://coolshell.cn/articles/1846.html" title="MySQL性能优化的最佳20+条经验 - 184,876 人阅读">MySQL性能优化的最佳20+条经验</a></li><li><a href="https://coolshell.cn/articles/6470.html" title="由12306.cn谈谈网站性能技术 - 181,278 人阅读">由12306.cn谈谈网站性能技术</a></li><li><a href="https://coolshell.cn/articles/7829.html" title="28个Unix/Linux的命令行神器 - 181,231 人阅读">28个Unix/Linux的命令行神器</a></li><li><a href="https://coolshell.cn/articles/17583.html" title="技术人员的发展之路 - 176,884 人阅读">技术人员的发展之路</a></li><li><a href="https://coolshell.cn/articles/7490.html" title="性能调优攻略 - 175,100 人阅读">性能调优攻略</a></li><li><a href="https://coolshell.cn/articles/10739.html" title="Lua简明教程 - 172,457 人阅读">Lua简明教程</a></li><li><a href="https://coolshell.cn/articles/10910.html" title="分布式系统的事务处理 - 169,334 人阅读">分布式系统的事务处理</a></li><li><a href="https://coolshell.cn/articles/1870.html" title="我是怎么招聘程序员的 - 160,066 人阅读">我是怎么招聘程序员的</a></li><li><a href="https://coolshell.cn/articles/11609.html" title="TCP 的那些事儿（下） - 158,774 人阅读">TCP 的那些事儿（下）</a></li><li><a href="https://coolshell.cn/articles/11312.html" title="无插件Vim编程技巧 - 149,029 人阅读">无插件Vim编程技巧</a></li><li><a href="https://coolshell.cn/articles/2287.html" title="C++ 程序员自信心曲线图 - 140,918 人阅读">C++ 程序员自信心曲线图</a></li><li><a href="https://coolshell.cn/articles/6043.html" title="Web开发中需要了解的东西 - 140,082 人阅读">Web开发中需要了解的东西</a></li><li><a href="https://coolshell.cn/articles/4119.html" title="如何学好C++语言 - 139,455 人阅读">如何学好C++语言</a></li><li><a href="https://coolshell.cn/articles/4758.html" title="如何写出无法维护的代码 - 139,103 人阅读">如何写出无法维护的代码</a></li><li><a href="https://coolshell.cn/articles/10822.html" title="函数式编程 - 136,501 人阅读">函数式编程</a></li><li><a href="https://coolshell.cn/articles/9666.html" title="浏览器的渲染原理简介 - 135,095 人阅读">浏览器的渲染原理简介</a></li><li><a href="https://coolshell.cn/articles/10217.html" title="加班与效率 - 129,291 人阅读">加班与效率</a></li></ul>
+</aside><aside id="categories-367921423" class="widget widget_categories"><h4 class="widget-title">分类目录</h4>		<ul>
+				<li class="cat-item cat-item-189"><a href="https://coolshell.cn/category/proglanguage/dotnet">.NET编程</a> (3)
+</li>
+	<li class="cat-item cat-item-8"><a href="https://coolshell.cn/category/proglanguage/ajaxdev">Ajax开发</a> (9)
+</li>
+	<li class="cat-item cat-item-5"><a href="https://coolshell.cn/category/proglanguage/cplusplus">C/C++语言</a> (73)
+</li>
+	<li class="cat-item cat-item-186"><a href="https://coolshell.cn/category/proglanguage/erlang">Erlang</a> (1)
+</li>
+	<li class="cat-item cat-item-819"><a href="https://coolshell.cn/category/proglanguage/go-%e8%af%ad%e8%a8%80">Go 语言</a> (4)
+</li>
+	<li class="cat-item cat-item-4"><a href="https://coolshell.cn/category/proglanguage/javadev">Java语言</a> (32)
+</li>
+	<li class="cat-item cat-item-11"><a href="https://coolshell.cn/category/proglanguage/phpdev">PHP脚本</a> (11)
+</li>
+	<li class="cat-item cat-item-33"><a href="https://coolshell.cn/category/proglanguage/pythondev">Python</a> (23)
+</li>
+	<li class="cat-item cat-item-100"><a href="https://coolshell.cn/category/proglanguage/rubydev">Ruby</a> (5)
+</li>
+	<li class="cat-item cat-item-20"><a href="https://coolshell.cn/category/operatingsystem/unixlinux">Unix/Linux</a> (78)
+</li>
+	<li class="cat-item cat-item-7"><a href="https://coolshell.cn/category/proglanguage/webdev">Web开发</a> (106)
+</li>
+	<li class="cat-item cat-item-19"><a href="https://coolshell.cn/category/operatingsystem/mswindows">Windows</a> (12)
+</li>
+	<li class="cat-item cat-item-195"><a href="https://coolshell.cn/category/itnews">业界新闻</a> (28)
+</li>
+	<li class="cat-item cat-item-509"><a href="https://coolshell.cn/category/%e4%bc%81%e4%b8%9a%e5%ba%94%e7%94%a8">企业应用</a> (2)
+</li>
+	<li class="cat-item cat-item-9"><a href="https://coolshell.cn/category/technews">技术新闻</a> (35)
+</li>
+	<li class="cat-item cat-item-550"><a href="https://coolshell.cn/category/%e6%8a%80%e6%9c%af%e7%ae%a1%e7%90%86">技术管理</a> (16)
+</li>
+	<li class="cat-item cat-item-12"><a href="https://coolshell.cn/category/techarticle">技术读物</a> (120)
+</li>
+	<li class="cat-item cat-item-18"><a href="https://coolshell.cn/category/operatingsystem">操作系统</a> (52)
+</li>
+	<li class="cat-item cat-item-105"><a href="https://coolshell.cn/category/datebase">数据库</a> (11)
+</li>
+	<li class="cat-item cat-item-10"><a href="https://coolshell.cn/category/misc">杂项资源</a> (281)
+</li>
+	<li class="cat-item cat-item-15"><a href="https://coolshell.cn/category/process">流程方法</a> (48)
+</li>
+	<li class="cat-item cat-item-23"><a href="https://coolshell.cn/category/progdesign">程序设计</a> (94)
+</li>
+	<li class="cat-item cat-item-602"><a href="https://coolshell.cn/category/%e7%b3%bb%e7%bb%9f%e6%9e%b6%e6%9e%84">系统架构</a> (11)
+</li>
+	<li class="cat-item cat-item-1"><a href="https://coolshell.cn/category/tools">编程工具</a> (67)
+</li>
+	<li class="cat-item cat-item-3"><a href="https://coolshell.cn/category/proglanguage">编程语言</a> (178)
+</li>
+	<li class="cat-item cat-item-6"><a href="https://coolshell.cn/category/netsecurity">网络安全</a> (29)
+</li>
+	<li class="cat-item cat-item-39"><a href="https://coolshell.cn/category/career">职场生涯</a> (36)
+</li>
+	<li class="cat-item cat-item-271"><a href="https://coolshell.cn/category/funny">趣味问题</a> (19)
+</li>
+	<li class="cat-item cat-item-52"><a href="https://coolshell.cn/category/story">轶事趣闻</a> (147)
+</li>
+		</ul>
+			</aside><aside id="archives-3" class="widget widget_archive"><h4 class="widget-title">文章归档</h4>		<ul>
+				<li><a href="https://coolshell.cn/articles/date/2019/03">2019年三月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2019/02">2019年二月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2018/12">2018年十二月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2018/05">2018年五月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2018/01">2018年一月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2017/10">2017年十月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2017/09">2017年九月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2017/08">2017年八月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2017/07">2017年七月</a>&nbsp;(3)</li>
+	<li><a href="https://coolshell.cn/articles/date/2017/06">2017年六月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2017/04">2017年四月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2017/03">2017年三月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2017/02">2017年二月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2017/01">2017年一月</a>&nbsp;(2)</li>
+	<li><a href="https://coolshell.cn/articles/date/2016/12">2016年十二月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2016/10">2016年十月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2016/09">2016年九月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2016/08">2016年八月</a>&nbsp;(2)</li>
+	<li><a href="https://coolshell.cn/articles/date/2016/07">2016年七月</a>&nbsp;(3)</li>
+	<li><a href="https://coolshell.cn/articles/date/2015/12">2015年十二月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2015/09">2015年九月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2015/08">2015年八月</a>&nbsp;(2)</li>
+	<li><a href="https://coolshell.cn/articles/date/2015/04">2015年四月</a>&nbsp;(4)</li>
+	<li><a href="https://coolshell.cn/articles/date/2014/12">2014年十二月</a>&nbsp;(3)</li>
+	<li><a href="https://coolshell.cn/articles/date/2014/11">2014年十一月</a>&nbsp;(2)</li>
+	<li><a href="https://coolshell.cn/articles/date/2014/10">2014年十月</a>&nbsp;(2)</li>
+	<li><a href="https://coolshell.cn/articles/date/2014/09">2014年九月</a>&nbsp;(2)</li>
+	<li><a href="https://coolshell.cn/articles/date/2014/08">2014年八月</a>&nbsp;(2)</li>
+	<li><a href="https://coolshell.cn/articles/date/2014/06">2014年六月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2014/05">2014年五月</a>&nbsp;(4)</li>
+	<li><a href="https://coolshell.cn/articles/date/2014/04">2014年四月</a>&nbsp;(4)</li>
+	<li><a href="https://coolshell.cn/articles/date/2014/03">2014年三月</a>&nbsp;(5)</li>
+	<li><a href="https://coolshell.cn/articles/date/2014/02">2014年二月</a>&nbsp;(3)</li>
+	<li><a href="https://coolshell.cn/articles/date/2014/01">2014年一月</a>&nbsp;(2)</li>
+	<li><a href="https://coolshell.cn/articles/date/2013/12">2013年十二月</a>&nbsp;(3)</li>
+	<li><a href="https://coolshell.cn/articles/date/2013/11">2013年十一月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2013/10">2013年十月</a>&nbsp;(6)</li>
+	<li><a href="https://coolshell.cn/articles/date/2013/08">2013年八月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2013/07">2013年七月</a>&nbsp;(8)</li>
+	<li><a href="https://coolshell.cn/articles/date/2013/06">2013年六月</a>&nbsp;(2)</li>
+	<li><a href="https://coolshell.cn/articles/date/2013/05">2013年五月</a>&nbsp;(3)</li>
+	<li><a href="https://coolshell.cn/articles/date/2013/04">2013年四月</a>&nbsp;(3)</li>
+	<li><a href="https://coolshell.cn/articles/date/2013/03">2013年三月</a>&nbsp;(3)</li>
+	<li><a href="https://coolshell.cn/articles/date/2013/02">2013年二月</a>&nbsp;(5)</li>
+	<li><a href="https://coolshell.cn/articles/date/2013/01">2013年一月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/12">2012年十二月</a>&nbsp;(4)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/11">2012年十一月</a>&nbsp;(4)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/10">2012年十月</a>&nbsp;(3)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/09">2012年九月</a>&nbsp;(4)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/08">2012年八月</a>&nbsp;(8)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/07">2012年七月</a>&nbsp;(4)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/06">2012年六月</a>&nbsp;(7)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/05">2012年五月</a>&nbsp;(6)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/04">2012年四月</a>&nbsp;(6)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/03">2012年三月</a>&nbsp;(6)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/02">2012年二月</a>&nbsp;(3)</li>
+	<li><a href="https://coolshell.cn/articles/date/2012/01">2012年一月</a>&nbsp;(6)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/12">2011年十二月</a>&nbsp;(5)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/11">2011年十一月</a>&nbsp;(9)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/10">2011年十月</a>&nbsp;(6)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/09">2011年九月</a>&nbsp;(5)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/08">2011年八月</a>&nbsp;(14)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/07">2011年七月</a>&nbsp;(6)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/06">2011年六月</a>&nbsp;(12)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/05">2011年五月</a>&nbsp;(5)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/04">2011年四月</a>&nbsp;(18)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/03">2011年三月</a>&nbsp;(16)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/02">2011年二月</a>&nbsp;(16)</li>
+	<li><a href="https://coolshell.cn/articles/date/2011/01">2011年一月</a>&nbsp;(18)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/12">2010年十二月</a>&nbsp;(11)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/11">2010年十一月</a>&nbsp;(11)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/10">2010年十月</a>&nbsp;(19)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/09">2010年九月</a>&nbsp;(15)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/08">2010年八月</a>&nbsp;(10)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/07">2010年七月</a>&nbsp;(20)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/06">2010年六月</a>&nbsp;(9)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/05">2010年五月</a>&nbsp;(13)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/04">2010年四月</a>&nbsp;(12)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/03">2010年三月</a>&nbsp;(11)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/02">2010年二月</a>&nbsp;(7)</li>
+	<li><a href="https://coolshell.cn/articles/date/2010/01">2010年一月</a>&nbsp;(9)</li>
+	<li><a href="https://coolshell.cn/articles/date/2009/12">2009年十二月</a>&nbsp;(22)</li>
+	<li><a href="https://coolshell.cn/articles/date/2009/11">2009年十一月</a>&nbsp;(27)</li>
+	<li><a href="https://coolshell.cn/articles/date/2009/10">2009年十月</a>&nbsp;(17)</li>
+	<li><a href="https://coolshell.cn/articles/date/2009/09">2009年九月</a>&nbsp;(14)</li>
+	<li><a href="https://coolshell.cn/articles/date/2009/08">2009年八月</a>&nbsp;(21)</li>
+	<li><a href="https://coolshell.cn/articles/date/2009/07">2009年七月</a>&nbsp;(18)</li>
+	<li><a href="https://coolshell.cn/articles/date/2009/06">2009年六月</a>&nbsp;(19)</li>
+	<li><a href="https://coolshell.cn/articles/date/2009/05">2009年五月</a>&nbsp;(27)</li>
+	<li><a href="https://coolshell.cn/articles/date/2009/04">2009年四月</a>&nbsp;(53)</li>
+	<li><a href="https://coolshell.cn/articles/date/2009/03">2009年三月</a>&nbsp;(43)</li>
+	<li><a href="https://coolshell.cn/articles/date/2008/10">2008年十月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2007/12">2007年十二月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2006/11">2006年十一月</a>&nbsp;(1)</li>
+	<li><a href="https://coolshell.cn/articles/date/2004/06">2004年六月</a>&nbsp;(1)</li>
+		</ul>
+			</aside><aside id="tag_cloud-2" class="widget widget_tag_cloud"><h4 class="widget-title">标签</h4><div class="tagcloud"><a href="https://coolshell.cn/tag/agile" class="tag-cloud-link tag-link-17 tag-link-position-1" style="font-size: 11.716814159292pt;" aria-label="agile (15个项目)">agile</a>
+<a href="https://coolshell.cn/tag/ajax" class="tag-cloud-link tag-link-34 tag-link-position-2" style="font-size: 10.230088495575pt;" aria-label="AJAX (11个项目)">AJAX</a>
+<a href="https://coolshell.cn/tag/algorithm" class="tag-cloud-link tag-link-76 tag-link-position-3" style="font-size: 14.566371681416pt;" aria-label="Algorithm (26个项目)">Algorithm</a>
+<a href="https://coolshell.cn/tag/android" class="tag-cloud-link tag-link-145 tag-link-position-4" style="font-size: 10.230088495575pt;" aria-label="Android (11个项目)">Android</a>
+<a href="https://coolshell.cn/tag/bash" class="tag-cloud-link tag-link-190 tag-link-position-5" style="font-size: 9.2389380530973pt;" aria-label="Bash (9个项目)">Bash</a>
+<a href="https://coolshell.cn/tag/c" class="tag-cloud-link tag-link-59 tag-link-position-6" style="font-size: 21.256637168142pt;" aria-label="C++ (92个项目)">C++</a>
+<a href="https://coolshell.cn/tag/coding" class="tag-cloud-link tag-link-135 tag-link-position-7" style="font-size: 14.566371681416pt;" aria-label="Coding (26个项目)">Coding</a>
+<a href="https://coolshell.cn/tag/css" class="tag-cloud-link tag-link-96 tag-link-position-8" style="font-size: 13.699115044248pt;" aria-label="CSS (22个项目)">CSS</a>
+<a href="https://coolshell.cn/tag/database" class="tag-cloud-link tag-link-109 tag-link-position-9" style="font-size: 8pt;" aria-label="Database (7个项目)">Database</a>
+<a href="https://coolshell.cn/tag/design" class="tag-cloud-link tag-link-71 tag-link-position-10" style="font-size: 13.946902654867pt;" aria-label="Design (23个项目)">Design</a>
+<a href="https://coolshell.cn/tag/design-pattern" class="tag-cloud-link tag-link-25 tag-link-position-11" style="font-size: 9.2389380530973pt;" aria-label="design pattern (9个项目)">design pattern</a>
+<a href="https://coolshell.cn/tag/ebook" class="tag-cloud-link tag-link-101 tag-link-position-12" style="font-size: 11.716814159292pt;" aria-label="ebook (15个项目)">ebook</a>
+<a href="https://coolshell.cn/tag/flash" class="tag-cloud-link tag-link-98 tag-link-position-13" style="font-size: 8pt;" aria-label="Flash (7个项目)">Flash</a>
+<a href="https://coolshell.cn/tag/game" class="tag-cloud-link tag-link-125 tag-link-position-14" style="font-size: 9.2389380530973pt;" aria-label="Game (9个项目)">Game</a>
+<a href="https://coolshell.cn/tag/go" class="tag-cloud-link tag-link-238 tag-link-position-15" style="font-size: 10.230088495575pt;" aria-label="Go (11个项目)">Go</a>
+<a href="https://coolshell.cn/tag/google" class="tag-cloud-link tag-link-32 tag-link-position-16" style="font-size: 15.681415929204pt;" aria-label="Google (32个项目)">Google</a>
+<a href="https://coolshell.cn/tag/html" class="tag-cloud-link tag-link-38 tag-link-position-17" style="font-size: 15.929203539823pt;" aria-label="HTML (34个项目)">HTML</a>
+<a href="https://coolshell.cn/tag/ie" class="tag-cloud-link tag-link-175 tag-link-position-18" style="font-size: 9.7345132743363pt;" aria-label="IE (10个项目)">IE</a>
+<a href="https://coolshell.cn/tag/java" class="tag-cloud-link tag-link-13 tag-link-position-19" style="font-size: 17.911504424779pt;" aria-label="Java (49个项目)">Java</a>
+<a href="https://coolshell.cn/tag/javascript" class="tag-cloud-link tag-link-114 tag-link-position-20" style="font-size: 18.407079646018pt;" aria-label="Javascript (54个项目)">Javascript</a>
+<a href="https://coolshell.cn/tag/jquery" class="tag-cloud-link tag-link-191 tag-link-position-21" style="font-size: 10.230088495575pt;" aria-label="jQuery (11个项目)">jQuery</a>
+<a href="https://coolshell.cn/tag/linux" class="tag-cloud-link tag-link-37 tag-link-position-22" style="font-size: 19.769911504425pt;" aria-label="Linux (70个项目)">Linux</a>
+<a href="https://coolshell.cn/tag/mysql" class="tag-cloud-link tag-link-106 tag-link-position-23" style="font-size: 8pt;" aria-label="MySQL (7个项目)">MySQL</a>
+<a href="https://coolshell.cn/tag/oop" class="tag-cloud-link tag-link-245 tag-link-position-24" style="font-size: 8.6194690265487pt;" aria-label="OOP (8个项目)">OOP</a>
+<a href="https://coolshell.cn/tag/password" class="tag-cloud-link tag-link-319 tag-link-position-25" style="font-size: 8.6194690265487pt;" aria-label="password (8个项目)">password</a>
+<a href="https://coolshell.cn/tag/performance" class="tag-cloud-link tag-link-120 tag-link-position-26" style="font-size: 12.088495575221pt;" aria-label="Performance (16个项目)">Performance</a>
+<a href="https://coolshell.cn/tag/php" class="tag-cloud-link tag-link-35 tag-link-position-27" style="font-size: 14.318584070796pt;" aria-label="PHP (25个项目)">PHP</a>
+<a href="https://coolshell.cn/tag/programmer" class="tag-cloud-link tag-link-70 tag-link-position-28" style="font-size: 22pt;" aria-label="Programmer (105个项目)">Programmer</a>
+<a href="https://coolshell.cn/tag/programming" class="tag-cloud-link tag-link-499 tag-link-position-29" style="font-size: 9.7345132743363pt;" aria-label="Programming (10个项目)">Programming</a>
+<a href="https://coolshell.cn/tag/programming-language" class="tag-cloud-link tag-link-115 tag-link-position-30" style="font-size: 10.601769911504pt;" aria-label="programming language (12个项目)">programming language</a>
+<a href="https://coolshell.cn/tag/puzzle" class="tag-cloud-link tag-link-514 tag-link-position-31" style="font-size: 10.230088495575pt;" aria-label="Puzzle (11个项目)">Puzzle</a>
+<a href="https://coolshell.cn/tag/pythondev" class="tag-cloud-link tag-link-791 tag-link-position-32" style="font-size: 15.309734513274pt;" aria-label="Python (30个项目)">Python</a>
+<a href="https://coolshell.cn/tag/ruby" class="tag-cloud-link tag-link-69 tag-link-position-33" style="font-size: 9.7345132743363pt;" aria-label="Ruby (10个项目)">Ruby</a>
+<a href="https://coolshell.cn/tag/sql" class="tag-cloud-link tag-link-131 tag-link-position-34" style="font-size: 9.7345132743363pt;" aria-label="SQL (10个项目)">SQL</a>
+<a href="https://coolshell.cn/tag/tdd" class="tag-cloud-link tag-link-485 tag-link-position-35" style="font-size: 8.6194690265487pt;" aria-label="TDD (8个项目)">TDD</a>
+<a href="https://coolshell.cn/tag/ui" class="tag-cloud-link tag-link-47 tag-link-position-36" style="font-size: 10.601769911504pt;" aria-label="UI (12个项目)">UI</a>
+<a href="https://coolshell.cn/tag/unix" class="tag-cloud-link tag-link-21 tag-link-position-37" style="font-size: 16.176991150442pt;" aria-label="Unix (35个项目)">Unix</a>
+<a href="https://coolshell.cn/tag/vim" class="tag-cloud-link tag-link-50 tag-link-position-38" style="font-size: 12.955752212389pt;" aria-label="vim (19个项目)">vim</a>
+<a href="https://coolshell.cn/tag/web" class="tag-cloud-link tag-link-30 tag-link-position-39" style="font-size: 17.044247787611pt;" aria-label="Web (42个项目)">Web</a>
+<a href="https://coolshell.cn/tag/windows" class="tag-cloud-link tag-link-49 tag-link-position-40" style="font-size: 12.46017699115pt;" aria-label="Windows (17个项目)">Windows</a>
+<a href="https://coolshell.cn/tag/xml" class="tag-cloud-link tag-link-104 tag-link-position-41" style="font-size: 8.6194690265487pt;" aria-label="XML (8个项目)">XML</a>
+<a href="https://coolshell.cn/tag/%e5%ae%89%e5%85%a8" class="tag-cloud-link tag-link-318 tag-link-position-42" style="font-size: 13.451327433628pt;" aria-label="安全 (21个项目)">安全</a>
+<a href="https://coolshell.cn/tag/%e7%a8%8b%e5%ba%8f%e5%91%98" class="tag-cloud-link tag-link-58 tag-link-position-43" style="font-size: 22pt;" aria-label="程序员 (106个项目)">程序员</a>
+<a href="https://coolshell.cn/tag/%e7%ae%97%e6%b3%95" class="tag-cloud-link tag-link-77 tag-link-position-44" style="font-size: 9.7345132743363pt;" aria-label="算法 (10个项目)">算法</a>
+<a href="https://coolshell.cn/tag/interview" class="tag-cloud-link tag-link-164 tag-link-position-45" style="font-size: 12.088495575221pt;" aria-label="面试 (16个项目)">面试</a></div>
+</aside><aside id="get-recent-comments" class="widget widget_get_recent_comments"><h4 class="widget-title">最新评论</h4><div id="get_recent_comments_wrap"><ul>	<li><a href="https://coolshell.cn/articles/240.html#comment-1981492" title="非常不错的编程技术教程, 2009年03月25日">codex</a>: 今天是2019年3月25日,当今有更多新的技术和语言，今天只 是偶尔遇到这篇文章</li>
+	<li><a href="https://coolshell.cn/articles/17607.html#comment-1980678" title="从 MongoDB “赎金事件” 看安全问题, 2017年01月07日">jjeitarl</a>: http://cheapgogenvia.com/ viagra generic date</li>
+	<li><a href="https://coolshell.cn/articles/11094.html#comment-1980554" title="可视化编程, 2014年02月22日">unblocked games</a>: great tutorial, awesome, thanks</li>
+	<li><a href="https://coolshell.cn/articles/5966.html#comment-1980530" title="腾讯帐号申诉的用户体验, 2011年11月25日">扎努</a>: ha bo ma da nga te ga cen</li>
+	<li><a href="https://coolshell.cn/articles/18190.html#comment-1980452" title="Go语言、Docker 和新技术, 2017年10月30日">Soldoros</a>: 服了，报纸更便宜，内容更多。</li>
+	<li><a href="https://coolshell.cn/articles/9308.html#comment-1980417" title="“作环保的程序员，从不用百度开始”, 2013年03月23日">Sakura</a>: 您好，感觉最近各种墙都挂的厉害，而且个人不太会搭SS之类的东 西，翻墙感觉甚是麻烦，如果不用百度，我应该用啥呢？</li>
+	<li><a href="https://coolshell.cn/articles/5426.html#comment-1980099" title="简明 Vim 练级攻略, 2011年09月07日">JosephDaype</a>: ivml this site</li>
+	<li><a href="https://coolshell.cn/articles/19219.html#comment-1979982" title="打造高效的工作环境 – Shell 篇, 2019年03月17日">die4passion</a>: 哈哈，我也在用这个，这个解释命令很清晰，赞</li>
+	<li><a href="https://coolshell.cn/articles/19219.html#comment-1979909" title="打造高效的工作环境 – Shell 篇, 2019年03月17日">zhiyue</a>: https://www.explainshell.com/ 建议加上这个</li>
+	<li><a href="https://coolshell.cn/articles/19219.html#comment-1979489" title="打造高效的工作环境 – Shell 篇, 2019年03月17日">陈皓</a>: 已修正，谢谢指出。</li>
+</ul></div></aside><aside id="text-2" class="widget widget_text"><h4 class="widget-title">友情链接</h4>			<div class="textwidget"><ul class="blogroll">
+<li><a href="http://blog.csdn.net/haoel" target="_blank" onclick="pageTracker._trackPageview(&#39;/outgoing/blog.csdn.net/haoel?referer=http://coolshell.cn&#39;);">陈皓的博客</a></li>
+
+<li><a href="http://ifeve.com/" target="_blank" title="促进并发编程的研究和推广" onclick="pageTracker._trackPageview(&#39;/outgoing/ifeve.com/?referer=http://coolshell.cn&#39;);">并发编程</a></li>
+
+
+<li><a href="http://www.raychase.net/" target="_blank" title="一个啰嗦的程序员" onclick="pageTracker._trackPageview(&#39;/outgoing/www.raychase.net/?referer=http://coolshell.cn&#39;);">四火的唠叨</a></li>
+
+<li><a href="https://youzhao.io/" target="_blank" title="有招，让招聘自动化" onclick="pageTracker._trackPageview(&#39;/outgoing/https://youzhao.io/?referer=http://coolshell.cn/&#39;);">有招招聘自动化</a></li>
+
+
+<li><a href="http://www.hellogcc.org/" target="_blank" title="致力于讨论和学习GNU Toolchain方面的工作组" onclick="pageTracker._trackPageview(&#39;/outgoing/www.hellogcc.org//?referer=http://coolshell.cn/&#39;);">HelloGcc Working Group</a></li>
+
+
+<li><a href="http://www.cnblogs.com/weidagang2046/" target="_blank" title="Just for Fun" onclick="pageTracker._trackPageview(&#39;/outgoing/http://www.cnblogs.com/weidagang2046/?referer=http://coolshell.cn/&#39;);">Todd Wei的Blog</a></li>
+
+<li><a href="http://www.cppfans.org/" target="_blank" title="记录我们点滴学习工作生活" onclick="pageTracker._trackPageview(&#39;/outgoing/http://www.cppfans.org/?referer=http://coolshell.cn/&#39;);">C++爱好者博客</a></li>
+
+
+
+<li><a href="http://www.kaiyuanba.cn/" target="_blank" title="汇聚各种开源项目的中英文混合介绍并分类排列，致力于软件项目的开源事业" onclick="pageTracker._trackPageview(&#39;/outgoing/http://www.kaiyuanba.cn/?referer=http://coolshell.cn/&#39;);">开源吧</a></li>
+
+
+
+<li><a href="http://helloacm.com/" target="_blank" title="Smart Ideas, Smart Algorithms" onclick="pageTracker._trackPageview(&#39;/outgoing/http://HelloACM.com/?referer=http://coolshell.cn/&#39;);">ACMer</a></li>
+
+<li><a href="http://chenpeng.info/" target="_blank" title="优秀的开源软件让生活更简单" onclick="pageTracker._trackPageview(&#39;/outgoing/http://chenpeng.info/?referer=http://coolshell.cn/&#39;);">陈鹏个人博客</a></li>
+
+<li><a href="http://www.coderli.com/" target="_blank" title="一个普通的coder，coding为了生活，coding因为消遣:-) Just a coder" onclick="pageTracker._trackPageview(&#39;/outgoing/http://www.coderli.com/?referer=http://coolshell.cn/&#39;);">OneCoder</a></li>
+
+<li><a href="https://emacs.cn/" target="_blank" title="煮酒编码空望月，疯疯癫癫醉人生" onclick="pageTracker._trackPageview(&#39;/outgoing/https://emacs.cn/?referer=http://coolshell.cn/&#39;);">M疯|基础·极致·分享</a></li>
+
+<li><a href="http://www.yunweipai.com/" target="_blank" title="关注IT技术 | 分享 | 交流 | 记录" onclick="pageTracker._trackPageview(&#39;/outgoing/http://www.yunweipai.com/?referer=http://coolshell.cn/&#39;);">运维派 </a></li>
+
+<li><a href="http://www.ishuchao.com/" target="_blank" title="闲置纸质书的在线漂流平台" onclick="pageTracker._trackPageview(&#39;/outgoing/http://www.ishuchao.com/?referer=http://coolshell.cn/&#39;);">书巢</a></li></ul></div>
+		</aside><aside id="meta-3" class="widget widget_meta"><h4 class="widget-title">功能</h4>			<ul>
+			<li><a href="https://coolshell.cn/wp-login.php?action=register">注册</a></li>			<li><a href="https://coolshell.cn/wp-login.php">登录</a></li>
+			<li><a href="https://coolshell.cn/feed">文章<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://coolshell.cn/comments/feed">评论<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://cn.wordpress.org/" title="基于WordPress，一个优美、先进的个人信息发布平台。">WordPress.org</a></li>			</ul>
+			</aside><aside id="text-400151742" class="widget widget_text">			<div class="textwidget"><script src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/stat.php" language="JavaScript" charset="gb2312"></script><script src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/core.php" charset="utf-8" type="text/javascript"></script><a href="https://www.cnzz.com/stat/website.php?web_id=1785679" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/pic1.gif"></a>
+
+
+
+</div>
+		</aside></div><!-- #secondary .widget-area -->
+
+
+		</div> <!--.row-->            
+    </div><!--.container-->
+    <script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-7486123-1']);
+_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+
+	</div><!-- #content -->
+	
+	<footer id="colophon" class="site-footer" role="contentinfo">
+		<div class="row site-info">
+			CoolShell.cn © 2019 
+			<span class="sep"> | </span>
+			Powered by 			<a href="https://wordpress.org/">WordPress</a>
+			<span class="sep"> | </span>
+
+			Based on Theme: Nisarg by <a href="http://www.falgunidesai.com/" rel="designer">Falguni Desai</a>.
+		</div><!-- .site-info -->
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+		<!-- Start of StatCounter Code -->
+		<script>
+			<!--
+			var sc_project=8326668;
+			var sc_security="cccb27f2";
+			      var sc_invisible=1;
+			var scJsHost = (("https:" == document.location.protocol) ?
+				"https://secure." : "http://www.");
+			//-->
+					</script>
+		
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/counter.js" async=""></script>		<noscript><div class="statcounter"><a title="web analytics" href="https://statcounter.com/"><img class="statcounter" src="https://c.statcounter.com/8326668/0/cccb27f2/1/" alt="web analytics" /></a></div></noscript>
+		<!-- End of StatCounter Code -->
+		<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shCore.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushAS3.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushBash.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushColdFusion.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushClojure.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushCpp.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushCSharp.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushCss.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushDelphi.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushDiff.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushErlang.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushFSharp.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushGroovy.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushJava.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushJavaFX.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushJScript.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushLatex.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushMatlabKey.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushObjC.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushPerl.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushPhp.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushPlain.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushPowerShell.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushPython.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushR.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushRuby.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushScala.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushSql.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushVb.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/shBrushXml.js"></script>
+<script type="text/javascript">
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://coolshell.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://coolshell.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeDefault.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['class-name'] = 'coolshell_syntaxhighlighter';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.defaults['wrap-lines'] = false;
+	SyntaxHighlighter.all();
+
+	// Infinite scroll support
+	if ( typeof( jQuery ) !== 'undefined' ) {
+		jQuery( function( $ ) {
+			$( document.body ).on( 'post-load', function() {
+				SyntaxHighlighter.highlight();
+			} );
+		} );
+	}
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var ratingsL10n = {"plugin_url":"https:\/\/coolshell.cn\/wp-content\/plugins\/wp-postratings","ajax_url":"https:\/\/coolshell.cn\/wp-admin\/admin-ajax.php","text_wait":"Please rate only 1 item at a time.","image":"stars_crystal","image_ext":"gif","max":"5","show_loading":"1","show_fading":"1","custom":"0"};
+var ratings_mouseover_image=new Image();ratings_mouseover_image.src="https://coolshell.cn/wp-content/plugins/wp-postratings/images/stars_crystal/rating_over.gif";;
+/* ]]> */
+</script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/postratings-js.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var viewsCacheL10n = {"admin_ajax_url":"https:\/\/coolshell.cn\/wp-admin\/admin-ajax.php","post_id":"1846"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/postviews-cache.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/bootstrap.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/skip-link-focus-fix.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/nisarg.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/comment-reply.min.js"></script>
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/wp-embed.min.js"></script>
+<script async="async" type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/form.js"></script>
+
+
+
+<script type="text/javascript" src="./MySQL性能优化的最佳20+条经验 _ _ 酷 壳 - CoolShell_files/anti-baidu-latest.min.js" charset="UTF-8"></script>
+
+<!-- Dynamic page generated in 0.848 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2019-03-25 16:55:17 -->
+
+<!-- Compression = gzip --></body><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(236, 239, 241); height: 17458px; width: 1295px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 17458px; width: 1295px;"></div></html>

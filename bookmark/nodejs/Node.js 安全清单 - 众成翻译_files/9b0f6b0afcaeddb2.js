@@ -1,0 +1,1 @@
+monitor.setProject('QH_259_1').getTrack().getClickAndKeydown().getClickHeatmap(10, 1);

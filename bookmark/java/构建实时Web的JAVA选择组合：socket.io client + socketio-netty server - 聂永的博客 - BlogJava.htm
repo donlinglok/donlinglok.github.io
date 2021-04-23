@@ -1,0 +1,1329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- saved from url=(0062)http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html -->
+<html class="cye-disabled cye-nm gr__blogjava_net"><head id="Head"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+	构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava
+</title><meta id="metaKeywords" name="keywords" content="构建实时Web的JAVA选择组合：socket.io client + socketio-netty server"><link type="text/css" rel="stylesheet" href="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/common.css"><link id="MainCss" type="text/css" rel="stylesheet" href="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/style.css"><link id="SecondaryCss" type="text/css" rel="stylesheet" href="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/customcss.aspx"><link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://www.blogjava.net/yongboy/rss.aspx"><style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><link rel="preload" href="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/f(1).txt" as="script"><script src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/f.txt"></script><script src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/pubads_impl_rendering_2019032001.js"></script><script type="text/javascript" src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/f(1).txt"></script><link rel="preload" href="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/f(2).txt" as="script"><script type="text/javascript" src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/f(2).txt"></script><script src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/pubads_impl_2019032001.js" async=""></script><link rel="prefetch" href="http://tpc.googlesyndication.com/safeframe/1-0-32/html/container.html"></head>
+<body data-gr-c-s-loaded="true" style="">
+    <form name="Form1" method="post" action="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html" id="Form1">
+<div>
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="
+__VIEWSTATE" value="">
+</div>
+
+<script type="text/javascript" async="" src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/ga.js"></script><script async="" type="text/javascript" src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/gpt.js"></script><script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['Form1'];
+if (!theForm) {
+    theForm = document.Form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/WebResource.axd" type="text/javascript"></script>
+
+<script language="JavaScript">
+									function ctlent(evt,id)
+											{
+												if(evt.ctrlKey && evt.keyCode == 13)
+												{	
+													try
+													{
+														TempSave(id);
+													}
+													catch(ex)
+													{
+													}
+													finally
+													{
+													    __doPostBack('AjaxHolder$PostComment$btnSubmit','')
+													}
+												}
+		
+												}</script>
+												<script language="JavaScript">function SetReplyAuhor(author){document.getElementById('AjaxHolder_PostComment_tbComment').value+="@"+author+"\n";document.getElementById('AjaxHolder_PostComment_tbComment').focus();return false}</script>
+<script src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/ScriptResource.axd" type="text/javascript"></script>
+<script src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/ScriptResource(1).axd" type="text/javascript"></script>
+        <link rel="stylesheet" href="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/default.min.css">
+<script src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.blogjava.net/yongboy/">聂永的博客</a></h1>
+<p id="tagline">记录工作/学习的点点滴滴。</p>
+			<div id="main">
+				
+					
+	<div class="post">
+		<h2>
+			<a id="viewpost1_TitleUrl" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html">构建实时Web的JAVA选择组合：socket.io client + socketio-netty server</a>
+		</h2>
+		<div class="postText"><h3><strong>前言</strong></h3> <p>现在一说到实时web，可能大家不由自主的就想到了node.js，确实，在语言级别node.js实现了异步的、基于事件机制的IO特性，使用简单。在JAVA语言层面，提供了NIO作为非阻塞IO的替代品。无论node.js还是JAVA，都没有从真正意义上实现AIO(这个需要操作系统支持，依赖内置库/运行时模拟支持)。</p> <p>&nbsp;</p> <h3><strong>Websocket/Flashsocket</strong></h3> <p>要说到实时Web，就不能不说到Websocket，目前存在的几个草稿协议，若是要自己实现websocket协议支持，需要注意其握手协议等。</p> <p>目前对Websocket的支持，<a title="http://caniuse.com/#search=websocket" href="http://caniuse.com/#search=websocket">caniuse.com</a> 给出了一张图表，详细说明了各个浏览器的支持情况：</p> <p><a href="http://www.blogjava.net/images/blogjava_net/yongboy/WindowsLiveWriter/Websocket.ioclientsocketionettyserver_CD3A/image_4.png"><img style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px" title="image" alt="image" src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/image_thumb_1.png" border="0" height="278" width="942"></a> </p> <p>粉红色区域表示不支持Websocket。</p> <p>至于IE浏览器，以及部分陈旧的桌面浏览器，可以选择Flashsocket作为替代品。</p> <p>客户端如何把Websocket和Flashsocket结合在一起使用，可借鉴开源项目：<strong><a href="https://github.com/gimite/web-socket-js">web-socket-js</a></strong> （客户端的Websocket实现方案）</p> <p>&nbsp;</p> <p>其思路和socket.io大致一致，仅仅提供对websocket的客户端的简单包装，若是Android 上原生浏览器，没有安装Flash Lite情况下，就无能为力了。</p> <p>因此，仅仅凭借Websocket + Flashsocket，是不能够完成跨浏览器、统一客户端API的重任。</p> <p>&nbsp;</p> <h3><strong>socket.io通信传输协议</strong></h3> <p><a href="http://socket.io/" target="_blank"><strong>socket.io</strong></a> 支持以下通信信道传输协议：</p> <ul> <li>WebSocket  </li><li>Adobe® Flash® Socket  </li><li>AJAX long polling  </li><li>AJAX multipart streaming  </li><li>Forever Iframe  </li><li>JSONP Polling </li></ul> <p>socket.io客户端和服务器端双方约定适合当前浏览器的最佳通信信道，然后正常通信。毫无疑问，基于全双工通信信道的Websocket/Flashsocket传输协议，是数据传输最为快速的选择，仅仅需要一个长连接。</p> <p>基于上面图表，我们在指定socket.io transport参数时，可以做到心里有数。</p> <p>在socketio-netty服务器端配置：</p> <blockquote> <p>transports = websocket,flashsocket,htmlfile,xhr-polling,jsonp-polling</p></blockquote> <p>在客户端，简单定义地址：</p> <blockquote> <p>var socket = io.connect('http://localhost:9000');</p></blockquote> <p>在不远的将来，桌面版浏览器可能升级了最新版本的websocket草案，导致客户端原生的websocket协议无法被识别时，可使用Flashsocket作为替代品。但总会有一种通信协议垫底，可以保证正常的运转。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></p> <p>&nbsp;</p> <h3><strong>在线画板示范</strong></h3> <p>一个聊天的示范实时的数据量不大，那么一个在线画板应用呢，大家所绘制的线和点能够立刻的同步到所有人的屏幕上去。嗯，它还是跨越目前所见的浏览器（IE6+，Firefox，Opera，Safari，Chrome等），支持Phonegap构建，支持iphone，android，ipad等。</p> <p>因为没有部署的在线服务器，只能看一下简单视频了:</p><embed src="http://player.youku.com/player.php/sid/XNDAxMDg5ODY4/v.swf" quality="high" width="480" height="400" align="center" allowscriptaccess="sameDomain" type="application/x-shockwave-flash">  <p>服务器端实现也是很简单，核心代码不到100行（不包括main函数、日志输出等）：</p><script src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/2772793.js"></script><link rel="stylesheet" href="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/gist-embed-a9a1cf2ca01efd362bfa52312712ae94.css"><div id="gist2772793" class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-whiteboardserver-java" class="file">
+    
+
+  <div itemprop="text" class="Box-body p-0 blob-wrapper data type-java ">
+      
+<table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-whiteboardserver-java-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-whiteboardserver-java-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c"><span class="pl-c">/**</span></span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-whiteboardserver-java-LC2" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * 在线画报socket.io服务器端示范</span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-whiteboardserver-java-LC3" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * </span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-whiteboardserver-java-LC4" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * <span class="pl-k">@author</span> yongboy</span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L5" class="blob-num js-line-number" data-line-number="5"></td>
+        <td id="file-whiteboardserver-java-LC5" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * <span class="pl-k">@time</span> 2012-3-27</span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L6" class="blob-num js-line-number" data-line-number="6"></td>
+        <td id="file-whiteboardserver-java-LC6" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * <span class="pl-k">@version</span> 1.0</span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L7" class="blob-num js-line-number" data-line-number="7"></td>
+        <td id="file-whiteboardserver-java-LC7" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> <span class="pl-c">*/</span></span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L8" class="blob-num js-line-number" data-line-number="8"></td>
+        <td id="file-whiteboardserver-java-LC8" class="blob-code blob-code-inner js-file-line"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">WhiteboardServer</span> {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L9" class="blob-num js-line-number" data-line-number="9"></td>
+        <td id="file-whiteboardserver-java-LC9" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">main</span>(<span class="pl-k">String</span>[] <span class="pl-v">args</span>) {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L10" class="blob-num js-line-number" data-line-number="10"></td>
+        <td id="file-whiteboardserver-java-LC10" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">MainServer</span> chatServer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">MainServer</span>(<span class="pl-k">new</span> <span class="pl-smi">WhiteboardHandler</span>(), <span class="pl-c1">80</span>);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L11" class="blob-num js-line-number" data-line-number="11"></td>
+        <td id="file-whiteboardserver-java-LC11" class="blob-code blob-code-inner js-file-line">		chatServer<span class="pl-k">.</span>start();</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L12" class="blob-num js-line-number" data-line-number="12"></td>
+        <td id="file-whiteboardserver-java-LC12" class="blob-code blob-code-inner js-file-line">	}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L13" class="blob-num js-line-number" data-line-number="13"></td>
+        <td id="file-whiteboardserver-java-LC13" class="blob-code blob-code-inner js-file-line">}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L14" class="blob-num js-line-number" data-line-number="14"></td>
+        <td id="file-whiteboardserver-java-LC14" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L15" class="blob-num js-line-number" data-line-number="15"></td>
+        <td id="file-whiteboardserver-java-LC15" class="blob-code blob-code-inner js-file-line"><span class="pl-k">class</span> <span class="pl-en">WhiteboardHandler</span> <span class="pl-k">extends</span> <span class="pl-e">IOHandlerAbs</span> {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L16" class="blob-num js-line-number" data-line-number="16"></td>
+        <td id="file-whiteboardserver-java-LC16" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">private</span> <span class="pl-smi">Logger</span> log <span class="pl-k">=</span> <span class="pl-smi">Logger</span><span class="pl-k">.</span>getLogger(<span class="pl-c1">this</span><span class="pl-k">.</span>getClass());</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L17" class="blob-num js-line-number" data-line-number="17"></td>
+        <td id="file-whiteboardserver-java-LC17" class="blob-code blob-code-inner js-file-line">	<span class="pl-c"><span class="pl-c">//</span> 房间的一对多&lt;房间号,List&lt;客户端&gt;&gt;</span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L18" class="blob-num js-line-number" data-line-number="18"></td>
+        <td id="file-whiteboardserver-java-LC18" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">private</span> <span class="pl-k">ConcurrentMap&lt;<span class="pl-smi">String</span>, <span class="pl-k">Set&lt;<span class="pl-smi">IOClient</span>&gt;</span>&gt;</span> roomClients <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">ConcurrentHashMap&lt;<span class="pl-smi">String</span>, <span class="pl-k">Set&lt;<span class="pl-smi">IOClient</span>&gt;</span>&gt;</span>();</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L19" class="blob-num js-line-number" data-line-number="19"></td>
+        <td id="file-whiteboardserver-java-LC19" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L20" class="blob-num js-line-number" data-line-number="20"></td>
+        <td id="file-whiteboardserver-java-LC20" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">@Override</span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L21" class="blob-num js-line-number" data-line-number="21"></td>
+        <td id="file-whiteboardserver-java-LC21" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">OnConnect</span>(<span class="pl-smi">IOClient</span> <span class="pl-v">client</span>) {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L22" class="blob-num js-line-number" data-line-number="22"></td>
+        <td id="file-whiteboardserver-java-LC22" class="blob-code blob-code-inner js-file-line">		log<span class="pl-k">.</span>debug(<span class="pl-s"><span class="pl-pds">"</span>A user connected :: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> client<span class="pl-k">.</span>getSessionID());</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L23" class="blob-num js-line-number" data-line-number="23"></td>
+        <td id="file-whiteboardserver-java-LC23" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L24" class="blob-num js-line-number" data-line-number="24"></td>
+        <td id="file-whiteboardserver-java-LC24" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">String</span> content <span class="pl-k">=</span> <span class="pl-smi">String</span><span class="pl-k">.</span>format(<span class="pl-s"><span class="pl-pds">"</span>5:::{<span class="pl-cce">\"</span>name<span class="pl-cce">\"</span>:<span class="pl-cce">\"</span>%s<span class="pl-cce">\"</span>,<span class="pl-cce">\"</span>args<span class="pl-cce">\"</span>:[%s]}<span class="pl-pds">"</span></span>,</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L25" class="blob-num js-line-number" data-line-number="25"></td>
+        <td id="file-whiteboardserver-java-LC25" class="blob-code blob-code-inner js-file-line">				<span class="pl-s"><span class="pl-pds">"</span>clientId<span class="pl-pds">"</span></span>,</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L26" class="blob-num js-line-number" data-line-number="26"></td>
+        <td id="file-whiteboardserver-java-LC26" class="blob-code blob-code-inner js-file-line">				<span class="pl-smi">String</span><span class="pl-k">.</span>format(<span class="pl-s"><span class="pl-pds">"</span>{<span class="pl-cce">\"</span>id<span class="pl-cce">\"</span>:<span class="pl-cce">\"</span>%s<span class="pl-cce">\"</span>}<span class="pl-pds">"</span></span>, client<span class="pl-k">.</span>getSessionID()));</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L27" class="blob-num js-line-number" data-line-number="27"></td>
+        <td id="file-whiteboardserver-java-LC27" class="blob-code blob-code-inner js-file-line">		client<span class="pl-k">.</span>send(content);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L28" class="blob-num js-line-number" data-line-number="28"></td>
+        <td id="file-whiteboardserver-java-LC28" class="blob-code blob-code-inner js-file-line">	}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L29" class="blob-num js-line-number" data-line-number="29"></td>
+        <td id="file-whiteboardserver-java-LC29" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L30" class="blob-num js-line-number" data-line-number="30"></td>
+        <td id="file-whiteboardserver-java-LC30" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">@Override</span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L31" class="blob-num js-line-number" data-line-number="31"></td>
+        <td id="file-whiteboardserver-java-LC31" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">OnDisconnect</span>(<span class="pl-smi">IOClient</span> <span class="pl-v">client</span>) {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L32" class="blob-num js-line-number" data-line-number="32"></td>
+        <td id="file-whiteboardserver-java-LC32" class="blob-code blob-code-inner js-file-line">		log<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>A user disconnected :: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> client<span class="pl-k">.</span>getSessionID()</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L33" class="blob-num js-line-number" data-line-number="33"></td>
+        <td id="file-whiteboardserver-java-LC33" class="blob-code blob-code-inner js-file-line">				<span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span> :: hope it was fun<span class="pl-pds">"</span></span>);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L34" class="blob-num js-line-number" data-line-number="34"></td>
+        <td id="file-whiteboardserver-java-LC34" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L35" class="blob-num js-line-number" data-line-number="35"></td>
+        <td id="file-whiteboardserver-java-LC35" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">GenericIO</span> genericIO <span class="pl-k">=</span> (<span class="pl-smi">GenericIO</span>) client;</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L36" class="blob-num js-line-number" data-line-number="36"></td>
+        <td id="file-whiteboardserver-java-LC36" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">Object</span> roomObj <span class="pl-k">=</span> genericIO<span class="pl-k">.</span>attr<span class="pl-k">.</span>get(<span class="pl-s"><span class="pl-pds">"</span>room<span class="pl-pds">"</span></span>);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L37" class="blob-num js-line-number" data-line-number="37"></td>
+        <td id="file-whiteboardserver-java-LC37" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L38" class="blob-num js-line-number" data-line-number="38"></td>
+        <td id="file-whiteboardserver-java-LC38" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">if</span> (roomObj <span class="pl-k">==</span> <span class="pl-c1">null</span>) {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L39" class="blob-num js-line-number" data-line-number="39"></td>
+        <td id="file-whiteboardserver-java-LC39" class="blob-code blob-code-inner js-file-line">			log<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>the roomObj is null!<span class="pl-pds">"</span></span>);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L40" class="blob-num js-line-number" data-line-number="40"></td>
+        <td id="file-whiteboardserver-java-LC40" class="blob-code blob-code-inner js-file-line">			<span class="pl-k">return</span>;</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L41" class="blob-num js-line-number" data-line-number="41"></td>
+        <td id="file-whiteboardserver-java-LC41" class="blob-code blob-code-inner js-file-line">		}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L42" class="blob-num js-line-number" data-line-number="42"></td>
+        <td id="file-whiteboardserver-java-LC42" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L43" class="blob-num js-line-number" data-line-number="43"></td>
+        <td id="file-whiteboardserver-java-LC43" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">String</span> roomId <span class="pl-k">=</span> roomObj<span class="pl-k">.</span>toString();</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L44" class="blob-num js-line-number" data-line-number="44"></td>
+        <td id="file-whiteboardserver-java-LC44" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L45" class="blob-num js-line-number" data-line-number="45"></td>
+        <td id="file-whiteboardserver-java-LC45" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">Set&lt;<span class="pl-smi">IOClient</span>&gt;</span> clients <span class="pl-k">=</span> roomClients<span class="pl-k">.</span>get(roomId);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L46" class="blob-num js-line-number" data-line-number="46"></td>
+        <td id="file-whiteboardserver-java-LC46" class="blob-code blob-code-inner js-file-line">		log<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>clients size is <span class="pl-pds">"</span></span> <span class="pl-k">+</span> clients<span class="pl-k">.</span>size());</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L47" class="blob-num js-line-number" data-line-number="47"></td>
+        <td id="file-whiteboardserver-java-LC47" class="blob-code blob-code-inner js-file-line">		clients<span class="pl-k">.</span>remove(client);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L48" class="blob-num js-line-number" data-line-number="48"></td>
+        <td id="file-whiteboardserver-java-LC48" class="blob-code blob-code-inner js-file-line">		log<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>removed clients's size is <span class="pl-pds">"</span></span> <span class="pl-k">+</span> clients<span class="pl-k">.</span>size());</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L49" class="blob-num js-line-number" data-line-number="49"></td>
+        <td id="file-whiteboardserver-java-LC49" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L50" class="blob-num js-line-number" data-line-number="50"></td>
+        <td id="file-whiteboardserver-java-LC50" class="blob-code blob-code-inner js-file-line">		<span class="pl-c"><span class="pl-c">//</span> 通知其它客户端，有人离线</span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L51" class="blob-num js-line-number" data-line-number="51"></td>
+        <td id="file-whiteboardserver-java-LC51" class="blob-code blob-code-inner js-file-line">		broadcastRoom(roomId, client, <span class="pl-s"><span class="pl-pds">"</span>roomCount<span class="pl-pds">"</span></span>, <span class="pl-smi">String</span><span class="pl-k">.</span>format(</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L52" class="blob-num js-line-number" data-line-number="52"></td>
+        <td id="file-whiteboardserver-java-LC52" class="blob-code blob-code-inner js-file-line">				<span class="pl-s"><span class="pl-pds">"</span>{<span class="pl-cce">\"</span>room<span class="pl-cce">\"</span>:<span class="pl-cce">\"</span>%s<span class="pl-cce">\"</span>,<span class="pl-cce">\"</span>num<span class="pl-cce">\"</span>:%s}<span class="pl-pds">"</span></span>, roomId, clients<span class="pl-k">.</span>size()));</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L53" class="blob-num js-line-number" data-line-number="53"></td>
+        <td id="file-whiteboardserver-java-LC53" class="blob-code blob-code-inner js-file-line">	}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L54" class="blob-num js-line-number" data-line-number="54"></td>
+        <td id="file-whiteboardserver-java-LC54" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L55" class="blob-num js-line-number" data-line-number="55"></td>
+        <td id="file-whiteboardserver-java-LC55" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">@Override</span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L56" class="blob-num js-line-number" data-line-number="56"></td>
+        <td id="file-whiteboardserver-java-LC56" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">OnMessage</span>(<span class="pl-smi">IOClient</span> <span class="pl-v">client</span>, <span class="pl-smi">String</span> <span class="pl-v">oriMessage</span>) {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L57" class="blob-num js-line-number" data-line-number="57"></td>
+        <td id="file-whiteboardserver-java-LC57" class="blob-code blob-code-inner js-file-line">		log<span class="pl-k">.</span>debug(<span class="pl-s"><span class="pl-pds">"</span>Got a message :: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> oriMessage</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L58" class="blob-num js-line-number" data-line-number="58"></td>
+        <td id="file-whiteboardserver-java-LC58" class="blob-code blob-code-inner js-file-line">				<span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span> :: echoing it back to :: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> client<span class="pl-k">.</span>getSessionID());</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L59" class="blob-num js-line-number" data-line-number="59"></td>
+        <td id="file-whiteboardserver-java-LC59" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">String</span> jsonString <span class="pl-k">=</span> oriMessage<span class="pl-k">.</span>substring(oriMessage<span class="pl-k">.</span>indexOf(<span class="pl-s"><span class="pl-pds">'</span>{<span class="pl-pds">'</span></span>));</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L60" class="blob-num js-line-number" data-line-number="60"></td>
+        <td id="file-whiteboardserver-java-LC60" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">JSONObject</span> jsonObject <span class="pl-k">=</span> <span class="pl-c1">JSON</span><span class="pl-k">.</span>parseObject(jsonString);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L61" class="blob-num js-line-number" data-line-number="61"></td>
+        <td id="file-whiteboardserver-java-LC61" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">String</span> eventName <span class="pl-k">=</span> jsonObject<span class="pl-k">.</span>get(<span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>toString();</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L62" class="blob-num js-line-number" data-line-number="62"></td>
+        <td id="file-whiteboardserver-java-LC62" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">JSONArray</span> argsArray <span class="pl-k">=</span> jsonObject<span class="pl-k">.</span>getJSONArray(<span class="pl-s"><span class="pl-pds">"</span>args<span class="pl-pds">"</span></span>);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L63" class="blob-num js-line-number" data-line-number="63"></td>
+        <td id="file-whiteboardserver-java-LC63" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">JSONObject</span> obj <span class="pl-k">=</span> argsArray<span class="pl-k">.</span>getJSONObject(<span class="pl-c1">0</span>);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L64" class="blob-num js-line-number" data-line-number="64"></td>
+        <td id="file-whiteboardserver-java-LC64" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">String</span> roomId <span class="pl-k">=</span> obj<span class="pl-k">.</span>getString(<span class="pl-s"><span class="pl-pds">"</span>room<span class="pl-pds">"</span></span>);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L65" class="blob-num js-line-number" data-line-number="65"></td>
+        <td id="file-whiteboardserver-java-LC65" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L66" class="blob-num js-line-number" data-line-number="66"></td>
+        <td id="file-whiteboardserver-java-LC66" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">if</span> (eventName<span class="pl-k">.</span>equals(<span class="pl-s"><span class="pl-pds">"</span>roomNotice<span class="pl-pds">"</span></span>)) {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L67" class="blob-num js-line-number" data-line-number="67"></td>
+        <td id="file-whiteboardserver-java-LC67" class="blob-code blob-code-inner js-file-line">			<span class="pl-k">if</span> (<span class="pl-k">!</span>roomClients<span class="pl-k">.</span>containsKey(roomId)) {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L68" class="blob-num js-line-number" data-line-number="68"></td>
+        <td id="file-whiteboardserver-java-LC68" class="blob-code blob-code-inner js-file-line">				roomClients<span class="pl-k">.</span>put(roomId, <span class="pl-k">new</span> <span class="pl-k">HashSet&lt;<span class="pl-smi">IOClient</span>&gt;</span>());</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L69" class="blob-num js-line-number" data-line-number="69"></td>
+        <td id="file-whiteboardserver-java-LC69" class="blob-code blob-code-inner js-file-line">			}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L70" class="blob-num js-line-number" data-line-number="70"></td>
+        <td id="file-whiteboardserver-java-LC70" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L71" class="blob-num js-line-number" data-line-number="71"></td>
+        <td id="file-whiteboardserver-java-LC71" class="blob-code blob-code-inner js-file-line">			<span class="pl-smi">GenericIO</span> genericIO <span class="pl-k">=</span> (<span class="pl-smi">GenericIO</span>) client;</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L72" class="blob-num js-line-number" data-line-number="72"></td>
+        <td id="file-whiteboardserver-java-LC72" class="blob-code blob-code-inner js-file-line">			genericIO<span class="pl-k">.</span>attr<span class="pl-k">.</span>put(<span class="pl-s"><span class="pl-pds">"</span>room<span class="pl-pds">"</span></span>, roomId);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L73" class="blob-num js-line-number" data-line-number="73"></td>
+        <td id="file-whiteboardserver-java-LC73" class="blob-code blob-code-inner js-file-line">			roomClients<span class="pl-k">.</span>get(roomId)<span class="pl-k">.</span>add(client);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L74" class="blob-num js-line-number" data-line-number="74"></td>
+        <td id="file-whiteboardserver-java-LC74" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L75" class="blob-num js-line-number" data-line-number="75"></td>
+        <td id="file-whiteboardserver-java-LC75" class="blob-code blob-code-inner js-file-line">			<span class="pl-k">int</span> clientNums <span class="pl-k">=</span> roomClients<span class="pl-k">.</span>get(roomId)<span class="pl-k">.</span>size();</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L76" class="blob-num js-line-number" data-line-number="76"></td>
+        <td id="file-whiteboardserver-java-LC76" class="blob-code blob-code-inner js-file-line">			broadcastRoom(roomId, client, <span class="pl-s"><span class="pl-pds">"</span>roomCount<span class="pl-pds">"</span></span>, <span class="pl-smi">String</span><span class="pl-k">.</span>format(</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L77" class="blob-num js-line-number" data-line-number="77"></td>
+        <td id="file-whiteboardserver-java-LC77" class="blob-code blob-code-inner js-file-line">					<span class="pl-s"><span class="pl-pds">"</span>{<span class="pl-cce">\"</span>room<span class="pl-cce">\"</span>:<span class="pl-cce">\"</span>%s<span class="pl-cce">\"</span>,<span class="pl-cce">\"</span>num<span class="pl-cce">\"</span>:%s}<span class="pl-pds">"</span></span>, roomId, clientNums));</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L78" class="blob-num js-line-number" data-line-number="78"></td>
+        <td id="file-whiteboardserver-java-LC78" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L79" class="blob-num js-line-number" data-line-number="79"></td>
+        <td id="file-whiteboardserver-java-LC79" class="blob-code blob-code-inner js-file-line">			<span class="pl-smi">String</span> content <span class="pl-k">=</span> <span class="pl-smi">String</span><span class="pl-k">.</span>format(</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L80" class="blob-num js-line-number" data-line-number="80"></td>
+        <td id="file-whiteboardserver-java-LC80" class="blob-code blob-code-inner js-file-line">					<span class="pl-s"><span class="pl-pds">"</span>5:::{<span class="pl-cce">\"</span>name<span class="pl-cce">\"</span>:<span class="pl-cce">\"</span>%s<span class="pl-cce">\"</span>,<span class="pl-cce">\"</span>args<span class="pl-cce">\"</span>:[%s]}<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>roomCount<span class="pl-pds">"</span></span>, <span class="pl-smi">String</span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L81" class="blob-num js-line-number" data-line-number="81"></td>
+        <td id="file-whiteboardserver-java-LC81" class="blob-code blob-code-inner js-file-line">							.format(<span class="pl-s"><span class="pl-pds">"</span>{<span class="pl-cce">\"</span>room<span class="pl-cce">\"</span>:<span class="pl-cce">\"</span>%s<span class="pl-cce">\"</span>,<span class="pl-cce">\"</span>num<span class="pl-cce">\"</span>:%s}<span class="pl-pds">"</span></span>, roomId,</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L82" class="blob-num js-line-number" data-line-number="82"></td>
+        <td id="file-whiteboardserver-java-LC82" class="blob-code blob-code-inner js-file-line">									clientNums));</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L83" class="blob-num js-line-number" data-line-number="83"></td>
+        <td id="file-whiteboardserver-java-LC83" class="blob-code blob-code-inner js-file-line">			client<span class="pl-k">.</span>send(content);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L84" class="blob-num js-line-number" data-line-number="84"></td>
+        <td id="file-whiteboardserver-java-LC84" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L85" class="blob-num js-line-number" data-line-number="85"></td>
+        <td id="file-whiteboardserver-java-LC85" class="blob-code blob-code-inner js-file-line">			<span class="pl-k">return</span>;</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L86" class="blob-num js-line-number" data-line-number="86"></td>
+        <td id="file-whiteboardserver-java-LC86" class="blob-code blob-code-inner js-file-line">		}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L87" class="blob-num js-line-number" data-line-number="87"></td>
+        <td id="file-whiteboardserver-java-LC87" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L88" class="blob-num js-line-number" data-line-number="88"></td>
+        <td id="file-whiteboardserver-java-LC88" class="blob-code blob-code-inner js-file-line">		broadcastRoom(roomId, client, eventName, obj<span class="pl-k">.</span>toJSONString());</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L89" class="blob-num js-line-number" data-line-number="89"></td>
+        <td id="file-whiteboardserver-java-LC89" class="blob-code blob-code-inner js-file-line">	}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L90" class="blob-num js-line-number" data-line-number="90"></td>
+        <td id="file-whiteboardserver-java-LC90" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L91" class="blob-num js-line-number" data-line-number="91"></td>
+        <td id="file-whiteboardserver-java-LC91" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">private</span> <span class="pl-k">void</span> <span class="pl-en">broadcastRoom</span>(<span class="pl-smi">String</span> <span class="pl-v">roomId</span>, <span class="pl-smi">IOClient</span> <span class="pl-v">client</span>,</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L92" class="blob-num js-line-number" data-line-number="92"></td>
+        <td id="file-whiteboardserver-java-LC92" class="blob-code blob-code-inner js-file-line">			<span class="pl-smi">String</span> <span class="pl-v">eventName</span>, <span class="pl-smi">String</span> <span class="pl-v">jsonString</span>) {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L93" class="blob-num js-line-number" data-line-number="93"></td>
+        <td id="file-whiteboardserver-java-LC93" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">Set&lt;<span class="pl-smi">IOClient</span>&gt;</span> clients <span class="pl-k">=</span> roomClients<span class="pl-k">.</span>get(roomId);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L94" class="blob-num js-line-number" data-line-number="94"></td>
+        <td id="file-whiteboardserver-java-LC94" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">if</span> (clients <span class="pl-k">==</span> <span class="pl-c1">null</span> <span class="pl-k">||</span> clients<span class="pl-k">.</span>isEmpty())</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L95" class="blob-num js-line-number" data-line-number="95"></td>
+        <td id="file-whiteboardserver-java-LC95" class="blob-code blob-code-inner js-file-line">			<span class="pl-k">return</span>;</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L96" class="blob-num js-line-number" data-line-number="96"></td>
+        <td id="file-whiteboardserver-java-LC96" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L97" class="blob-num js-line-number" data-line-number="97"></td>
+        <td id="file-whiteboardserver-java-LC97" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">String</span> content <span class="pl-k">=</span> <span class="pl-smi">String</span><span class="pl-k">.</span>format(<span class="pl-s"><span class="pl-pds">"</span>5:::{<span class="pl-cce">\"</span>name<span class="pl-cce">\"</span>:<span class="pl-cce">\"</span>%s<span class="pl-cce">\"</span>,<span class="pl-cce">\"</span>args<span class="pl-cce">\"</span>:[%s]}<span class="pl-pds">"</span></span>,</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L98" class="blob-num js-line-number" data-line-number="98"></td>
+        <td id="file-whiteboardserver-java-LC98" class="blob-code blob-code-inner js-file-line">				eventName, jsonString);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L99" class="blob-num js-line-number" data-line-number="99"></td>
+        <td id="file-whiteboardserver-java-LC99" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">for</span> (<span class="pl-smi">IOClient</span> rc <span class="pl-k">:</span> clients) {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L100" class="blob-num js-line-number" data-line-number="100"></td>
+        <td id="file-whiteboardserver-java-LC100" class="blob-code blob-code-inner js-file-line">			<span class="pl-k">if</span> (rc <span class="pl-k">==</span> <span class="pl-c1">null</span> <span class="pl-k">||</span> rc<span class="pl-k">.</span>getSessionID()<span class="pl-k">.</span>equals(client<span class="pl-k">.</span>getSessionID())) {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L101" class="blob-num js-line-number" data-line-number="101"></td>
+        <td id="file-whiteboardserver-java-LC101" class="blob-code blob-code-inner js-file-line">				<span class="pl-k">continue</span>;</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L102" class="blob-num js-line-number" data-line-number="102"></td>
+        <td id="file-whiteboardserver-java-LC102" class="blob-code blob-code-inner js-file-line">			}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L103" class="blob-num js-line-number" data-line-number="103"></td>
+        <td id="file-whiteboardserver-java-LC103" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L104" class="blob-num js-line-number" data-line-number="104"></td>
+        <td id="file-whiteboardserver-java-LC104" class="blob-code blob-code-inner js-file-line">			rc<span class="pl-k">.</span>send(content);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L105" class="blob-num js-line-number" data-line-number="105"></td>
+        <td id="file-whiteboardserver-java-LC105" class="blob-code blob-code-inner js-file-line">		}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L106" class="blob-num js-line-number" data-line-number="106"></td>
+        <td id="file-whiteboardserver-java-LC106" class="blob-code blob-code-inner js-file-line">	}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L107" class="blob-num js-line-number" data-line-number="107"></td>
+        <td id="file-whiteboardserver-java-LC107" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L108" class="blob-num js-line-number" data-line-number="108"></td>
+        <td id="file-whiteboardserver-java-LC108" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">@Override</span></td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L109" class="blob-num js-line-number" data-line-number="109"></td>
+        <td id="file-whiteboardserver-java-LC109" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">OnShutdown</span>() {</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L110" class="blob-num js-line-number" data-line-number="110"></td>
+        <td id="file-whiteboardserver-java-LC110" class="blob-code blob-code-inner js-file-line">		log<span class="pl-k">.</span>debug(<span class="pl-s"><span class="pl-pds">"</span>shutdown now ~~~<span class="pl-pds">"</span></span>);</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L111" class="blob-num js-line-number" data-line-number="111"></td>
+        <td id="file-whiteboardserver-java-LC111" class="blob-code blob-code-inner js-file-line">	}</td>
+      </tr>
+      <tr>
+        <td id="file-whiteboardserver-java-L112" class="blob-num js-line-number" data-line-number="112"></td>
+        <td id="file-whiteboardserver-java-LC112" class="blob-code blob-code-inner js-file-line">}</td>
+      </tr>
+</tbody></table>
+
+
+  </div>
+
+  </div>
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/yongboy/2772793/raw/0e682c45dcb9026cf3b1aba0c167751aee27f1a8/WhiteboardServer.java" style="float:right">view raw</a>
+        <a href="https://gist.github.com/yongboy/2772793#file-whiteboardserver-java">WhiteboardServer.java</a>
+        hosted with ❤ by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div>
+ <p>如何让打包的android支持websocket协议，可参考：<a href="http://www.blogjava.net/yongboy/archive/2012/05/10/377787.html">为Phonegap Android平台增加websocket支持，使默认成为socket.io首选通道选择</a></p> <p>本人暂无JAVA主机，无法部署到互联网环境下。只能截个图，看看先。</p> <p><a href="http://code.google.com/p/socketio-netty/downloads/detail?name=whiteboard_server.zip&amp;can=2&amp;q=#makechanges" target="_blank">项目演示代码下载地址</a></p> <p>&nbsp;</p> <h3><strong>小结</strong></h3> <p>很显然，实时Web，是一种技术趋势，将成为一种人们的默认技术选择，用以拉近和桌面应用的距离。<br>socket.io是一种数据实时推送、事件驱动模型的框架，支持事件订阅，简单易用。其价值目前看来，还未被完整的挖掘出来。</p> <p>socket.io即提供了node.js服务器端（<a href="https://github.com/learnboost/socket.io/" target="_blank">地址</a>）又提供了客户端（<a href="https://github.com/LearnBoost/socket.io-client" target="_blank">地址</a>）的整体解决方案，而socketio-netty则是基于JAVA服务器端，支持最新socket.io client最新版规范。对JAVA编程人员来讲，可以不用学习node.js，从而多了一个选择。</p> <p>这里再解释一下，为何构建app而不是webapp的服务器端：</p> <ol> <li>Tomcat 7 虽然支持了Websocket协议，仅采用最新websocket草案版本  </li><li>Jetty 8 已经支持Websocket，但才支持servlet 3.0规范  </li><li>被绑定在某个单独的Servlet容器上面，不为通用  </li><li>Servlet容器协议栈可能过于庞杂<br></li></ol> <h3><strong>参考资料</strong></h3> <ol> <li>实时Web时代即将到来：不只谷歌Twitter玩得起 <br><a href="http://tech.qq.com/a/20120521/000296.htm">http://tech.qq.com/a/20120521/000296.htm</a></li></ol><br><br><div><span style="color: #008000;">----------------------------------------------------------------------------<br>
+广而告之，让您自由畅游网络~</span></div>
+<div><a target="_blank" href="http://gjsq.me/1034269">推荐一个我一直使用的VPN 翻*墙利器，平常正常谷歌搜索，登陆Gmail，闲时观看youtube等高清视频一点都不卡！</a></div>
+<div>再超值提供一个近期2015年有效的9折优惠码：<u><strong>10off2015</strong></u><br>
+<br>作为码农，严重推荐！</div></div>
+		<p class="postfoot">
+			posted on 2012-05-24 09:10 <a href="http://www.blogjava.net/yongboy/">nieyong</a> 阅读(28028) <a href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html#Post">评论(5)</a> &nbsp;<a href="http://www.blogjava.net/yongboy/admin/EditPosts.aspx?postid=378839">编辑</a> &nbsp;<a href="http://www.blogjava.net/yongboy/AddToFavorite.aspx?id=378839">收藏</a>  所属分类: <a href="http://www.blogjava.net/yongboy/category/54838.html">socket.io</a> 
+		</p>
+	</div>
+	<img src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/378839.html" width="1" height="1">
+	
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html"
+dc:identifier="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html"
+dc:title="构建实时Web的JAVA选择组合：socket.io client + socketio-netty server"
+trackback:ping="http://www.blogjava.net/yongboy/services/trackbacks/378839.aspx" />
+</rdf:RDF>
+-->
+
+	<script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('AjaxHolder$scriptmanager1', document.getElementById('Form1'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls(['tAjaxHolder$UpdatePanel1'], [], [], 90);
+//]]>
+</script>
+
+<div id="AjaxHolder_UpdatePanel1">
+	    
+    <a name="pagedcomment"></a>
+<a name="评论">
+</a><div id="comments"><a name="评论">
+<h3>评论</h3>
+	
+	
+			</a><h4><a name="评论">
+				</a><a title="permalink: re: 构建实时Web的JAVA选择组合：socket.io client + socketio-netty server" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html#379060">#</a>&nbsp;<a name="379060"></a>re: 构建实时Web的JAVA选择组合：socket.io client + socketio-netty server
+					<span>
+						2012-05-24 20:29
+					</span>
+				<a id="AjaxHolder_Comments_CommentList_ctl00_NameLink" href="http://www.blogjava.net/rox/" target="_blank">rox</a>
+			</h4>
+			<p>
+				不错，收藏了！&nbsp;&nbsp;<a onclick="return SetReplyAuhor(&quot;rox&quot;)" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html#post">回复</a>&nbsp;&nbsp;<a title="查看该作者发表过的评论" href="http://www.blogjava.net/comment?author=rox" target="_blank">更多评论</a>
+				<a id="AjaxHolder_Comments_CommentList_ctl00_DeleteLink" href="javascript:__doPostBack(&#39;AjaxHolder$Comments$CommentList$ctl00$DeleteLink&#39;,&#39;&#39;)"></a>&nbsp;&nbsp;<a id="AjaxHolder_Comments_CommentList_ctl00_EditLink"></a>
+			</p>
+		
+			<h4>
+				<a title="permalink: re: 构建实时Web的JAVA选择组合：socket.io client + socketio-netty server" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html#397506">#</a>&nbsp;<a name="397506"></a>re: 构建实时Web的JAVA选择组合：socket.io client + socketio-netty server
+					<span>
+						2013-04-08 10:14
+					</span>
+				<a id="AjaxHolder_Comments_CommentList_ctl01_NameLink" target="_blank">vajra</a>
+			</h4>
+			<p>
+						int port = 9000;<br>		MainServer mainServer = new MainServer(port);<br>		mainServer.addNamespace("/chat", new DemoChatHandler());<br>		mainServer.addNamespace("/news", new DemoNewsHandler());<br>		mainServer.start();<br>按namespace访问，Flashsocket不起作用？如果namespace为空则正常。&nbsp;&nbsp;<a onclick="return SetReplyAuhor(&quot;vajra&quot;)" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html#post">回复</a>&nbsp;&nbsp;<a title="查看该作者发表过的评论" href="http://www.blogjava.net/comment?author=vajra" target="_blank">更多评论</a>
+				<a id="AjaxHolder_Comments_CommentList_ctl01_DeleteLink" href="javascript:__doPostBack(&#39;AjaxHolder$Comments$CommentList$ctl01$DeleteLink&#39;,&#39;&#39;)"></a>&nbsp;&nbsp;<a id="AjaxHolder_Comments_CommentList_ctl01_EditLink"></a>
+			</p>
+		
+			<h4>
+				<a title="permalink: re: 构建实时Web的JAVA选择组合：socket.io client + socketio-netty server" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html#408549">#</a>&nbsp;<a name="408549"></a>re: 构建实时Web的JAVA选择组合：socket.io client + socketio-netty server
+					<span>
+						2014-01-06 10:43
+					</span>
+				<a id="AjaxHolder_Comments_CommentList_ctl02_NameLink" href="http://qq:25127567/" target="_blank">邓子彪</a>
+			</h4>
+			<p>
+				感谢楼主了，楼主威武啊&nbsp;&nbsp;<a onclick="return SetReplyAuhor(&quot;邓子彪&quot;)" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html#post">回复</a>&nbsp;&nbsp;<a title="查看该作者发表过的评论" href="http://www.blogjava.net/comment?author=%e9%82%93%e5%ad%90%e5%bd%aa" target="_blank">更多评论</a>
+				<a id="AjaxHolder_Comments_CommentList_ctl02_DeleteLink" href="javascript:__doPostBack(&#39;AjaxHolder$Comments$CommentList$ctl02$DeleteLink&#39;,&#39;&#39;)"></a>&nbsp;&nbsp;<a id="AjaxHolder_Comments_CommentList_ctl02_EditLink"></a>
+			</p>
+		
+			<h4>
+				<a title="permalink: re: 构建实时Web的JAVA选择组合：socket.io client + socketio-netty server" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html#408627">#</a>&nbsp;<a name="408627"></a>re: 构建实时Web的JAVA选择组合：socket.io client + socketio-netty server
+					<span>
+						2014-01-07 13:51
+					</span>
+				<a id="AjaxHolder_Comments_CommentList_ctl03_NameLink" href="http://qq:25127567/" target="_blank">邓子彪</a>
+			</h4>
+			<p>
+				我想在我的项目中加入socketio，但是我想用我项目中自己用的那个端口号，如何实现使得端口号不被占用而程序能运行&nbsp;&nbsp;<a onclick="return SetReplyAuhor(&quot;邓子彪&quot;)" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html#post">回复</a>&nbsp;&nbsp;<a title="查看该作者发表过的评论" href="http://www.blogjava.net/comment?author=%e9%82%93%e5%ad%90%e5%bd%aa" target="_blank">更多评论</a>
+				<a id="AjaxHolder_Comments_CommentList_ctl03_DeleteLink" href="javascript:__doPostBack(&#39;AjaxHolder$Comments$CommentList$ctl03$DeleteLink&#39;,&#39;&#39;)"></a>&nbsp;&nbsp;<a id="AjaxHolder_Comments_CommentList_ctl03_EditLink"></a>
+			</p>
+		
+			<h4>
+				<a title="permalink: re: 构建实时Web的JAVA选择组合：socket.io client + socketio-netty server[未登录]" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html#416589">#</a>&nbsp;<a name="416589"></a>re: 构建实时Web的JAVA选择组合：socket.io client + socketio-netty server[未登录]<a name="Post"></a>
+					<span>
+						2014-08-05 14:59
+					</span>
+				<a id="AjaxHolder_Comments_CommentList_ctl04_NameLink" target="_blank">dd</a>
+			</h4>
+			<p>
+				cool&nbsp;&nbsp;<a onclick="return SetReplyAuhor(&quot;dd&quot;)" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html#post">回复</a>&nbsp;&nbsp;<a title="查看该作者发表过的评论" href="http://www.blogjava.net/comment?author=dd" target="_blank">更多评论</a>
+				<a id="AjaxHolder_Comments_CommentList_ctl04_DeleteLink" href="javascript:__doPostBack(&#39;AjaxHolder$Comments$CommentList$ctl04$DeleteLink&#39;,&#39;&#39;)"></a>&nbsp;&nbsp;<a id="AjaxHolder_Comments_CommentList_ctl04_EditLink"></a>
+			</p>
+		
+</div>
+<style>
+td { font-size: 12px }
+.commentTextBox 
+{ 
+    font-family : Verdana; 
+    font-size: 13px;
+ }
+</style>
+<!--Beging Temp Save-->
+<style>.userData { BEHAVIOR: url(#default#userdata) }
+	</style>
+<div class="userData" id="CommentsPersistDiv"></div>
+
+<script type="text/javascript">
+function pageLoad()
+{
+    Sys.WebForms.PageRequestManager.getInstance().add_initializeRequest(handleInitializeRequest);
+    //Sys.WebForms.PageRequestManager.getInstance().add_endRequest(handleEndRequest);
+}
+
+function handleInitializeRequest(sender, args)
+{
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
+    var eid = args.get_postBackElement().id;
+    if (eid.indexOf("DeleteLink")>0) 
+    {
+       args.get_postBackElement().innerHTML = "<font color='red'>正在删除...</font>";         
+    }    
+    else if (eid.indexOf("btnSubmit")>0) 
+    {
+       document.getElementById("AjaxHolder_PostComment_ltSubmitMsg").innerHTML="正在提交...";
+       document.getElementById("AjaxHolder_PostComment_btnSubmit").disabled = true;       
+    }   
+    else if(eid.indexOf("refreshList")>0)
+    {
+        document.getElementById("AjaxHolder_PostComment_refreshList").innerHTML="<font color='red'>正在刷新...</font>";
+    }
+   
+}	
+
+function TempSave(ElementID)
+{
+	try
+	{
+	CommentsPersistDiv.setAttribute("CommentContent",document.getElementById(ElementID).value);
+	CommentsPersistDiv.save("CommentXMLStore");
+	}
+	catch(ex)
+	{
+	}
+	
+}
+function Restore(ElementID)
+{
+	CommentsPersistDiv.load("CommentXMLStore");
+	document.getElementById(ElementID).value=CommentsPersistDiv.getAttribute("CommentContent");
+}	
+			
+			
+</script>
+<!--Ene TempSave-->
+<div id="divRefreshComments" style="text-align:right;margin-right:10px;margin-bottom:5px;font-size:12px"><a href="http://www.blogjava.net/RequireRegister.aspx">新用户注册</a>&nbsp;&nbsp;<a id="AjaxHolder_PostComment_refreshList" href="javascript:__doPostBack(&#39;AjaxHolder$PostComment$refreshList&#39;,&#39;&#39;)">刷新评论列表</a>&nbsp;&nbsp;</div>
+<div class="commentform">
+<span id="AjaxHolder_PostComment_ltSubmitMsg" style="color:Red;"></span>
+<br>
+<a name="Feedback"></a>
+	<table cellspacing="1" cellpadding="1" border="0">
+		<tbody><tr>
+		<td id="AjaxHolder_PostComment_tdOnCommentForm" colspan="3" style="line-height:1.5">		
+		</td>
+	
+		</tr>
+		
+		<tr><td colspan="3">只有注册用户<a href="http://www.blogjava.net/login.aspx?ReturnUrl=/yongboy/archive/2012/05/24/378839.html">登录</a>后才能发表评论。</td></tr>
+		<tr>
+			<td colspan="3"><!--该文被作者在 2015-06-01 11:43 编辑过--></td>
+		</tr>
+		<!--
+		<TR>
+			<TD colSpan="3" height="5"></TD>
+		</TR>	
+		-->	
+		<tr>
+		<td colspan="3">
+		<br>
+		
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+var gads = document.createElement('script');
+gads.async = true;
+gads.type = 'text/javascript';
+var useSSL = 'https:' == document.location.protocol;
+gads.src = (useSSL ? 'https:' : 'http:') + 
+'//www.googletagservices.com/tag/js/gpt.js';
+var node = document.getElementsByTagName('script')[0];
+node.parentNode.insertBefore(gads, node);
+})();
+</script>
+
+<script type="text/javascript">
+googletag.cmd.push(function() {
+googletag.defineSlot('/1090369/blogjava_blogpost_bottom', [300, 250], 'div-gpt-ad-1364133350381-0').addService(googletag.pubads());
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
+});
+</script>
+<!-- blogjava_blogpost_bottom -->
+<div id="div-gpt-ad-1364133350381-0" style="width: 300px; height: 250px;">
+<script type="text/javascript">
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1364133350381-0'); });
+</script>
+<div id="google_ads_iframe_/1090369/blogjava_blogpost_bottom_0__container__" style="border: 0pt none; width: 300px; height: 250px;"></div></div>
+<br>
+
+		</td>
+		</tr>
+		<tr>			
+		<td colspan="3">
+		
+		</td>
+		</tr>
+		<tr>
+		<td colspan="3"></td>
+		</tr>
+		<tr>
+			<td colspan="3" height="1">网站导航:<div id="blogsite">
+			<a href="http://www.cnblogs.com/" title="开发者的网上家园">博客园</a>&nbsp;&nbsp;
+			<a href="https://news.cnblogs.com/">IT新闻</a>&nbsp;&nbsp;
+			<a href="http://kb.cnblogs.com/">知识库</a>&nbsp;&nbsp;
+			<a href="http://www.cppblog.com/">C++博客</a>&nbsp;&nbsp;
+			<a href="https://q.cnblogs.com/">博问</a>&nbsp;&nbsp;
+			<a href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html?opt=admin">管理</a>
+			</div>
+		</td>
+		</tr>
+		<tr>
+			<td colspan="3" height="5">
+<div id="divRelativePosts">
+相关文章:
+	
+			<ul style="margin-top:0px;padding-left:0px;">
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl01_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2013/03/29/397154.html">c_socket.io_server笔记之定义私有接口</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl02_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2013/03/28/397081.html">c_socket.io_server笔记之htmlfile块传输</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl03_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2013/03/27/397031.html">c_socket.io_server笔记之长轮询超时(timeout)处理</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl04_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2013/03/25/396972.html">c_socket.io_server笔记之处理静态文件</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl05_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2013/03/15/396493.html">哈，又来一个纯C语言版本的socket.io服务器端实现~</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl06_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2012/10/15/389575.html">刚出炉的，socket.io erlang server版本，有点小清新</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl07_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2012/08/24/386239.html">Javascript EventBus(事件总线)模拟socket.io中事件处理</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl08_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2012/08/23/386061.html">Real-Time Web实时信息流推送培训文档</a>
+			</li>
+		
+			<li style="list-style:none;display:none">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl09_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2012/05/24/378839.html">构建实时Web的JAVA选择组合：socket.io client + socketio-netty server</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl10_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2012/05/21/378723.html">socketio-netty(socket.io 服务器端JAVA实现) 近期升级手记</a>
+			</li>
+		
+			</ul>
+		
+</div>
+</td>
+		</tr>	
+		<tr>
+			<td colspan="3">&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="3" height="5"></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				</td>
+		</tr>		
+	</tbody></table>	
+</div>
+<div id="AjaxHolder_PostComment_ValidationSummary1" style="color:Red;display:none;">
+
+	</div>
+
+</div>
+
+				
+			</div>
+			<div id="rightmenu">
+				
+					
+<h3>公告</h3>
+	<div>所有文章皆为原创，若转载请标明出处，谢谢~ </div>
+<br>
+新浪微博，欢迎关注：<br>
+<a href="http://weibo.com/u/1639071877?s=6uyXnP" target="_blank"><img src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/1.png" alt="" border="0" width="270"></a>
+
+					
+<h3>导航</h3>
+<ul>
+			<li><a id="MyLinks1_HomeLink" href="http://www.blogjava.net/">BlogJava</a></li>
+			<li><a id="MyLinks1_MyHomeLink" href="http://www.blogjava.net/yongboy/">首页</a></li>
+			<li><a id="MyLinks1_NewPostLink" href="http://www.blogjava.net/yongboy/admin/EditPosts.aspx?opt=1">新随笔</a></li>
+			<li><a id="MyLinks1_ContactLink" accesskey="9" href="http://www.blogjava.net/yongboy/contact.aspx?id=1">联系</a></li>
+			<li><a id="MyLinks1_Syndication" href="http://www.blogjava.net/yongboy/rss">聚合</a><a id="MyLinks1_XMLLink" href="http://www.blogjava.net/yongboy/rss"><img src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/xml.gif" style="border-width:0px;"></a>
+			</li><li><a id="MyLinks1_Admin" href="http://www.blogjava.net/yongboy/admin/EditPosts.aspx">管理</a></li>
+</ul>
+					<table id="Calendar1_entryCal" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0" style="border-width:1px;border-style:solid;border-collapse:collapse;">
+	<tbody><tr><td colspan="7" style="background-color:Silver;"><table class="CalTitle" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
+		<tbody><tr><td class="CalNextPrev" style="width:15%;"><a href="javascript:__doPostBack(&#39;Calendar1$entryCal&#39;,&#39;V4474&#39;)" style="color:Black" title="Go to the previous month">&lt;</a></td><td align="center" style="width:70%;">2012年5月</td><td class="CalNextPrev" align="right" style="width:15%;"><a href="javascript:__doPostBack(&#39;Calendar1$entryCal&#39;,&#39;V4535&#39;)" style="color:Black" title="Go to the next month">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center" style="width:14%;">29</td><td class="CalOtherMonthDay" align="center" style="width:14%;">30</td><td align="center" style="width:14%;">1</td><td align="center" style="width:14%;">2</td><td align="center" style="width:14%;">3</td><td align="center" style="width:14%;">4</td><td class="CalWeekendDay" align="center" style="width:14%;">5</td></tr><tr><td class="CalWeekendDay" align="center" style="width:14%;">6</td><td align="center" style="width:14%;">7</td><td align="center" style="width:14%;">8</td><td align="center" style="width:14%;">9</td><td align="center" style="width:14%;"><a href="http://www.blogjava.net/yongboy/archive/2012/05/10.html"><u>10</u></a></td><td align="center" style="width:14%;">11</td><td class="CalWeekendDay" align="center" style="width:14%;">12</td></tr><tr><td class="CalWeekendDay" align="center" style="width:14%;">13</td><td align="center" style="width:14%;">14</td><td align="center" style="width:14%;">15</td><td align="center" style="width:14%;">16</td><td align="center" style="width:14%;">17</td><td align="center" style="width:14%;">18</td><td class="CalWeekendDay" align="center" style="width:14%;">19</td></tr><tr><td class="CalWeekendDay" align="center" style="width:14%;">20</td><td align="center" style="width:14%;"><a href="http://www.blogjava.net/yongboy/archive/2012/05/21.html"><u>21</u></a></td><td align="center" style="width:14%;">22</td><td align="center" style="width:14%;">23</td><td align="center" style="width:14%;"><a href="http://www.blogjava.net/yongboy/archive/2012/05/24.html"><u>24</u></a></td><td align="center" style="width:14%;">25</td><td class="CalWeekendDay" align="center" style="width:14%;">26</td></tr><tr><td class="CalWeekendDay" align="center" style="width:14%;">27</td><td align="center" style="width:14%;">28</td><td align="center" style="width:14%;">29</td><td align="center" style="width:14%;">30</td><td align="center" style="width:14%;">31</td><td class="CalOtherMonthDay" align="center" style="width:14%;">1</td><td class="CalOtherMonthDay" align="center" style="width:14%;">2</td></tr><tr><td class="CalOtherMonthDay" align="center" style="width:14%;">3</td><td class="CalOtherMonthDay" align="center" style="width:14%;">4</td><td class="CalOtherMonthDay" align="center" style="width:14%;">5</td><td class="CalOtherMonthDay" align="center" style="width:14%;">6</td><td class="CalOtherMonthDay" align="center" style="width:14%;">7</td><td class="CalOtherMonthDay" align="center" style="width:14%;">8</td><td class="CalOtherMonthDay" align="center" style="width:14%;">9</td></tr>
+</tbody></table>
+
+					
+<h3>统计</h3>
+	<ul>
+		<li>随笔 - 148
+		</li><li>文章 - 0
+		</li><li>评论 - 310
+		</li><li>引用 - 0
+	</li>
+</ul>
+					
+<h3>常用链接</h3>
+<ul>
+		<li><a id="SingleColumn1_ctl00_repeaterLinks_ctl01_lnkLinkItem" href="http://www.blogjava.net/yongboy/MyPosts.html">我的随笔</a></li>
+	
+		<li><a id="SingleColumn1_ctl00_repeaterLinks_ctl02_lnkLinkItem" href="http://www.blogjava.net/yongboy/MyComments.html">我的评论</a></li>
+	
+		<li><a id="SingleColumn1_ctl00_repeaterLinks_ctl03_lnkLinkItem" href="http://www.blogjava.net/yongboy/OtherPosts.html">我的参与</a></li>
+	
+		<li><a id="SingleColumn1_ctl00_repeaterLinks_ctl04_lnkLinkItem" href="http://www.blogjava.net/yongboy/RecentComments.html">最新评论</a></li>
+	</ul>
+<h3>留言簿<span style="font-size:11px;font-weight:normal;">(55)</span></h3>
+<ul>
+	<li>
+		<a id="SingleColumn1_ctl01_lnkMessages" href="http://www.blogjava.net/yongboy/Contact.aspx?id=1">给我留言</a>
+	</li><li>
+		<a id="SingleColumn1_ctl01_lnkPublicMsgView" href="http://www.blogjava.net/yongboy/default.aspx?opt=msg">查看公开留言</a>
+	</li><li>
+		<a id="SingleColumn1_ctl01_lnkPrivateMsgView" href="http://www.blogjava.net/yongboy/admin/MyMessages.aspx">查看私人留言</a>
+	</li>
+</ul>
+
+		<h3>随笔分类<span style="font-size:11px;font-weight:normal">(125)</span></h3>
+		
+				<ul>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_Link" href="http://www.blogjava.net/yongboy/category/54842.html">C1M(6)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_RssLink" title="Subscribe to C1M(6)" href="http://www.blogjava.net/yongboy/category/54842.html/rss">(rss)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl02_Link" href="http://www.blogjava.net/yongboy/category/54836.html">HTTP(7)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl02_RssLink" title="Subscribe to HTTP(7)" href="http://www.blogjava.net/yongboy/category/54836.html/rss">(rss)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl03_Link" href="http://www.blogjava.net/yongboy/category/54839.html">Java(20)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl03_RssLink" title="Subscribe to Java(20)" href="http://www.blogjava.net/yongboy/category/54839.html/rss">(rss)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl04_Link" href="http://www.blogjava.net/yongboy/category/54835.html">MQTT(15)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl04_RssLink" title="Subscribe to MQTT(15)" href="http://www.blogjava.net/yongboy/category/54835.html/rss">(rss)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl05_Link" href="http://www.blogjava.net/yongboy/category/48044.html">Servlet3(26)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl05_RssLink" title="Subscribe to Servlet3(26)" href="http://www.blogjava.net/yongboy/category/48044.html/rss">(rss)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl06_Link" href="http://www.blogjava.net/yongboy/category/54837.html">Socket(19)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl06_RssLink" title="Subscribe to Socket(19)" href="http://www.blogjava.net/yongboy/category/54837.html/rss">(rss)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl07_Link" href="http://www.blogjava.net/yongboy/category/54838.html">socket.io(12)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl07_RssLink" title="Subscribe to socket.io(12)" href="http://www.blogjava.net/yongboy/category/54838.html/rss">(rss)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl08_Link" href="http://www.blogjava.net/yongboy/category/55089.html">压测(10)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl08_RssLink" title="Subscribe to 压测(10)" href="http://www.blogjava.net/yongboy/category/55089.html/rss">(rss)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl09_Link" href="http://www.blogjava.net/yongboy/category/54841.html">容器(7)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl09_RssLink" title="Subscribe to 容器(7)" href="http://www.blogjava.net/yongboy/category/54841.html/rss">(rss)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl10_Link" href="http://www.blogjava.net/yongboy/category/54840.html">移动后端(3)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl10_RssLink" title="Subscribe to 移动后端(3)" href="http://www.blogjava.net/yongboy/category/54840.html/rss">(rss)</a></li>
+			
+				</ul>
+			
+	
+		<h3>随笔档案<span style="font-size:11px;font-weight:normal">(147)</span></h3>
+		
+				<ul>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl01_Link" href="http://www.blogjava.net/yongboy/archive/2018/01.html">2018年1月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl02_Link" href="http://www.blogjava.net/yongboy/archive/2016/08.html">2016年8月 (2)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl03_Link" href="http://www.blogjava.net/yongboy/archive/2016/07.html">2016年7月 (8)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl04_Link" href="http://www.blogjava.net/yongboy/archive/2015/05.html">2015年5月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl05_Link" href="http://www.blogjava.net/yongboy/archive/2015/04.html">2015年4月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl06_Link" href="http://www.blogjava.net/yongboy/archive/2015/03.html">2015年3月 (7)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl07_Link" href="http://www.blogjava.net/yongboy/archive/2015/02.html">2015年2月 (6)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl08_Link" href="http://www.blogjava.net/yongboy/archive/2015/01.html">2015年1月 (9)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl09_Link" href="http://www.blogjava.net/yongboy/archive/2014/12.html">2014年12月 (3)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl10_Link" href="http://www.blogjava.net/yongboy/archive/2014/11.html">2014年11月 (2)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl11_Link" href="http://www.blogjava.net/yongboy/archive/2014/10.html">2014年10月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl12_Link" href="http://www.blogjava.net/yongboy/archive/2014/09.html">2014年9月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl13_Link" href="http://www.blogjava.net/yongboy/archive/2014/08.html">2014年8月 (2)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl14_Link" href="http://www.blogjava.net/yongboy/archive/2014/07.html">2014年7月 (2)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl15_Link" href="http://www.blogjava.net/yongboy/archive/2014/06.html">2014年6月 (2)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl16_Link" href="http://www.blogjava.net/yongboy/archive/2014/05.html">2014年5月 (2)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl17_Link" href="http://www.blogjava.net/yongboy/archive/2014/04.html">2014年4月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl18_Link" href="http://www.blogjava.net/yongboy/archive/2014/03.html">2014年3月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl19_Link" href="http://www.blogjava.net/yongboy/archive/2014/02.html">2014年2月 (4)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl20_Link" href="http://www.blogjava.net/yongboy/archive/2013/12.html">2013年12月 (4)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl21_Link" href="http://www.blogjava.net/yongboy/archive/2013/08.html">2013年8月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl22_Link" href="http://www.blogjava.net/yongboy/archive/2013/06.html">2013年6月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl23_Link" href="http://www.blogjava.net/yongboy/archive/2013/05.html">2013年5月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl24_Link" href="http://www.blogjava.net/yongboy/archive/2013/04.html">2013年4月 (5)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl25_Link" href="http://www.blogjava.net/yongboy/archive/2013/03.html">2013年3月 (5)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl26_Link" href="http://www.blogjava.net/yongboy/archive/2012/10.html">2012年10月 (2)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl27_Link" href="http://www.blogjava.net/yongboy/archive/2012/08.html">2012年8月 (2)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl28_Link" href="http://www.blogjava.net/yongboy/archive/2012/06.html">2012年6月 (2)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl29_Link" href="http://www.blogjava.net/yongboy/archive/2012/05.html">2012年5月 (3)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl30_Link" href="http://www.blogjava.net/yongboy/archive/2012/04.html">2012年4月 (4)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl31_Link" href="http://www.blogjava.net/yongboy/archive/2012/03.html">2012年3月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl32_Link" href="http://www.blogjava.net/yongboy/archive/2012/02.html">2012年2月 (7)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl33_Link" href="http://www.blogjava.net/yongboy/archive/2012/01.html">2012年1月 (2)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl34_Link" href="http://www.blogjava.net/yongboy/archive/2011/04.html">2011年4月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl35_Link" href="http://www.blogjava.net/yongboy/archive/2011/03.html">2011年3月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl36_Link" href="http://www.blogjava.net/yongboy/archive/2011/02.html">2011年2月 (4)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl37_Link" href="http://www.blogjava.net/yongboy/archive/2011/01.html">2011年1月 (10)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl38_Link" href="http://www.blogjava.net/yongboy/archive/2010/12.html">2010年12月 (5)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl39_Link" href="http://www.blogjava.net/yongboy/archive/2010/11.html">2010年11月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl40_Link" href="http://www.blogjava.net/yongboy/archive/2010/10.html">2010年10月 (10)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl41_Link" href="http://www.blogjava.net/yongboy/archive/2010/07.html">2010年7月 (4)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl42_Link" href="http://www.blogjava.net/yongboy/archive/2009/11.html">2009年11月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl43_Link" href="http://www.blogjava.net/yongboy/archive/2009/09.html">2009年9月 (3)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl44_Link" href="http://www.blogjava.net/yongboy/archive/2009/08.html">2009年8月 (4)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl45_Link" href="http://www.blogjava.net/yongboy/archive/2009/05.html">2009年5月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl46_Link" href="http://www.blogjava.net/yongboy/archive/2009/02.html">2009年2月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl47_Link" href="http://www.blogjava.net/yongboy/archive/2009/01.html">2009年1月 (1)</a> </li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl48_Link" href="http://www.blogjava.net/yongboy/archive/2008/12.html">2008年12月 (4)</a> </li>
+			
+				</ul>
+			
+	
+		<h3>个人收藏</h3>
+		
+				<ul>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl02_LinkList_ctl01_Link" href="http://gjsq.me/1034269" target="_blank">国内老牌GreenVPN，翻墙速度确实杠杠的！</a> </li>
+			<li style="margin-top:2px;">个人一直在使用中，在线观看www.youtube.com上高清视频一点都不卡。
+每个月才18块钱，一个季度48，再超值提供一个9折优惠码：freevpnssh。
+
+
+我平常在Linux下安装/更新软件，压根不用担心GFW阻挠了，
+更不用提windows 7了。</li>
+				</ul>
+			
+	
+
+<h3>最新随笔</h3>
+<div class="RecentComment">
+<ul style="word-break:break-all">
+	
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl00_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2018/01/02/433000.html">1.&nbsp;HTTP API设计笔记</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl01_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/08/16/431601.html">2.&nbsp;Tsung笔记之IP地址和端口限制突破篇</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl02_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/08/08/431498.html">3.&nbsp;Tsung笔记之100万用户压测执行步骤篇</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl03_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/07/30/431396.html">4.&nbsp;Tsung笔记之插件编写篇</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl04_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/07/29/431367.html">5.&nbsp;Tsung笔记之监控数据收集篇</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl05_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/07/28/431354.html">6.&nbsp;Tsung笔记之IP直连支持篇</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl06_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/07/27/431340.html">7.&nbsp;Tsung笔记之分布式增强跳出SSH羁绊篇</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl07_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/07/26/431322.html">8.&nbsp;Tsung笔记之压测端资源限制篇</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl08_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/07/25/431310.html">9.&nbsp;Tsung笔记之主从资源协调篇</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl09_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/07/23/431294.html">10.&nbsp;Tsung笔记之主从模型篇</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl10_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/07/22/431291.html">11.&nbsp;Tsung笔记之开篇</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl11_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2015/05/07/424917.html">12.&nbsp;TCP协议缺陷不完全记录</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl12_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2015/04/14/424413.html">13.&nbsp;随手记之TCP Keepalive笔记</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl13_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2015/03/30/423963.html">14.&nbsp;移动APP后端网络处理一些问题记录</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1_ctl03_RecentPostsList_ctl14_RecentPostsList2_ctl00_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2015/03/24/423791.html">15.&nbsp;HTTP/2笔记之错误处理和安全</a></li>
+		
+	
+</ul>
+</div>
+
+<script language="JavaScript">
+function SearchGoogle(key,evt,site)
+		{
+			if(evt.keyCode==13 || evt.keyCode==0 || evt.type =='click')
+			{
+				key.focus();
+				var keystr = encodeURIComponent(key.value);
+				url = "http://www.google.com/search?q=";
+				url = url+keystr;
+				url += "&ie=UTF-8&oe=GB2312&hl=zh-CN&domains="+site+"&sitesearch="+site;
+				window.location=url;
+				return false;
+			}
+		}
+</script>
+<h3>搜索</h3>
+<ul>
+	<li>
+		</li><li><input style="WIDTH: 130px" type="text" name="q" id="q" onkeydown="return SearchGoogle(document.getElementById(&#39;q&#39;),event,&#39;www.blogjava.net/yongboy&#39;)">&nbsp;<input onclick="SearchGoogle(document.getElementById(&#39;q&#39;),event,&#39;www.blogjava.net/yongboy&#39;)" type="button" value="搜索" name="sa">
+	</li>
+</ul>
+
+<h3>最新评论
+	<a id="SingleColumn1__1f8fabd_RSSHyperlink1" href="http://www.blogjava.net/yongboy/CommentsRSS.aspx"><img src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/xml.gif" style="border-width:0px;"></a></h3>
+<div class="RecentComment">
+	
+			<ul>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__1f8fabd_CommentList_ctl01_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2018/01/17/431498.html#433013">1.&nbsp;re: Tsung笔记之100万用户压测执行步骤篇</a>
+			</li>
+			<li style="word-break:break-all">
+				问下， 这个TPS是怎么算的。<br>还有，tsung有没有并发用户数限制。
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--novaboy</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__1f8fabd_CommentList_ctl02_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2017/01/10/409689.html#432258">2.&nbsp;re: MQTT协议笔记之发布流程</a>
+			</li>
+			<li style="word-break:break-all">
+				评论内容较长,点击标题查看
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--Haven</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__1f8fabd_CommentList_ctl03_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2017/01/05/409689.html#432243">3.&nbsp;re: MQTT协议笔记之发布流程</a>
+			</li>
+			<li style="word-break:break-all">
+				评论内容较长,点击标题查看
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--nieyong</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__1f8fabd_CommentList_ctl04_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/12/27/409689.html#432184">4.&nbsp;re: MQTT协议笔记之发布流程</a>
+			</li>
+			<li style="word-break:break-all">
+				博主牛人呀，有一个QoS2的问题请教，为什么QoS2需要4次包，2次不就可以了吗？还望回复。
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--Haven</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__1f8fabd_CommentList_ctl05_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2016/08/19/431601.html#431642">5.&nbsp;re: Tsung笔记之IP地址和端口限制突破篇</a>
+			</li>
+			<li style="word-break:break-all">
+				评论内容较长,点击标题查看
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--nieyong</li>
+		
+			</ul>
+		
+</div>
+
+<h3>阅读排行榜</h3>
+<div class="RecentComment">
+	
+			<ul style="word-break:break-all">
+		
+			<li>
+				<a id="SingleColumn1__10e22d7_TopList_ctl01_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2013/12/12/407498.html">1.&nbsp;Docker学习笔记之一，搭建一个JAVA Tomcat运行环境(99761)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__10e22d7_TopList_ctl02_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2009/09/04/293900.html">2.&nbsp;java war 打包、解压命令(95823)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__10e22d7_TopList_ctl03_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2014/03/05/410636.html">3.&nbsp;微信协议简单调研笔记(84325)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__10e22d7_TopList_ctl04_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2013/05/13/399203.html">4.&nbsp;100万并发连接服务器笔记之Java Netty处理1M连接会怎么样(60011)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__10e22d7_TopList_ctl05_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2013/08/26/403325.html">5.&nbsp;服务器操作系统CoreOS初体验(52486)</a>
+			</li>
+		
+			</ul>
+		
+</div>
+
+<h3>评论排行榜</h3>
+<div class="RecentComment">
+	
+			<ul style="word-break:break-all">
+		
+			<li>
+				<a id="SingleColumn1__1262ed9_TopList_ctl01_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2014/03/05/410636.html">1.&nbsp;微信协议简单调研笔记(22)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__1262ed9_TopList_ctl02_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2013/12/12/407498.html">2.&nbsp;Docker学习笔记之一，搭建一个JAVA Tomcat运行环境(19)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__1262ed9_TopList_ctl03_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2014/12/12/421331.html">3.&nbsp;MQTT 3.1协议非严肃反思录(17)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__1262ed9_TopList_ctl04_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2014/11/09/419829.html">4.&nbsp;为什么批量请求要尽可能的合并操作(17)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__1262ed9_TopList_ctl05_Hyperlink1" href="http://www.blogjava.net/yongboy/archive/2014/04/12/412351.html">5.&nbsp;MQTT协议笔记之订阅(16)</a>
+			</li>
+		
+			</ul>
+		
+</div>
+
+					
+<div id="footer">
+	Powered by: 
+	<br>
+	
+	<a id="Footer1_Hyperlink3" name="Hyperlink1" href="http://www.blogjava.net/" style="font-family:Verdana;font-size:12px;">BlogJava</a>
+	<br>
+	Copyright © nieyong
+</div>
+				
+			</div>			
+			
+	
+
+    
+<script type="text/javascript">
+//<![CDATA[
+var Page_ValidationSummaries =  new Array(document.getElementById("AjaxHolder_PostComment_ValidationSummary1"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var AjaxHolder_PostComment_ValidationSummary1 = document.all ? document.all["AjaxHolder_PostComment_ValidationSummary1"] : document.getElementById("AjaxHolder_PostComment_ValidationSummary1");
+AjaxHolder_PostComment_ValidationSummary1.showmessagebox = "True";
+AjaxHolder_PostComment_ValidationSummary1.showsummary = "False";
+//]]>
+</script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+
+document.getElementById('AjaxHolder_PostComment_ValidationSummary1').dispose = function() {
+    Array.remove(Page_ValidationSummaries, document.getElementById('AjaxHolder_PostComment_ValidationSummary1'));
+}
+Sys.Application.initialize();
+//]]>
+</script>
+</form>
+    <script type="text/javascript" src="./构建实时Web的JAVA选择组合：socket.io client + socketio-netty server - 聂永的博客 - BlogJava_files/ShowHidden.js"></script>    
+	<script type="text/javascript">	 
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-476124-3']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+
+
+</body><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box white; height: 6241px; width: 1479px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 6241px; width: 1479px;"></div></html>

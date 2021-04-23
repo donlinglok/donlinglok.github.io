@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<!-- saved from url=(0106)http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io -->
+<html lang="en" class="cye-disabled cye-nm gr__adamswanglin_com"><!-- Head tag --><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="baidu-site-verification" content="pJVe4XaaJi">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="http://adamswanglin.com/img/ironman-draw.jpg">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script src="./MySQL事务与锁-2 - Lin_files/hm.js"></script><script src="./MySQL事务与锁-2 - Lin_files/fastclick.min.js"></script><script src="./MySQL事务与锁-2 - Lin_files/anchor.min.js"></script><script async="" defer="" src="./MySQL事务与锁-2 - Lin_files/buttons.js"></script>
+    <title>
+        
+          MySQL事务与锁-2 - Lin
+        
+    </title>
+
+    <link rel="canonical" href="https://adamswanglin.com/2018/04/28/mysql-lock/">
+
+    <!-- Bootstrap Core CSS -->
+    <style class="anchorjs"></style><link rel="stylesheet" href="./MySQL事务与锁-2 - Lin_files/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="./MySQL事务与锁-2 - Lin_files/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="./MySQL事务与锁-2 - Lin_files/highlight.css">
+
+    <link rel="stylesheet" href="./MySQL事务与锁-2 - Lin_files/widget.css">
+
+    <link rel="stylesheet" href="./MySQL事务与锁-2 - Lin_files/rocket.css">
+
+    <link rel="stylesheet" href="./MySQL事务与锁-2 - Lin_files/signature.css">
+
+    <link rel="stylesheet" href="./MySQL事务与锁-2 - Lin_files/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="./MySQL事务与锁-2 - Lin_files/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><script type="text/javascript" async="" src="./MySQL事务与锁-2 - Lin_files/embed.js"></script><link rel="preload" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.9974049bf7b0591e5d4f055cb67f3ee3.css"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.880980e048a2432334f13013030456ac.js"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.4180262f1aa52e0f0340aac9fc52a8d8.js"><link rel="preload" as="script" href="https://disqus.com/next/config.js"><script src="./MySQL事务与锁-2 - Lin_files/alfie.f51946af45e0b561c60f768335c9eb79.js" async="" charset="UTF-8"></script></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" data-gr-c-s-loaded="true" style="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/header_img/home-bg-2-dark.jpg')
+            /*post*/
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/BeanTechSign-white.png');
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" style="margin-left: 0px">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="http://adamswanglin.com/tags/#MySQL" title="MySQL">MySQL</a>
+                            
+                              <a class="tag" href="http://adamswanglin.com/tags/#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81" title="分布式锁">分布式锁</a>
+                            
+                        </div>
+                        <h1 id="mysql-2">MySQL事务与锁-2</h1>
+                        <h2 class="subheading" id="mysqlredis">锁的应用-MySQL悲观锁乐观锁，基于Redis的分布式锁</h2>
+                        <span class="meta">
+                            Posted by 王霖 on
+                            2018-04-28
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top is-fixed">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://adamswanglin.com/">Lin's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="http://adamswanglin.com/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="http://adamswanglin.com/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="http://adamswanglin.com/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="http://adamswanglin.com/categories/">categories</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="http://adamswanglin.com/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-9 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container" style="margin-left:0">
+
+                <h1 id="数据库锁的使用"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E6%95%B0%E6%8D%AE%E5%BA%93%E9%94%81%E7%9A%84%E4%BD%BF%E7%94%A8" aria-label="Anchor link for: 数据库锁的使用" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>数据库锁的使用</h1>
+<h2 id="锁的副作用"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E9%94%81%E7%9A%84%E5%89%AF%E4%BD%9C%E7%94%A8" aria-label="Anchor link for: 锁的副作用" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>锁的副作用</h2>
+<h3 id="锁等待"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E9%94%81%E7%AD%89%E5%BE%85" aria-label="Anchor link for: 锁等待" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>锁等待</h3>
+<figure class="highlight sql"><div class="table-responsive"><table class="table"><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#正在执行的事务</span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">from</span> information_schema.INNODB_TRX;</span><br><span class="line">#当前出现的锁等待</span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">from</span> information_schema.INNODB_LOCK_WAITS;</span><br><span class="line">#出现锁等待的锁的详细信息</span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">from</span> information_schema.INNODB_LOCKS;</span><br><span class="line">#查看全部线程，辅助定位客户端的主机ip，连接用户名等</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">full</span> <span class="keyword">processlist</span>;</span><br><span class="line">#如果活跃事务少，会显示当前活跃的事务详细信息，多的话只显示概要；最近一次死锁的信息</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">engine</span> <span class="keyword">innodb</span> <span class="keyword">status</span>;</span><br></pre></td></tr></tbody></table></div></figure>
+<h3 id="死锁"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E6%AD%BB%E9%94%81" aria-label="Anchor link for: 死锁" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>死锁</h3>
+<p>死锁都是由加锁顺序不一致导致的，最常见的update死锁，insert也能造成死锁，有兴趣的可以自行了解</p>
+<div class="table-responsive"><table class="table">
+<thead>
+<tr>
+<th>TransactionA</th>
+<th>TransactionB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start transaction;</td>
+<td>start transaction;</td>
+</tr>
+<tr>
+<td>update t_test_01 set name=“name8” where status=8;#持有status=8的锁</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>update t_test_01 set name=“name9” where status=9;#持有status=9的锁</td>
+</tr>
+<tr>
+<td>update t_test_01 set name=“name9” where status=9;#等待status=9的锁</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>update t_test_01 set name=“name8” where status=8;#等待status=8的锁</td>
+</tr>
+<tr>
+<td>commit</td>
+<td>Commit</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight sql"><div class="table-responsive"><table class="table"><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">start</span> <span class="keyword">TRANSACTION</span>;</span><br><span class="line"><span class="keyword">update</span> t_test_01 <span class="keyword">set</span> <span class="keyword">name</span>=<span class="string">"name8"</span> <span class="keyword">where</span> <span class="keyword">status</span>=<span class="number">8</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">sleep</span>(<span class="number">10</span>);</span><br><span class="line"><span class="keyword">update</span> t_test_01 <span class="keyword">set</span> <span class="keyword">name</span>=<span class="string">"name9"</span> <span class="keyword">where</span> <span class="keyword">status</span>=<span class="number">9</span>;</span><br><span class="line"><span class="keyword">commit</span>;</span><br></pre></td></tr></tbody></table></div></figure>
+<figure class="highlight sql"><div class="table-responsive"><table class="table"><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">start</span> <span class="keyword">transaction</span>;</span><br><span class="line"><span class="keyword">update</span> t_test_01 <span class="keyword">set</span> <span class="keyword">name</span>=<span class="string">"name9"</span> <span class="keyword">where</span> <span class="keyword">status</span>=<span class="number">9</span>;</span><br><span class="line"><span class="keyword">update</span> t_test_01 <span class="keyword">set</span> <span class="keyword">name</span>=<span class="string">"name8"</span> <span class="keyword">where</span> <span class="keyword">status</span>=<span class="number">8</span></span><br><span class="line"><span class="keyword">commit</span>;</span><br></pre></td></tr></tbody></table></div></figure>
+<h3 id="减少死锁锁等待"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%87%8F%E5%B0%91%E6%AD%BB%E9%94%81%E9%94%81%E7%AD%89%E5%BE%85" aria-label="Anchor link for: 减少死锁锁等待" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>减少死锁锁等待</h3>
+<p>1.小事务</p>
+<p>事务加锁范围不宜过大，如果比较大，业务上能分割的尽量分割。</p>
+<p>例如：订单定时完成的批量，查出一批需要完成的订单，每个订单单独的事务处理，而不是放到一个大的事务里。</p>
+<p>2.统一加锁顺序</p>
+<p>3.update对应的查询走索引</p>
+<h2 id="悲观锁"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E6%82%B2%E8%A7%82%E9%94%81" aria-label="Anchor link for: 悲观锁" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>悲观锁</h2>
+<h3 id="一个例子"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90" aria-label="Anchor link for: 一个例子" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>一个例子</h3>
+<figure class="highlight java"><div class="table-responsive"><table class="table"><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 订单退款</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> orderId</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">refund</span><span class="params">(Long orderId)</span> </span>{</span><br><span class="line">   <span class="comment">//select * from order where id={orderId};</span></span><br><span class="line">    Order order = orderMapper.get(orderId);</span><br><span class="line">    <span class="keyword">if</span> (order.getStatus() == <span class="string">"已付款"</span>) {</span><br><span class="line">        <span class="comment">//第三方退款</span></span><br><span class="line">        thirdPartyRefund();</span><br><span class="line">        order.setStatus(<span class="string">"已退款"</span>);</span><br><span class="line">        orderMapper.update(order);</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<p>有什么问题？</p>
+<p>如果是客服给客人退款，不小心点了两次，或者退款比较慢点完又点了一次，如果退款走的是转账……</p>
+<p>最简单的解决方案：</p>
+<figure class="highlight java"><div class="table-responsive"><table class="table"><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 订单退款</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> orderId</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">refund</span><span class="params">(Long orderId)</span> </span>{</span><br><span class="line">   <span class="comment">//select * from order where id={orderId} for update;</span></span><br><span class="line">    Order order = orderMapper.getAndLock(orderId);</span><br><span class="line">    <span class="keyword">if</span> (order.getStatus() == <span class="string">"已付款"</span>) {</span><br><span class="line">        <span class="comment">//第三方退款</span></span><br><span class="line">        thirdPartyRefund();</span><br><span class="line">        order.setStatus(<span class="string">"已退款"</span>);</span><br><span class="line">        orderMapper.update(order);</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<p>即使同一个订单退款同时出发了两次，由于X锁，第二次请求会阻塞。</p>
+<p>这就是悲观锁：假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作。</p>
+<h3 id="使用场景"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF" aria-label="Anchor link for: 使用场景" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>使用场景</h3>
+<p>1.存在需要控制并发的场景。</p>
+<p>2.加锁的对象并发量不大。例如：对一个订单来说，并发主要来自用户对这个订单的操作，量并不大。</p>
+<p>3.加锁的范围不能太大。</p>
+<p>两方面：</p>
+<p>数据库层面：建议只对主键加锁，例如：如果我对order里的userId加锁，影响范围就比较大了。</p>
+<p>业务层面：如果订单系统由用户表（user），对用户表里的主键加锁对业务的影响。</p>
+<h2 id="乐观锁"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%B9%90%E8%A7%82%E9%94%81" aria-label="Anchor link for: 乐观锁" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>乐观锁</h2>
+<h3 id="例子"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%BE%8B%E5%AD%90" aria-label="Anchor link for: 例子" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>例子</h3>
+<p>下单减库存</p>
+<p>t_stock</p>
+<p>条数 400W</p>
+<div class="table-responsive"><table class="table">
+<thead>
+<tr>
+<th>列名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint</td>
+<td>产品id主键 primary key</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>int</td>
+<td>库存数</td>
+</tr>
+<tr>
+<td>version</td>
+<td>integer</td>
+<td>版本</td>
+</tr>
+</tbody>
+</table></div>
+<figure class="highlight java"><div class="table-responsive"><table class="table"><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">decAmount</span><span class="params">(<span class="keyword">long</span> id)</span> </span>{</span><br><span class="line">    <span class="keyword">boolean</span> updateFail = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; i&lt;=<span class="number">5</span> ; i++) {</span><br><span class="line">      	<span class="comment">//select * from t_stock where id={id}</span></span><br><span class="line">        StockEntity stock = stockMapper.get(id);</span><br><span class="line">        stock.setAmount(stock.getAmount() - <span class="number">1</span>);</span><br><span class="line">      <span class="comment">//update t_stock set amount={stock.amount} where id={stock.id} and version = {stock.version};</span></span><br><span class="line">        <span class="keyword">int</span> affectCount = stockMapper.update(stock);</span><br><span class="line">        <span class="keyword">if</span> (affectCount &gt; <span class="number">0</span>) {</span><br><span class="line">            logger.info(<span class="string">"i : {}"</span>, i);</span><br><span class="line">            updateFail = <span class="keyword">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span> (updateFail) {</span><br><span class="line">        logger.error(<span class="string">"i: {}"</span>, i );</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> i;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<p>思想是CAS（Compare and Swap），JUC下面的Atomic包利用的就是CPU的CAS操作。</p>
+<p>我就在不同隔离级别，不同的索引类型下做了试验：</p>
+<p>Jmeter 1秒内1000并发，记录i值。i表示经过了几次CAS操作，0表示1次，1表示2次，以此类推，6表示超过定义的最大循环次数更新失败退出了。</p>
+<blockquote>
+<p>注意：全局修改隔离级别后需要重启应用，否则连接池里的连接还是用的修改前的隔离级别，或者直接在连接参数里修改隔离级别。</p>
+</blockquote>
+<h3 id="rc级别下高并发结果"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#rc%E7%BA%A7%E5%88%AB%E4%B8%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BB%93%E6%9E%9C" aria-label="Anchor link for: rc级别下高并发结果" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>RC级别下高并发结果</h3>
+<p>Jmeter 1S 1000个的并发</p>
+<ol>
+<li>id主键索引</li>
+</ol>
+<p><code>{0=1, 1=999, 2=0, 3=0, 4=0, 5=0, 6=0}</code></p>
+<ol start="2">
+<li>idx_id_version普通索引</li>
+</ol>
+<p><code>{0=1, 1=999, 2=0, 3=0, 4=0, 5=0, 6=0}</code></p>
+<ol start="3">
+<li>primary_id_version主键索引</li>
+</ol>
+<p><code>{0=64, 1=61, 2=57, 3=63, 4=41, 5=47, 6=667}</code></p>
+<ol start="4">
+<li>id唯一索引</li>
+</ol>
+<p><code>{0=1, 1=999, 2=0, 3=0, 4=0, 5=0, 6=0}</code></p>
+<ol start="5">
+<li>id普通非唯一索引</li>
+</ol>
+<p><code>{0=31, 1=40, 2=47, 3=23, 4=28, 5=21, 6=810}</code></p>
+<h4 id="结果"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E7%BB%93%E6%9E%9C" aria-label="Anchor link for: 结果" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>结果</h4>
+<p>期望的结果更新次数在1～6之间都有分布的，RC级别下只有id和version是主键索引，或者id是非唯一的普通索引的时候才符合预期。其他情况除了一条是1次更新成功，其他都是第二次更新成功。</p>
+<h4 id="分析"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%88%86%E6%9E%90" aria-label="Anchor link for: 分析" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>分析</h4>
+<p>id主键索引/id version 联合索引 /id唯一索引的情况下，第一次循环里的<code>update t_stock set amount={stock.amount} where id={stock.id} and version = {stock.version};</code>，即使version不对也会对记录加锁，1000个请求过来，只有一个请求获取了锁并更新成功，其他锁加入等待队列；等到第一个请求更新成功，后面某个获取到锁的请求必然在第一个循环里更新失败，但并不会释放锁，第二次循环会更新成功。</p>
+<p>primary_id_version是联合主键的时候<code>update t_stock set amount={stock.amount} where id={stock.id} and version = {stock.version};</code>锁主键的时候如果version不对主键并不存在，所以不会锁记录。</p>
+<p>id是普通非唯一索引的时候<code>update t_stock set amount={stock.amount} where id={stock.id} and version = {stock.version};</code>会锁stock.id对应的记录，单发现不符合where条件里的version会立即释放锁，参考<a href="https://adamswanglin.github.io/2018/04/27/mysql-transaction/#242-rc%E7%BA%A7%E5%88%AB%E4%B8%8Bupdate-where-%E5%8A%A0%E9%94%81%E5%90%8E%E9%87%8A%E6%94%BE%E9%94%81" target="_blank" rel="noopener">MySQL事务与锁-2.4.2 RC级别下update … where 加锁后释放锁</a>里的场景。</p>
+<h3 id="rr级别下高并发结果"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#rr%E7%BA%A7%E5%88%AB%E4%B8%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BB%93%E6%9E%9C" aria-label="Anchor link for: rr级别下高并发结果" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>RR级别下高并发结果</h3>
+<ol>
+<li>id主键索引</li>
+</ol>
+<p><code>{0=11, 1=0, 2=0, 3=0, 4=0, 5=0, 6=989}</code></p>
+<ol start="2">
+<li>id主键索引+idx_id_version普通索引</li>
+</ol>
+<p><code>{0=13, 1=0, 2=0, 3=0, 4=0, 5=0, 6=987}</code></p>
+<ol start="3">
+<li>primary_id_version主键索引</li>
+</ol>
+<p><code>{0=304, 1=0, 2=0, 3=0, 4=0, 5=0, 6=696}</code></p>
+<ol start="4">
+<li>id 唯一索引</li>
+</ol>
+<p><code>{0=13, 1=0, 2=0, 3=0, 4=0, 5=0, 6=987}</code></p>
+<h4 id="结果"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E7%BB%93%E6%9E%9C" aria-label="Anchor link for: 结果" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>结果</h4>
+<p>如果第一次没有更新成功，后面就不会更新成功</p>
+<h4 id="分析"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%88%86%E6%9E%90" aria-label="Anchor link for: 分析" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>分析</h4>
+<p>RR级别下MVCC的一致读导致第一次循环如果没有更新成功，即使加了锁，第二次的快照读的结果和第一次还是一样，这样获取的version还是第一次的version，后面的更新都不会更新上。</p>
+<h3 id="乐观锁的变体"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%B9%90%E8%A7%82%E9%94%81%E7%9A%84%E5%8F%98%E4%BD%93" aria-label="Anchor link for: 乐观锁的变体" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>乐观锁的变体</h3>
+<figure class="highlight java"><div class="table-responsive"><table class="table"><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">decAmount</span><span class="params">(<span class="keyword">long</span> id)</span> </span>{</span><br><span class="line">  <span class="comment">//update t_stock set amount=amount-1 where id={stock.id} and amount &gt;= 1;</span></span><br><span class="line">  <span class="keyword">int</span> affectCount = stockMapper.decAmount(stock);</span><br><span class="line">  <span class="keyword">if</span> (affectCount &gt; <span class="number">0</span>) {</span><br><span class="line">    <span class="comment">//扣减成功</span></span><br><span class="line">  } <span class="keyword">else</span> {</span><br><span class="line">    <span class="comment">//扣减失败</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<p>利用amount替换version，没有仿CAS的操作，其实也不算乐观锁了。</p>
+<h3 id="总结"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E6%80%BB%E7%BB%93" aria-label="Anchor link for: 总结" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>总结</h3>
+<p>MySQL底层用锁实现的，想实现无锁化的乐观锁并不现实，使用起来也有坑，并不推荐使用。</p>
+<h1 id="分布式锁"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81" aria-label="Anchor link for: 分布式锁" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>分布式锁</h1>
+<h2 id="redis实现的分布式锁"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#redis%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81" aria-label="Anchor link for: redis实现的分布式锁" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Redis实现的分布式锁</h2>
+<p>redis中有个命令<code>setNX</code>，是一种CAS操作，不同于一般的<code>set</code>命令直接覆盖原值，<code>setNx</code>在更新的时候会判断当前<code>key</code>是否存在，如果存在返回<code>false</code>，如果不存在设置<code>value</code>并返回<code>true</code>。</p>
+<p>下面的代码利用这个CAS操作写简单的乐观锁：</p>
+<figure class="highlight java"><div class="table-responsive"><table class="table"><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取锁</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key 锁id</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 锁结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">tryLock</span><span class="params">(String key)</span> </span>{</span><br><span class="line">        <span class="keyword">try</span> {</span><br><span class="line">        	#setNx</span><br><span class="line">            <span class="keyword">if</span> (redisTemplate.opsForValue().setIfAbsent(key, <span class="string">""</span>)) {</span><br><span class="line">               redisTemplate.expire(key, <span class="number">5000</span>, TimeUnit.MILLISECONDS);</span><br><span class="line">               <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            }</span><br><span class="line">          }</span><br><span class="line">        } <span class="keyword">catch</span> (Exception e) {</span><br><span class="line">            LOGGER.error(<span class="string">"get lock {} error"</span>, key, e);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></div></figure>
+<p>上面只是简单演示基本原理，实际使用中需要考虑很多问题。如redis失效和expire失败导致锁不释放（redis 2.8版本支持setnx命令支持设置失效时长；reids是单线程，也可以用eval执行lua脚本的方式实现）。</p>
+<p>redis方案的分布式锁推荐RedissonLock，实现java.util.concurrent.Lock接口，用起来很方便；内部用redis的eval命令执行lua脚本，可以参看https://github.com/angryz/my-blog/issues/4。</p>
+<h2 id="使用分布式锁"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%BD%BF%E7%94%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81" aria-label="Anchor link for: 使用分布式锁" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>使用分布式锁</h2>
+<p>扣减库存的例子</p>
+<figure class="highlight java"><div class="table-responsive"><table class="table"><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">decAmount</span><span class="params">(<span class="keyword">long</span> id)</span> </span>{</span><br><span class="line">    Lock redissonLock = redissonClient.getLock(id);</span><br><span class="line">    <span class="keyword">if</span>(redissonLock.tryLock(<span class="number">1</span>, TimeUnit.SECONDS)) {</span><br><span class="line">        <span class="keyword">try</span> {</span><br><span class="line">            <span class="comment">//select * from t_stock where id={id}</span></span><br><span class="line">            StockEntity stock = stockMapper.get(id);</span><br><span class="line">            stock.setAmount(stock.getAmount() - <span class="number">1</span>);</span><br><span class="line">            <span class="comment">//update t_stock set amount={stock.amount} where id={stock.id};</span></span><br><span class="line">            stockMapper.update(stock);</span><br><span class="line">        } <span class="keyword">catch</span> (Exception e) {</span><br><span class="line">            <span class="comment">//todo</span></span><br><span class="line">        } <span class="keyword">finally</span> {</span><br><span class="line">            redissonLock.unlock();</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<p>存在的问题：强依赖redis，如果redis挂了怎么办。</p>
+<p>修改：</p>
+<figure class="highlight java"><div class="table-responsive"><table class="table"><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">decAmount</span><span class="params">(<span class="keyword">long</span> id)</span> </span>{</span><br><span class="line">    Lock redissonLock = redissonClient.getLock(id);</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">boolean</span> lockSuccess = redissonLock.tryLock(<span class="number">1</span>, TimeUnit.SECONDS)) {</span><br><span class="line">        <span class="keyword">try</span> {</span><br><span class="line">            <span class="comment">//select * from t_stock where id={id}</span></span><br><span class="line">            StockEntity stock = stockMapper.get(id);</span><br><span class="line">            stock.setAmount(stock.getAmount() - <span class="number">1</span>);</span><br><span class="line">            <span class="comment">//update t_stock set amount={stock.amount} where id={stock.id} and version = {stock.version};</span></span><br><span class="line">            <span class="keyword">int</span> size = stockMapper.updateByVersion(stock);</span><br><span class="line">            <span class="keyword">boolean</span> success = size &gt; <span class="number">0</span>;</span><br><span class="line">        } <span class="keyword">catch</span> (Exception e) {</span><br><span class="line">            <span class="comment">//todo</span></span><br><span class="line">        } <span class="keyword">finally</span> {</span><br><span class="line">            <span class="keyword">if</span> (lockSuccess) {</span><br><span class="line">                redissonLock.unlock();</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></div></figure>
+<h3 id="redis锁数据库锁双重保障的方式"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#redis%E9%94%81%E6%95%B0%E6%8D%AE%E5%BA%93%E9%94%81%E5%8F%8C%E9%87%8D%E4%BF%9D%E9%9A%9C%E7%9A%84%E6%96%B9%E5%BC%8F" aria-label="Anchor link for: redis锁数据库锁双重保障的方式" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Redis锁+数据库锁双重保障的方式</h3>
+<h3 id="相比只有数据库加锁的优点"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E7%9B%B8%E6%AF%94%E5%8F%AA%E6%9C%89%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8A%A0%E9%94%81%E7%9A%84%E4%BC%98%E7%82%B9" aria-label="Anchor link for: 相比只有数据库加锁的优点" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>相比只有数据库加锁的优点</h3>
+<p>1.redis锁生效的时候，数据库没有锁等待。</p>
+<p>2.redis失效的时候</p>
+<p>可以考虑服务降级：例如上面的乐观锁，去掉循环之后，更新一次如果失败就返回失败；</p>
+<p>或者服务不降级：用数据库锁扛着。</p>
+<h3 id="相比只用redis加锁的优点"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E7%9B%B8%E6%AF%94%E5%8F%AA%E7%94%A8redis%E5%8A%A0%E9%94%81%E7%9A%84%E4%BC%98%E7%82%B9" aria-label="Anchor link for: 相比只用redis加锁的优点" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>相比只用redis加锁的优点</h3>
+<p>不强依赖redis</p>
+<h2 id="使用场景"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF" aria-label="Anchor link for: 使用场景" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>使用场景</h2>
+<h3 id="只想在特定的操作加锁"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%8F%AA%E6%83%B3%E5%9C%A8%E7%89%B9%E5%AE%9A%E7%9A%84%E6%93%8D%E4%BD%9C%E5%8A%A0%E9%94%81" aria-label="Anchor link for: 只想在特定的操作加锁" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>只想在特定的操作加锁</h3>
+<p>例如：同一用户每次只允许下一单，如果用数据库锁，可能会锁住用户相关的所有操作；这时候用分布式锁没有问题，因为锁对象（redis里的key值）定义很自由。用户退款可以定义为：<code>lock:user:refund:{userId}</code>,用户下单可以定义为：<code>lock:user:order:{userid}</code></p>
+<h3 id="锁对象的并发量很大"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E9%94%81%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B9%B6%E5%8F%91%E9%87%8F%E5%BE%88%E5%A4%A7" aria-label="Anchor link for: 锁对象的并发量很大" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>锁对象的并发量很大</h3>
+<p>高并发的时候如果使用数据库锁，会有很长的锁等待队列，数据库连接也被占；虽然锁等待超时会抛异常，放弃等待，等待时间也很难控制。</p>
+<p>经典场景：秒杀，对单个产品对象的并发。</p>
+<h3 id="考虑好锁失效的场景和处理方案"><a class="anchorjs-link " href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E8%80%83%E8%99%91%E5%A5%BD%E9%94%81%E5%A4%B1%E6%95%88%E7%9A%84%E5%9C%BA%E6%99%AF%E5%92%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%A1%88" aria-label="Anchor link for: 考虑好锁失效的场景和处理方案" data-anchorjs-icon="♩" style="position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>考虑好锁失效的场景和处理方案</h3>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="http://adamswanglin.com/rocketmq/rocketmq-architecture/" data-toggle="tooltip" data-placement="top" title="" data-original-title="RocketMQ总体架构">← Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="http://adamswanglin.com/2018/04/27/mysql-transaction/" data-toggle="tooltip" data-placement="top" title="" data-original-title="MySQL事务与锁-1">Next Post →</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"><iframe id="dsq-app9945" name="dsq-app9945" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./MySQL事务与锁-2 - Lin_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 392px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article toc-fixed">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E6%95%B0%E6%8D%AE%E5%BA%93%E9%94%81%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">数据库锁的使用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E9%94%81%E7%9A%84%E5%89%AF%E4%BD%9C%E7%94%A8"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">锁的副作用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E9%94%81%E7%AD%89%E5%BE%85"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">锁等待</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E6%AD%BB%E9%94%81"><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">死锁</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%87%8F%E5%B0%91%E6%AD%BB%E9%94%81%E9%94%81%E7%AD%89%E5%BE%85"><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text">减少死锁锁等待</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E6%82%B2%E8%A7%82%E9%94%81"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">悲观锁</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">一个例子</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">使用场景</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%B9%90%E8%A7%82%E9%94%81"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">乐观锁</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%BE%8B%E5%AD%90"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">例子</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#rc%E7%BA%A7%E5%88%AB%E4%B8%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BB%93%E6%9E%9C"><span class="toc-nav-number">1.3.2.</span> <span class="toc-nav-text">RC级别下高并发结果</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E7%BB%93%E6%9E%9C"><span class="toc-nav-number">1.3.2.1.</span> <span class="toc-nav-text">结果</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%88%86%E6%9E%90"><span class="toc-nav-number">1.3.2.2.</span> <span class="toc-nav-text">分析</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#rr%E7%BA%A7%E5%88%AB%E4%B8%8B%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BB%93%E6%9E%9C"><span class="toc-nav-number">1.3.3.</span> <span class="toc-nav-text">RR级别下高并发结果</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E7%BB%93%E6%9E%9C"><span class="toc-nav-number">1.3.3.1.</span> <span class="toc-nav-text">结果</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%88%86%E6%9E%90"><span class="toc-nav-number">1.3.3.2.</span> <span class="toc-nav-text">分析</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%B9%90%E8%A7%82%E9%94%81%E7%9A%84%E5%8F%98%E4%BD%93"><span class="toc-nav-number">1.3.4.</span> <span class="toc-nav-text">乐观锁的变体</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E6%80%BB%E7%BB%93"><span class="toc-nav-number">1.3.5.</span> <span class="toc-nav-text">总结</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">分布式锁</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#redis%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Redis实现的分布式锁</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%BD%BF%E7%94%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">使用分布式锁</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#redis%E9%94%81%E6%95%B0%E6%8D%AE%E5%BA%93%E9%94%81%E5%8F%8C%E9%87%8D%E4%BF%9D%E9%9A%9C%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">Redis锁+数据库锁双重保障的方式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E7%9B%B8%E6%AF%94%E5%8F%AA%E6%9C%89%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8A%A0%E9%94%81%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">相比只有数据库加锁的优点</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E7%9B%B8%E6%AF%94%E5%8F%AA%E7%94%A8redis%E5%8A%A0%E9%94%81%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-nav-number">2.2.3.</span> <span class="toc-nav-text">相比只用redis加锁的优点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">使用场景</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%8F%AA%E6%83%B3%E5%9C%A8%E7%89%B9%E5%AE%9A%E7%9A%84%E6%93%8D%E4%BD%9C%E5%8A%A0%E9%94%81"><span class="toc-nav-number">2.3.1.</span> <span class="toc-nav-text">只想在特定的操作加锁</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E9%94%81%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B9%B6%E5%8F%91%E9%87%8F%E5%BE%88%E5%A4%A7"><span class="toc-nav-number">2.3.2.</span> <span class="toc-nav-text">锁对象的并发量很大</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E8%80%83%E8%99%91%E5%A5%BD%E9%94%81%E5%A4%B1%E6%95%88%E7%9A%84%E5%9C%BA%E6%99%AF%E5%92%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%A1%88"><span class="toc-nav-number">2.3.3.</span> <span class="toc-nav-text">考虑好锁失效的场景和处理方案</span></a></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 id="featured-tags"><a href="http://adamswanglin.com/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="http://adamswanglin.com/tags/#MySQL" title="MySQL">MySQL</a>
+                        
+                          <a class="tag" href="http://adamswanglin.com/tags/#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81" title="分布式锁">分布式锁</a>
+                        
+                    </div>
+                </section>
+                
+
+                <hr>
+                <section>
+                    <h5 id="pv">PV</h5>
+                        <span id="busuanzi_container_page_pv">
+                          <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                </section>
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "adamswanglins-blog";
+    var disqus_identifier = "https://adamswanglin.com/2018/04/28/mysql-lock/";
+    var disqus_url = "https://adamswanglin.com/2018/04/28/mysql-lock/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: '♩'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/adamswanglin">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="mailto:adamslin@foxmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright © 王霖 2018 
+                    <br>
+                    <a href="http://huangxuan.me/">Hux</a>
+                    re-Ported by <a href="http://beantech.org/">BeanTech</a> 
+                    <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="./MySQL事务与锁-2 - Lin_files/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="./MySQL事务与锁-2 - Lin_files/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="./MySQL事务与锁-2 - Lin_files/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://adamswanglin.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '8964d50ede9f2d76b4c81ccd6a2ad801';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+<!-- 不蒜子-计数服务 -->
+<script async="" src="./MySQL事务与锁-2 - Lin_files/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+	<a id="rocket" href="http://adamswanglin.com/2018/04/28/mysql-lock/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#top" class="show"></a>
+	<script type="text/javascript" src="./MySQL事务与锁-2 - Lin_files/totop.js" async=""></script>
+    <script type="text/javascript" src="./MySQL事务与锁-2 - Lin_files/toc.js" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://adamswanglin.com/img/icon_wechat.png" width="0" height="0">
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+
+
+
+<iframe style="display: none;" src="./MySQL事务与锁-2 - Lin_files/saved_resource(1).html"></iframe></body><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255); height: 10785px; width: 1295px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 10785px; width: 1295px;"></div></html>

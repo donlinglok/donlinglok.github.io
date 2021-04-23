@@ -1,0 +1,399 @@
+/**
+ * responsive.css
+ *
+ * Contains media queries and fallback styles for various device widths.
+ */
+
+#page,
+.wrap {
+	width: 97.5%;
+}
+
+#page {
+	max-width: 1160px;
+}
+
+.wrap,
+.primary-nav,
+.is-boxed .top-nav,
+.is-boxed .header-slim.site-header {
+	max-width: 1112px;
+}
+
+.primary-nav.main-sticky {
+	max-width: 100% !important;
+}
+
+/* ---------------------------------------------------------------
+ * 1. TABLET
+ * CSS fallback for device width 768px or below
+ * ------------------------------------------------------------ */
+
+@media only screen and (max-width: 840px) {
+
+	.grid-row .entry-grid,
+	.grid-row .entry-grid.col3,
+	.grid-row .entry-grid.col4 {
+		width: 50%;
+		clear: none;
+	}
+	
+	.grid-row .entry-grid:nth-child(2n+1),
+	.grid-row .entry-grid.col3:nth-child(2n+1),
+	.grid-row .entry-grid.col4:nth-child(2n+1) {
+		clear: both;
+	}	
+
+	.wrap,
+	.primary-nav .wrap,
+	.top-nav {
+		max-width: 93%;
+		margin: 0 auto;
+	}
+	
+	.top-nav .wrap {
+		max-width: 100%;
+	}
+
+	.is-stretched .top-nav .wrap {
+		max-width: 93%;
+	}
+
+	.secondary-nav,
+	#search-bar,
+	#callout-bar,
+	#callout-bar.callout-left,
+	.brand,
+	.header-widget-area,
+	#header .column.right,
+	#primary,
+	#primary.full-width,
+	#container,
+	#sidebar,
+	#sidebar.sb-left,
+	.full-width .one-fourth,
+	#secondary .one-fourth,
+	#secondary .one-fourth.last,
+	.buddyPress #content,
+	.three-fourth,
+	.two-third,
+	.one-third,
+	.three-eighth,
+	.one-fourth,
+	.full-width .three-fourth,
+	.full-width .two-third,
+	.full-width .one-third,
+	.full-width .three-eighth,
+	.full-width .one-fourth,
+	.three-col li,
+	.full-width .three-col li,
+	.four-col li,
+	.full-width .four-col li {
+		float: none;
+		clear: both;
+		width: 100%;
+		max-width: 100%;
+		margin: 0 0 1.5em;
+		display: block;
+	}
+
+	.brand {
+		margin-bottom: 2em;
+	}
+
+	.header-widget-area,
+	#header .column.right,
+	#secondary .one-fourth,
+	#secondary .one-fourth.last {
+		margin-bottom: 0;
+	}
+
+	.secondary-nav,
+	#callout-bar,
+	#callout-bar.callout-left,
+	#search-bar {
+		margin-bottom: 0;
+		text-align: left;
+	}
+
+	#search-bar .searchbox {
+		padding: 0;
+	}
+
+	.header-widget-area,
+	#header .column.right,
+	.header-widget-area ul.ss_social {
+		float: none;
+		text-align: left;
+	}
+
+	.header-widget-area,
+	#header .column:not(.brand) {
+		padding-top: 24px;
+	}
+
+	#respond form input[type="text"],
+	#respond form textarea,
+	#contactform input[type="text"],
+	#contactform textarea {
+		max-width: 100%;
+	}
+
+	.commentlist li li {
+		padding-left: 0
+	}
+
+	.secondary-nav .sec-menu,
+	.primary-nav ul.nav-menu,
+	.primary-nav div.nav-menu > ul {
+		display: none;
+	}
+
+	#main-nav-2 {
+		display: none !important;
+	}
+
+	.primary-nav.do-not-hide .nav-menu {
+		display: block;
+	}
+
+	#responsive-menu {
+		display: block;
+	}
+	
+	.inline-nav {
+		line-height: 0;
+	}
+	
+	.menu-button-2 {
+		display: inline-block;
+		margin: 0;
+	}
+	
+	.header-slim .brand {
+		width: 60%;
+		max-width: 60%;
+	}
+	
+	.header-slim .brand img {
+		margin: 0;
+	}
+
+	/* WooCommerce cart navigation */
+	.cart-nav {
+		text-align: center;
+	}
+
+	/* WooCommerce responsive styles */
+
+	.woocommerce ul.products li.product,
+	.woocommerce-page ul.products li.product,
+	.woocommerce .related ul.products li.product,
+	.woocommerce-page .related ul.products li.product,
+	.woocommerce .upsells.products ul.products li.product,
+	.woocommerce-page .upsells.products ul.products li.product,
+	.woocommerce .related ul li.product,
+	.woocommerce-page .related ul li.product,
+	.woocommerce .upsells.products ul li.product,
+	.woocommerce-page .upsells.products ul li.product {
+		width: 48%;
+		margin: 0 0 2em;
+	}
+	.woocommerce ul.products li.product:nth-child(2n), .woocommerce-page ul.products li.product:nth-child(2n) {
+	 float: right;
+	 clear: none !important;
+	}
+	 .woocommerce ul.products li.product:nth-child(2n+1), .woocommerce-page ul.products li.product:nth-child(2n+1) {
+	 clear: both;
+	}
+	.woocommerce #content table.cart .product-thumbnail,
+	.woocommerce table.cart .product-thumbnail,
+	.woocommerce-page #content table.cart .product-thumbnail,
+	.woocommerce-page table.cart .product-thumbnail {
+		display:none
+	}
+	.woocommerce #content table.cart td.actions,
+	.woocommerce table.cart td.actions,
+	.woocommerce-page #content table.cart td.actions,
+	.woocommerce-page table.cart td.actions {
+		text-align:left
+	}
+	.woocommerce #content table.cart td.actions .coupon,
+	.woocommerce table.cart td.actions .coupon,
+	.woocommerce-page #content table.cart td.actions .coupon,
+	.woocommerce-page table.cart td.actions .coupon {
+		float: none;
+		 *zoom: 1;
+		padding-bottom: 0.5em;
+	}
+	.woocommerce #content table.cart td.actions .coupon:after,
+	.woocommerce #content table.cart td.actions .coupon:before,
+	.woocommerce table.cart td.actions .coupon:after,
+	.woocommerce table.cart td.actions .coupon:before,
+	.woocommerce-page #content table.cart td.actions .coupon:after,
+	.woocommerce-page #content table.cart td.actions .coupon:before,
+	.woocommerce-page table.cart td.actions .coupon:after,
+	.woocommerce-page table.cart td.actions .coupon:before {
+		content: "";
+		display: table;
+	}
+	.woocommerce #content table.cart td.actions .coupon:after,
+	.woocommerce table.cart td.actions .coupon:after,
+	.woocommerce-page #content table.cart td.actions .coupon:after,
+	.woocommerce-page table.cart td.actions .coupon:after {
+		clear: both;
+	}
+	.woocommerce #content table.cart td.actions .button,
+	.woocommerce #content table.cart td.actions .input-text,
+	.woocommerce #content table.cart td.actions input,
+	.woocommerce table.cart td.actions .button,
+	.woocommerce table.cart td.actions .input-text,
+	.woocommerce table.cart td.actions input,
+	.woocommerce-page #content table.cart td.actions .button,
+	.woocommerce-page #content table.cart td.actions .input-text,
+	.woocommerce-page #content table.cart td.actions input,
+	.woocommerce-page table.cart td.actions .button,
+	.woocommerce-page table.cart td.actions .input-text,
+	.woocommerce-page table.cart td.actions input {
+		width: 48%;
+		-webkit-box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		box-sizing:border-box;
+	}
+	.woocommerce #content table.cart td.actions .button.alt,
+	.woocommerce #content table.cart td.actions .input-text+.button,
+	.woocommerce table.cart td.actions .button.alt,
+	.woocommerce table.cart td.actions .input-text+.button,
+	.woocommerce-page #content table.cart td.actions .button.alt,
+	.woocommerce-page #content table.cart td.actions .input-text+.button,
+	.woocommerce-page table.cart td.actions .button.alt,
+	.woocommerce-page table.cart td.actions .input-text+.button {
+		float: right;
+	}
+	.woocommerce .cart-collaterals .cart_totals,
+	.woocommerce .cart-collaterals .cross-sells,
+	.woocommerce .cart-collaterals .shipping_calculator,
+	.woocommerce-page .cart-collaterals .cart_totals,
+	.woocommerce-page .cart-collaterals .cross-sells,
+	.woocommerce-page .cart-collaterals .shipping_calculator {
+		width: 100%;
+		float: none;
+		text-align: left;
+	}
+	.woocommerce-page.woocommerce-checkout form.login .form-row,
+	.woocommerce.woocommerce-checkout form.login .form-row {
+		width:100%;
+		float:none;
+	}
+	.woocommerce #payment .terms,
+	.woocommerce-page #payment .terms {
+		text-align:left;
+		padding:0;
+	}
+	.woocommerce #payment #place_order,
+	.woocommerce-page #payment #place_order {
+		float:none;
+		width:100%;
+		-webkit-box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		box-sizing:border-box;
+		margin-bottom:1em;
+	}
+	.woocommerce .lost_reset_password .form-row-first,
+	.woocommerce .lost_reset_password .form-row-last,
+	.woocommerce-page .lost_reset_password .form-row-first,
+	.woocommerce-page .lost_reset_password .form-row-last {
+		width:100%;
+		float:none;
+		margin-right:0;
+	}
+
+}
+
+
+/* ---------------------------------------------------------------
+ * 2. MOBILE
+ * CSS fallback for device width 480px or below
+ * ------------------------------------------------------------ */
+
+@media only screen and (max-width: 600px) {
+
+	.two-col li,
+	.entry-grid,
+	.grid-row .entry-grid,
+	.grid-row .entry-grid.col3,
+	.grid-row .entry-grid.col4 {
+		float: none;
+		width: 100%;
+		max-width: 100%;
+		display: inline-block;
+	}
+
+	.column,
+	.full,
+	.three-fourth,
+	.two-third,
+	.half,
+	.one-third,
+	.three-eighth,
+	.one-fourth,
+	.full-width .column,
+	.full-width .full,
+	.full-width .three-fourth,
+	.full-width .two-third,
+	.full-width .half,
+	.full-width .one-third,
+	.full-width .three-eighth,
+	.full-width .one-fourth,
+	.notes-left,
+	.notes-right {
+		float: none;
+		margin: 0;
+		width: 100%;
+		max-width: 100%;
+		display: block;
+		text-align: left;
+	}
+
+	.text-center {
+		text-align: center;
+	}
+
+	ul.thumb-style li {
+		float: none;
+		width: 100%;
+	}
+
+	.option-panel {
+		display: none;
+	}
+
+
+	/* WooCommerce Responsive styles */
+
+	.woocommerce .cart-collaterals .cart_totals,
+	.woocommerce-page .cart-collaterals .cart_totals,
+	.woocommerce .cart-collaterals .shipping_calculator,
+	.woocommerce-page .cart-collaterals .shipping_calculator,
+	.woocommerce .col2-set .col-1,
+	.woocommerce-page .col2-set .col-1,
+	.woocommerce .col2-set .col-2,
+	.woocommerce-page .col2-set .col-2 {
+		float: none;
+		width: 100%;
+		margin: 0 0 2em 0;
+	}
+
+	.woocommerce div.product div.images,
+	.woocommerce-page div.product div.images,
+	.woocommerce #content div.product div.images,
+	.woocommerce-page #content div.product div.images,
+	.woocommerce div.product div.summary,
+	.woocommerce-page div.product div.summary,
+	.woocommerce #content div.product div.summary,
+	.woocommerce-page #content div.product div.summary {
+		float: none;
+		width: 100%;
+		margin: 0 0 1.5em;
+	}
+}

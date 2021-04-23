@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<!-- saved from url=(0121)https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io -->
+<html class="theme-next muse gr__refined-x_com eye-protector-processed" style="background-color: rgb(193, 230, 198);"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title> iBeacon蓝牙定位技术原理及实现 | 前端路上 </title>
+  
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+  <meta name="keywords" content="小程序,iBeacon,蓝牙定位,">
+
+
+
+
+<link href="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/main.css" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://refined-x.com/favicon.ico?v=5.0.2">
+
+<meta name="description" content="蓝牙定位是iBeacon技术最常被应用的方向之一，基于蓝牙定位可以实现诸如寻路、寻车、向导等很多商业需求，觅迹导航的定位系统也是基于iBeacon技术实现的。蓝牙定位又可以分为一维定位和二维定位，本文将介绍两种蓝牙定位技术的实现原理及实现方法。
+一维定位原理蓝牙定位的底层技术是蓝牙测距，关于蓝牙测距在《微信小程序iBeacon测距及稳定程序的实现》一文中已经做了详细介绍，这里不再赘述。
+所谓一维定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iBeacon蓝牙定位技术原理及实现">
+<meta property="og:url" content="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/index.html">
+<meta property="og:site_name" content="前端路上">
+<meta property="og:description" content="蓝牙定位是iBeacon技术最常被应用的方向之一，基于蓝牙定位可以实现诸如寻路、寻车、向导等很多商业需求，觅迹导航的定位系统也是基于iBeacon技术实现的。蓝牙定位又可以分为一维定位和二维定位，本文将介绍两种蓝牙定位技术的实现原理及实现方法。
+一维定位原理蓝牙定位的底层技术是蓝牙测距，关于蓝牙测距在《微信小程序iBeacon测距及稳定程序的实现》一文中已经做了详细介绍，这里不再赘述。
+所谓一维定">
+<meta property="og:image" content="https://refined-x.com/asset/a/1wei-locate.png">
+<meta property="og:image" content="https://refined-x.com/asset/a/zhijiao-sanjiaoxing.jpg">
+<meta property="og:image" content="https://refined-x.com/asset/a/ibeacon-locate-method.png">
+<meta property="og:image" content="https://refined-x.com/asset/a/ibeacon-locate-grid.png">
+<meta property="og:image" content="https://refined-x.com/asset/a/ibeacon-locate-method.png">
+<meta property="og:updated_time" content="2019-05-08T08:10:19.630Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iBeacon蓝牙定位技术原理及实现">
+<meta name="twitter:description" content="蓝牙定位是iBeacon技术最常被应用的方向之一，基于蓝牙定位可以实现诸如寻路、寻车、向导等很多商业需求，觅迹导航的定位系统也是基于iBeacon技术实现的。蓝牙定位又可以分为一维定位和二维定位，本文将介绍两种蓝牙定位技术的实现原理及实现方法。
+一维定位原理蓝牙定位的底层技术是蓝牙测距，关于蓝牙测距在《微信小程序iBeacon测距及稳定程序的实现》一文中已经做了详细介绍，这里不再赘述。
+所谓一维定">
+<meta name="twitter:image" content="https://refined-x.com/asset/a/1wei-locate.png">
+<script src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/push.js"></script><script src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/hm.js"></script><script src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/c.js"></script></head><body itemscope="" itemtype="https://schema.org/WebPage" lang="zh-Hans" data-gr-c-s-loaded="true" class="eye-protector-processed" style="background-color: rgb(193, 230, 198); transition: background-color 0.3s ease 0s;"><script onload="window[&#39;cambrian_sync_loader_success1576568727176767&#39;]()" onerror="window[&#39;cambrian_sync_loader_fail_1576568727176767&#39;]()" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/main.833c272c.js"></script>
+<link rel="canonical" href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/">
+<script type="application/ld+json">
+    {
+        "@context": "https://ziyuan.baidu.com/contexts/cambrian.jsonld",
+        "@id": "https://refined-x.com/2019/04/01/IBeacon-Location-Technology/",
+        "appid": "1585542911827735",
+        "title": "iBeacon蓝牙定位技术原理及实现",
+        "images": [],
+        "description": "蓝牙定位是iBeacon技术最常被应用的方向之一，基于蓝牙定位可以实现诸如寻路、寻车、向导等很多商业需求，觅迹导航的定位系统也是基于iBeacon技术实现的。蓝牙定位又可以分为一维定位和二维定位...",
+        "pubDate":  "2019-05-08T08:10:10" 
+    }
+</script>
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: false,
+    motion: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
+    }
+  };
+</script>
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f10103677155b485824f29def715eb5d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  
+  
+    
+  
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+    <header id="header" class="header eye-protector-processed" itemscope="" itemtype="https://schema.org/WPHeader" style="transition: background-color 0.3s ease 0s; background-color: rgb(193, 230, 198);">
+      <div class="header-inner"><div class="site-meta ">
+  
+  <div class="custom-logo-site-title">
+    <a href="https://refined-x.com/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端路上</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle eye-protector-processed" style="border-color: rgba(0, 0, 0, 0.35); color: rgb(0, 0, 0);">枪在手，跟我走，前端路上不回头</p>
+</div>
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+<nav class="site-nav">
+  
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-前端路上">
+          <a href="https://refined-x.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            前端路上
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-前端博客">
+          <a href="https://refined-x.com/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            前端博客
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-前端技术">
+          <a href="https://refined-x.com/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            前端技术
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-前端作品">
+          <a href="https://refined-x.com/projects/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-fire"></i> <br>
+            
+            前端作品
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-前端简历">
+          <a href="https://refined-x.com/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            前端简历
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-项目合作">
+          <a href="https://refined-x.com/cooperate/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-wechat"></i> <br>
+            
+            项目合作
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-编程之外">
+          <a href="https://refined-x.com/programmerslife/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-font"></i> <br>
+            
+            编程之外
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-友情链接">
+          <a href="https://refined-x.com/friends/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br>
+            
+            友情链接
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+  
+</nav> </div>
+    </header>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <div id="posts" class="posts-expand">
+    
+  
+  
+  
+  
+  
+  <article class="post post-type-normal " itemscope="" itemtype="https://schema.org/Article">
+    
+      <header class="post-header">
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iBeacon蓝牙定位技术原理及实现
+              
+            
+          </h1>
+        
+        <div class="post-meta">
+          
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-04-01T12:25:04+08:00" content="2019-04-01">
+              2019-04-01
+            </time>
+          </span>
+          <span class="post-category">
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+              <i class="fa fa-folder-o"></i>
+            </span>
+            <span class="post-meta-item-text">作者：</span>
+            <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
+              <a href="https://refined-x.com/" itemprop="url" rel="index">
+                <span itemprop="name">雅X共赏</span>
+              </a>
+            </span>
+          </span>
+          <span class="post-count">
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+              <i class="fa pencil-square-o"></i>
+            </span>
+            <span class="post-meta-item-text">字数统计：</span>
+            <span>1.7k</span>
+          </span>
+          <span class="post-count">
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+              <i class="fa fa-book"></i>
+            </span>
+            <span class="post-meta-item-text">阅读时长：</span>
+            <span>5min</span>
+          </span>
+          
+          
+          
+          
+          
+        </div>
+      </header>
+    
+    <div class="post-body" itemprop="articleBody">
+      
+      
+      
+        <p>蓝牙定位是iBeacon技术最常被应用的方向之一，基于蓝牙定位可以实现诸如寻路、寻车、向导等很多商业需求，<a href="https://tracesr.github.io/" target="_blank" rel="external">觅迹导航</a>的定位系统也是基于iBeacon技术实现的。蓝牙定位又可以分为一维定位和二维定位，本文将介绍两种蓝牙定位技术的实现原理及实现方法。</p>
+<h2 id="一维定位"><a href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%B8%80%E7%BB%B4%E5%AE%9A%E4%BD%8D" class="headerlink" title="一维定位"></a>一维定位</h2><h3 id="原理"><a href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%8E%9F%E7%90%86" class="headerlink" title="原理"></a>原理</h3><p>蓝牙定位的底层技术是蓝牙测距，关于蓝牙测距在<a href="https://refined-x.com/2019/03/30/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8FiBeacon%E6%B5%8B%E8%B7%9D%E5%8F%8A%E7%A8%B3%E5%AE%9A%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/">《微信小程序iBeacon测距及稳定程序的实现》</a>一文中已经做了详细介绍，这里不再赘述。</p>
+<p>所谓一维定位其实就是对蓝牙测距技术的最简单应用，只要将蓝牙信标设备部署在指定点，当接收设备（手机）足够靠近信标时，就认为用户到达了指定点。之所以称之为一维定位，是因为定位结果完全依附于信标设备的位置，没有任何其他维度上的扩展。</p>
+<p><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/1wei-locate.png" alt=""></p>
+<h3 id="应用"><a href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%BA%94%E7%94%A8" class="headerlink" title="应用"></a>应用</h3><p>这种方式通常用在固定路线的沿途部署，为路线上的用户提供定位信息。</p>
+<p>优点是部署成本和开发成本很低，缺点是只能应用在路线固定，并且定位点间隔不太密集的场景。典型的例子就是景区或者园区，景区内的路径都是经过设计的，固定而且几乎唯一；景点之间的距离也不会很近，至少在50m以上的间距。只要沿途以大致固定的间距部署信标设备，就可以为用户提供相对实时而且准确的定位信息。</p>
+<h3 id="实现"><a href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%AE%9E%E7%8E%B0" class="headerlink" title="实现"></a>实现</h3><p>一维定位的部署非常简单，如上文所述，只要确定好信标设备的有效覆盖范围，然后沿途部署就可以。部署同时收集每个或部分信标设备的位置信息，作为程序的定位检索依据。</p>
+<p>开发方面，移动设备只要将收到的信号做距离排序，找到距离最近的一个信标设备，如果距离在指定范围内，就检索该设备的位置信息，认为用户到达了该地区。</p>
+<p>太简单了，就不多说了。</p>
+<h2 id="二维定位"><a href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%BA%8C%E7%BB%B4%E5%AE%9A%E4%BD%8D" class="headerlink" title="二维定位"></a>二维定位</h2><h3 id="原理-1"><a href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%8E%9F%E7%90%86-1" class="headerlink" title="原理"></a>原理</h3><p>二维定位顾名思义，就是可以实现二维空间中的任意定位。定位的主要理论依据<a href="https://baike.baidu.com/item/%E4%B8%89%E8%A7%92%E5%BD%A2%E4%B8%89%E8%BE%B9%E5%85%B3%E7%B3%BB/11034954" target="_blank" rel="external">三角形三边关系</a>公式。</p>
+<p><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/zhijiao-sanjiaoxing.jpg" alt=""></p>
+<p>如上图，已知三角形三边长度，CD是底边AB的垂线，AD和BD的长度计算公式分别为</p>
+<figure class="highlight plain"><table><tbody><tr class="eye-protector-processed" style="transition: background-color 0.3s ease 0s; background-color: rgb(193, 230, 198);"><td class="gutter"><pre class="eye-protector-processed" style="transition: background-color 0.3s ease 0s; border-color: rgba(0, 0, 0, 0.35); color: rgb(0, 0, 0); background-color: rgb(193, 230, 198);"><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre class="eye-protector-processed" style="transition: background-color 0.3s ease 0s; background-color: rgb(193, 230, 198);"><span class="line">BD = (AB2+CB2-AC2)÷2AB</span><br><span class="line">AD = (AB2-CB2+AC2)÷2AB</span><br></pre></td></tr></tbody></table></figure>
+<p>整体思路是，将信标设备在场地内按指定间距做网状部署，使用户在场地内任意点都可以接收到3个距离最近而且连线构成直角的定位点信息，如下图</p>
+<p><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/ibeacon-locate-method.png" alt=""></p>
+<p>通过三角形三边关系公式，可以计算出上图中px和py的长度，也就是当前点在当前正方形网格中的坐标。</p>
+<p>再根据当前所在正方形在整个矩阵中的位置，结合部署间距，算出当前点在整个矩阵中的坐标。</p>
+<h3 id="应用-1"><a href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%BA%94%E7%94%A8-1" class="headerlink" title="应用"></a>应用</h3><p>二维定位理论上适用于任何场景，通常用在用户活动路径不固定的自由空间中，比如展会、商场。</p>
+<p>优点是场地适应性更强，缺点是部署成本和开发成本相对较高。以商场为例，严格按照固定间距部署蓝牙信标，往往需要结合实地情况选择合适的距离，程序也要根据实际间距做相应的计算调整。另外还要考虑不规则区域的处理，往往会将一维定位和二维定位结合使用。</p>
+<h3 id="实现-1"><a href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%AE%9E%E7%8E%B0-1" class="headerlink" title="实现"></a>实现</h3><p>上面原理部分说起来有点啰嗦，看图其实很简单。</p>
+<p>假设现在有一个30m * 30m的场地，将信标设备以10m为间距网状部署，共需要16个信标，每个信标都按下图所示标注上坐标信息</p>
+<p><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/ibeacon-locate-grid.png" alt=""></p>
+<p>此时用户无论在场地内的任何位置，都将身处9个正方形网格中的一个（暂不考虑临界情况），那么移动设备收到的距离最近的4个信标点，应该就是当前所在正方形的4个顶点。</p>
+<p>假设当前用户此时在左上角第一个正方形中，根据蓝牙测距结果，得到距离最近的3个信标点，对应的距离分别为<code class="eye-protector-processed" style="transition: background-color 0.3s ease 0s; background-color: rgb(193, 230, 198);">distance1, distance2, distance3</code>，如图</p>
+<p><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/ibeacon-locate-method.png" alt=""></p>
+<p>三个顶点距离已知，部署间距已知，根据三边关系公式可以得<code class="eye-protector-processed" style="transition: background-color 0.3s ease 0s; background-color: rgb(193, 230, 198);">px, py</code>的值，也就是当前点在当前网格中的坐标。</p>
+<p>在这之前先要解决一个问题，那就是三个点之间的关系。我们知道三个点肯定两两连线互为直角，但到底哪两个点在横轴上，哪两个点在纵轴上。这需要结合点的坐标信息做进一步处理。</p>
+<figure class="highlight plain"><table><tbody><tr class="eye-protector-processed" style="transition: background-color 0.3s ease 0s; background-color: rgb(193, 230, 198);"><td class="gutter"><pre class="eye-protector-processed" style="transition: background-color 0.3s ease 0s; border-color: rgba(0, 0, 0, 0.35); color: rgb(0, 0, 0); background-color: rgb(193, 230, 198);"><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre class="eye-protector-processed" style="transition: background-color 0.3s ease 0s; background-color: rgb(193, 230, 198);"><span class="line">//判断三点（points）的关系</span><br><span class="line">let xAxisPoints = [];</span><br><span class="line">let yAxisPoints = [];</span><br><span class="line">for (let i = 0; i &lt; points.length; i++) {</span><br><span class="line">  let point = points[i];</span><br><span class="line">  //找到Y轴点</span><br><span class="line">  let xNO = point.x;</span><br><span class="line">  let yPoints = points.filter(e =&gt; e.x === xNO)</span><br><span class="line">  if (yPoints.length &gt;= 2) {</span><br><span class="line">    yAxisPoints = yPoints.sort((a, b) =&gt; a.y - b.y)</span><br><span class="line">    if (xAxisPoints.length) {</span><br><span class="line">      break;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  //找到X轴点</span><br><span class="line">  let yNO = point.y;</span><br><span class="line">  let xPoints = points.filter(e =&gt; e.y === yNO)</span><br><span class="line">  if (xPoints.length &gt;= 2) {</span><br><span class="line">    xAxisPoints = xPoints.sort((a, b) =&gt; a.x - b.x)</span><br><span class="line">    if (yAxisPoints.length) {</span><br><span class="line">      break;</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>至此，就很容易算出定位点的横轴坐标和纵轴坐标了，再分别加上当前网格在整个矩阵中的横坐标和纵坐标，就得到了最终的定位坐标。</p>
+<p>上例中的<code class="eye-protector-processed" style="transition: background-color 0.3s ease 0s; background-color: rgb(193, 230, 198);">xAxisPoints</code>和<code class="eye-protector-processed" style="transition: background-color 0.3s ease 0s; background-color: rgb(193, 230, 198);">yAxisPoints</code>已经对坐标信息做了排序，横轴数组第一个点的x值，以及纵轴数组第一个点的y值，就是网格在整个矩阵中的横坐标和纵坐标。</p>
+<h2 id="总结"><a href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E6%80%BB%E7%BB%93" class="headerlink" title="总结"></a>总结</h2><p>一维定位和二维定位分别有各自的应用场景，其中二维定位对实施能力提出了较高的要求。现实环境中往往还需要将一维定位和二维定位结合使用，这里需要程序设计上处理好两种情况的兼容。</p>
+<p>得到定位信息，往往只是项目的第一步。比如在导航系统中，定位信息需要匹配最近的目标点，整个导航功能才可以开始使用。有机会后面会对导航系统的实现，做进一步的分享。</p>
+
+        
+        <p>前端路上原创技术文章，转载请注明出处：<a href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/">https://refined-x.com/2019/04/01/IBeacon-Location-Technology/</a></p>
+        
+        <p><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/wechat.jpg" alt="看风景-公众号" style="display:block;max-width:360px;margin:auto"></p>
+        <p style="color:#000;text-align:center;font-weight:bold">不甘平庸的你，快来跟我一起充电吧，关注看风景，获取更多精彩内容。</p>
+        
+      
+    </div>
+    <div>
+      
+        
+
+      
+    </div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="https://refined-x.com/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">#小程序</a>
+          
+            <a href="https://refined-x.com/tags/iBeacon/" rel="tag">#iBeacon</a>
+          
+            <a href="https://refined-x.com/tags/%E8%93%9D%E7%89%99%E5%AE%9A%E4%BD%8D/" rel="tag">#蓝牙定位</a>
+          
+        </div>
+      
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="https://refined-x.com/2019/03/30/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8FiBeacon%E6%B5%8B%E8%B7%9D%E5%8F%8A%E7%A8%B3%E5%AE%9A%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/" rel="next" title="微信小程序iBeacon测距及稳定程序的实现">
+                <i class="fa fa-chevron-left"></i> 微信小程序iBeacon测距及稳定程序的实现
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="https://refined-x.com/2019/04/27/canvas-click/" rel="prev" title="监听Canvas内部元素点击事件的三种方法">
+                监听Canvas内部元素点击事件的三种方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+      
+    </footer>
+  </article>
+
+    <div class="post-spread">
+      
+      
+    </div>
+  </div>
+
+          </div>
+          
+            <div id="gitment_container"><div lang="en-US" class="gitment-container gitment-root-container"><div><div lang="en-US" class="gitment-container gitment-header-container"><span class="gitment-header-like-btn">
+    <svg class="gitment-heart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path d="M25 39.7l-.6-.5C11.5 28.7 8 25 8 19c0-5 4-9 9-9 4.1 0 6.4 2.3 8 4.1 1.6-1.8 3.9-4.1 8-4.1 5 0 9 4 9 9 0 6-3.5 9.7-16.4 20.2l-.6.5zM17 12c-3.9 0-7 3.1-7 7 0 5.1 3.2 8.5 15 18.1 11.8-9.6 15-13 15-18.1 0-3.9-3.1-7-7-7-3.5 0-5.4 2.1-6.9 3.8L25 17.1l-1.1-1.3C22.4 14.1 20.5 12 17 12z"></path></svg>
+    Like
+    
+  </span><span>
+    
+  </span><a class="gitment-header-issue-link" href="https://github.com/tower1229/blog-comments/issues/39" target="_blank">Issue Page</a></div></div><div><div lang="en-US" class="gitment-container gitment-comments-container"><div class="gitment-comments-empty">No Comment Yet</div></div></div><div><div lang="en-US" class="gitment-container gitment-editor-container">
+      <a class="gitment-editor-avatar" href="https://github.com/login/oauth/authorize?scope=public_repo&amp;redirect_uri=https%3A%2F%2Frefined-x.com%2F2019%2F04%2F01%2FIBeacon-Location-Technology%2F%3Fhmsr%3Dtoutiao.io%26utm_medium%3Dtoutiao.io%26utm_source%3Dtoutiao.io&amp;client_id=37db014e1012d7838313&amp;client_secret=52d07c2105210cf845870cb479ae6a4cdecae347" title="login with GitHub">
+              <svg class="gitment-github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path d="M25 10c-8.3 0-15 6.7-15 15 0 6.6 4.3 12.2 10.3 14.2.8.1 1-.3 1-.7v-2.6c-4.2.9-5.1-2-5.1-2-.7-1.7-1.7-2.2-1.7-2.2-1.4-.9.1-.9.1-.9 1.5.1 2.3 1.5 2.3 1.5 1.3 2.3 3.5 1.6 4.4 1.2.1-1 .5-1.6 1-2-3.3-.4-6.8-1.7-6.8-7.4 0-1.6.6-3 1.5-4-.2-.4-.7-1.9.1-4 0 0 1.3-.4 4.1 1.5 1.2-.3 2.5-.5 3.8-.5 1.3 0 2.6.2 3.8.5 2.9-1.9 4.1-1.5 4.1-1.5.8 2.1.3 3.6.1 4 1 1 1.5 2.4 1.5 4 0 5.8-3.5 7-6.8 7.4.5.5 1 1.4 1 2.8v4.1c0 .4.3.9 1 .7 6-2 10.2-7.6 10.2-14.2C40 16.7 33.3 10 25 10z"></path></svg>
+            </a>
+    
+    <div class="gitment-editor-main">
+      <div class="gitment-editor-header">
+        <nav class="gitment-editor-tabs">
+          <button class="gitment-editor-tab gitment-selected eye-protector-processed" style="transition: background-color 0.3s ease 0s; border-color: rgba(0, 0, 0, 0.35); background-color: rgb(193, 230, 198);">Write</button>
+          <button class="gitment-editor-tab">Preview</button>
+        </nav>
+        <div class="gitment-editor-login">
+          <a class="gitment-editor-login-link" href="https://github.com/login/oauth/authorize?scope=public_repo&amp;redirect_uri=https%3A%2F%2Frefined-x.com%2F2019%2F04%2F01%2FIBeacon-Location-Technology%2F%3Fhmsr%3Dtoutiao.io%26utm_medium%3Dtoutiao.io%26utm_source%3Dtoutiao.io&amp;client_id=37db014e1012d7838313&amp;client_secret=52d07c2105210cf845870cb479ae6a4cdecae347">Login</a> with GitHub
+        </div>
+      </div>
+      <div class="gitment-editor-body">
+        <div class="gitment-editor-write-field">
+          <textarea placeholder="Leave a comment" title="Login to Comment" disabled="" class="eye-protector-processed" style="transition: background-color 0.3s ease 0s; background-color: rgb(193, 230, 198);"></textarea>
+        </div>
+        <div class="gitment-editor-preview-field gitment-hidden">
+          <div class="gitment-editor-preview gitment-markdown"></div>
+        </div>
+      </div>
+    </div>
+    <div class="gitment-editor-footer">
+      <a class="gitment-editor-footer-tip" href="https://guides.github.com/features/mastering-markdown/" target="_blank">
+        Styling with Markdown is supported
+      </a>
+      <button class="gitment-editor-submit" title="Login to Comment" disabled="">Comment</button>
+    </div>
+  </div></div><div><div lang="en-US" class="gitment-container gitment-footer-container">
+    Powered by
+    <a class="gitment-footer-project-link" href="https://github.com/tower1229/gitment-pro" target="_blank">
+      Gitment Pro
+    </a>
+  </div></div></div></div>
+          
+        </div>
+        
+          
+  
+  
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+      
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/album.jpg" alt="雅X共赏">
+          <p class="site-author-name" itemprop="name">雅X共赏</p>
+          <p class="site-description motion-element" itemprop="description">原创前端技术博客，致力于分享前端学习路上的第一手资料，专注web开发、移动端开发、混合应用开发、前端自动化、前端工程化，Nodejs开发。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="https://refined-x.com/">
+              <span class="site-state-item-count">39</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">前端技术</span>
+              
+            </div>
+          
+        </nav>
+        
+        <div class="links-of-author motion-element">
+          
+        </div>
+        
+        
+        
+
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+
+            <ul class="links-of-blogroll-list booth-list" style="list-style:none">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://frontend-weekly.com/" title="前端周刊" target="_blank"><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/前端周刊.png" alt="前端周刊"></a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://frontend-weekly.com/tools.html" title="进阶套装" target="_blank"><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/进阶套装.png" alt="进阶套装"></a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://frontend-weekly.com/program.html" title="0元建站" target="_blank"><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/0元建站.png" alt="0元建站"></a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://refined-x.com/asset/%E7%88%B1%E5%A5%87%E8%89%BAVIP%E9%82%80%E8%AF%B7.jpg" title="爱奇艺VIP" target="_blank"><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/爱奇艺VIP.png" alt="爱奇艺VIP"></a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://www.aliyun.com/minisite/goods?userCode=y31qmczl" title="阿里云双十一" target="_blank"><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/阿里云双十一.png" alt="阿里云双十一"></a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" title="虚位以待" target="_blank"><img src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/虚位以待.png" alt="虚位以待"></a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+        
+        
+      </section>
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc" style="max-height: 454px; width: calc(100% + 15px);">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%B8%80%E7%BB%B4%E5%AE%9A%E4%BD%8D"><span class="nav-number">1.</span> <span class="nav-text">一维定位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%BA%94%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E4%BA%8C%E7%BB%B4%E5%AE%9A%E4%BD%8D"><span class="nav-number">2.</span> <span class="nav-text">二维定位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%8E%9F%E7%90%86-1"><span class="nav-number">2.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%BA%94%E7%94%A8-1"><span class="nav-number">2.2.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E5%AE%9E%E7%8E%B0-1"><span class="nav-number">2.3.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2 active active-current"><a class="nav-link" href="https://refined-x.com/2019/04/01/IBeacon-Location-Technology/?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  ©  2016 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <a href="https://refined-x.com/" title="枪在手，跟我走，前端路上不回头" class="author" itemprop="copyrightHolder">雅X共赏</a>
+  <span class="with-love">
+    全站字数：<span class="post-count">73.6k</span>
+  </span>
+  
+</div>
+        
+      </div>
+    </footer>
+    <div class="back-to-top back-to-top-on">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+  
+
+
+
+
+
+
+
+	
+  <link rel="stylesheet" href="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/default.css">
+
+
+
+  
+  <script type="text/javascript" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/index.js"></script>
+
+  
+  <script type="text/javascript" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/jquery.lazyload.js"></script>
+
+  
+  <script type="text/javascript" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/gitment.browser.js"></script>
+
+
+  
+
+  <script type="text/javascript" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/utils.js"></script>
+
+  <script type="text/javascript" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/motion.js"></script>
+
+  <script type="text/javascript" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/bootstrap.js"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/scrollspy.js"></script>
+<script type="text/javascript" src="./iBeacon蓝牙定位技术原理及实现 _ 前端路上_files/post-details.js"></script>
+
+  
+  
+  
+<script type="text/javascript"> 
+var gitment = new Gitment.construct({
+    id: 'iBeacon蓝牙定位技术原理及实现',
+    owner: 'tower1229',
+    repo: 'blog-comments',
+    oauth: {
+      client_id: "37db014e1012d7838313",
+      client_secret: "52d07c2105210cf845870cb479ae6a4cdecae347",
+    },
+  })
+
+  gitment.render('gitment_container')
+</script>
+
+  
+<script type="text/javascript">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+</body></html>

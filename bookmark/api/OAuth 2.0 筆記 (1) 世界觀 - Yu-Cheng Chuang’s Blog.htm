@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://blog.yorkxin.org/2013/09/30/oauth2-1-introduction -->
+<html class="cye-disabled cye-nm gr__blog_yorkxin_org"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>OAuth 2.0 筆記 (1) 世界觀 - Yu-Cheng Chuang’s Blog</title>
+  <meta name="description" content="最近需要實作 OAuth 2 認證，不是接別人的 OAuth 2 ，而是自己製作出可以讓別人接我們的 OAuth 2 的服務（俗稱 Provider）。但看到既有的 OAuth 2 server library 如 rack-oauth2 卻都看不懂，所以花了很久的時間來研讀 RFC 6749 這份 OAuth ...">
+
+  <link rel="stylesheet" href="./OAuth 2.0 筆記 (1) 世界觀 - Yu-Cheng Chuang’s Blog_files/main.css">
+  <link rel="canonical" href="https://blog.yorkxin.org/2013/09/30/oauth2-1-introduction.html">
+  <link rel="alternate" type="application/rss+xml" title="Yu-Cheng Chuang’s Blog" href="https://feeds.feedburner.com/chitsaou">
+<style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><script async="" src="./OAuth 2.0 筆記 (1) 世界觀 - Yu-Cheng Chuang’s Blog_files/analytics.js"></script><script type="text/javascript" async="" src="./OAuth 2.0 筆記 (1) 世界觀 - Yu-Cheng Chuang’s Blog_files/embed.js"></script><link rel="preload" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.9974049bf7b0591e5d4f055cb67f3ee3.css"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.880980e048a2432334f13013030456ac.js"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.4180262f1aa52e0f0340aac9fc52a8d8.js"><link rel="preload" as="script" href="https://disqus.com/next/config.js"><script src="./OAuth 2.0 筆記 (1) 世界觀 - Yu-Cheng Chuang’s Blog_files/alfie.f51946af45e0b561c60f768335c9eb79.js" async="" charset="UTF-8"></script></head>
+
+
+  <body data-gr-c-s-loaded="true" style="">
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="https://blog.yorkxin.org/">Yu-Cheng Chuang’s Blog</a>
+
+    <nav class="site-nav">
+      <a href="https://blog.yorkxin.org/2013/09/30/oauth2-1-introduction#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+        
+          
+          <a class="page-link" href="https://blog.yorkxin.org/about">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="https://blog.yorkxin.org/toolbox">Toolbox</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">OAuth 2.0 筆記 (1) 世界觀</h1>
+    <p class="post-meta">Sep 30, 2013</p>
+  </header>
+
+  <article class="post-content">
+    <p>最近需要實作 OAuth 2 認證，不是接別人的 OAuth 2 ，而是自己製作出可以讓別人接我們的 OAuth 2 的服務（俗稱 Provider）。但看到既有的 OAuth 2 server library 如 <a href="https://github.com/nov/rack-oauth2">rack-oauth2</a> 卻都看不懂，所以花了很久的時間來研讀 <a href="http://tools.ietf.org/html/rfc6749">RFC 6749</a> 這份 OAuth 2.0 的 spec ，讀完之後總算懂 library 在幹嘛了。老闆建議我寫懶人包，所以就寫了這篇，一來筆記，二來讓別人可以透過這份懶人包來快速入門 OAuth 2。（不過說懶人包其實也不懶人，完全就是把 spec 翻譯出來啊……。）</p>
+
+<p>以下文字盡量註明 RFC 6749 原文的出處。有些原文我可能會省略，例如與 OAuth 1.0 的差異（spec 裡面有些段落有提及）、擴充 OAuth 2.0 的功能 (Extension)，這是為了讓懶人包 focus 在 OAuth 2.0 的基本使用方式。專有名詞基本上不翻譯，只適度加註中文，這是為了可以和 library 裡面常用的變數名稱保持一致。</p>
+
+<p>另外，我有把 spec 原文的 txt <a href="https://gist.github.com/chitsaou/6590756">轉成 Markdown</a> 來方便閱讀。</p>
+
+<h2 id="oauth-20-系列文目錄">OAuth 2.0 系列文目錄</h2>
+
+<ul>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-1-introduction/">(1) 世界觀</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-2-cilent-registration/">(2) Client 的註冊與認證</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-3-endpoints/">(3) Endpoints 的規格</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-4-1-auth-code-grant-flow/">(4.1) Authorization Code Grant Flow 細節</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-4-2-implicit-grant-flow/">(4.2) Implicit Grant Flow 細節</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-4-3-resource-owner-credentials-grant-flow/">(4.3) Resource Owner Credentials Grant Flow 細節</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-4-4-client-credentials-grant-flow/">(4.4) Client Credentials Grant Flow 細節</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-5-issuing-tokens/">(5) 核發與換發 Access Token</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-6-bearer-token/">(6) Bearer Token 的使用方法</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-7-security-considerations/">(7) 安全性問題</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-implementation-differences-among-famous-sites/">各大網站 OAuth 2.0 實作差異</a></li>
+</ul>
+
+<!--more-->
+
+<h2 id="簡介-oauth-20">簡介 OAuth 2.0</h2>
+
+<p>在傳統的 Client-Server 架構裡， Client 要拿取受保護的資源 (Protected Resoruce) 的時候，要向 Server 出示使用者 (Resource Owner) 的帳號密碼才行。為了讓第三方應用程式也可以拿到這些 Resources ，則 Resource Owner 要把帳號密碼給這個第三方程式，這樣子就會有以下的問題及限制：</p>
+
+<ul>
+  <li>第三方程式必須儲存 Resource Owner 的帳號密碼，通常是明文儲存。</li>
+  <li>Server 必須支援密碼認證，即使密碼有天生的資訊安全上的弱點。</li>
+  <li>第三方程式會得到幾乎完整的權限，可以存取 Protected Resources ，而 Resource Owner 沒辦法限制第三方程式可以拿取 Resource 的時效，以及可以存取的範圍 (subset)。</li>
+  <li>Resource Owner 無法只撤回單一個第三方程式的存取權，而且必須要改密碼才能撤回。</li>
+  <li>任何第三方程式被破解 (compromized)，就會導致使用該密碼的所有資料被破解。</li>
+</ul>
+
+<p>OAuth 解決這些問題的方式，是引入一個認證層 (authorization layer) ，並且把 client 跟 resource owner 的角色分開。在 OAuth 裡面，Client 會先索取存取權，來存取 Resource Owner 擁有的資源，這些資源會放在 Resource Server 上面，並且 Client 會得到一組不同於 Resource Owner 所持有的認證碼 (credentials) 。</p>
+
+<p>Client 會取得一個 Access Token 來存取 Protected Resources ，而非使用 Resource Owner 的帳號密碼。Access Token 是一個字串，記載了特定的存取範圍 (scope) 、時效等等的資訊。Access Token 是從 Authorization Server 拿到的，取得之前會得到 Resource Owner 的許可。Client 用這個 Access Token 來存取 Resource Server 上面的 Protected Resources 。</p>
+
+<p>實際使用的例子：使用者 (Resource Owner) 可以授權印刷服務 (Client) 去相簿網站 (Resource Server) 存取他的私人照片，而不需要把相簿網站的帳號密碼告訴印刷服務。這個使用者會直接授權透過一個相簿網站所信任的伺服器 (Authorization Server) ，核發一個專屬於該印刷服務的認證碼 (Access Token)。</p>
+
+<p>OAuth 是設計來透過 HTTP 使用的。透過 HTTP 以外的通訊協定來使用 OAuth 則是超出 spec 的範圍。</p>
+
+<p><em>Section 1</em></p>
+
+<h2 id="oauth-20-的角色定義">OAuth 2.0 的角色定義</h2>
+
+<ul>
+  <li><strong>Resource Owner</strong> - 可以授權別人去存取 Protected Resource 。如果這個角色是人類的話，則就是指使用者 (end-user)。</li>
+  <li><strong>Resource Server</strong> - 存放 Protected Resource 的伺服器，可以根據 Access Token 來接受 Protected Resource 的請求。</li>
+  <li><strong>Client</strong> - 代表 Resource Owner 去存取 Protected Resource 的應用程式。 “Client” 一詞並不指任何特定的實作方式（可以在 Server 上面跑、在一般電腦上跑、或是在其他的設備）。</li>
+  <li><strong>Authorization Server</strong> - 在認證過 Resource Owner 並且 Resource Owner 許可之後，核發 Access Token 的伺服器。</li>
+</ul>
+
+<p>Authorization Server 和 Resource Server 的互動方式不在本 spec 的討論範圍內。Authorization Server 跟 Resource Server 可以是同一台，也可以分開。單一台 Authorization Server 核發的 Access Token ，可以設計成能被多個 Resource Server 所接受。</p>
+
+<p><em>Section 1.1</em></p>
+
+<h2 id="基本流程概觀與資料定義">基本流程概觀與資料定義</h2>
+
+<p>以下是抽象化的流程概觀，以比較宏觀的角度來描述，不是實際程式運作的流程（圖出自 Spec 的 Figure 1）：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+--------+                               +---------------+
+|        |--(A)- Authorization Request -&gt;|   Resource    |
+|        |                               |     Owner     |
+|        |&lt;-(B)-- Authorization Grant ---|               |
+|        |                               +---------------+
+|        |
+|        |                               +---------------+
+|        |--(C)-- Authorization Grant --&gt;| Authorization |
+| Client |                               |     Server    |
+|        |&lt;-(D)----- Access Token -------|               |
+|        |                               +---------------+
+|        |
+|        |                               +---------------+
+|        |--(E)----- Access Token ------&gt;|    Resource   |
+|        |                               |     Server    |
+|        |&lt;-(F)--- Protected Resource ---|               |
++--------+                               +---------------+
+
+                Figure 1: Abstract Protocol Flow
+</code></pre></div></div>
+
+<p>上圖描述四個角色的互動方式：</p>
+
+<p>(A): Client 向 Resource Owner 請求授權。這個授權請求可以直接向 Resource Owner 發送（如圖），或是間接由 Authorization Server 來請求。</p>
+
+<p>(B) Client 得到來自 Resource Owner 的 Authorization Grant （授權許可）。這個 Grant 是用來代表 Resource Owner 的授權，其表達的方式是本 spec 裡定義的四種類別 (grant types) 的其中一種（可以擴充）。要使用何種類別，則是依 Client 請求授權的方法、 Authorization Server 支援的類別而異。</p>
+
+<p>(C): Client 向 Authorization Server 請求 Access Token ，Client 要認證自己，並出示 Authorization Grant。</p>
+
+<p>(D): Authorization Server 認證 Client 並驗證 Authorization Grant 。如果都合法，就核發 Access Token 。</p>
+
+<p>(E): Client 向 Resource Server 請求 Protected Resource ，Client 要出示 Access Token。</p>
+
+<p>(F): Resource Server 驗證 Access Token ，如果合法，就處理該請求。</p>
+
+<p><em>Section 1.2</em></p>
+
+<h3 id="authorization-grant-授權許可">Authorization Grant （授權許可）</h3>
+
+<p>Authorization Grant 代表了 Resource Owner 授權 Client 可以去取得 Access Token 來存取 Protected Resource 。Grant 不一定是具體的資料，依 spec 裡面定義的四種內建流程，有對應不同的 grant type ，甚至在某些流程裡面會省略之，不經過 Client。</p>
+
+<p>Client 從 Resource Owner 取得 Authorization Grant 的方式（前段圖中的 (A) 和 (B) 流程）會比較偏好透過 Authorization Server 當作中介。見<a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-3-endpoints/">系列文第 3 篇</a>的流程圖。</p>
+
+<h3 id="access-token">Access Token</h3>
+
+<p>Access Token 用來存取 Protected Resource ，是一個具體的字串（string），其代表特定的 scope （存取範圍）、時效。概念上是由 Resoruce Owner 授予，Resource Server 和 Authorization Server 遵循之 (enforced)。</p>
+
+<p>Access Token 可以加上用來取得授權資訊的 identifier （編號或識別字等），或內建可以驗證的授權資訊（如數位簽章）。也就是說，可以由 Authorization Server 間接判定這個 Access Token 的 scope 及時效，也可以嵌在 Token 裡面，但為了防止竄改，要以加密演算法來實作資料的驗證。</p>
+
+<p>Spec 裡面只定義抽象層，代替傳統的帳密認證，並且 Resource Server 只需要知道此一 Access Token ，不需要知道其他的認證方式。Access Token 可以有不同的格式、使用方式（如內建加密屬性）。Access Token 的內容，以及如何用它來存取 Protected Resource ，則定義在別的文件，像是 RFC 6750 (Bearer Token Usage) 。</p>
+
+<p><em>Section 1.4</em></p>
+
+<h4 id="access-token-type">Access Token Type</h4>
+
+<p>Client 要認得 Access Token Type 才能使用之，若拿到認不得的 Type ，則不可以使用之。例如 RFC 6750 定義的 Bearer Token 的用法就是這樣：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /resource/1 HTTP/1.1
+Host: example.com
+Authorization: Bearer mF_9.B5f-4.1JqM
+</code></pre></div></div>
+
+<p><em>Section 7.1</em></p>
+
+<h3 id="refresh-token">Refresh Token</h3>
+
+<p>用來向 Authorization Server 重新取得一個新的 Access Token 的 Token ，像是現有的 Access Token 過期而無效，或是權限不足，需要更多 scopes 才能存取別的 Resource。在概念上，Refresh Token 代表了 Resource Owner 授權 Client 重新取得新的 Access Token 而不需要再度請求 Resource Owner 的授權。Client 可以自動做這件事，例如 Access Token 過期了，自動拿新的 Token，來讓應用程式的流程更順暢。</p>
+
+<p>需注意新取得的 Access Token 時效可能比以前短、或比 Resource Owner 給的權限更少。</p>
+
+<p>Authorization Server 不一定要核發 Refresh Token ，但若要核發，必須在核發 Access Token 的時候一併合發。某些內建流程會禁止核發 Refresh Token。</p>
+
+<p>Refresh Token 應該只遞交到 Authorization Server ，不該遞交到 Resource Server 。</p>
+
+<p>Refresh Token 的流程圖：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+--------+                                           +---------------+
+|        |--(A)------- Authorization Grant ---------&gt;|               |
+|        |                                           |               |
+|        |&lt;-(B)----------- Access Token -------------|               |
+|        |               &amp; Refresh Token             |               |
+|        |                                           |               |
+|        |                            +----------+   |               |
+|        |--(C)---- Access Token ----&gt;|          |   |               |
+|        |                            |          |   |               |
+|        |&lt;-(D)- Protected Resource --| Resource |   | Authorization |
+| Client |                            |  Server  |   |     Server    |
+|        |--(E)---- Access Token ----&gt;|          |   |               |
+|        |                            |          |   |               |
+|        |&lt;-(F)- Invalid Token Error -|          |   |               |
+|        |                            +----------+   |               |
+|        |                                           |               |
+|        |--(G)----------- Refresh Token -----------&gt;|               |
+|        |                                           |               |
+|        |&lt;-(H)----------- Access Token -------------|               |
++--------+           &amp; Optional Refresh Token        +---------------+
+
+        Figure 2: Refreshing an Expired Access Token
+</code></pre></div></div>
+
+<p>(A) Client 向 Authorizatino Server 出示 Authorization Grant ，來申請 Access Token 。</p>
+
+<p>(B) Authorization Server 認證 Client 並驗證 Authorization Grant 。如果都合法，就核發 Access Token 。</p>
+
+<p>(C) Client 向 Resource Server 請求 Protected Resource ，Client 要出示 Access Token。</p>
+
+<p>(D) Resource Server 驗證 Access Token ，如果合法，就處理該請求。</p>
+
+<p>(E) 步驟 (C) 和 (D) 一直重覆，直到 Access Token 過期。如果 Client 自己知道 Access Token 過期，就跳到 (G)；如則，就發送另一個 Protected Request 的請求。</p>
+
+<p>(F) 因為 Access Token 不合法，Resource Server 回傳 Token 不合法的錯誤。</p>
+
+<p>(G) Client 向 Authorization Server 請求 Access Token ，Client 要認證自己，並出示 Refresh Token。Client 認證的必要與否，端看 Client Type 以及 Authorization Server 的政策。</p>
+
+<p>(H) Authorization Server 認證 Client 、驗證 Refresh Token ，如果合法，就核發新的 Access Toke （也可以同時核發新的 Refresh Token）</p>
+
+<p>步驟 (C), (D), (E), (F) 關於 Resource Server 如何處理 request 、檢查 Access Token 的機制，不在本 spec 的範圍內，跟 Token 的格式有關。RFC 6750 的 Bearer Token 有定義，見<a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-6-bearer-token/">系列文第 6 篇</a>。</p>
+
+<p><em>Section 1.5</em></p>
+
+<h2 id="四種內建授權流程-grant-flows">四種內建授權流程 (Grant Flows)</h2>
+
+<p>Spec 裡面定義了四種流程，分別是:</p>
+
+<ul>
+  <li>Authorization Code Grant Type Flow</li>
+  <li>Implicit Grant Type Flow</li>
+  <li>Resource Owner Password Credentials Grant Type Flow</li>
+  <li>Client Credentials Grant Type Flow</li>
+</ul>
+
+<p>此外還可以擴充。根據流程的不同，有不同的實作細節。Client 的類型也會限制可以實作的流程，例如 Native App 就不准使用 Client Credentials ，因為這些密碼會外洩。</p>
+
+<p>實務上不需要實作所有流程。我看了許多大網站的 OAuth 2 API，大部份會支援 Authorization Code Grant Flow，其他的則不一定。之後寫一篇文章整理。</p>
+
+<p>這裡提一下 Clients 的類型，分成 Public 和 Confidential 兩種，根據能不能保密 Client Credentials 來區分，可以的就是 Confidential （如 Server 上的程式），不行的就是 Public （如 Native App、In-Browser App）。詳見<a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-2-cilent-registration/">系列文第 2 篇</a>。</p>
+
+<h3 id="1-authorization-code-grant-flow">(1) Authorization Code Grant Flow</h3>
+
+<ul>
+  <li>要向 Authorization Server 先取得 Grant Code 再取得 Access Token （兩步）。</li>
+  <li>適合 Confidential Clients ，如部署在 Server 上面的應用程式。</li>
+  <li>可以核發 Refresh Token。</li>
+  <li>需要 User-Agent Redirection。</li>
+</ul>
+
+<h3 id="2-implicit-grant-flow">(2) Implicit Grant Flow</h3>
+
+<ul>
+  <li>Authorization Server 直接向 Client 核發 Access Token （一步）。</li>
+  <li>適合非常特定的 Public Clients ，例如跑在 Browser 裡面的應用程式。</li>
+  <li>Authorization Server 不必（也無法）驗證 Client 的身份。</li>
+  <li>禁止核發 Refresh Token。</li>
+  <li>需要 User-Agent Redirection。</li>
+  <li>有資料外洩風險。</li>
+</ul>
+
+<h3 id="3-resource-owner-password-credentials-grant-flow-使用者的帳號密碼">(3) Resource Owner Password Credentials Grant Flow （使用者的帳號密碼）</h3>
+
+<ul>
+  <li>Resource Owner 的帳號密碼直接拿來當做 Grant。</li>
+  <li>適用於 Resource Owner 高度信賴的 Client （像是 OS 內建的）或是官方應用程式。</li>
+  <li>其他流程不適用時才能用。</li>
+  <li>可以核發 Refresh Token。</li>
+  <li>沒有 User-Agent Redirection。</li>
+</ul>
+
+<h3 id="4-client-credentials-grant-flow-client-的帳號密碼">(4) Client Credentials Grant Flow （Client 的帳號密碼）</h3>
+
+<ul>
+  <li>Client 的 ID 和 Secret 直接用來當做 Grant</li>
+  <li>適用於跑在 Server 上面的 Confidential Client</li>
+  <li>不建議核發 Refresh Token 。</li>
+  <li>沒有 User-Agent Redirection。</li>
+</ul>
+
+<h2 id="技術要求">技術要求</h2>
+
+<h3 id="必須全程使用-tls-https">必須全程使用 TLS (HTTPS)</h3>
+
+<p>因為資料在網路上面傳遞會被看見，所以 Spec 裡面規定全程必須使用 TLS ，而因為 OAuth 是基於 HTTP 的，所以就是 <strong>統統要使用 https</strong> 。實務上是定義在 Endpoints 。在某些 Client 無法實作有 TLS 的 Endpoint ，則會適度放寬限制。所以雖然這段標題寫的是「全程使用」，實際上是只有一些地方有規定需要經過 TLS ，但這個「一些」就包含了幾乎所有經過網路的地方，所以我就直接寫全程了。</p>
+
+<p>至於 TLS 的版本，在 spec 寫成的時候，最新版是 TLS 1.2 ，但實務上利用最廣泛的卻是 TLS 1.0 。所以在 Spec 裡似乎沒有明確定義 TLS 的版本。</p>
+
+<p><em>Section 1.6</em></p>
+
+<h3 id="user-agent-要支援-http-redirection">User-Agent 要支援 HTTP Redirection</h3>
+
+<p>OAuth 2 用 HTTP 轉址 (Redirection) 用很兇， Client 或 Authorization Server 用轉址來把 Resource Owner 的 User-Agent 轉到別的地方。另外雖然 spec 裡面的範例都是 302 轉址，若要用別的方式來轉址也行，這屬於實作細節。</p>
+
+<p><em>Section 1.7</em></p>
+
+<h2 id="存取-protected-resource-的方式">存取 Protected Resource 的方式</h2>
+
+<p>關於 Client 如何利用 Access Token 存取 Protected Resource 的方式，在 OAuth 2.0 的 spec 裡面只有定義概念，具體的機制沒有定義：</p>
+
+<ul>
+  <li>Client 要出示 Access Token 來向 Resource Server 存取 Protected Resource。</li>
+  <li>具體出示機制不定義，通常是用 Authorization header 搭配該 Access Token 定義的 auth scheme ，如 Bearer Token (RFC 6750) ，見<a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-6-bearer-token/">系列文第 6 篇</a>。</li>
+  <li>Resource Server 必須驗證 Access Token 並確認其尚未過期、確認其 scope 包含所要存取的 resource 。</li>
+  <li>具體驗證機制不規定，通常是 Authorization Server 和 Resource Server 之間互相傳輸資料 (interaction) 以及同步化 (coordination)。</li>
+</ul>
+
+<p><em>Section 7</em></p>
+
+<h3 id="錯誤的回應方式">錯誤的回應方式</h3>
+
+<p>Spec 裡面也不定義機制，只定義了概念以及基本的共用協定：</p>
+
+<ul>
+  <li>要是 Resource Request 失敗，則 Server 最好要提示錯誤 。至於 error code ，登記的方式規定在 Section 11.4。</li>
+  <li>任何新定義的 Authentication Scheme （如 Bearer Token）都最好要定義一個機制來提示錯誤，其 value 要使用 OAuth 2.0 spec 裡面規定的方式定義。</li>
+  <li>新定義的 Scheme 可能會只使用子集。</li>
+  <li>如果 error code 用具名參數（如 JSON 之類的 dictionary）回傳，則其參數名稱必須使用 <code class="highlighter-rouge">error</code>。</li>
+  <li>要是有個 Scheme 可以用在 OAuth 但不是專門設計給 OAuth ，則可以用一樣的方式來把它裡面的 error code 清單拿進來用 ※。</li>
+  <li>新定義的 Scheme 可以用 <code class="highlighter-rouge">error_description</code> 和 <code class="highlighter-rouge">error_uri</code> ，其意義要跟 OAuth 定義的一致。</li>
+</ul>
+
+<p>※ <em>MAY bind their error values to the registry in the same manner</em></p>
+
+<p><em>Section 7.2</em></p>
+
+<p>Section 11.4 裡面有規定怎麼提出新 error code 的 proposal ，有興趣的同學就看一下吧。</p>
+
+<hr>
+
+<h2 id="oauth-20-系列文目錄-1">OAuth 2.0 系列文目錄</h2>
+
+<ul>
+  <li><strong><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-1-introduction/">(1) 世界觀</a> ← You Are Here</strong></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-2-cilent-registration/">(2) Client 的註冊與認證</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-3-endpoints/">(3) Endpoints 的規格</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-4-1-auth-code-grant-flow/">(4.1) Authorization Code Grant Flow 細節</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-4-2-implicit-grant-flow/">(4.2) Implicit Grant Flow 細節</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-4-3-resource-owner-credentials-grant-flow/">(4.3) Resource Owner Credentials Grant Flow 細節</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-4-4-client-credentials-grant-flow/">(4.4) Client Credentials Grant Flow 細節</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-5-issuing-tokens/">(5) 核發與換發 Access Token</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-6-bearer-token/">(6) Bearer Token 的使用方法</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-7-security-considerations/">(7) 安全性問題</a></li>
+  <li><a href="http://blog.yorkxin.org/posts/2013/09/30/oauth2-implementation-differences-among-famous-sites/">各大網站 OAuth 2.0 實作差異</a></li>
+</ul>
+
+  </article>
+
+</div>
+
+<script async="" src="./OAuth 2.0 筆記 (1) 世界觀 - Yu-Cheng Chuang’s Blog_files/f.txt"></script>
+<!-- Post Article -->
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1642153824617241" data-ad-slot="5281843012"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<div id="disqus_thread"><iframe id="dsq-app1915" name="dsq-app1915" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./OAuth 2.0 筆記 (1) 世界觀 - Yu-Cheng Chuang’s Blog_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 392px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'chitsaou'; // required: replace example with your forum shortname
+    var disqus_url = 'https://blog.yorkxin.org/2013/09/30/oauth2-1-introduction.html';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Yu-Cheng Chuang’s Blog</h2>
+
+    <div class="footer-wrapper">
+      <p class="text">
+        
+        <a href="https://github.com/chitsaou">
+          <span class="icon  icon--github">
+            <svg viewBox="0 0 16 16">
+              <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"></path>
+            </svg>
+          </span>
+
+          <span class="username">chitsaou</span>
+        </a>
+        
+
+        
+        <a href="https://twitter.com/yorkxin">
+          <span class="icon  icon--twitter">
+            <svg viewBox="0 0 16 16">
+              <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+              c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"></path>
+            </svg>
+          </span>
+
+          <span class="username">yorkxin</span>
+        </a>
+        
+
+        ·
+
+        <a href="https://blog.yorkxin.org/about">about me</a>
+        ·
+
+        subscribe <a href="https://feeds.feedburner.com/chitsaou">via rss</a>
+
+        ·
+
+        © 2007- Yu-Cheng Chuang
+
+        ·
+
+        powered by <a href="http://jekyllrb.com/" target="_blank">Jekyll</a>
+      </p>
+    </div>
+
+  </div>
+
+</footer>
+
+
+    <div id="fb-root"></div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-27155466-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  
+
+
+<iframe style="display: none;" src="./OAuth 2.0 筆記 (1) 世界觀 - Yu-Cheng Chuang’s Blog_files/saved_resource(1).html"></iframe></body><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(253, 253, 253); height: 9919px; width: 1479px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 9919px; width: 1479px;"></div></html>

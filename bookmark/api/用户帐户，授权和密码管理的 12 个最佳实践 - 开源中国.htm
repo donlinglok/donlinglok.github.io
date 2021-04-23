@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)https://www.oschina.net/translate/12-best-practices-for-user-account -->
+<html class="cye-disabled cye-nm gr__oschina_net"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="referrer" content="always">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国</title>
+            <meta name="keywords" content="开源,OSC,开源软件,开源硬件,开源网站,开源社区,java开源,perl开源,python开源,ruby开源,php开源,开源项目,开源代码">
+                <meta name="description" content="开源中国 www.oschina.net 是目前中国最大的开源技术社区。我们传播开源的理念，推广开源项目，为 IT 开发者提供了一个发现、使用、并交流开源技术的平台。目前开源中国社区已收录近五万款开源软件。">
+        <link rel="stylesheet" type="text/css" href="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/semantic.min.css">
+                <link type="text/css" rel="stylesheet" href="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/web.7381c4eb.css">        <script src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/hm.js"></script><script src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/push.js"></script><script type="text/javascript">window.__STATIC_DOMAIN = "https://static.oschina.net";</script><style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style>
+    <script src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/jquery.min.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="https://static.oschina.net/new-osc/img/favicon.ico">
+    <link rel="alternate" type="application/rss+xml" title="最新开源项目" href="https://www.oschina.net/project/rss">
+    <link rel="alternate" type="application/rss+xml" title="最新开源资讯" href="https://www.oschina.net/news/rss">
+    <link rel="alternate" type="application/rss+xml" title="最新问题列表" href="https://www.oschina.net/question/rss">
+    <link rel="alternate" type="application/rss+xml" title="最新翻译列表" href="https://www.oschina.net/translate/rss">
+    <link rel="alternate" type="application/rss+xml" title="最新博客列表" href="https://www.oschina.net/blog/rss">
+    <link rel="alternate" type="application/rss+xml" title="推荐博客列表" href="https://www.oschina.net/blog/rss?show=more">
+    <link rel="alternate" type="application/rss+xml" title="推荐软件列表" href="https://www.oschina.net/project/rss?show=recomms">
+    <link rel="alternate" type="application/rss+xml" title="最新代码分享列表" href="https://www.oschina.net/code/rss">
+    <link rel="alternate" type="application/rss+xml" title="开源中国 - 源码列表" href="https://www.oschina.net/code/source_rss">
+<script src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/share.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/jquery.serialize-object.min.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/jquery.serialize-object.min.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/jquery.serialize-object.min.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/radarChart.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/vue.min.js"></script><link rel="stylesheet" type="text/css" href="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/viewer.min.css"><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/viewer.min.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/vue.min.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/osc-message.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/osc-message.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/osc-message.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/jquery-viewer.min.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/jquery.caret.min.js"></script><script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/jquery.atwho.min.js"></script></head><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div>
+<body data-gr-c-s-loaded="true" class="dimmable pushable" style=""><svg aria-hidden="true" style="position: absolute; width: 0px; height: 0px; overflow: hidden;"><symbol id="oicon-world" viewBox="0 0 1024 1024"><path d="M921.6 204.8h-1.024A510.464 510.464 0 0 0 512 0C229.696 0 0 229.696 0 512s229.696 512 512 512c167.04 0 315.072-80.64 408.576-204.8h1.024v-1.28C985.6 732.416 1024 626.816 1024 512s-38.4-220.416-102.4-305.92V204.8zM358.4 891.456A409.984 409.984 0 0 1 102.4 512c0-17.408 1.408-34.432 3.52-51.2H153.6l51.2 102.4v102.4L307.2 768l51.2 51.2v72.256zM512 921.6a408.32 408.32 0 0 1-96.448-11.904L460.8 819.2l51.2-102.4V614.4H409.6l-51.2-51.2h-51.2L256 460.8l51.2-102.4 51.2-51.2 51.2-51.2 51.2-102.4v-47.68c16.768-2.112 33.792-3.52 51.2-3.52a407.04 407.04 0 0 1 256 90.368V256l-51.2 102.4 51.2 51.2v51.2l-102.4 51.2-51.2 52.032 51.2 50.368 51.2 51.2 51.2 102.4 33.472 33.472A408.32 408.32 0 0 1 512 921.6z"></path></symbol><symbol id="oicon-setting" viewBox="0 0 1162 1024"><path d="M1055.479204 128.810127H442.676311c-10.415913-55.551537-57.287523-97.21519-116.311031-97.21519-57.287523 0-105.895118 41.663653-116.31103 97.21519H53.815552c-10.415913 0-19.095841 8.679928-19.095841 20.831826s8.679928 20.831826 20.831826 20.831826h156.238698c10.415913 55.551537 57.287523 97.21519 116.311031 97.21519 57.287523 0 105.895118-41.663653 116.311031-97.21519h611.066907c12.151899 0 20.831826-8.679928 20.831827-20.831826s-8.679928-20.831826-20.831827-20.831826zM328.101266 224.289331c-41.663653 0-76.383363-34.719711-76.383364-76.383364 0-41.663653 34.719711-76.383363 76.383364-76.383363 41.663653 0 76.383363 34.719711 76.383363 76.383363 0 41.663653-34.719711 76.383363-76.383363 76.383364zM1055.479204 840.564195H637.106691c-10.415913-55.551537-57.287523-97.21519-116.311031-97.21519-57.287523 0-105.895118 41.663653-116.311031 97.21519H55.551537c-12.151899 0-20.831826 8.679928-20.831826 20.831827s8.679928 20.831826 20.831826 20.831826h348.933092c10.415913 55.551537 57.287523 97.21519 116.311031 97.21519 57.287523 0 105.895118-41.663653 116.311031-97.21519H1055.479204c12.151899 0 20.831826-8.679928 20.831827-20.831826 0-10.415913-8.679928-20.831826-20.831827-20.831827z m-534.683544 97.21519c-41.663653 0-76.383363-34.719711-76.383363-76.383363 0-41.663653 34.719711-76.383363 76.383363-76.383364 41.663653 0 76.383363 34.719711 76.383364 76.383364-1.735986 41.663653-34.719711 76.383363-76.383364 76.383363zM1055.479204 484.687161h-67.703435c-10.415913-55.551537-57.287523-97.21519-116.311031-97.21519-57.287523 0-105.895118 41.663653-116.311031 97.21519H55.551537c-12.151899 0-20.831826 8.679928-20.831826 20.831826s8.679928 20.831826 20.831826 20.831827h699.60217c10.415913 55.551537 57.287523 97.21519 116.311031 97.21519 57.287523 0 105.895118-41.663653 116.311031-97.21519h67.703435c12.151899 0 20.831826-8.679928 20.831827-20.831827s-8.679928-20.831826-20.831827-20.831826z m-184.014466 97.21519c-41.663653 0-76.383363-34.719711-76.383364-76.383364 0-41.663653 34.719711-76.383363 76.383364-76.383363 41.663653 0 76.383363 34.719711 76.383363 76.383363 0 41.663653-34.719711 76.383363-76.383363 76.383364z"></path></symbol><symbol id="oicon-gitee" viewBox="0 0 1024 1024"><path d="M966.524718 400.672821H456.520205c-24.497231 0-44.347077 19.954872-44.347077 44.557128v133.540102c0 24.602256 19.849846 44.530872 44.347077 44.530872h288.295385c33.266872 0 44.320821 11.132718 44.347077 44.530872 0.026256 89.035487-50.884923 133.566359-133.041231 133.566359h-376.779487c-24.602256 0-44.530872-19.954872-44.530872-44.530872v-400.67282c0-73.780513 59.575795-133.592615 133.014974-133.592616h598.593641c24.470974 0 44.320821-19.928615 44.320821-44.504615V44.530872C1010.740513 19.928615 990.916923 0 966.419692 0H367.826051C171.979487 0 13.128205 159.455179 13.128205 356.168205v623.32718C13.128205 1004.045128 32.978051 1024 57.475282 1024h598.646154c196.187897 0 352.439795-170.325333 354.619077-367.327179 0.131282-11.106462 0.131282-200.33641 0.131282-211.442872a44.478359 44.478359 0 0 0-44.347077-44.530872z"></path></symbol><symbol id="oicon-trending" viewBox="0 0 1106 1024"><path d="M0 290.766798m55.308301 0l0 0q55.308301 0 55.3083 55.3083l0 608.391307q0 55.308301-55.3083 55.3083l0 0q-55.308301 0-55.308301-55.3083l0-608.391307q0-55.308301 55.308301-55.3083Z" fill="#F5A623"></path><path d="M331.849803 14.225295m55.308301 0l0 0q55.308301 0 55.308301 55.3083l0 884.93281q0 55.308301-55.308301 55.3083l0 0q-55.308301 0-55.308301-55.3083l0-884.93281q0-55.308301 55.308301-55.3083Z" fill="#F5A623" opacity=".8"></path><path d="M663.699607 401.383399m55.3083 0l0 0q55.308301 0 55.308301 55.3083l0 497.774706q0 55.308301-55.308301 55.3083l0 0q-55.308301 0-55.3083-55.3083l0-497.774706q0-55.308301 55.3083-55.3083Z" fill="#F5A623" opacity=".6"></path><path d="M995.54941 124.841896m55.308301 0l0 0q55.308301 0 55.3083 55.308301l0 774.316208q0 55.308301-55.3083 55.3083l0 0q-55.308301 0-55.308301-55.3083l0-774.316208q0-55.308301 55.308301-55.308301Z" fill="#F5A623" opacity=".4"></path></symbol></svg>
+        <val data-name="space_user_url" data-value=""></val>      <val data-name="g_user_url" data-value=""></val>      <val data-name="api_prefix" data-value=""></val>      <val data-name="g_user_code" data-value=""></val>     <val data-name="g_user_id" data-value=""></val>     <val data-name="g_user" data-value=""></val>     <val data-name="login_page" data-value="https://www.oschina.net/home/login?goto_page=https%3A%2F%2Fwww.oschina.net%2Ftranslate%2F12-best-practices-for-user-account"></val>     
+    
+                <val data-name="weixinAppId" data-value="wx880def15e694b905"></val>
+        <val data-name="weixinTimestamp" data-value="1553588192047"></val>
+        <val data-name="weixinNonceStr" data-value="f4a972ba-e7d7-4851-9a33-a31fdb8f5670"></val>
+        <val data-name="weixinSignature" data-value="79fc9c0a9d778e9782522d95f8c52cc5520283f2"></val>
+        <val data-name="weixinShareUrl" data-value="https://www.oschina.net/translate/12-best-practices-for-user-account"></val>                             
+                <val data-name="is_detail_page" data-value="true"></val>
+
+        
+        <div class="ui left inverted sidebar vertical menu" id="mobileNavSidebar">
+        <a href="https://www.oschina.net/project" class="item project">开源软件</a>
+        <a href="https://www.oschina.net/question" class="item question" "="">问答</a>
+        <a href="https://www.oschina.net/tweets" class="item tweet">动弹</a>
+        <a href="https://www.oschina.net/blog" class="item blog">博客</a>
+        <a href="https://www.oschina.net/translate" class="item translate active">翻译</a>
+        <a href="https://www.oschina.net/news" class="item news">资讯</a>
+        <a href="https://gitee.com/?from=osc-index" class="item gitee" target="_blank">码云</a>
+        <a href="https://zb.oschina.net/" class="item" target="_blank">众包</a>
+        <a href="https://www.oschina.net/event/ych" class="item meetup">源创会</a>
+        <a href="https://www.oschina.net/event" class="item">活动</a>
+        <a href="https://job.oschina.net/" class="item" target="_blank">求职/招聘</a>
+        <a href="https://www.oschina.net/question/topic/masteronline" class="item">高手问答</a>
+        <a href="https://www.oschina.net/question/topic/osc-interview" class="item">开源访谈</a>
+        <a href="https://my.oschina.net/editorial-story" class="item">周刊</a>
+        <a href="https://www.oschina.net/company" class="item">公司开源导航页</a>
+    </div>
+        <div class="ui right inverted sidebar vertical menu" id="mobileUserSidebar">
+                    <a class="item" href="https://www.oschina.net/home/login?goto_page=https%3A%2F%2Fwww.oschina.net%2Ftranslate%2F12-best-practices-for-user-account">登录</a>
+            <a class="item" href="https://www.oschina.net/home/reg?goto_page=https%3A%2F%2Fwww.oschina.net%2Ftranslate%2F12-best-practices-for-user-account">注册</a>
+            </div>
+
+        <div class="pusher  mobile-disabled-fixed-menu  ">
+                <div class="ui secondary inverted fixed menu" id="headerNavMenu">
+            <a class="item logo" href="https://www.oschina.net/" title="开源中国"><img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/logo.svg" alt="开源中国"></a>
+                                                <form action="https://www.oschina.net/search" class="item search-item">
+                <div class="ui icon input">
+                    <input type="hidden" name="scope" value="translate">
+                    <input placeholder="大家都在搜...." id="keyword" name="q" size="24" value="" type="text">
+                    <i class="search link icon"></i>
+                </div>
+                <div class="results"></div>
+            </form>
+            <div class="item download-item">
+                <a class="ui primary button" id="btnDownloadApp" href="https://www.oschina.net/app" target="_blank">下载APP</a>
+            </div>
+            <div class="ui popup top left transition hidden" id="btnDownloadAppContent">
+                <h3 class="header">开源中国 App —— <br>关注技术领域的头条文章</h3>
+                <p>聚合全网技术文章，根据你的阅读喜好进行个性推荐</p>
+                <img width="200" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/osc_app_download_qrcode.png" alt="下载APP">
+            </div>
+            <div class="ui secondary text menu" id="menuList">
+                <a href="https://www.oschina.net/project" class="item project">开源软件</a>
+                <a href="https://www.oschina.net/question" class="item question">问答</a>
+                <a href="https://www.oschina.net/tweets" class="item tweet">动弹</a>
+                <a href="https://www.oschina.net/blog" class="item blog">博客</a>
+                <a href="https://www.oschina.net/translate" class="item translate active">翻译</a>
+                <a href="https://www.oschina.net/news" class="item news">资讯</a>
+                <a href="https://gitee.com/?from=osc-index" class="item gitee" target="_blank">码云<span class="floating ui red label giteetip">代码托管</span></a>
+                <a href="https://zb.oschina.net/" class="item" target="_blank">众包</a>
+                <a href="https://www.oschina.net/event" class="item event">活动</a>
+            </div>
+            <div class="ui dropdown item" id="moreMenu" tabindex="0">
+                更多 <i class="dropdown icon" tabindex="0"><div class="menu" tabindex="-1"></div></i>
+                <div class="menu" tabindex="-1">
+                    <a href="https://www.oschina.net/event/ych" class="item meetup"><i class="world icon"></i>源创会</a>
+                    <a href="https://job.oschina.net/" class="item" target="_blank"><i class="address card outline icon"></i>求职/招聘</a>
+                    <a href="https://www.oschina.net/question/topic/masteronline" class="item"><i class="spy icon"></i>高手问答</a>
+                    <a href="https://www.oschina.net/question/topic/osc-interview" class="item"><i class="coffee icon"></i>开源访谈</a>
+                    <a href="https://my.oschina.net/editorial-story" class="item"><i class="calendar outline icon"></i>周刊</a>
+                    <a href="https://www.oschina.net/company" class="item"><i class="building outline icon"></i>公司开源导航页</a>
+                </div>
+            </div>
+            <div class="right menu">
+                                    <a class="item" href="https://www.oschina.net/home/login?goto_page=https%3A%2F%2Fwww.oschina.net%2Ftranslate%2F12-best-practices-for-user-account">登录</a>
+                    <a class="item" href="https://www.oschina.net/home/reg?goto_page=https%3A%2F%2Fwww.oschina.net%2Ftranslate%2F12-best-practices-for-user-account">注册</a>
+                            </div>
+        </div>
+                <div class="ui secondary inverted fixed menu" id="mobileHeaderNavMenu">
+            <a class="icon item toggle-mobile-nav-sidebar">
+                <i class="large content icon"></i>
+            </a>
+            <div class="logo back-to-top-toggle"><img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/logo.svg" alt="开源中国"></div>
+            <a class="icon item toggle-mobile-user-sidebar">
+                                    <i class="large user outline icon"></i>
+                            </a>
+        </div>
+                <div id="mainScreen">
+            <div class="ui container">
+                
+
+                        
+
+
+
+
+ 
+ 
+
+
+
+
+
+<x-foo-define data-define="web-translate-detail"></x-foo-define> 
+<val data-name="objId" data-value="4209"></val> 
+<val data-name="fetchCommentsUrl" data-value="?type=comments"></val>              <val data-name="publishCommentUrl" data-value="/translate/comment"></val>         <val data-name="replyCommentUrl" data-value="/translate/comment"></val>           <val data-name="deleteCommentUrl" data-value="/translate/delete_comments"></val>  
+<val data-name="weixinShareTitle" data-value="用户帐户，授权和密码管理的 12 个最佳实践"></val> <val data-name="weixinShareImgUrl" data-value="https://static.oschina.net/uploads/space/2017/0606/104418_CPLl_2733728.png"></val> 
+<div class="outer-float-menu-wrap" style="height: 4143px; min-height: 256px;">
+    <div class="ui sticky float-menu fixed top" id="floatMenu" style="left: 79.5px; width: 92px !important; height: 256px !important; margin-top: 200px;">
+        <div class="ui vertical large compact menu">
+            <a class="item comment-btn" href="https://www.oschina.net/translate/12-best-practices-for-user-account#comments" title="共有 3 条评论"><i class="comment outline icon"></i>评论</a>
+            <a class="item collect-btn " data-id="4209" data-user-id="1" data-obj-type="7" data-max="99" data-tag-required="" data-current-user-id="" data-recommend-tags=""><i class="star outline icon"></i>收藏</a>
+            <h5 class="ui item inverted brown header">分享文章</h5>
+            <div class="bdsharebuttonbox reset left-menu bdshare-button-style0-16" data-tag="share-translate" data-bd-bind="1553588193967">
+                <a class="item" data-cmd="tsina" title="分享到新浪微博"><i class="weibo icon"></i>微博</a>
+                <a class="item" data-cmd="sqq" title="分享到QQ好友"><i class="qq icon"></i>QQ</a>
+                <a class="item" data-cmd="weixin" title="分享到微信"><i class="weixin icon"></i>微信</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui internally centered grid translate-detail bg-wrap">
+    <div class="row">
+        <div class="fourteen wide widescreen screen fourteen wide large screen fourteen wide computer sixteen wide tablet sixteen wide mobile column body-container">
+            <div class="float-menu-content">
+                                <div class="ui large breadcrumb">
+                    <a class="section" href="https://www.oschina.net/translate">协作翻译</a>
+                                                                <i class="right chevron icon divider"></i>
+                        <a class="section" href="https://www.oschina.net/translate/list/12">其它领域</a>
+                                        <i class="right chevron icon divider"></i>
+                    <div class="active section">正文</div>
+                </div>
+
+                <div class="article-detail">
+                                        <div class="header-wrap">
+                        <div class="header-info">
+                                                        <h2 class="ui header">
+                                <a href="https://www.oschina.net/translate/12-best-practices-for-user-account">用户帐户，授权和密码管理的 12 个最佳实践</a>
+                                                                    <span class="ui teal  large label">已翻译 100%</span>
+                                                            </h2>
+                                                        <div class="ui horizontal list meta-wrap">
+                                <div class="item">
+                                    <a href="https://my.oschina.net/osadmin" class="__user" target="_blank"><span>oschina</span></a>
+                                    投递于 2018/02/27 15:54 (共 13 段, 翻译完成于 03-04)
+                                </div>
+                                <div class="item">阅读 4294</div>
+                                                                                                                                <div class="item collect-btn " data-id="4209" data-user-id="1" data-obj-type="7" data-max="99" data-tag-required="" data-current-user-id="" data-recommend-tags="">收藏 <span data-collect-count="" data-id="4209" data-obj-type="7">80</span></div>
+                                <div class="item comment-count"><a href="https://www.oschina.net/translate/12-best-practices-for-user-account#comments" class="normal"><i class="comment outline icon"></i> 评论 <span data-article-reply-count="">3</span></a></div>
+                                                            </div>
+                                                                                                                <div class="en-link">
+                                英文原文：<a class="en-title" href="https://cloudplatform.googleblog.com/2018/01/12-best-practices-for-user-account.html" target="_blank">12 best practices for user account,authorization and password management</a>
+                            </div>
+                        </div>
+                        <div class="header-vote">
+                            <div class="ui huge right labeled icon primary button translate-vote-btn">
+                                <span><i class="thumbs up outline icon"></i> 顶</span>
+                                <i class="icon vote-count">8</i>
+                            </div>
+                        </div>
+                    </div>
+
+                                        <div class="ad-wrap" style="max-height: 90px;">
+                                                <div name="www_translate_detail" data-traceid="www_translate_detail_ad" data-tracepid="www_translate_detail">
+                <script async="" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/f.txt"></script>
+<!-- ostools-top-970x90 -->
+<ins class="adsbygoogle" style="display:inline-block;width:100%;height:90px;margin-bottom: 10px;" data-ad-client="ca-pub-7090564139599510" data-ad-slot="9002503316"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+            </div>
+                                </div>
+
+                                        <div class="action-bar">
+                                                                            <div class="translator-list">
+                                <h4 class="ui header">
+                                    参与翻译 (4人) :
+                                                                                                                                                                        <a class="translator-user" href="https://my.oschina.net/tocy" target="_blank">Tocy</a>,                                                                                                                                                                                                                                                            <a class="translator-user" href="https://my.oschina.net/1337899067" target="_blank">离诌</a>,                                                                                                                                                                                                                                                            <a class="translator-user" href="https://my.oschina.net/jamesfancy" target="_blank">边城</a>,                                                                                                                                                                                                                                                            <a class="translator-user" href="https://my.oschina.net/crooner" target="_blank">溪边九节</a>                                                                                                                                                        </h4>
+                            </div>
+                                                <div class="switch-buttons">
+                                                        <div class="ui basic mini buttons left-buttons">
+                                <a class="ui button" href="https://www.oschina.net/translate/12-best-practices-for-user-account?print" target="_blank"><i class="icon print"></i> 打印</a>
+                            </div>
+                            <div class="ui basic mini buttons right-buttons">
+                                <a class="ui button lang-switch-btn active" href="https://www.oschina.net/translate/12-best-practices-for-user-account?lang=chs">仅中文</a>
+                                <a class="ui button" href="https://www.oschina.net/translate/12-best-practices-for-user-account?cmp">中英文对照</a>
+                                <a class="ui button lang-switch-btn" href="https://www.oschina.net/translate/12-best-practices-for-user-account?lang=eng">仅英文</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui divider"></div>
+
+                                        <div id="paragraphsContainer">
+                                                <div class="ui inverted dimmer paragraph-loader">
+                            <div class="ui text loader">加载中</div>
+                        </div>
+                        <div class="paragraphs-wrap">
+                            
+                                              
+
+
+                                 
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="62808" data-translated-paragraph-id="62821">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <p>
+	账户管理，授权和密码管理往往是很棘手的。对很多开发者来说，账户管理功能是一个暗角，不会引起足够的重视。对于产品经理和用户来说，产品的最终体验往往超出预期。</p><p>
+	幸运的是，谷歌云平台（GCP）提供了一些工具，能够使你在产品创造、安全处理和用户账号（本文中指任何在你系统中注册的人——消费者或者内部用户）认证方面做出更好的决策。不论你负责的是什么系统，部署在<a href="https://cloud.google.com/kubernetes-engine/" target="_blank" rel="nofollow">Google Kubernetes Engine</a>上的WEB网站、<span style="font-family:&quot;font-size:13.3333px;background-color:#F6F6F6;">&nbsp;</span><a href="https://cloud.google.com/apigee-api-management/" target="_blank" rel="nofollow">Apigee</a>上的API服务、使用<a href="https://firebase.google.com/" target="_blank" rel="nofollow">Firebase</a>的应用或者任何包含用户认证的服务，这篇文章会提供最佳实践，来保证你拥有一个安全的、可伸缩的、可用的账户认证系统。</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/1337899067" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="离诌" data-user-id="1173990">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/1173990_50.jpg" alt="离诌" title="离诌">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/1337899067" target="_blank" class="ui small header user __user">离诌</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2018/02/27 16:16</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="62821">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">1</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="62809" data-translated-paragraph-id="62822">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>&nbsp; &nbsp;
+	1. 对密码字段做哈希处理<br></h3><p style="font-family:&quot;font-size:13.3333px;">&nbsp; &nbsp;
+	对于账户管理，最重要的原则就是要安全地存储用户的敏感信息，包括用户的密码。用户的数据是神圣的，必须要适当的处理。</p><p style="font-family:&quot;font-size:13.3333px;">&nbsp; &nbsp;
+	任何情况下都不要存储明文密码。你的服务中要艺术的哈希处理密码，并且不能解密密码——例如，使用<span style="font-family:&quot;font-size:13.3333px;background-color:#F6F6F6;">PBKDF2, Argon2, Scrypt, or Bcryp创建。这个哈希值应该是对用户唯一的登录凭证加盐处理后的结果。不要使用过时的哈希处理技术如MD5、SHA1，并且在任何情况下都不应该使用可解密的算法或者尝试发明哈希算法。</span></p><p>你应该假设你设计的系统最终会被泄露。问问你自己“如果我的数据今天泄露了，在使用我的服务或者他们使用的别的服务时，我的用户的安全和隐私会受到威胁吗？我们可以做些什么来减轻这种潜在的数据泄露可能造成的危害？”</p><p>另一个需要考虑的事情：当用户提供给你密码之后，如果你能在任何时候产出一个用户的明文密码，那么你的实现就是有问题的。</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/1337899067" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="离诌" data-user-id="1173990">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/1173990_50.jpg" alt="离诌" title="离诌">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/1337899067" target="_blank" class="ui small header user __user">离诌</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2018/02/27 16:46</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="62822">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="62810" data-translated-paragraph-id="62823">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>
+	2. 尽可能允许第三方身份认证<br></h3><p style="font-family:&quot;font-size:13.3333px;">第三方身份认证提供者使你可以依赖一个第三方值得信赖的服务认证用户的身份。谷歌、Facebook和推特通常是可用的提供者。<br><br>除了已经存在的内部认证系统，你可以使用一个平台（如<span style="font-family:&quot;font-size:13.3333px;">&nbsp;</span><a href="https://firebase.google.com/docs/auth/" target="_blank" rel="nofollow">Firebase</a>认证）接入一个第三方的认证服务。<span style="font-family:&quot;font-size:13.3333px;">&nbsp;</span><a href="https://firebase.google.com/docs/auth/" target="_blank" rel="nofollow">Firebase</a>认证有很多好处，如管理更简单、攻击入口更小和跨平台的SDK。通过这个列表我们会提出很多好处，具体查看<span style="font-family:&quot;font-size:13.3333px;">&nbsp;</span><a href="https://firebase.google.com/docs/auth/case-studies/" target="_blank" rel="nofollow">案例学习</a>，这些例子可以让你只需要一天就接入<span style="font-family:&quot;font-size:13.3333px;">Firebase认证。</span></p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/1337899067" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="离诌" data-user-id="1173990">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/1173990_50.jpg" alt="离诌" title="离诌">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/1337899067" target="_blank" class="ui small header user __user">离诌</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2018/02/27 16:59</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="62823">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="62811" data-translated-paragraph-id="62855">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>
+	3. 区分用户身份和用户账户的概念<br></h3><p><br>你的用户不是电邮地址。他们不是电话号码。他们不是由OAUTH响应提供的唯一ID。 你的用户是你服务中独有的个性化数据和体验的聚合。设计良好的用户管理系统在用户个人资料的不同部分之间具有低耦合性和高内聚性。<br><br>保持用户帐户和证书的概念分离将大大简化实施第三方认证提供商的过程、允许用户更改其用户名并将多个身份链接到单个用户帐户上。实际上，为每个用户提供一个内部全局标识符并通过该ID链接其配置文件和身份验证标识可能会有所帮助，而不是将其全部集中到一条记录之中。</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/tocy" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="Tocy" data-user-id="734219">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/734219_50.jpeg" alt="Tocy" title="Tocy">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/tocy" target="_blank" class="ui small header user __user">Tocy</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2018/02/28 13:18</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="62855">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">1</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="62812" data-translated-paragraph-id="62887">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>4.&nbsp;允许多个身份关联到单个用户账号</h3><p>一开始使用<a href="https://firebase.google.com/docs/auth/web/password-auth" target="_blank" rel="nofollow">用户名和密码</a>认证登录到服务的用户，后面可能会使用&nbsp;<a href="https://firebase.google.com/docs/auth/web/google-signin" target="_blank" rel="nofollow">Google Sign-In</a>&nbsp;来登录。他们并不知道这会创建多余的账号。类似地，由于某些原因，服务中的一个用户可能会关联到多个电子邮箱。如果能正确的分离用户身份和认证信息，将<a href="https://firebase.google.com/docs/auth/web/account-linking" target="_blank" rel="nofollow">多个身份链接</a>到同一个用户就会变得简单。</p><p>你的后台需要考虑到用户可能会通过一部分甚至所有途径来通过注册过程，但他们并没有意识到在新的第三方身份没有关联到他们已经存在于系统中的账号。最简单的实现是要求用户提供一个共同的细节用于识别，比如电子邮件地址，电话或用户名等。如果该数据与匹配到系统中现有的用户，则要求他们认证已知身份并将新的&nbsp;ID&nbsp;关联到已存在的账号上。</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/jamesfancy" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="边城" data-user-id="1163532">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/1163532_50.jpeg" alt="边城" title="边城">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/jamesfancy" target="_blank" class="ui small header user __user">边城</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2018/03/02 10:48</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="62887">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">2</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="62813" data-translated-paragraph-id="62888">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>5.&nbsp;不要拒绝长密码或者复杂的密码</h3><p>NIST&nbsp;最近更新了关于<a href="https://pages.nist.gov/800-63-3/sp800-63b.html#appendix-astrength-of-memorized-secrets" target="_blank" rel="nofollow">密码复杂度和强度</a>的准则。如果你正在（或马上会）使用高强度的散列算法来保存密码，很多问题就会迎刃而解。不管输入的内容有多长，散列算法都会生成固定长度的输出，所以用户可以使用他们喜欢的长密码。如果你必须限制密码长度，应该仅从服务支持的最大&nbsp;POST&nbsp;大小来考虑限制。严格地说，这通常大于 1M。</p><p>散列后的密码由大家都知道的一小部分 ASCII&nbsp;字符组成。就算不是，也很容易通过 Base64&nbsp;把二进制数据转换过来。考虑到这一点，你应该允许用户在密码中随意使用字符。如果有人想在密码中使用克林贡语、表情字符和控制字符并在两端加入空白字符，你应该没有技术方面的理由来拒绝他们。</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/jamesfancy" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="边城" data-user-id="1163532">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/1163532_50.jpeg" alt="边城" title="边城">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/jamesfancy" target="_blank" class="ui small header user __user">边城</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2018/03/02 11:07</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="62888">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="62814" data-translated-paragraph-id="62890">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>6.&nbsp;不要为用户名强加不合理的规则</h3><p>有些网站或服务要求用户名的字符数不低于两三个字符，不允许不可见字符，前后不能有空格，这些都毫无道理。然而，有些网站会要求最小长度为 8&nbsp;个字符，只允许使用 7&nbsp;位(bit)&nbsp;的&nbsp;ASCII&nbsp;字母和数字。</p><p>在网站上严格限制用户名，可能会为开发者带来方便，但在某些极端情况下对用户的要求会让某些用户望而却步。</p><p>某些情况下最好的办法是指定用户名。如果你的服务中遇到这种情况，需要确保指定的用户名对用户来说很容易想起来也很容易告诉别人。字母数字组合的&nbsp;ID&nbsp;应该避免视觉上不易识别的符号，比如“Il1O0”。同时还建议对随机生成的字符串进行字典扫描，确保用户名中没有意外嵌入一些信息。这一原则同样适用于自动生成的密码。</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/jamesfancy" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="边城" data-user-id="1163532">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/1163532_50.jpeg" alt="边城" title="边城">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/jamesfancy" target="_blank" class="ui small header user __user">边城</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2018/03/02 11:30</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="62890">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="62815" data-translated-paragraph-id="62891">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>7. 允许用户更改他们的用户名</h3><p>在遗留系统或任何提供电子邮件帐户的平台中，不允许用户更改其用户名是非常常见的。这里有很多<a href="https://www.computerworld.com/article/2838283/facebook-yahoo-prevent-use-of-recycled-email-addresses-to-hijack-accounts.html" target="_blank" rel="nofollow">好的理由</a>支持不自动释放用户名以供重复使用，但系统的长期用户最终会给出一个很好的理由来使用不同的用户名，并且他们可能不想创建新的帐户。<br><br>你可以通过允许别名并让你的用户选择主别名来满足用户期望更改其用户名的愿望。你可以在此功能之上应用所需的任何业务规则。某些组织可能每年仅允许更改一次用户名，或将阻止用户显示除主用户名以外的任何内容。电邮供应商可能会确保用户在将老用户名从其帐户中分离出来之前充分得了解了相关风险，或者可能完全禁止将老用户名断开链接。<br><br>为你的平台选择合适的规则，但要确保它们允许你的用户随着时间的推移而成长和改变。</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/tocy" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="Tocy" data-user-id="734219">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/734219_50.jpeg" alt="Tocy" title="Tocy">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/tocy" target="_blank" class="ui small header user __user">Tocy</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2018/03/02 13:31</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="62891">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">1</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="62816" data-translated-paragraph-id="62854">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>
+	8. 允许你的用户删除自己的账号<br></h3><p><br>相当数量的服务没有用于用户删除其账户及相关数据的自助服务手段。用户永久关闭帐户并删除所有个人数据有很多好的理由。这些问题需要根据你的安全行和合规需求进行平衡，但大多数受监管的环境提供了有关数据保留的具体指导。避免合规和黑客攻击的常见解决方案是让用户自己规划其帐户以备将来自动删除。<br><br>在某些情况下，你可能需要<a href="http://ec.europa.eu/justice/data-protection/files/factsheets/factsheet_data_protection_en.pdf" target="_blank" rel="nofollow">遵照</a>用户的要求，及时删除其数据。如果发生数据泄露，对于发生“已关闭”帐户的数据泄露情况，你还可以大大提高你的曝光率。</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/tocy" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="Tocy" data-user-id="734219">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/734219_50.jpeg" alt="Tocy" title="Tocy">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/tocy" target="_blank" class="ui small header user __user">Tocy</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2018/02/28 13:12</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="62854">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="62817" data-translated-paragraph-id="62894">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>9. 在会话长度上有意识地做决定</h3><p>在安全验证上常常被忽略的是<a href="https://firebase.google.com/docs/auth/web/auth-state-persistence" target="_blank" rel="nofollow">会话长度</a>。Google 作出了一些努力来<a href="https://support.google.com/accounts/answer/7162782?co=GENIE.Platform%3DAndroid&amp;hl=en" target="_blank" rel="nofollow">确保用户的行为</a>并进行双重检查，这主要基于某些事件和行为。用户可以有步骤地<a href="https://support.google.com/accounts/answer/7519408?hl=en&amp;ref_topic=7189123" target="_blank" rel="nofollow">进一步加强他们的安全性</a>。<br><br>你的服务可以有明确的理由来保持会话，而不是非关键分析目的无限期开放，但是，应该有一个<a href="https://pages.nist.gov/800-63-3/sp800-63b.html#aal1reauth" target="_blank" rel="nofollow">门槛</a>来要求您输入密码、或第二个因素或其他用户验证。<br><br>考虑多久的时间用户应该认证，并明确之前是不活跃的。如果有人进行密码重置，就需要验证所有活动会话的用户身份。如果一个用户更改核心方面的配置文件或当他们执行敏感的行动，应该提示身份验证或第二因素。并考虑不允许从多个设备或位置登录是否有意义。</p><p>当你的服务用户会话到期或需要重复认证，提示用户实时或提供一种机制来保护任何活动来保存未保存的最后验证。用户填写表单，提交它一段时间后，发现他们所有的输入已经丢失，他们必须再次登录，这是非常令人沮丧的。</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/crooner" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="溪边九节" data-user-id="553781">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/553781_50.jpeg" alt="溪边九节" title="溪边九节">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/crooner" target="_blank" class="ui small header user __user">溪边九节</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2018/03/02 14:32</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="62894">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                
+        <div class="ui basic center aligned segment pagination-wrap">
+                                                                                            <div class="ui pagination menu">
+                                                    <a class="disabled item prev-item">&lt;</a>
+                                                                                                                                            <a href="https://www.oschina.net/translate/12-best-practices-for-user-account?lang=chs&amp;p=1" class="active item page-num-item">1</a>
+                                                                                <a href="https://www.oschina.net/translate/12-best-practices-for-user-account?lang=chs&amp;p=2" class="item page-num-item">2</a>
+                                                                                                                        <a href="https://www.oschina.net/translate/12-best-practices-for-user-account?lang=chs&amp;p=2" class="item next-item">&gt;</a>
+                                                            </div>
+                </div>
+                        </div>
+                    </div>
+
+                                        <div class="ad-wrap" style="max-height: 90px;">
+                                                <center><script async="" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/f.txt"></script>
+<ins class="adsbygoogle" style="display:inline-block;width:100%;height:90px" data-ad-client="ca-pub-7090564139599510" data-ad-slot="1653373318" <="" ins="">
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></ins></center>
+                                </div>
+
+                                        <div class="ui warning message">
+                        <div>本文中的所有译文仅用于学习和交流目的，转载请务必注明文章译者、出处、和本文链接。</div>
+                        <div>我们的翻译工作遵照 <a href="http://zh.wikipedia.org/wiki/Wikipedia:CC" target="_blank">CC 协议</a>，如果我们的工作有侵犯到您的权益，请及时联系我们。</div>
+                    </div>
+                </div>
+                <div class="ui divider hidden"></div>
+
+                                <div class="ui threaded comments" id="commentsContainer">
+        <div class="ui inverted dimmer comments-loader">
+        <div class="ui text loader">加载中</div>
+    </div>
+
+        <div class="comments-wrap">
+                    
+
+
+<h3 id="comments" class="ui header">评论(<span>3</span>)</h3>
+
+            
+            <div class="comment" data-comment-id="35717" data-comment-user-id="3945377">
+            <a class="ui circular image avatar" href="https://my.oschina.net/u/3945377" target="_blank">
+                                    <div class="osc-avatar small-portrait _35x35" title="xiaoshiyue" data-user-id="3945377">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/50x50" alt="xiaoshiyue" title="xiaoshiyue">
+        </div>
+                        </a>
+            <div class="content">
+                <a class="author" href="https://my.oschina.net/u/3945377" name="rpl_35717" target="_blank">xiaoshiyue</a>
+                <div class="metadata">
+                    <span class="date">01/24 15:00</span>
+                </div>
+                <div class="text" data-emoji-render="">
+                    很棒
+                </div>
+                <div class="actions">
+                                                            <a class="ban" ban-report="" data-id="35717" data-obj-type="15" data-url="https://www.oschina.net/translate/12-best-practices-for-user-account#rpl_35717">
+                        <i class="ban icon"></i> 举报
+                    </a>
+                </div>
+            </div>
+        </div>
+                
+            <div class="comment" data-comment-id="34698" data-comment-user-id="1155714">
+            <a class="ui circular image avatar" href="https://my.oschina.net/u/1155714" target="_blank">
+                                    <div class="osc-avatar small-portrait _35x35" title="亡灵术士" data-user-id="1155714">
+            <span class="text-portrait" style="background: #16a085">亡</span>
+        </div>
+                        </a>
+            <div class="content">
+                <a class="author" href="https://my.oschina.net/u/1155714" name="rpl_34698" target="_blank">亡灵术士</a>
+                <div class="metadata">
+                    <span class="date">2018/03/05 13:59</span>
+                </div>
+                <div class="text" data-emoji-render="">
+                    很有料
+                </div>
+                <div class="actions">
+                                                            <a class="ban" ban-report="" data-id="34698" data-obj-type="15" data-url="https://www.oschina.net/translate/12-best-practices-for-user-account#rpl_34698">
+                        <i class="ban icon"></i> 举报
+                    </a>
+                </div>
+            </div>
+        </div>
+                
+            <div class="comment" data-comment-id="34697" data-comment-user-id="989129">
+            <a class="ui circular image avatar" href="https://my.oschina.net/u/989129" target="_blank">
+                                    <div class="osc-avatar small-portrait _35x35" title="疯狂的键盘" data-user-id="989129">
+            <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/989129_50.jpg" alt="疯狂的键盘" title="疯狂的键盘">
+        </div>
+                        </a>
+            <div class="content">
+                <a class="author" href="https://my.oschina.net/u/989129" name="rpl_34697" target="_blank">疯狂的键盘</a>
+                <div class="metadata">
+                    <span class="date">2018/03/05 10:37</span>
+                </div>
+                <div class="text" data-emoji-render="">
+                    满满的干货
+                </div>
+                <div class="actions">
+                                                            <a class="ban" ban-report="" data-id="34697" data-obj-type="15" data-url="https://www.oschina.net/translate/12-best-practices-for-user-account#rpl_34697">
+                        <i class="ban icon"></i> 举报
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ui basic center aligned segment pagination-wrap">
+                </div>
+    </div>
+
+        </div>
+
+
+
+
+                <div class="ui divider hidden"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="ui small edit-tags modal">
+    <div class="header">设置标签</div>
+    <div class="content">
+        <form class="ui form" id="editTagsForm">
+            <div class="field">
+                <label>分类</label>
+                <div class="four wide field">
+                    <select name="category" class="ui dropdown category">
+                                                                                                                                                                                                            <option value="1">Web/WAP应用开发</option>
+                                                                                                                                <option value="2">游戏开发</option>
+                                                                                                                                <option value="3">手机软件开发</option>
+                                                                                                                                <option value="4">桌面软件开发</option>
+                                                                                                                                <option value="5">服务器端开发</option>
+                                                                                                                                <option value="6">网页设计/UI/UED</option>
+                                                                                                                                <option value="7">软件测试/QA</option>
+                                                                                                                                <option value="8">软件开发管理</option>
+                                                                                                                                <option value="9">系统及网络管理</option>
+                                                                                                                                <option value="10">DBA/数据库</option>
+                                                                                                                                <option value="11">编程语言技巧</option>
+                                                                                                                                <option value="13">安全相关</option>
+                                                                                                                                <option value="12" selected="">其它领域</option>
+                                                                                                        </select>
+                </div>
+            </div>
+            <div class="field">
+                <label>软件</label>
+                <div class="ui fluid multiple search selection dropdown project-name">
+                    <input type="hidden" name="prj" value="Ruby">
+                    <input type="text" class="search">
+                    <div class="default text">关联的软件标签(最多5个)</div>
+                    <div class="menu">
+                                            </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>标签</label>
+                <input type="text" name="tags" placeholder="多个标签必须用逗号(,)隔开" value="">
+            </div>
+            <div class="ui positive mini message osc hidden"></div>
+            <div class="ui negative mini message osc hidden"></div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">取消</div>
+        <div class="ui green ok button">确定</div>
+    </div>
+</div>
+
+<script>
+    // 百度分享
+    window._bd_share_config = {
+        common : {
+            bdText : '用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国',
+            bdDesc : '',
+            bdUrl  : '',
+            bdPic  : ''
+        },
+        share : [{
+            bdSize : 16
+        }]
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://static.oschina.net/new-osc/js/utils/plugins/bdshare_api/share.js?v='+~(-new Date()/36e5)];
+</script>
+    <script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/translate"></script>
+            
+            </div>
+        </div>
+
+                <div id="footer" class="ui vertical footer segment mb-hide">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="eight wide mobile four wide tablet four wide computer column">
+                <h4 class="ui header">开源中国社区</h4>
+                <div class="ui link list">
+                    <a class="item" href="https://www.oschina.net/home/aboutosc" target="_blank">关于我们</a>
+                    <a class="item" href="https://www.oschina.net/home/aboutosc" target="_blank">联系我们</a>
+                    <a class="item" href="https://www.oschina.net/home/aboutosc#partners#" target="_blank">合作伙伴</a>
+                    <a class="item" href="https://www.oschina.net/openapi" target="_blank">Open API</a>
+                </div>
+            </div>
+            <div class="eight wide mobile four wide tablet four wide computer column">
+                <h4 class="ui header">在线工具</h4>
+                <div class="ui link list">
+                    <a class="item" href="https://gitee.com/?from=osc-bottom" target="_blank">码云 Gitee.com</a>
+                    <a class="item" href="https://gitee.com/enterprises?from=osc-bottom" target="_blank">企业研发管理</a>
+                    <a class="item" href="https://copycat.gitee.com/?from=osc-bottom" target="_blank">CopyCat-代码克隆检测</a>
+                    <a class="item" href="https://tool.oschina.net/" target="_blank">实用在线工具</a>
+                </div>
+            </div>
+            <div class="center aligned eight wide mobile two wide tablet two wide computer column">
+                <h4 class="ui header">微信公众号</h4>
+                <img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/wechat_qrcode.jpg" alt="微信公众号">
+            </div>
+            <div class="center aligned eight wide mobile six wide tablet six wide computer column">
+                <h3 class="ui header">开源中国 APP</h3>
+                <p>聚合全网技术文章，根据你的阅读喜好进行个性推荐</p>
+                <a href="https://www.oschina.net/app" target="_blank" class="ui large primary button">下载 APP</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="copyright">
+    <div class="ui container">
+        <div class="ui clearing basic segment">
+            <div class="ui left floated horizontal link list">
+                <div class="item">©开源中国(OSChina.NET)</div>
+                <div class="item mb-hide">工信部</div>
+                <a class="item mb-hide" href="http://www.copu.org.cn/" target="_blank" title="开源软件推进联盟">开源软件推进联盟</a>
+                <div class="item mb-hide">指定官方社区</div>
+            </div>
+            <div class="ui right floated horizontal link list">
+                <div class="item mb-hide">深圳市奥思网络科技有限公司版权所有</div>
+                <a href="http://www.miitbeian.gov.cn/" target="_blank" class="item">粤ICP备12009483号-3</a>
+            </div>
+        </div>
+    </div>
+</div>    </div>
+                                                        <div class="back-to-top back-to-top-toggle" style="display: block;">
+        <div class="icon"><img src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/back-to-top.svg" alt="返回顶部"></div>
+        <div class="text">顶部</div>
+    </div>
+
+        <script src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/semantic.min.js"></script>
+    <script src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/jweixin-1.2.0.js"></script>
+                <script type="text/javascript" src="./用户帐户，授权和密码管理的 12 个最佳实践 - 开源中国_files/web.4852322f.js"></script>                
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else{
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?a411c4d1664dd70048ee98afe7b28f0b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+    
+
+<!-- Generated by oschina (init:1[ms],page:242[ms],ip:202.126.56.4) //--><div class="ui dimmer modals page"><div class="ui mini delete-paragraph modal">
+    <div class="header">删除段落</div>
+    <div class="content">
+        <p>段落删除后无法恢复，确定取消删除此段落吗？</p>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">取消</div>
+        <div class="ui red ok button">确定</div>
+    </div>
+</div><div class="ui mini delete-comment modal">
+    <div class="header">删除一条评论</div>
+    <div class="content">
+        <p>评论删除后，数据将无法恢复</p>
+    </div>
+    <div class="actions">
+        <div class="ui positive button">取消</div>
+        <div class="ui negative button">确定</div>
+    </div>
+</div></div></body><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(84, 84, 84); height: 4445px; width: 1479px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 4445px; width: 1479px;"></div></html>

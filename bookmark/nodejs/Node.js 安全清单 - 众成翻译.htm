@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)https://zcfy.cc/article/node-js-security-checklist-risingstack -->
+<html class="cye-disabled cye-nm gr__zcfy_cc"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>Node.js 安全清单 - 众成翻译</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> <meta name="description" content="众成翻译（zcfy.cc），中国最好的技术翻译社区，最懂译者的翻译平台，奇虎360最大前端团队“奇舞团”出品。Zhongcheng Tanslation(zcfy.cc), the best technical translation community and the most translator-friendly translation platform in China. Developed by 75team, the largest front-end team at Qihoo 360 tech co.,ltd.">
+<link rel="shortcut icon" href="https://p1.ssl.qhimg.com/t010e845cdf71587354.png">
+<link href="./Node.js 安全清单 - 众成翻译_files/6689c69ef27a6546.css" rel="stylesheet"><link href="./Node.js 安全清单 - 众成翻译_files/b6af07e37d3bc5db.css" rel="stylesheet"><link href="./Node.js 安全清单 - 众成翻译_files/820bf596eedb4999.css" rel="stylesheet"><link href="./Node.js 安全清单 - 众成翻译_files/e95f4f17a88f6532.css" rel="stylesheet"><style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style></head>
+
+<body class="bg-white" data-gr-c-s-loaded="true" style="">
+  <nav class="navbar navbar-light uk-sticky uk-background-muted" uk-sticky="show-on-up: true; top: 0; animation: uk-animation-slide-top" style="">
+  <div class="container justify-content-between">
+    <a href="https://zcfy.cc/" class="navbar-brand-mobile"></a>
+    <nav class="nav d-inline-flex">
+      <a href="https://zcfy.cc/" class="nav-link uk-link-reset uk-button uk-button-text active">阅读</a>
+      <a href="https://zcfy.cc/original" class="nav-link uk-link-reset uk-button uk-button-text">翻译</a>
+      <a href="https://zcfy.cc/archives" class="nav-link uk-link-reset uk-button uk-button-text">归档</a>
+    </nav>
+    <div>
+      <a href="https://zcfy.cc/" class="navbar-brand">
+        <img src="./Node.js 安全清单 - 众成翻译_files/4c3fe1d5645dd9e8.svg" width="100" alt="众成翻译">
+      </a>
+    </div>
+    <div class="d-flex">
+      
+      <a class="login-button uk-button uk-button-default uk-button-small" href="https://zcfy.cc/welcome">登录<span class="mobile-hide">/注册</span></a>
+      
+      <a id="btn-full-search" href="javascript:;" uk-icon="icon: search" class="align-self-center mr-4 uk-icon"><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" ratio="1"> <circle fill="none" stroke="#000" stroke-width="1.1" cx="9" cy="9" r="7"></circle> <path fill="none" stroke="#000" stroke-width="1.1" d="M14,14 L18,18 L14,14 Z"></path></svg></a>
+    </div>
+  </div>
+</nav><div class="uk-sticky-placeholder" style="height: 58px; margin: 0px;" hidden=""></div>
+  
+  <div class="container uk-margin uk-margin-large-bottom clearfix">
+    <main class="uk-margin-large-bottom">
+      <div class="uk-panel">
+        <div class="uk-card-body uk-padding-remove-top">
+          <div class="uk-padding uk-padding-remove-horizontal">
+            <div class="uk-grid-small uk-flex-middle uk-grid" uk-grid="">
+              
+              <div class="uk-width-auto uk-first-column">
+                <a href="https://zcfy.cc/@lidongjies" target="_blank">
+                  <img class="uk-border-circle" width="50" height="50" src="./Node.js 安全清单 - 众成翻译_files/t016e8033f4f9717ca0.jpg">
+                </a>
+              </div>
+              <div class="uk-width-expand">
+                <p class="uk-h5 uk-margin-remove-bottom">有马</p>
+                <p class="uk-text-meta uk-margin-remove-top">
+                  <time datetime="2016-04-01T19:00">2018-01-13 14:13:02</time>
+                </p>
+              </div>
+              
+              <div class="uk-width-auto">
+                <div class="uk-text-center">
+                  <button class="uk-button uk-button-primary uk-width-1-1" type="button" id="recommend-original">推荐新文章</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <h2 class="detail-title uk-margin-medium-top">Node.js 安全清单</h2>
+          
+          <div class="original-source uk-padding uk-padding-remove-horizontal uk-padding-remove-top">
+            <span>原文链接：</span>
+            <a class="uk-link-muted orginal-source-url" href="https://blog.risingstack.com/node-js-security-checklist" target="_blank">blog.risingstack.com</a>
+          </div>
+          
+          <div class="markdown-body">
+            <p>by <a href="https://blog.risingstack.com/author/gergely"><strong>Gergely Nemeth</strong></a>(<a href="https://twitter.com/@nthgergo">@nthgergo</a>)，RisingStack联合创始人。</p>
+<p><strong>安全是不容忽视的，</strong>每个开发者都知道它非常重要，真正严肃对待它的却没有几人。我们 <a href="https://risingstack.com/#">RisingStack</a> 希望你能认真对待这一问题——这就是我们整理这份清单来帮助你的原因，你的应用在被成千上万用户使用前必须要做安全检查。</p>
+<p>这份清单大部分内容是通用的，不仅适用于Node.js，同样适用于其他语言和框架，只是一些明确给出了在Node.js中使用的方法。同时推荐你去阅读我们的引导文章 <a href="https://blog.risingstack.com/node-js-security-tips">Node.js security</a>，如果你刚开始使用Node.js，推荐你看这篇文章 <a href="https://blog.risingstack.com/node-hero-tutorial-getting-started-with-node-js/">first chapter of Node Hero</a>。</p>
+<h2>配置管理</h2>
+<h3>HTTP 安全头部</h3>
+<p>有些关于安全的HTTP头部是你的网站必须要有的：</p>
+<ul>
+<li><p><strong>Strict-Transport-Security</strong> 强制将HTTP请求替换为HTTPS请求</p>
+</li>
+<li><p><strong>X-Frame-Options</strong> 防止<a href="https://www.owasp.org/index.php/Clickjacking">点击劫持</a></p>
+</li>
+<li><p><strong>X-XSS-Protection</strong> 开启跨站脚本攻击（XSS）的过滤，大多数现代浏览器支持这个设置</p>
+</li>
+<li><p><strong>X-Content-Type-Options</strong> 禁用浏览器对响应内容MIME类型的嗅探，严格使用响应的Content-Type的值</p>
+</li>
+<li><p><strong>Content-Security-Policy</strong> 能有效防止多种攻击，包括跨站脚本和跨站注入</p>
+</li>
+</ul>
+<p>Node.js开发者可以使用<a href="https://www.npmjs.com/package/helmet">Helmet</a>模块置这些头部，代码如下：</p>
+<pre><code class="hljs php"><span class="hljs-keyword">var</span> express = <span class="hljs-keyword">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">var</span> helmet = <span class="hljs-keyword">require</span>(<span class="hljs-string">'helmet'</span>);
+
+<span class="hljs-keyword">var</span> app = express();
+
+app.<span class="hljs-keyword">use</span>(helmet());
+
+</code></pre>
+<p><a href="http://koajs.com/">Koa</a>和<a href="https://thinkjs.org/">ThinkJS</a>框架中可以使用<a href="https://www.npmjs.com/package/koa-helmet">koa-helmet</a>来设置这些头部，当然有关安全的头部不止这些，更多请看<a href="https://zcfy.cc/article/node-js-security-checklist-risingstack">Helmet</a>和<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers">MDN HTTP Headers</a>。</p>
+<p>在大多数架构里这些头部可以设置在web服务器的配置中（Apache、Nginx），不需要对应用代码进行改动。在Nginx中的配置：</p>
+<pre><code class="hljs mipsasm"><span class="hljs-comment"># nginx.conf</span>
+
+<span class="hljs-keyword">add_header </span>X-Frame-Options SAMEORIGIN<span class="hljs-comment">;</span>
+<span class="hljs-keyword">add_header </span>X-Content-Type-Options nosniff<span class="hljs-comment">;</span>
+<span class="hljs-keyword">add_header </span>X-XSS-Protection <span class="hljs-string">"1; mode=block"</span><span class="hljs-comment">;</span>
+<span class="hljs-keyword">add_header </span>Content-Security-Policy <span class="hljs-string">"default-src 'self'"</span><span class="hljs-comment">;</span>
+
+</code></pre><p>有一个完整的Nginx配置文件，<a href="https://gist.github.com/plentz/6737338">帅气的传送门</a>在此。</p>
+<p>如果你想快速检查你的网站是否有了所有的必须头部，请使用这个<a href="http://cyh.herokuapp.com/cyh">在线检查器</a>。</p>
+<h3>客户端的敏感数据</h3>
+<p>当发布前端应用时，确保你的代码里永远不会包含API密码和证书，因为它可以被任何人看到。</p>
+<p>没有自动化的方法去检查你在代码里写了敏感数据，但是有两个可以降低向客户端暴露敏感数据风险的方法：</p>
+<ul>
+<li><p>使用 pull requests 提交代码</p>
+</li>
+<li><p>定期 code review</p>
+</li>
+</ul>
+<h2>认证</h2>
+<h3>暴力攻击保护</h3>
+<p>穷举法是系统地枚举所有可能的候选者的一种解决方案，并检查每个候选是否满足陈述的问题。在Web应用程序中，登录端点可能是这方面的最佳候选者。</p>
+<p>为了保护你的应用面免受这些攻击，你必须实现某种限速策略。在Node.js中你可以使用 <a href="https://www.npmjs.com/package/ratelimiter">ratelimiter</a>  模块。</p>
+<pre><code class="hljs qml"><span class="hljs-keyword">var</span> email = req.body.email;
+<span class="hljs-keyword">var</span> limit = <span class="hljs-keyword">new</span> Limiter({ <span class="hljs-attribute">id:</span><span class="hljs-string"> email</span>, <span class="hljs-attribute">db</span>: db });
+
+limit.get(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, limit</span>) </span>{
+
+});
+
+</code></pre>
+<p>你可以将它封装成一个中间件，然后在不同应用中使用它。Express和Koa都有这样的中间件，代码如下：</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">var</span> ratelimit = <span class="hljs-built_in">require</span>(<span class="hljs-string">'koa-ratelimit'</span>);
+<span class="hljs-keyword">var</span> redis = <span class="hljs-built_in">require</span>(<span class="hljs-string">'redis'</span>);
+<span class="hljs-keyword">var</span> koa = <span class="hljs-built_in">require</span>(<span class="hljs-string">'koa'</span>);
+<span class="hljs-keyword">var</span> app = koa();
+
+<span class="hljs-keyword">var</span> emailBasedRatelimit = ratelimit({
+  <span class="hljs-attr">db</span>: redis.createClient(),
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">60000</span>,
+  <span class="hljs-attr">max</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">id</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-keyword">return</span> context.body.email;
+  }
+});
+
+<span class="hljs-keyword">var</span> ipBasedRatelimit = ratelimit({
+  <span class="hljs-attr">db</span>: redis.createClient(),
+  <span class="hljs-attr">duration</span>: <span class="hljs-number">60000</span>,
+  <span class="hljs-attr">max</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">id</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-keyword">return</span> context.ip;
+  }
+});
+
+app.post(<span class="hljs-string">'/login'</span>, ipBasedRatelimit, emailBasedRatelimit, handleLogin);
+
+</code></pre>
+<p>在这段代码中限制了一个用户在给定时间窗口内可以尝试登录的次数，通过这样的方式我们可以降低暴力攻击的风险。<strong>注意：这些配置需要根据应用进行调整，千万不要复制粘贴。</strong></p>
+<p>想要测试你的服务在这种情况下的表现，你可以使用这个工具 <a href="https://github.com/vanhauser-thc/thc-hydra">hydra</a>。</p>
+<h2>Session 管理</h2>
+<p><strong>安全使用cookie的重要性千万不能忘：尤其是动态web应用，需要在无状态的HTTP协议中通过cookie维护状态。</strong></p>
+<h3>Cookie 标志位</h3>
+<p>下面这些属性可以设置在任何cookie上：</p>
+<ul>
+<li><p><strong>secure</strong> - 这个属性告诉浏览器只有在使用HTTPS通信的时候才发送cookie。</p>
+</li>
+<li><p><strong>HttpOnly</strong> - 这个属性用来防止例如跨站脚本等攻击，设置它的cookie不允许通过JavaScript来访问。</p>
+</li>
+</ul>
+<h4>Cookie 作用域</h4>
+<ul>
+<li><p><strong>domain</strong> - 这个属性用来和请求的URL指向服务端的域名进行比较，如果域名或者子域名匹配，接下来检查path属性。</p>
+</li>
+<li><p><strong>path</strong> - 除了域名之外，还可以指定cookie有效的URL路径。如果域名和路径匹配，发送请求时将会携带此cookie。</p>
+</li>
+<li><p><strong>expires</strong> - 这个属性用来设置持久cookie，在这个时间之前cookie不会过期。</p>
+</li>
+</ul>
+<p>在Node.js中你可以使用<a href="https://www.npmjs.com/package/cookies">cookies</a>模块来设置cookie，这个模块比较基础，你有可能会使用封装过的模块，例如<a href="https://www.npmjs.com/package/cookie-session">cookie-session</a>。</p>
+<pre><code class="hljs php"><span class="hljs-keyword">var</span> cookieSession = <span class="hljs-keyword">require</span>(<span class="hljs-string">'cookie-session'</span>);
+<span class="hljs-keyword">var</span> express = <span class="hljs-keyword">require</span>(<span class="hljs-string">'express'</span>);
+
+<span class="hljs-keyword">var</span> app = express();
+
+app.<span class="hljs-keyword">use</span>(cookieSession({
+  name: <span class="hljs-string">'session'</span>,
+  keys: [
+    process.env.COOKIE_KEY1,
+    process.env.COOKIE_KEY2
+  ]
+}));
+
+app.<span class="hljs-keyword">use</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res, next)</span> </span>{
+  <span class="hljs-keyword">var</span> n = req.session.views || <span class="hljs-number">0</span>;
+  req.session.views = n++;
+  res.end(n + <span class="hljs-string">' views'</span>);
+});
+
+app.listen(<span class="hljs-number">3000</span>);
+
+</code></pre>
+<p>示例来源于<a href="https://www.npmjs.com/package/cookie-session">cookie-session</a> 模块的文档。</p>
+<h3>CSRF</h3>
+<p>跨站请求伪造是一种强制用户在已经登录的网站上执行非自愿操作的攻击。这些攻击特别针对状态变更请求，而不是窃取数据，因为攻击者无法看到对伪造请求的响应。</p>
+<p>在Node.js中你可以使用 <a href="https://www.npmjs.com/package/csrf">csrf</a> 模块来减轻这类攻击，这个模块比较基础，有一些针对不同框架进行包装的模块，其中一个是<a href="https://www.npmjs.com/package/csurf">csurf</a>，express框架中用来防止CSRF攻击的中间件。</p>
+<p>在路由层可以这样编码：</p>
+<pre><code class="hljs php"><span class="hljs-keyword">var</span> cookieParser = <span class="hljs-keyword">require</span>(<span class="hljs-string">'cookie-parser'</span>);
+<span class="hljs-keyword">var</span> csrf = <span class="hljs-keyword">require</span>(<span class="hljs-string">'csurf'</span>);
+<span class="hljs-keyword">var</span> bodyParser = <span class="hljs-keyword">require</span>(<span class="hljs-string">'body-parser'</span>);
+<span class="hljs-keyword">var</span> express = <span class="hljs-keyword">require</span>(<span class="hljs-string">'express'</span>);
+
+<span class="hljs-comment">// setup route middlewares </span>
+<span class="hljs-keyword">var</span> csrfProtection = csrf({ cookie: <span class="hljs-keyword">true</span> });
+<span class="hljs-keyword">var</span> parseForm = bodyParser.urlencoded({ extended: <span class="hljs-keyword">false</span> });
+
+<span class="hljs-comment">// create express app </span>
+<span class="hljs-keyword">var</span> app = express();
+
+<span class="hljs-comment">// we need this because "cookie" is true in csrfProtection </span>
+app.<span class="hljs-keyword">use</span>(cookieParser());
+
+app.get(<span class="hljs-string">'/form'</span>, csrfProtection, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> </span>{
+  <span class="hljs-comment">// pass the csrfToken to the view </span>
+  res.render(<span class="hljs-string">'send'</span>, { csrfToken: req.csrfToken() });
+});
+
+app.post(<span class="hljs-string">'/process'</span>, parseForm, csrfProtection, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> </span>{
+  res.send(<span class="hljs-string">'data is being processed'</span>);
+});
+
+</code></pre>
+<p>在视图层可以这样使用CSRF的token：</p>
+<pre><code class="hljs accesslog">&lt;form action=<span class="hljs-string">"/process"</span> method=<span class="hljs-string">"<span class="hljs-keyword">POST</span>"</span>&gt;
+  &lt;input type=<span class="hljs-string">"hidden"</span> name=<span class="hljs-string">"_csrf"</span> value=<span class="hljs-string">"{{csrfToken}}"</span>&gt;
+
+  Favorite color: &lt;input type=<span class="hljs-string">"text"</span> name=<span class="hljs-string">"favoriteColor"</span>&gt;
+  &lt;button type=<span class="hljs-string">"submit"</span>&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
+
+</code></pre>
+<p>示例来源于 <a href="https://www.npmjs.com/package/csurf">csurf</a> 模块的文档。</p>
+<h2>数据验证</h2>
+<h3>XSS</h3>
+<p>有两种相似但是不同类型的攻击需要防御，一种是反射型XSS，另一种是存储型XSS。</p>
+<p><strong>反射性XSS</strong> 当攻击者用特制的链接将可执行JavaScript代码注入到HTML响应中时发生。</p>
+<p><strong>存储型XSS</strong> 当存储了未经严格过滤的用户输入时发生，它会在在Web应用程序的权限下在用户的浏览器中运行。</p>
+<p><strong>为了抵御这些攻击，你需要严格过滤用户输入。</strong></p>
+<h3>SQL 注入</h3>
+<p>SQL注入通过用户输入注入部分或完整的SQL查询，它能读取敏感信息或者具有破坏性。</p>
+<p>下面是一些例子：</p>
+<pre><code class="hljs sql">`<span class="hljs-keyword">select</span> title, author <span class="hljs-keyword">from</span> books <span class="hljs-keyword">where</span> <span class="hljs-keyword">id</span>=$<span class="hljs-keyword">id</span><span class="hljs-string">`
+
+</span></code></pre>
+<p>如果<code>$id</code>来源于用户的输入，如果用户输入了<code>2 or 1=1</code>会怎么样？查询语句会变成这样：</p>
+<pre><code class="hljs routeros">`select title, author <span class="hljs-keyword">from</span> books where <span class="hljs-attribute">id</span>=2 <span class="hljs-keyword">or</span> <span class="hljs-attribute">1</span>=1`
+
+</code></pre>
+<p>抵御这类攻击的最简单方式就是使用参数化查询或者提前写好SQL语句。</p>
+<p>如果你在Node.js中使用PostgerSQL，你可以使用 <a href="https://www.npmjs.com/package/pg">node-postgres</a> 模块。创建一个参数化查询只需要这样写代码：</p>
+<pre><code class="hljs oxygene"><span class="hljs-keyword">var</span> q = <span class="hljs-string">'SELECT name FROM books WHERE id = $1'</span>;
+client.query(q, [<span class="hljs-string">'3'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, <span class="hljs-keyword">result</span>)</span> <span class="hljs-comment">{}</span>);</span>
+
+</code></pre>
+<p><a href="http://sqlmap.org/">sqlmap</a> 是一个开源的渗透测试工具，自动化<strong>检测利用SQL注入漏洞并接管数据库</strong>的过程。</p>
+<h3>命令行注入</h3>
+<p>命令注入是攻击者在远程Web服务器上运行OS命令所使用的技术。通过这种方法，攻击者甚至可以从系统获得到密码。</p>
+<p>在实践中，如果你有这样的链接：</p>
+<pre><code class="hljs vim">`http<span class="hljs-variable">s:</span>//example.<span class="hljs-keyword">com</span>/downloads?<span class="hljs-keyword">file</span>=user1.txt`
+
+</code></pre><p>它可以变成：</p>
+<pre><code class="hljs vim">`http<span class="hljs-variable">s:</span>//example.<span class="hljs-keyword">com</span>/downloads?<span class="hljs-keyword">file</span>=%<span class="hljs-number">3</span>Bcat%<span class="hljs-number">20</span>/etc/passwd`
+
+</code></pre><p>在示例中<code>%3B</code>是标点符号点的转码，通过这种方式可以运行多个操作系统命令。</p>
+<p><strong>为了抵御这类攻击，你必须确保严格过滤用户的输入。</strong></p>
+<p>仍然用Node.js来做例子：</p>
+<pre><code class="hljs scilab">child_process.<span class="hljs-built_in">exec</span>(<span class="hljs-string">'ls'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(err, data)</span> {  </span>
+    console.<span class="hljs-built_in">log</span>(data);
+});
+
+</code></pre>
+<p>在底层<code>child_process.exec</code>调用<code>/bin/sh</code>，所以它是一个bash解释器并不是程序启动。</p>
+<p>当用户的输入传到这个地方，就会产生问题，任意一个反撇号或者<code>$()</code>，就会有一个新的命令被攻击者注入。反引号的作用就是将反引号内的Linux命令先执行，然后将执行结果赋予变量。</p>
+<p>可以简单使用<code>child_process.execFile</code>解决这个问题。</p>
+<h2>安全传输</h2>
+<h3>SSL Version, Algorithms, Key length</h3>
+<p>HTTP是一个明文协议，它必须通过SSL / TLS隧道进行安全保护，我们熟知的HTTPS就是这样。现在高等级的密码被广泛使用，如果在服务器配置错误，会使用一个弱密码来替代，或没有加密。</p>
+<p>你需要去测试：</p>
+<ul>
+<li><p>密码、钥匙和协议协商配置正确</p>
+</li>
+<li><p>证书有效性</p>
+</li>
+</ul>
+<p>使用 <a href="https://nmap.org/">nmap</a>和<a href="https://github.com/iSECPartners/sslyze">sslyze</a> 工具可以将这件事变得简单。</p>
+<p><strong>检查证书信息</strong></p>
+<pre><code class="hljs stylus">`nmap --script ssl-cert,ssl-enum-ciphers -<span class="hljs-selector-tag">p</span> <span class="hljs-number">443</span>,<span class="hljs-number">465</span>,<span class="hljs-number">993</span>,<span class="hljs-number">995</span> www<span class="hljs-selector-class">.example</span><span class="hljs-selector-class">.com</span>`
+
+</code></pre><p><strong>使用sslyze测试SSL/TLS漏洞</strong></p>
+<pre><code class="hljs stylus">`./sslyze<span class="hljs-selector-class">.py</span> --regular example<span class="hljs-selector-class">.com</span>:<span class="hljs-number">443</span>`
+
+</code></pre><h3>HSTS</h3>
+<p>在配置管理部分，我们简要的谈到了它 。 <strong>Strict-Transport-Security</strong> 头部强制浏览器和服务器使用安全连接（HTTP over SSL/TLS），下面的配置来自Twitter：</p>
+<pre><code class="hljs autohotkey">`strict-transport-security:max-age=<span class="hljs-number">631138519</span>`
+
+</code></pre><p>这里的<code>max-age</code>，指定了浏览器应该自动将HTTP请求转换为HTTPS的有效时间。</p>
+<p>可以通过下面的命令简单的测试：</p>
+<pre><code class="hljs vim">`curl -s -D- http<span class="hljs-variable">s:</span>//twitter.<span class="hljs-keyword">com</span>/ | <span class="hljs-keyword">grep</span> -i Strict`
+
+</code></pre><h2>拒绝服务</h2>
+<h3>账号锁定</h3>
+<p>帐户锁定是一种减轻暴力猜测攻击的技术，在尝试登录失败几次之后，在给定时间内系统禁止其登录，最初只限制几分钟，以后成倍的增加限制时间。</p>
+<p>你可以使用上面我们讨论过的限速模式来抵御这种攻击。</p>
+<h3>正则表达式</h3>
+<p>这种攻击利用了大多数正则表达式实现的极端情况，导致它们工作非常缓慢。这种正则表达式被称为<code>Evil Regexpes</code>：</p>
+<ul>
+<li><p>使用重复分组</p>
+</li>
+<li><p>重复组中出现：</p>
+<ul>
+<li><p>重复</p>
+</li>
+<li><p>交替重叠</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>([a-zA-Z]+)*</code>、<code>(a+)+</code> 或者 <code>(a|a?)+</code> 都是有漏洞的正则表达式，像<code>aaaaaaaaaaaaaaaaaaaaaaaa!</code>这样简单的输入就可以产生很大的计算量。更多信息请看<a href="https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS">正则表达式DOS</a>.</p>
+<p>你可以使用工具 <a href="https://www.npmjs.com/package/safe-regex">safe-regex</a>检查你的正则表达式，它可能会误报，所以小心使用。</p>
+<pre><code class="hljs crmsh">$ <span class="hljs-keyword">node</span> <span class="hljs-title">safe</span>.js '(beep|boop)*'
+<span class="hljs-literal">true</span>
+$ <span class="hljs-keyword">node</span> <span class="hljs-title">safe</span>.js '(a+){<span class="hljs-number">10</span>}'
+<span class="hljs-literal">false</span>
+
+</code></pre>
+<h2>异常处理</h2>
+<h3>异常代码、错误跟踪栈</h3>
+<p>在不同的错误场景中，应用程序可能泄漏有关底层基础设施的敏感细节， 比如：<code>X-Powered-By:Express</code>。</p>
+<p>错误跟踪栈本身不是错误，但是它经常泄露让攻击者感兴趣的信息。提供debug信息作为操作产生错误的结果是一种糟糕的做法，你应该打印而不是向用户输出这些信息。</p>
+<h2>NPM</h2>
+<p>能力越大责任越大，NPM有大量可以方便使用的模块，相应的你需要检查你的应用用到了哪些，它们可能包含了至关重要的安全问题。</p>
+<h3>Node 安全项目</h3>
+<p>幸运的是Node安全项目有一个非常棒的工具，你可以检查你使用的模块的已知漏洞。</p>
+<pre><code class="hljs coffeescript"><span class="hljs-built_in">npm</span> i nsp -g
+<span class="hljs-comment"># either audit the shrinkwrap</span>
+nsp audit-shrinkwrap
+<span class="hljs-comment"># or the package.json</span>
+nsp audit-package
+
+</code></pre>
+<p>你还可以使用 <a href="https://www.npmjs.com/package/requiresafe">requireSafe</a> 来帮你做这件事。</p>
+<h3>Snyk</h3>
+<p>Snyk和Node安全项目相似，但是它的目标不仅是提供工具发现漏洞，还能在你的项目仓库中解决相关安全问题。</p>
+<p>可以尝试一下<a href="https://snyk.io/">snyk.io</a>。</p>
+<h2>Final</h2>
+<p>这个清单基于 <a href="https://www.owasp.org/index.php/Web_Application_Security_Testing_Cheat_Sheet">Web Application Security Testing Cheat Sheet</a>（<a href="https://www.owasp.org/index.php/Main_Page">OWASP</a>维护）并且很大程度受它影响。</p>
+<blockquote>
+<p>开放Web应用安全项目（OWASP）是一个全球性的非盈利慈善组织，致力于提高软件的安全性</p>
+</blockquote>
+
+          </div>
+        </div>
+        <div class="uk-card-footer">
+          <div class="uk-child-width-expand uk-grid" uk-grid="">
+            <div class="uk-width-expand uk-first-column">
+            
+            <a href="https://zcfy.cc/article/tag/JavaScript" data-id="5">
+              <span class="uk-label">JavaScript</span>
+            </a>
+            
+            <a href="https://zcfy.cc/article/tag/%E5%BA%94%E7%94%A8" data-id="26">
+              <span class="uk-label">应用</span>
+            </a>
+            
+            <a href="https://zcfy.cc/article/tag/%E7%A7%BB%E5%8A%A8" data-id="124">
+              <span class="uk-label">移动</span>
+            </a>
+            
+            <a href="https://zcfy.cc/article/tag/HTTP" data-id="35">
+              <span class="uk-label">HTTP</span>
+            </a>
+            
+            <a href="https://zcfy.cc/article/tag/%E6%B5%8F%E8%A7%88%E5%99%A8" data-id="120">
+              <span class="uk-label">浏览器</span>
+            </a>
+            
+            </div>
+            <div class="uk-width-auto uk-text-right favorite-it" data-id="4850" data-has-favorited=""><a href="javascript:;" class="uk-icon uk-icon-image unfavorited"></a></div>
+          </div>
+          <hr class="uk-divider-icon">
+          <div id="copyright" class="uk-margin-bottom">
+            <h2 class="uk-h3 uk-text-muted">版权声明</h2>
+            <div class="content">本译文仅用于学习、研究和交流目的，欢迎非商业转载。转载请注明出处、译者和众成翻译的完整链接。</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  
+  <div id="modal-full-subscribe" class="uk-modal-full uk-modal" uk-modal="">
+  <div class="uk-modal-dialog">
+    <button class="uk-modal-close-full uk-close-large uk-close uk-icon" type="button" uk-close=""><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" ratio="1"><line fill="none" stroke="#000" stroke-width="1.4" x1="1" y1="1" x2="19" y2="19"></line><line fill="none" stroke="#000" stroke-width="1.4" x1="19" y1="1" x2="1" y2="19"></line></svg></button>
+    <div class="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle uk-grid uk-grid-stack" uk-grid="">
+      <div class="uk-background-cover" style="background-image: url(&quot;//p3.ssl.qhimg.com/t0137e7c2f4b2f217d9.jpg&quot;); box-sizing: border-box; min-height: 100vh; height: 100vh;" uk-height-viewport=""></div>
+      <div class="uk-padding-large">
+        <h1>立即订阅</h1>
+        <p>精彩、前沿技术文章，尽在众成翻译《每周精选》</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-full-search" class="uk-modal-full uk-modal" uk-modal="">
+  <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" uk-height-viewport="" style="box-sizing: border-box; min-height: 100vh; height: 100vh;">
+    <button class="uk-modal-close-full uk-close uk-icon" type="button" uk-close=""><svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" ratio="1"><line fill="none" stroke="#000" stroke-width="1.1" x1="1" y1="1" x2="13" y2="13"></line><line fill="none" stroke="#000" stroke-width="1.1" x1="13" y1="1" x2="1" y2="13"></line></svg></button>
+    <form action="https://zcfy.cc/search" class="uk-search uk-search-large" autocomplete="off">
+      <input name="q" class="uk-search-input uk-text-center" type="search" placeholder="搜索" autofocus="">
+    </form>
+  </div>
+</div>
+
+
+
+
+<div id="modal-full-recommend" uk-modal="" class="uk-modal">
+  <div class="uk-modal-dialog uk-margin-auto-vertical">
+    <button class="uk-modal-close-full uk-close-large uk-close uk-icon" type="button" uk-close=""><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" ratio="1"><line fill="none" stroke="#000" stroke-width="1.4" x1="1" y1="1" x2="19" y2="19"></line><line fill="none" stroke="#000" stroke-width="1.4" x1="19" y1="1" x2="1" y2="19"></line></svg></button>
+    <div class="uk-grid-collapse uk-flex-middle">
+      <div class="uk-padding-large" id="recommend-form">
+        <label class="uk-h5 uk-margin-remove-bottom" for="original-url">要推荐的原文网址：</label>
+        <div class="uk-margin">
+          <div class="uk-inline uk-display-block">
+            <a class="uk-form-icon uk-icon" href="https://zcfy.cc/article/node-js-security-checklist-risingstack#" uk-icon="icon: link"><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" ratio="1"> <path fill="none" stroke="#000" stroke-width="1.1" d="M10.625,12.375 L7.525,15.475 C6.825,16.175 5.925,16.175 5.225,15.475 L4.525,14.775 C3.825,14.074 3.825,13.175 4.525,12.475 L7.625,9.375"></path> <path fill="none" stroke="#000" stroke-width="1.1" d="M9.325,7.375 L12.425,4.275 C13.125,3.575 14.025,3.575 14.724,4.275 L15.425,4.975 C16.125,5.675 16.125,6.575 15.425,7.275 L12.325,10.375"></path> <path fill="none" stroke="#000" stroke-width="1.1" d="M7.925,11.875 L11.925,7.975"></path></svg></a>
+            <input class="uk-input" type="text" id="original-url" placeholder="原文网址">
+          </div>
+        </div>
+        <div id="recommend-form-buttons">
+          <button class="uk-button uk-button-default" id="recommend-only">推荐</button>
+          <!-- <button class="uk-button uk-button-primary" id="recommend-and-claim">推荐并认领</button> -->
+          <span id="errmsg" class="uk-text-danger uk-text-small"></span>
+        </div>
+      </div>
+      <div class="uk-padding-large" id="recommend-success" style="display: block;">
+        <h1 class="uk-h2">推荐成功</h1>
+        <!--  已有手机号，就不显示文案 -->
+        <p class="uk-text-muted">感谢推荐，您推荐的文章正在审核，稍后发布。
+          
+          <a href="https://zcfy.cc/setting">立即绑定手机号</a>，以便及时了解审核结果。
+          
+        </p>
+        <button class="uk-button uk-button-default" id="recommend-more">继续推荐</button>
+        <!-- <button class="uk-button uk-button-primary" id="to-translate">马上翻译</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-overflow-user-contact" uk-modal="" class="uk-modal">
+  <div class="uk-modal-dialog">
+    <button class="uk-modal-close-default uk-close uk-icon" type="button" uk-close=""><svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" ratio="1"><line fill="none" stroke="#000" stroke-width="1.1" x1="1" y1="1" x2="13" y2="13"></line><line fill="none" stroke="#000" stroke-width="1.1" x1="13" y1="1" x2="1" y2="13"></line></svg></button>
+    <div class="uk-modal-header">
+      <h2 class="uk-text-center uk-h3">众成翻译用户协议</h2>
+    </div>
+    <div class="uk-modal-body uk-overflow-auto" uk-overflow-auto="" style="min-height: 150px; max-height: 150px;">
+      <div id="user_contract" class="card__text" style="height: 500px;">
+        <p>为引导和规范众成翻译服务及众成翻译用户的行为，特制定本用户协议。凡访问、浏览众成翻译网站或向众成翻译提交信息，必须首先同意此协议和其他由众成翻译发布的协议。如果您不同意此协议，请停止使用众成翻译网站。 </p>
+        <h3 class="uk-h4">1. 条款接受</h3>
+        <p>众成翻译网（以下简称“众成翻译”）为北京了了科技有限公司独立拥有，将按照本协议的规定及不定期发布的操作规则提供基于互联网的相关服务(以下称“网络服务”)。</p>
+        <p>本协议所称的用户是指完全同意所有条款并完成注册程序或未经注册而使用众成翻译服务（以下简称“本服务”）的用户。用户在注册程序过程中点击“同意”按钮即表示用户完全接受本协议项下的全部条款。这些条款可由众成翻译域名所有者随时更新，本协议一旦发生变动，众成翻译将会在相关页面上提示修改内容。修改后的协议条款一旦在众成翻译网站页面上公布即代替原来的协议并即时生效。用户可随时查阅最新协议。用户在使用众成翻译提供的各项服务之前，应仔细阅读本协议，如用户不同意本协议及/或众成翻译随时对其进行的修改，用户应主动放弃众成翻译提供的服务。
+        </p>
+        <h3 class="uk-h4">2. 服务内容</h3>
+        <p>2.1 众成翻译服务的具体内容由众成翻译根据实际情况提供，包括但不限于翻译内容发布、内容阅读、论坛(BBS)、电子邮件、发表评论等。众成翻译保留随时变更、中断或终止部分或全部网络服务的权利。 </p>
+        <p>2.2 用户理解，众成翻译仅提供相关的网络服务，除此之外与相关网络服务有关的设备（如个人电脑、手机、及其他与接入互联网或移动网有关的装置）及所需的费用（如为接入互联网而支付的电话费及上网费、为使用移动网而支付的手机费）均应由用户自行负担。
+        </p>
+        <h3 class="uk-h4">3. 使用规则</h3>
+        <p>3.1 用户在申请使用众成翻译服务时，必须提供准确的个人资料，如个人资料有任何变动，必须及时更新。如因资料提供不准确而享受不到众成翻译服务，众成翻译不承担任何责任。 </p>
+        <p>3.2 用户注册成功后，众成翻译将给予每个用户一个用户帐号，该用户帐号由用户负责保管；用户应当对以其用户帐号进行的所有活动和事件负全部法律责任。 </p>
+        <p>3.3 用户同意接受众成翻译通过电子邮件或其他方式向用户发送内容或相关信息。 </p>
+        <p>3.4 用户在使用众成翻译服务过程中，必须遵循以下规则： </p>
+        <ul class="mb-3">
+          <li>遵守中国相关法律和法规； </li>
+          <li>不得为任何非法目的而使用网络服务系统；</li>
+          <li>遵守所有与网络服务有关的网络协议、规定和程序；</li>
+          <li>不得利用众成翻译网络服务系统进行任何可能对网络的正常运转造成不利影响的行为； </li>
+          <li>不得利用众成翻译网络服务系统传输任何反动、骚扰性、中伤他人、辱骂性、恐吓性、庸俗淫秽的或其他任何非法的信息资料；</li>
+          <li>不得利用众成翻译网络服务系统进行任何不利于众成翻译的行为；</li>
+          <li>未经众成翻译许可，不得在众成翻译发布任何形式的广告以及对其他公司、组织或网站的宣传信息；</li>
+          <li>就众成翻译及合作伙伴的服务、产品、业务咨询应采取相应机构提供的沟通渠道； </li>
+          <li>如发现任何非法使用用户账号或账号出现安全漏洞的情况，应立即通知众成翻译；</li>
+          <li>在使用众成翻译服务时，不得侵犯其他任何第三方的专利权、著作权、商标权、名誉权或其他任何合法权益。</li>
+        </ul>
+        <h3 class="uk-h4">4. 内容所有权</h3>
+        <p>4.1 众成翻译提供的网络服务内容可能包括但不限于：文字、软件、声音、图片、视频等。所有这些内容受版权法、商标法和其他财产所有权法律的保护。 </p>
+        <p>4.2 众成翻译严格拒绝所有未经原作者允许的内容发布。为保证用户的阅读体验，众成翻译有权恢复发布在该平台上的翻译内容的一个或多个版本，以修复链接并防止内容丢失。 </p>
+        <p>4.3 在众成翻译发表原文和译文，均为用户自发行为，而且用户所推荐或翻译发表的内容，应该确保取得原著作权人的许可或者不侵犯原著作权人的合法权益。众成翻译严格拒绝未经原作者授权的或违反有关著作权法律法规，以及侵犯著作权人权益的内容发布。</p>
+        <h3 class="uk-h4">5. 免责声明</h3>
+        <p>5.1 众成翻译服务提供者不保证以下事宜： </p>
+        <ul class="mb-3">
+          <li>本服务将完全符合您的要求；</li>
+          <li>本服务将不受干扰、及时提供、安全可靠且不会出错。</li>
+        </ul>
+        <p>5.2 用户明确同意其使用众成翻译网络服务所存在的风险及一切后果完全由其自己承担；众成翻译网不对用户个人行为造成的后果承担任何责任。 </p>
+        <p>5.3 用户了解和同意众成翻译不对用户发布的内容承担任何责任，即使包含恐怖、骚扰、诽谤、侵犯隐私、辱骂、恐吓、低俗、淫秽和其他引起反感的内容，或任何侵犯第三方知识产权的内容。 </p>
+        <h3 class="uk-h4">6. 服务变更、中断或终止</h3>
+        <p>6.1 如因系统维护或升级的需要而需暂停网络服务，众成翻译将尽可能事先进行通告。 </p>
+        <p>6.2 如发生下列任何一种情形，众成翻译有权随时中断或终止向用户提供本协议项下的网络服务而无需通知用户： </p>
+        <ul class="mb-3">
+          <li>用户违反本协议中任一条款；</li>
+          <li>因用户行为而对众成翻译服务构成破坏、损害或造成负面影响。</li>
+        </ul>
+        <p>6.3 除前款所述情形外，鉴于网络服务的特殊性，用户同意众成翻译有权随时变更、中断或终止部分或全部的网络服务。如变更、中断或终止的网络服务属于免费网络服务，众成翻译无需通知用户，也无需对任何用户或任何第三方承担任何责任。
+        </p>
+        <h3 class="uk-h4">7. 违约赔偿 </h3>
+        <p>用户同意保障和维护众成翻译及其他用户的利益，如因用户违反有关法律、法规或本协议项下的任何条款而给众成翻译或任何其他第三方造成损失，用户同意承担由此造成的损害赔偿责任。 </p>
+        <h3 class="uk-h4">8. 法律管辖</h3>
+        <p>8.1 本协议的订立、执行和解释及争议的解决均应适用中国法律。</p>
+        <p>8.2 如双方就本协议内容或其执行发生任何争议，双方应尽量友好协商解决；协商不成时，任何一方均可向众成翻译域名所有者所在地的人民法院提起诉讼。</p>
+        <h3 class="uk-h4">9. 通知和送达 </h3>
+        <p>本协议项下所有的通知均可通过重要页面公告、电子邮件或常规的信件传送等方式进行；该等通知于发送之日视为已送达收件人。</p>
+        <h3 class="uk-h4">10. 其他规定 </h3>
+        <p>10.1 本协议构成双方对本协议之约定事项及其他有关事宜的完整协议，除本协议规定的之外，未赋予本协议各方其他权利。</p>
+        <p>10.2 如本协议中的任何条款无论因何种原因完全或部分无效或不具有执行力，本协议的其余条款仍应有效并且有约束力。 </p>
+        <p>10.3 本协议中的标题仅为方便而设，不具法律或契约效果。</p>
+      </div>
+    </div>
+    <div class="uk-modal-footer uk-text-right">
+      <button class="uk-button uk-button-primary uk-modal-close" type="button">明白了</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-overflow-right-owner-guide" uk-modal="" class="uk-modal">
+  <div class="uk-modal-dialog">
+    <button class="uk-modal-close-default uk-close uk-icon" type="button" uk-close=""><svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" ratio="1"><line fill="none" stroke="#000" stroke-width="1.1" x1="1" y1="1" x2="13" y2="13"></line><line fill="none" stroke="#000" stroke-width="1.1" x1="13" y1="1" x2="1" y2="13"></line></svg></button>
+    <div class="uk-modal-header">
+      <h2 class="uk-text-center uk-h3">权利人指引</h2>
+    </div>
+    <div class="uk-modal-body uk-overflow-auto" uk-overflow-auto="" style="min-height: 150px; max-height: 150px;">
+      <div id="right_owner_guide" class="card__text" style="height: 500px;">
+        <p>为了保护权利人的权益，根据相关法律、法规和规范性文件的要求，众成翻译网（网址：www.zcfy.cc，下称“众成翻译”） 现制定保护权利人合法权益的权利人保护指引（下称“本指引”）。</p>
+        <p>众成翻译承诺遵守并尊重中国现行法律法规及其他规范性文件对知识产权的保护规定，并依照规定制定了保护权利人权利的处理流程。作为权利人，当您发现众成翻译上的内容涉嫌侵犯了您的合法权益时，您应当首先向我们发送“权利通知”，我们将根据中国法律法规和政府规范性文件采取措施移除相关内容或屏蔽相关链接。流程如下。</p>
+        <h3 class="uk-h4">1. 权利通知</h3>
+        <p>如果您同时具备以下两个条件：</p>
+        <ol class="mb-3">
+          <li>权利人享有某一项或多项权益；&nbsp;</li>
+          <li>您发现众成翻译用户利用众成翻译及其服务侵害您的合法权益。</li>
+        </ol>
+        <p>请您务必以书面方式向我们提交权利通知。我们将在接到通知之日审核完毕后的合理时间内依法采取相关移除或屏蔽措施。并且，我们可能会依法通知受此措施影响的提交者，以便他们依法提出抗辩通知。通知书需权利人亲笔签名，若为单位则需加盖单位公章。</p>
+        <h3 class="uk-h4">2. 通知内容</h3>
+        <p>通知书应当包含下列内容：&nbsp;</p>
+        <ol class="mb-3">
+          <li>权利人的姓名（名称）、联系方式、地址、身份证复印件（自然人）、单位登记证明复印件（单位）；&nbsp;</li>
+          <li>要求删除或者断开链接的侵权内容的准确名称和在众成翻译的访问地址；&nbsp;</li>
+          <li>认为构成侵权的初步证明材料，包括但不限于享有著作权或依法享有信息网络传播权的权属证明、创作手稿、商标权证书、软件著作权证书等。</li>
+        </ol>
+        <p>权利人应对通知书的真实性负责。若通知书的内容不真实，权利人将承担由此造成的全部法律责任。</p>
+        <h3 class="uk-h4">3. 联系方式</h3>
+        <ul class="mb-3">
+          <li>通知书请寄至以下地址：北京市朝阳区酒仙桥路6号院2号楼</li>
+          <li>电子版通知书请发至以下邮箱：admin@zcfy.cc</li>
+        </ul>
+        <p>众成翻译将在收到权利人通知书并审核无误后的合理时间内，将通知书转送发布侵权内容的用户，并相应采取删除涉嫌侵权的内容，或者断开涉嫌侵权内容链接等措施。</p>
+      </div>
+    </div>
+    <div class="uk-modal-footer uk-text-right">
+      <button class="uk-button uk-button-primary uk-modal-close" type="button">知道了</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-full-promotion" class="uk-modal-full uk-modal" uk-modal="">
+  <div class="uk-modal-dialog">
+    <button class="uk-modal-close-full uk-close-large uk-close uk-icon" type="button" uk-close=""><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" ratio="1"><line fill="none" stroke="#000" stroke-width="1.4" x1="1" y1="1" x2="19" y2="19"></line><line fill="none" stroke="#000" stroke-width="1.4" x1="19" y1="1" x2="1" y2="19"></line></svg></button>
+    <div class="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle uk-grid uk-grid-stack" uk-grid="">
+      <div class="uk-background-cover" style="background-image: url(&quot;//p2.ssl.qhimg.com/t017fcccbdd238e7d61.jpg&quot;); box-sizing: border-box; min-height: 100vh; height: 100vh;" uk-height-viewport=""></div>
+      <div class="uk-padding-large">
+        <h1 class="uk-margin-bottom">新版上线，翻译有礼</h1>
+        <p>亲爱的小伙伴们：</p>
+        <p>众成翻译经过重构，2.0版今天上线了！</p>
+        <p>2.0版本着简约至上的产品理念，实现了推荐、认领、翻译、发布的快捷流程和简单易用的在线翻译编辑器，让分享最新技术文章，快速认领和翻译成为一件轻松愉快的事。</p>
+        <p>不知不觉间，众成翻译上线已经快两年了。这期间，我们收获了超过340万字的原创翻译内容，其中30%以上是由高质量译者翻译的优质内容，译文总数达到了3000多篇，积累了近百位活跃译者。</p>
+        <p>同样是最近一两年来，优质内容在互联网上的价值越来越大，知识的内在价值已经越来越被人们认可。对技术人员而言，这样能够推荐、翻译和阅读好的技术文章，第一时间掌握靠谱的技术资讯的知识分享平台，无疑是非常有价值的。</p>
+        <p>希望大家继续支持众成翻译，扶持它不断成长壮大。谢谢！</p>
+
+        <p>活动规则：2018年1月15～18日期间</p>
+        <ol class="uk-list uk-list-bullet">
+          <li>至少推荐一篇文章</li>
+          <li>至少认领一篇文章</li>
+          <li>2018年1月25日前至少发布一篇文章</li>
+        </ol>
+        <p>即有机会获得众成翻译平台送出的技术图书一册</p>
+      </div>
+
+    </div>
+  </div>
+</div> <footer class="uk-background-muted">
+  <div class="container uk-text-center uk-margin-top uk-margin-bottom">
+    众成翻译@2015-2018 （京ICP备17024260-1号）
+  </div>
+</footer>
+<script>window.zcfy={};window.zcfy.utoken='ad44bf08-89d4-4ac7-a3ec-af0b1a7c1334';var user = false;var itemid="4850"; </script>
+<script type="text/javascript" src="./Node.js 安全清单 - 众成翻译_files/2a9d16635c44cf8c.js"></script><script type="text/javascript" src="./Node.js 安全清单 - 众成翻译_files/31ef375587f659e6.js"></script><script type="text/javascript" src="./Node.js 安全清单 - 众成翻译_files/6d5b377b3bc14a5d.js"></script><script type="text/javascript" src="./Node.js 安全清单 - 众成翻译_files/20e0d38582520352.js"></script><script type="text/javascript" src="./Node.js 安全清单 - 众成翻译_files/929d61a598f7c04a.js"></script><a href="https://zcfy.cc/article/node-js-security-checklist-risingstack#" class="uk-icon-button uk-background-muted uk-icon" uk-icon="icon: arrow-up" style="position: fixed; right: 2em; bottom: 4em; display: none;"><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" ratio="1"> <polygon points="10.5,4 15.37,9.4 14.63,10.08 10.5,5.49 6.37,10.08 5.63,9.4"></polygon> <line fill="none" stroke="#000" x1="10.5" y1="16" x2="10.5" y2="5"></line></svg></a><script type="text/javascript" src="./Node.js 安全清单 - 众成翻译_files/monitor_analytic.js"></script><script type="text/javascript" src="./Node.js 安全清单 - 众成翻译_files/9b0f6b0afcaeddb2.js"></script>
+
+</body><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255); height: 12258px; width: 1295px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 12258px; width: 1295px;"></div></html>

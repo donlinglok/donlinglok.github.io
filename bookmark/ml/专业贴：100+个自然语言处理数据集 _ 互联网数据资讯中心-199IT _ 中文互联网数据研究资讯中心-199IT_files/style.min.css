@@ -1,0 +1,6 @@
+#top_notice{font-weight:bold;font-size:13px;zoom:1;background-color:#4272db}
+.top_notice_text_box{margin-left:12px}
+.top_notice_text{padding:8px 12px 6px 0;zoom:1;color:#fff}
+.top_notice_close{cursor:pointer;float:right;font-size:18px;margin-right:13px;padding:5px 0 3px;float:right;color:#bcc9e8}
+.top_notice_button{cursor:pointer;display:inline-block;margin-left:10px;padding:8px 12px 6px;zoom:1;color:#bcc9e8;background-color:#2255cb}
+.top_notice_button:hover{color:#fff}

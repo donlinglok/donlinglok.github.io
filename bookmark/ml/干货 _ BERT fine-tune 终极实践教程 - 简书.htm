@@ -1,0 +1,2578 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)https://www.jianshu.com/p/aa2eff7ec5c1 -->
+<html class="cye-disabled cye-nm gr__jianshu_com"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+
+  <!-- Start of Baidu Transcode -->
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta name="applicable-device" content="pc,mobile">
+  <meta name="MobileOptimized" content="width">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="mobile-agent" content="format=html5;url=https://www.jianshu.com/p/aa2eff7ec5c1">
+  <!-- End of Baidu Transcode -->
+
+    <meta name="description" content="从11月初开始，google-research就陆续开源了BERT的各个版本。google此次开源的BERT是通过tensorflow高级API—— tf.estimator进行封装(wrapper)的。因此对于不同数据集的适配，只需要修改代码中的processor部分，就能进行代码的训练、交叉验证和测试。 奇点机智技术团队将结合利用BERT在AI-Challenger机器阅读理解赛道的实践...">
+
+  <meta name="360-site-verification" content="604a14b53c6b871206001285921e81d8">
+  <meta property="wb:webmaster" content="294ec9de89e7fadb">
+  <meta property="qc:admins" content="104102651453316562112116375">
+  <meta property="qc:admins" content="11635613706305617">
+  <meta property="qc:admins" content="1163561616621163056375">
+  <meta name="google-site-verification" content="cV4-qkUJZR6gmFeajx_UyPe47GW9vY6cnCrYtCHYNh4">
+  <meta name="google-site-verification" content="HF7lfF8YEGs1qtCE-kPml8Z469e2RHhGajy6JPVy5XI">
+  <meta http-equiv="mobile-agent" content="format=html5; url=https://www.jianshu.com/p/aa2eff7ec5c1">
+
+  <!-- Apple -->
+  <meta name="apple-mobile-web-app-title" content="简书">
+
+    <!--  Meta for Smart App Banner -->
+  <meta name="apple-itunes-app" content="app-id=888237539, app-argument=jianshu://notes/37204149">
+  <!-- End -->
+
+  <!--  Meta for Twitter Card -->
+  <meta content="summary" property="twitter:card">
+  <meta content="@jianshucom" property="twitter:site">
+  <meta content="干货 | BERT fine-tune 终极实践教程" property="twitter:title">
+  <meta content="从11月初开始，google-research就陆续开源了BERT的各个版本。google此次开源的BERT是通过tensorflow高级API—— tf.estimator..." property="twitter:description">
+  <meta content="https://www.jianshu.com/p/aa2eff7ec5c1" property="twitter:url">
+  <!-- End -->
+
+  <!--  Meta for OpenGraph -->
+  <meta property="fb:app_id" content="865829053512461">
+  <meta property="og:site_name" content="简书">
+  <meta property="og:title" content="干货 | BERT fine-tune 终极实践教程">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.jianshu.com/p/aa2eff7ec5c1">
+  <meta property="og:description" content="从11月初开始，google-research就陆续开源了BERT的各个版本。google此次开源的BERT是通过tensorflow高级API—— tf.estimator进行封装(wrapp...">
+  <!-- End -->
+
+  <!--  Meta for Facebook Applinks -->
+  <meta property="al:ios:url" content="jianshu://notes/37204149">
+  <meta property="al:ios:app_store_id" content="888237539">
+  <meta property="al:ios:app_name" content="简书">
+
+  <meta property="al:android:url" content="jianshu://notes/37204149">
+  <meta property="al:android:package" content="com.jianshu.haruki">
+  <meta property="al:android:app_name" content="简书">
+  <!-- End -->
+
+
+    <title>干货 | BERT fine-tune 终极实践教程 - 简书</title>
+
+  <meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="+QzFwqhMa6zX6D8FdO/t01IFo3uZyDEtahnvoFsA6qCvBrcWxXvNnuMzCudJBkkhrwfVQqbo6keyP7mV6P3qUg==">
+
+  <link rel="stylesheet" media="all" href="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/web-08da6f1d2a1b70a3f58e.css">
+  
+  <link rel="stylesheet" media="all" href="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/entry-aa75deb505b1b600256a.css">
+
+  <link href="https://cdn2.jianshu.io/assets/favicons/favicon-e743bfb1821442341c3ab15bdbe804f7ad97676bd07a770ccc9483473aa76f06.ico" rel="shortcut icon" type="image/x-icon">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/57-a6f1f1ee62ace44f6dc2f6a08575abd3c3b163288881c78dd8d75247682a4b27.png" sizes="57x57">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/72-fb9834bcfce738fd7b9c5e31363e79443e09a81a8e931170b58bc815387c1562.png" sizes="72x72">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/76-49d88e539ff2489475d603994988d871219141ecaa0b1a7a9a1914f4fe3182d6.png" sizes="76x76">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/114-24252fe693524ed3a9d0905e49bff3cbd0228f25a320aa09053c2ebb4955de97.png" sizes="114x114">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/120-1bb7371f5e87f93ce780a5f1a05ff1b176828ee0d1d130e768575918a2e05834.png" sizes="120x120">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/152-bf209460fc1c17bfd3e2b84c8e758bc11ca3e570fd411c3bbd84149b97453b99.png" sizes="152x152">
+
+  <!-- Start of 访问统计 -->
+    <style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><script src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/push.js"></script><script src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/hm.js"></script><script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?0c0e9d9b1e7d617b3e6842e85b9fb068";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  <!-- End of 访问统计 -->
+<style type="text/css">@charset "UTF-8";.image-package .image-container{position:relative;z-index:2;background-color:#eee;-webkit-transition:background-color .1s linear;-o-transition:background-color .1s linear;transition:background-color .1s linear;margin:0 auto}body.reader-night-mode .image-package .image-container{background-color:#545454}.image-package .image-container-fill{z-index:1}.image-package .image-container .image-view{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden}.image-package .image-container .image-view-error:after{content:"图片获取失败，请点击重试";position:absolute;top:50%;left:50%;width:100%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);color:#888;font-size:14px}.image-package .image-container .image-view img.image-loading{opacity:.3}.image-package .image-container .image-view img{-webkit-transition:all .15s linear;-o-transition:all .15s linear;transition:all .15s linear;z-index:2;opacity:1}</style><style type="text/css">fieldset[disabled] .multiselect {
+  pointer-events: none;
+}
+
+.multiselect__spinner {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  width: 48px;
+  height: 35px;
+  background: #fff;
+  display: block;
+}
+
+.multiselect__spinner:after,
+.multiselect__spinner:before {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 50%;
+  margin: -8px 0 0 -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 100%;
+  border-color: #41b883 transparent transparent;
+  border-style: solid;
+  border-width: 2px;
+  box-shadow: 0 0 0 1px transparent;
+}
+
+.multiselect__spinner:before {
+  animation: a 2.4s cubic-bezier(.41,.26,.2,.62);
+  animation-iteration-count: infinite;
+}
+
+.multiselect__spinner:after {
+  animation: a 2.4s cubic-bezier(.51,.09,.21,.8);
+  animation-iteration-count: infinite;
+}
+
+.multiselect__loading-enter-active,
+.multiselect__loading-leave-active {
+  transition: opacity .4s ease-in-out;
+  opacity: 1;
+}
+
+.multiselect__loading-enter,
+.multiselect__loading-leave-active {
+  opacity: 0;
+}
+
+.multiselect,
+.multiselect__input,
+.multiselect__single {
+  font-family: inherit;
+  font-size: 14px;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+}
+
+.multiselect {
+  box-sizing: content-box;
+  display: block;
+  position: relative;
+  width: 100%;
+  min-height: 40px;
+  text-align: left;
+  color: #35495e;
+}
+
+.multiselect * {
+  box-sizing: border-box;
+}
+
+.multiselect:focus {
+  outline: none;
+}
+
+.multiselect--disabled {
+  opacity: .6;
+}
+
+.multiselect--active {
+  z-index: 1;
+}
+
+.multiselect--active:not(.multiselect--above) .multiselect__current,
+.multiselect--active:not(.multiselect--above) .multiselect__input,
+.multiselect--active:not(.multiselect--above) .multiselect__tags {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.multiselect--active .multiselect__select {
+  transform: rotate(180deg);
+}
+
+.multiselect--above.multiselect--active .multiselect__current,
+.multiselect--above.multiselect--active .multiselect__input,
+.multiselect--above.multiselect--active .multiselect__tags {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.multiselect__input,
+.multiselect__single {
+  position: relative;
+  display: inline-block;
+  min-height: 20px;
+  line-height: 20px;
+  border: none;
+  border-radius: 5px;
+  background: #fff;
+  padding: 0 0 0 5px;
+  width: 100%;
+  transition: border .1s ease;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  vertical-align: top;
+}
+
+.multiselect__tag~.multiselect__input,
+.multiselect__tag~.multiselect__single {
+  width: auto;
+}
+
+.multiselect__input:hover,
+.multiselect__single:hover {
+  border-color: #cfcfcf;
+}
+
+.multiselect__input:focus,
+.multiselect__single:focus {
+  border-color: #a8a8a8;
+  outline: none;
+}
+
+.multiselect__single {
+  padding-left: 6px;
+  margin-bottom: 8px;
+}
+
+.multiselect__tags-wrap {
+  display: inline;
+}
+
+.multiselect__tags {
+  min-height: 40px;
+  display: block;
+  padding: 8px 40px 0 8px;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+}
+
+.multiselect__tag {
+  position: relative;
+  display: inline-block;
+  padding: 4px 26px 4px 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  color: #fff;
+  line-height: 1;
+  background: #41b883;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+
+.multiselect__tag-icon {
+  cursor: pointer;
+  margin-left: 7px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-weight: 700;
+  font-style: normal;
+  width: 22px;
+  text-align: center;
+  line-height: 22px;
+  transition: all .2s ease;
+  border-radius: 5px;
+}
+
+.multiselect__tag-icon:after {
+  content: "\D7";
+  color: #266d4d;
+  font-size: 14px;
+}
+
+.multiselect__tag-icon:focus,
+.multiselect__tag-icon:hover {
+  background: #369a6e;
+}
+
+.multiselect__tag-icon:focus:after,
+.multiselect__tag-icon:hover:after {
+  color: #fff;
+}
+
+.multiselect__current {
+  min-height: 40px;
+  overflow: hidden;
+  padding: 8px 12px 0;
+  padding-right: 30px;
+  white-space: nowrap;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+}
+
+.multiselect__current,
+.multiselect__select {
+  line-height: 16px;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.multiselect__select {
+  position: absolute;
+  width: 40px;
+  height: 38px;
+  right: 1px;
+  top: 1px;
+  padding: 4px 8px;
+  text-align: center;
+  transition: transform .2s ease;
+}
+
+.multiselect__select:before {
+  position: relative;
+  right: 0;
+  top: 65%;
+  color: #999;
+  margin-top: 4px;
+  border-style: solid;
+  border-width: 5px 5px 0;
+  border-color: #999 transparent transparent;
+  content: "";
+}
+
+.multiselect__placeholder {
+  color: #adadad;
+  display: inline-block;
+  margin-bottom: 10px;
+  padding-top: 2px;
+}
+
+.multiselect--active .multiselect__placeholder {
+  display: none;
+}
+
+.multiselect__content-wrapper {
+  position: absolute;
+  display: block;
+  background: #fff;
+  width: 100%;
+  max-height: 240px;
+  overflow: auto;
+  border: 1px solid #e8e8e8;
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  z-index: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.multiselect__content {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  min-width: 100%;
+  vertical-align: top;
+}
+
+.multiselect--above .multiselect__content-wrapper {
+  bottom: 100%;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: none;
+  border-top: 1px solid #e8e8e8;
+}
+
+.multiselect__content::webkit-scrollbar {
+  display: none;
+}
+
+.multiselect__element {
+  display: block;
+}
+
+.multiselect__option {
+  display: block;
+  padding: 12px;
+  min-height: 40px;
+  line-height: 16px;
+  text-decoration: none;
+  text-transform: none;
+  vertical-align: middle;
+  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.multiselect__option:after {
+  top: 0;
+  right: 0;
+  position: absolute;
+  line-height: 40px;
+  padding-right: 12px;
+  padding-left: 20px;
+}
+
+.multiselect__option--highlight {
+  background: #41b883;
+  outline: none;
+  color: #fff;
+}
+
+.multiselect__option--highlight:after {
+  content: attr(data-select);
+  background: #41b883;
+  color: #fff;
+}
+
+.multiselect__option--selected {
+  background: #f3f3f3;
+  color: #35495e;
+  font-weight: 700;
+}
+
+.multiselect__option--selected:after {
+  content: attr(data-selected);
+  color: silver;
+}
+
+.multiselect__option--selected.multiselect__option--highlight {
+  background: #ff6a6a;
+  color: #fff;
+}
+
+.multiselect__option--selected.multiselect__option--highlight:after {
+  background: #ff6a6a;
+  content: attr(data-deselect);
+  color: #fff;
+}
+
+.multiselect--disabled {
+  background: #ededed;
+  pointer-events: none;
+}
+
+.multiselect--disabled .multiselect__current,
+.multiselect--disabled .multiselect__select,
+.multiselect__option--disabled {
+  background: #ededed;
+  color: #a6a6a6;
+}
+
+.multiselect__option--disabled {
+  cursor: text;
+  pointer-events: none;
+}
+
+.multiselect__option--disabled.multiselect__option--highlight {
+  background: #dedede!important;
+}
+
+.multiselect-enter-active,
+.multiselect-leave-active {
+  transition: all .15s ease;
+}
+
+.multiselect-enter,
+.multiselect-leave-active {
+  opacity: 0;
+}
+
+.multiselect__strong {
+  margin-bottom: 8px;
+  line-height: 20px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+[dir=rtl] .multiselect {
+  text-align: right;
+}
+
+[dir=rtl] .multiselect__select {
+  right: auto;
+  left: 1px;
+}
+
+[dir=rtl] .multiselect__tags {
+  padding: 8px 8px 0 40px;
+}
+
+[dir=rtl] .multiselect__content {
+  text-align: right;
+}
+
+[dir=rtl] .multiselect__option:after {
+  right: auto;
+  left: 0;
+}
+
+[dir=rtl] .multiselect__clear {
+  right: auto;
+  left: 12px;
+}
+
+[dir=rtl] .multiselect__spinner {
+  right: auto;
+  left: 1px;
+}
+
+@keyframes a {
+  0% {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(2turn);
+  }
+}</style><style type="text/css">
+#free-reward-panel .reward-users-modal main {
+  padding: 0;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.reward-note-modal .v-modal {
+  width: 620px;
+  text-align: center;
+}
+.reward-note-modal .v-modal form {
+    margin: 0 auto 25px auto;
+    padding: 0 40px;
+}
+.reward-note-modal .v-modal .reward-intro {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+.reward-note-modal .v-modal .reward-intro .avatar {
+      cursor: default !important;
+      width: 36px;
+      height: 36px;
+      margin-right: 10px;
+      display: inline-block;
+}
+.reward-note-modal .v-modal .reward-intro .intro {
+      margin-right: 5px;
+      font-weight: bold;
+      vertical-align: middle;
+}
+.reward-note-modal .v-modal .reward-intro i {
+      color: #EA6F5A;
+      vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs {
+    margin: 25px 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group {
+      margin: 0 -5px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group input {
+        display: none;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group input:checked + .option {
+        color: #EA6F5A;
+        border-color: #EA6F5A;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .custom-amount:checked + .option .custom-text {
+        opacity: 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .custom-amount:checked + .option .custom-amount-input {
+        opacity: 1;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option {
+        position: relative;
+        margin: 0 5px 15px;
+        width: 156px;
+        height: 56px;
+        line-height: 54px;
+        border: 1px solid #E6E6E6;
+        border-radius: 4px;
+        font-weight: normal;
+        color: #999999;
+        cursor: pointer;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option i {
+          font-size: 16px;
+          vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .amount {
+          font-size: 28px;
+          vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .piece {
+          font-size: 13px;
+          vertical-align: sub;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input {
+          position: absolute;
+          top: 0;
+          z-index: -1;
+          width: 100%;
+          opacity: 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input i {
+            position: absolute;
+            top: 0;
+            left: 10px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input .piece {
+            position: absolute;
+            top: 4px;
+            right: 10px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input {
+            display: block;
+            margin: 0 auto;
+            width: 80px;
+            height: 54px;
+            line-height: 54px;
+            border: none;
+            font-size: 28px;
+            text-align: center;
+            background: transparent;
+            -moz-appearance: textfield;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input::-webkit-outer-spin-button, .reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input::-webkit-inner-spin-button {
+              -webkit-appearance: none !important;
+}
+.reward-note-modal .v-modal .main-inputs .message {
+      padding: 15px 20px;
+      margin-bottom: 0;
+      font-size: 14px;
+      border: 1px solid #E6E6E6;
+      color: #333333;
+      border-radius: 4px;
+      background-color: rgba(180, 180, 180, 0.1);
+}
+.reward-note-modal .v-modal .main-inputs .message textarea {
+        width: 100%;
+        height: 44px;
+        padding: 0;
+        margin: 0;
+        resize: none;
+        background: none !important;
+        border: none !important;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        -webkit-box-shadow: none;
+                box-shadow: none;
+}
+.reward-note-modal .v-modal .main-inputs .message textarea:focus {
+          outline: none;
+}
+.reward-note-modal .v-modal .reward-info .amount {
+    font-size: 28px;
+    font-weight: bold;
+    color: #EA6F5A;
+}
+.reward-note-modal .v-modal .reward-info .pay-method {
+    font-size: 14px;
+}
+.reward-note-modal .v-modal .reward-info .pay-method a {
+      color: #3194D0;
+}
+.reward-note-modal .v-modal .choose-pay {
+    margin: 0 -5px;
+}
+.reward-note-modal .v-modal .choose-pay input {
+      display: none;
+}
+.reward-note-modal .v-modal .choose-pay input:checked + .option {
+      color: #EA6F5A;
+      border-color: #EA6F5A;
+}
+.reward-note-modal .v-modal .choose-pay .option {
+      margin: 20px 5px 10px;
+      width: 156px;
+      height: 56px;
+      line-height: 54px;
+      text-align: center;
+      border: 1px solid #E6E6E6;
+      border-radius: 4px;
+      cursor: pointer;
+}
+.reward-note-modal .v-modal .choose-pay .option img {
+        height: 30px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.day.alipay, .reward-note-modal .v-modal .choose-pay .option img.night.alipay {
+        min-width: 85px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.day.wechat, .reward-note-modal .v-modal .choose-pay .option img.night.wechat {
+        min-width: 112px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.night {
+        display: none;
+}
+body.reader-night-mode .reward-note-modal .v-modal .choose-pay .option img.night {
+        display: inline-block;
+}
+body.reader-night-mode .reward-note-modal .v-modal .choose-pay .option img.day {
+        display: none;
+}
+.reward-note-modal .v-modal .choose-pay .tooltip {
+      width: 230px;
+}
+.reward-note-modal .v-modal .modal-footer {
+    padding: 0 15px 20px;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+}
+.reward-note-modal .v-modal .modal-footer .btn {
+      padding: 8px 45px;
+      font-size: 24px;
+}
+.reward-note-modal .v-modal .btn-pay {
+    padding: 8px 25px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #F5A623;
+}
+.weixin-pay, .success-pay {
+  text-align: center;
+}
+.weixin-pay .v-modal, .success-pay .v-modal {
+    width: 350px;
+}
+.weixin-pay .ic-successed, .success-pay .ic-successed {
+    font-size: 60px;
+    color: #3db922;
+}
+.weixin-pay h2, .weixin-pay h3, .success-pay h2, .success-pay h3 {
+    margin-bottom: 20px;
+    color: #333333;
+}
+.weixin-pay h2, .success-pay h2 {
+    margin: 0 0 40px 0;
+    font-size: 24px;
+}
+.weixin-pay .bind-text, .success-pay .bind-text {
+    position: relative;
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: #999999;
+}
+.weixin-pay .bind-text:before, .weixin-pay .bind-text:after, .success-pay .bind-text:before, .success-pay .bind-text:after {
+      content: "";
+      border-top: 1px solid #999;
+      display: block;
+      position: absolute;
+      width: 40px;
+      top: 8px;
+}
+.weixin-pay .bind-text:before, .success-pay .bind-text:before {
+      left: 30px;
+}
+.weixin-pay .bind-text:after, .success-pay .bind-text:after {
+      right: 30px;
+}
+.weixin-pay .share-bind, .success-pay .share-bind {
+    display: block;
+    margin-bottom: 30px;
+}
+.weixin-pay .share-bind i, .success-pay .share-bind i {
+      margin-right: 4px;
+      font-size: 22px;
+      vertical-align: middle;
+}
+.weixin-pay .share-bind.wechat i, .success-pay .share-bind.wechat i {
+      color: #00BB29;
+}
+.weixin-pay .share-bind.weibo i, .success-pay .share-bind.weibo i {
+      color: #E05244;
+}
+.weixin-pay .wx-qr-code, .success-pay .wx-qr-code {
+    display: inline-block;
+}
+.weixin-pay .wx-qr-code img, .success-pay .wx-qr-code img {
+      margin: 0 auto;
+      padding: 10px;
+      width: 200px;
+      background-color: #ffffff;
+}
+.weixin-pay .pay-amount, .success-pay .pay-amount {
+    margin: 20px 0;
+    color: #787878;
+}
+.weixin-pay .pay-amount span, .success-pay .pay-amount span {
+      color: #F5A623;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.v-modal-wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background-color: transparent;
+}
+.v-modal-wrap.modal-leave-active {
+    -webkit-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+}
+.v-modal-wrap.modal-enter-active .v-modal-mask, .v-modal-wrap.modal-leave-active .v-modal-mask {
+    opacity: 0;
+}
+.v-modal-wrap.modal-enter-active .v-modal, .v-modal-wrap.modal-leave-active .v-modal {
+    -webkit-transform: translate(-50%, -70%);
+        -ms-transform: translate(-50%, -70%);
+            transform: translate(-50%, -70%);
+    opacity: 0;
+}
+.v-modal-wrap .v-modal-mask {
+    background-color: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    -webkit-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    opacity: 1;
+}
+.v-modal-wrap .v-modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    -webkit-box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    -o-transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s;
+    opacity: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    overflow: hidden;
+}
+.v-modal-wrap .v-modal > header:before, .v-modal-wrap .v-modal > header:after, .v-modal-wrap .v-modal > main:before, .v-modal-wrap .v-modal > main:after, .v-modal-wrap .v-modal > footer:before, .v-modal-wrap .v-modal > footer:after {
+      content: '';
+      clear: both;
+      display: table;
+}
+.v-modal-wrap .v-modal > header {
+      padding: 20px;
+      border-bottom: 1px solid #F0F0F0;
+}
+.v-modal-wrap .v-modal > header h4 {
+        margin: 0;
+        color: #333;
+        text-align: left;
+}
+.v-modal-wrap .v-modal .close {
+      position: absolute;
+      right: 16px;
+      top: 20px;
+      font-size: 26px;
+      line-height: 20px;
+      color: rgba(0, 0, 0, 0.8);
+}
+.v-modal-wrap .v-modal .close:hover {
+        color: #000000;
+}
+.v-modal-wrap .v-modal > main {
+      padding: 20px 20px 20px 20px;
+      font-size: 15px;
+      color: #333;
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1;
+      overflow-x: hidden;
+      overflow-y: auto;
+}
+.v-modal-wrap .v-modal > footer {
+      padding: 20px;
+      background-color: #fff;
+}
+.v-modal-wrap .v-modal > footer button {
+        padding: 0;
+        margin: 0;
+        background-color: transparent;
+        border: 0;
+        float: right;
+}
+.v-modal-wrap .v-modal > footer button:focus {
+          outline: 0;
+}
+.v-modal-wrap .v-modal > footer .submit {
+        padding: 4px 12px;
+        border: 1px solid;
+        border-radius: 20px;
+}
+.v-modal-wrap .v-modal > footer .cancel {
+        margin-top: 5px;
+}
+.v-modal-wrap .v-modal > footer .cancel:hover {
+          color: #333333;
+}
+.reader-night-mode .v-modal-wrap .v-modal-mask {
+  background-color: rgba(63, 63, 63, 0.7);
+}
+.reader-night-mode .v-modal-wrap .v-modal {
+  background-color: #3f3f3f;
+}
+.reader-night-mode .v-modal-wrap .v-modal header {
+    border-color: #2F2F2F;
+}
+.reader-night-mode .v-modal-wrap .v-modal header h4 {
+      color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal .close {
+    color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal .close:hover {
+      color: #ffffff;
+}
+.reader-night-mode .v-modal-wrap .v-modal main {
+    color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal footer {
+    background-color: #3f3f3f;
+}
+.reader-night-mode .v-modal-wrap .v-modal footer .cancel:hover {
+      color: #C8C8C8;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.youdao-fixed-ad {
+  display: block;
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+.youdao-fixed-ad .img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.youdao-fixed-ad .ad-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: block;
+    font-size: 12px;
+    padding: 2px 5px 0 6px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    cursor: pointer;
+}
+.qingteng-ads {
+  width: 180px;
+}
+</style><style type="text/css">
+.yuxi-fixed-ad {
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+.yuxi-fixed-ad .img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: url(//cdn2.jianshu.io/assets/web/yuxi-ads-d73b364baf42dfeca32d518c819a0136.jpg);
+}
+.yuxi-fixed-ad .ad-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: block;
+    font-size: 12px;
+    padding: 2px 5px 0 6px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    cursor: pointer;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.like[data-v-6ddd02c6] {
+  display: inline-block;
+}
+.like .like-group[data-v-6ddd02c6] {
+    position: relative;
+    padding: 13px 0 15px 0;
+    font-size: 0;
+    border: 1px solid #EA6F5A;
+    border-radius: 40px;
+}
+.like .like-group[data-v-6ddd02c6]:hover {
+      background-color: rgba(236, 97, 73, 0.05);
+}
+.like .like-group .btn-like[data-v-6ddd02c6] {
+      display: inline-block;
+      font-size: 19px;
+}
+.like .like-group .btn-like[data-v-6ddd02c6]:before {
+        content: '';
+        position: absolute;
+        left: 12px;
+        top: 2px;
+        width: 50px;
+        height: 50px;
+        background-image: url(//cdn2.jianshu.io/assets/web/like_animation_steps-62a00a7b52377d3069927cdb8e61fd34.png);
+        background-position: left;
+        background-repeat: no-repeat;
+        background-size: 1000px 50px;
+}
+.like .like-group .btn-like a[data-v-6ddd02c6] {
+        position: relative;
+        padding: 18px 30px 18px 55px;
+        color: #EA6F5A;
+}
+.like .like-group .modal-wrap[data-v-6ddd02c6] {
+      font-size: 18px;
+      border-left: 1px solid rgba(236, 97, 73, 0.4);
+      display: inline-block;
+      margin-left: -15px;
+}
+.like .like-group .modal-wrap a[data-v-6ddd02c6] {
+        color: #EA6F5A;
+        padding: 18px 26px 18px 18px;
+}
+.like .like-group.like-animation[data-v-6ddd02c6], .like .like-group.active[data-v-6ddd02c6] {
+      background-color: #EA6F5A;
+}
+.like .like-group.like-animation .btn-like a[data-v-6ddd02c6], .like .like-group.active .btn-like a[data-v-6ddd02c6] {
+        color: white;
+}
+.like .like-group.like-animation .modal-wrap[data-v-6ddd02c6], .like .like-group.active .modal-wrap[data-v-6ddd02c6] {
+        border-left: 1px solid white;
+}
+.like .like-group.like-animation .modal-wrap a[data-v-6ddd02c6], .like .like-group.active .modal-wrap a[data-v-6ddd02c6] {
+          color: white;
+}
+.like .like-group.like-animation .btn-like[data-v-6ddd02c6]:before {
+      -webkit-animation: likeBlast-data-v-6ddd02c6 0.6s 1 steps(19);
+              animation: likeBlast-data-v-6ddd02c6 0.6s 1 steps(19);
+      background-position: right;
+}
+@-webkit-keyframes likeBlast {
+0% {
+    background-position: left;
+}
+100% {
+    background-position: right;
+}
+}
+@keyframes likeBlast-data-v-6ddd02c6 {
+0% {
+    background-position: left;
+}
+100% {
+    background-position: right;
+}
+}
+.like .like-group.active .btn-like[data-v-6ddd02c6]:before {
+      background-position: right;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.main {
+  position: relative;
+  margin: 0 auto;
+  padding: 0 0 30px 0;
+  width: 620px;
+}
+.main .title {
+    padding-left: 8px;
+    border-left: 3px solid #EA6F5A;
+    line-height: 1;
+    font-size: 15px;
+}
+.main .collection-settings {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    font-size: 13px;
+    color: #A0A0A0;
+}
+.main .collection-settings span {
+      padding-left: 4px;
+}
+.main .include-collection {
+    width: 100%;
+    padding-top: 20px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+}
+.main .include-collection .item {
+      display: inline-block;
+      margin: 0 12px 12px 0;
+      min-height: 32px;
+      background-color: white;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+      vertical-align: top;
+      overflow: hidden;
+}
+.main .include-collection .item img {
+        width: 32px;
+        height: 32px;
+}
+.main .include-collection .item .name {
+        display: inline-block;
+        padding: 0 10px;
+        font-size: 14px;
+}
+.main .include-collection .add-collection-wrap {
+      margin: 0 12px 12px 0;
+}
+.main .include-collection .add-collection {
+      padding: 8px 12px;
+      font-size: 14px;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+}
+.main .include-collection .add-collection i {
+        margin-right: 4px;
+        color: #969696;
+}
+.main .recommend-note a {
+    position: relative;
+    margin: 20px 2px 0 0;
+    width: 200px;
+    height: 160px;
+    display: inline-block;
+}
+.main .recommend-note a:after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 160px;
+      border-radius: 0 0 4px 4px;
+      -webkit-box-shadow: inset 0px -80px 50px -22px rgba(0, 0, 0, 0.6);
+              box-shadow: inset 0px -80px 50px -22px rgba(0, 0, 0, 0.6);
+      top: 0;
+      left: 0;
+      z-index: 1;
+}
+.main .recommend-note .name {
+    position: absolute;
+    bottom: 40px;
+    left: 10px;
+    right: 10px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #ffffff;
+    z-index: 2;
+}
+.main .recommend-note .author {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 2;
+}
+.main .recommend-note .avatar {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+.main .recommend-note .avatar img {
+      border-radius: 50%;
+}
+.main .recommend-note .author-name {
+    font-size: 12px;
+    color: #ffffff;
+    display: inline-block;
+    vertical-align: -1px;
+}
+.main .show-more {
+    margin: 0 12px 12px 0;
+    font-size: 14px;
+    color: #A0A0A0;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.recommend-note {
+  margin-bottom: 20px;
+}
+.recommend-note .meta, .recommend-note .list {
+    width: 620px;
+    margin: 0 auto;
+}
+.recommend-note .meta .title {
+    padding-left: 8px;
+    border-left: 3px solid #EA6F5A;
+    line-height: 1;
+    font-size: 15px;
+}
+.recommend-note .meta .title .more {
+      float: right;
+      font-size: 14px;
+      color: #A0A0A0;
+}
+.recommend-note .list {
+    margin-top: 20px;
+}
+.recommend-note .list .note {
+      display: block;
+      margin-bottom: 25px;
+      padding: 0 0 25px 0;
+      border-bottom: 1px solid #DDDDDD;
+}
+.recommend-note .list .note.have-img {
+        min-height: 136px;
+}
+.recommend-note .list .note.have-img.no-user .description {
+          -webkit-line-clamp: 3;
+}
+.recommend-note .list .note .cover {
+        float: right;
+        margin: -5px 0 0 15px;
+        width: 150px;
+        height: 120px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 6px;
+}
+.recommend-note .list .note .title {
+        display: inherit;
+        margin-bottom: 4px;
+        font-size: 18px;
+        line-height: 27px;
+        font-weight: bold;
+        color: #333333;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+           text-overflow: ellipsis;
+        white-space: nowrap;
+}
+.recommend-note .list .note .title:hover {
+          text-decoration: underline;
+}
+.recommend-note .list .note .title:visited {
+          color: #999999;
+}
+.recommend-note .list .note .description {
+        margin-bottom: 12px;
+        font-size: 13px;
+        line-height: 23px;
+        color: #333333;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+           text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+}
+.recommend-note .list .note .author .avatar {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-right: 3px;
+        border-radius: 50%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        vertical-align: middle;
+}
+.recommend-note .list .note .author .name {
+        font-size: 13px;
+        color: #333333;
+        vertical-align: middle;
+}
+</style><style type="text/css">
+#featured-comment-list {
+  margin-top: 30px;
+  margin-bottom: -15px;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.pc-bind-phone-modal .modal-content, .pc-bind-phone-modal .modal-body {
+  overflow: visible;
+}
+.pc-bind-phone-modal .modal-body {
+  padding-top: 14px;
+}
+.pc-bind-phone-modal .dropdown-menu {
+  max-height: 300px;
+  overflow: auto;
+}
+.pc-bind-phone-modal .dropdown-menu .tag {
+    background-color: #efefef;
+    color: #4A4A4A;
+    height: 28px;
+    line-height: 28px;
+    padding-left: 25px;
+    font-size: 12px;
+}
+.pc-bind-phone-modal .tips {
+  color: #999999;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  margin-bottom: 14px;
+}
+.pc-bind-phone-modal .tips a {
+    color: #3194D0;
+}
+.reader-night-mode .pc-bind-phone-modal .dropdown-menu .tag {
+  background-color: #2F2F2F;
+  color: #999999;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.comment-images {
+  display: block;
+  width: 338px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  position: relative;
+  font-size: 0;
+}
+.comment-images .preview-img {
+    display: block;
+}
+.comment-images .image {
+    position: relative;
+    border-radius: 4px;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+}
+body.reader-night-mode .comment-images .image {
+      border-color: #2f2f2f;
+}
+.comment-images .image:not(:nth-child(3n)) {
+      margin-right: 4px;
+}
+.comment-images .image:nth-child(n + 4) {
+      margin-top: 4px;
+}
+.comment-images .image.is-long:after {
+      content: '\957F\56FE';
+      position: absolute;
+      bottom: 0;
+      margin-left: -32px;
+      width: 32px;
+      height: 28px;
+      font-size: 12px;
+      text-align: center;
+      line-height: 28px;
+      background-color: #2f2f2f;
+      opacity: 0.5;
+      color: #fff;
+}
+.comment-images .one-image.is-long {
+    width: 110px;
+    height: 220px;
+    background-position: top left;
+    background-size: 110px auto;
+}
+.comment-images .one-image.is-long:after {
+      left: 100%;
+}
+.comment-images .one-image.is-normal {
+    height: 110px;
+    width: 100%;
+    background-size: contain;
+    background-position: center left;
+}
+.comment-images .many-image {
+    background-size: cover;
+    display: inline-block !important;
+    height: 110px;
+    width: 110px;
+}
+.comment-images .many-image:after {
+      left: 100%;
+}
+.comment-images .sub-image {
+    width: 105px;
+    height: 105px;
+}
+.comment-images .collapsed-btn {
+    display: block;
+    color: #3194d0;
+    font-size: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.comment-images .mask {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 32%;
+    border-radius: 2px;
+    background-color: rgba(47, 47, 47, 0.6);
+    overflow: hidden;
+    pointer-events: none;
+}
+.comment-images .mask span {
+      font-size: 15px;
+      color: #fff;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
+      width: 100%;
+      text-align: center;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.tips-card-loading[data-v-f3bf5228], .tips-card[data-v-f3bf5228] {
+  width: 460px;
+  position: relative;
+  left: 0;
+  top: 0;
+  border-radius: 6px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background-color: #ffffff;
+  -webkit-box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #d9d9d9;
+}
+.tips-card-loading[data-v-f3bf5228] {
+  height: 200px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+}
+.tips-card-loading div[data-v-f3bf5228] {
+    background-color: #EAEAEA;
+}
+.tips-card-loading .avatar[data-v-f3bf5228] {
+    width: 72px !important;
+    height: 72px !important;
+    border-radius: 50%;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+.tips-card-loading .name[data-v-f3bf5228] {
+    width: 120px;
+    height: 20px;
+    position: absolute;
+    left: 110px;
+    top: 31px;
+}
+.tips-card-loading .content[data-v-f3bf5228] {
+    position: absolute;
+    left: 110px;
+    top: 62px;
+    width: 238px;
+    height: 39.2px;
+    background-color: transparent;
+}
+.tips-card-loading .content .text[data-v-f3bf5228], .tips-card-loading .content .text-delay[data-v-f3bf5228] {
+      height: 14px;
+      position: absolute;
+      left: 0;
+      width: 100%;
+}
+.tips-card-loading .content .text[data-v-f3bf5228] {
+      top: 2px;
+      -webkit-animation: loading-data-v-f3bf5228 1s ease-in-out infinite;
+      animation: loading-data-v-f3bf5228 1s ease-in-out infinite;
+}
+.tips-card-loading .content .text-delay[data-v-f3bf5228] {
+      bottom: 3px;
+      -webkit-animation: loading-data-v-f3bf5228 1s ease-in-out -0.5s infinite;
+      animation: loading-data-v-f3bf5228 1s ease-in-out -0.5s infinite;
+}
+@keyframes loading-data-v-f3bf5228 {
+0% {
+    width: 60%;
+}
+50% {
+    width: 100%;
+}
+100% {
+    width: 60%;
+}
+}
+@-webkit-keyframes loading {
+0% {
+    width: 60%;
+}
+50% {
+    width: 100%;
+}
+100% {
+    width: 60%;
+}
+}
+.tips-card-loading .meta[data-v-f3bf5228] {
+    width: 30px;
+    height: 42px;
+    position: absolute;
+    bottom: 20px;
+    background-color: transparent;
+}
+.tips-card-loading .meta.meta-1[data-v-f3bf5228] {
+      left: 30px;
+}
+.tips-card-loading .meta.meta-2[data-v-f3bf5228] {
+      left: 90px;
+}
+.tips-card-loading .meta.meta-3[data-v-f3bf5228] {
+      left: 150px;
+}
+.tips-card-loading .meta .count[data-v-f3bf5228], .tips-card-loading .meta .type[data-v-f3bf5228] {
+      position: absolute;
+}
+.tips-card-loading .meta .count[data-v-f3bf5228] {
+      left: -5px;
+      top: 6px;
+      height: 18px;
+      width: 40px;
+}
+.tips-card-loading .meta .type[data-v-f3bf5228] {
+      left: 1px;
+      bottom: 2px;
+      height: 13px;
+      width: 28px;
+}
+.tips-card-loading .button[data-v-f3bf5228] {
+    position: absolute;
+    bottom: 17px;
+    width: 90px;
+    height: 40px;
+    border-radius: 40px;
+}
+.tips-card-loading .message[data-v-f3bf5228] {
+    right: 120px;
+}
+.tips-card-loading .follow[data-v-f3bf5228] {
+    right: 17px;
+}
+.tips-card[data-v-f3bf5228] {
+  z-index: 10;
+}
+.tips-card .card-content[data-v-f3bf5228] {
+    padding: 20px 20px 0 20px;
+}
+.tips-card .card-content .summary[data-v-f3bf5228] {
+      padding: 8px 0 20px 90px;
+      min-height: 92px;
+      position: relative;
+}
+.tips-card .card-content .summary .avatar[data-v-f3bf5228] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 72px;
+        height: 72px;
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: #EAEAEA;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+}
+.tips-card .card-content .summary .name[data-v-f3bf5228] {
+        height: 26px;
+        margin-right: 3px;
+        margin-bottom: 8px;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: row;
+            -ms-flex-direction: row;
+                flex-direction: row;
+        -webkit-box-pack: start;
+        -webkit-justify-content: flex-start;
+            -ms-flex-pack: start;
+                justify-content: flex-start;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+            -ms-flex-align: center;
+                align-items: center;
+}
+.tips-card .card-content .summary .name .nickname[data-v-f3bf5228] {
+          color: #333333;
+          font-size: 19px;
+          font-weight: bold;
+          overflow: hidden;
+          -o-text-overflow: ellipsis;
+             text-overflow: ellipsis;
+          white-space: nowrap;
+          cursor: pointer;
+}
+.tips-card .card-content .summary .name .sex[data-v-f3bf5228], .tips-card .card-content .summary .name .badge[data-v-f3bf5228] {
+          -webkit-flex-shrink: 0;
+              -ms-flex-negative: 0;
+                  flex-shrink: 0;
+          display: inline-block;
+}
+.tips-card .card-content .summary .name .sex[data-v-f3bf5228] {
+          font-size: 19px;
+          width: 19px;
+          margin: 0 4px;
+}
+.tips-card .card-content .summary .intro[data-v-f3bf5228] {
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+           text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        margin-bottom: 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #333333;
+}
+.tips-card .card-content .summary .intro.block[data-v-f3bf5228] {
+          color: #999999;
+}
+.tips-card .card-content .summary .list .item[data-v-f3bf5228] {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 13px;
+        color: #999999;
+        cursor: pointer;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+           text-overflow: ellipsis;
+        white-space: nowrap;
+}
+.tips-card .card-content .summary .list .item i[data-v-f3bf5228] {
+          margin-right: 2px;
+}
+.tips-card .card-footer[data-v-f3bf5228] {
+    border-top: 1px solid #F0F0F0;
+    padding: 15px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    overflow: hidden;
+    _zoom: 1;
+}
+.tips-card .card-footer .profile[data-v-f3bf5228] {
+      width: 198px;
+      overflow: hidden;
+      _zoom: 1;
+      float: left;
+}
+.tips-card .card-footer .profile div[data-v-f3bf5228] {
+        float: left;
+        width: 60px;
+        height: 44px;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+            -ms-flex-align: center;
+                align-items: center;
+}
+.tips-card .card-footer .profile div span[data-v-f3bf5228] {
+          display: block;
+          width: 100%;
+          text-align: center;
+}
+.tips-card .card-footer .profile div .type[data-v-f3bf5228] {
+          font-size: 13px;
+          color: #999999;
+}
+.tips-card .card-footer .profile div .count[data-v-f3bf5228] {
+          font-size: 18px;
+          color: #333333;
+}
+.tips-card .card-footer .social[data-v-f3bf5228] {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: row;
+          -ms-flex-direction: row;
+              flex-direction: row;
+      -webkit-box-pack: end;
+      -webkit-justify-content: flex-end;
+          -ms-flex-pack: end;
+              justify-content: flex-end;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      float: right;
+      overflow: hidden;
+      _zoom: 1;
+}
+.tips-card .card-footer .social .message[data-v-f3bf5228] {
+        border: 1px solid rgba(59, 194, 29, 0.7);
+        color: #42C02E;
+        margin: 0 10px 0 16px;
+        font-size: 15px;
+        padding: 8px 0;
+        width: 90px;
+        border-radius: 40px;
+        text-align: center;
+        cursor: pointer;
+        float: left;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+}
+.tips-card .card-footer .social .message[data-v-f3bf5228]:hover {
+          border: 1px solid #42C02E;
+          color: #42C02E;
+          background-color: rgba(59, 194, 29, 0.05);
+}
+.tips-card .card-footer .social .user-follow-button[data-v-f3bf5228] {
+        font-size: 15px;
+        padding: 8px 0;
+        width: 100px;
+}
+.arrow[data-v-f3bf5228] {
+  position: absolute;
+  width: 100%;
+  height: 10px;
+  left: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+.arrow i[data-v-f3bf5228] {
+    position: absolute;
+    left: 50%;
+    margin: 0;
+    margin-left: -10px;
+    border-width: 10px;
+    border-color: transparent;
+    padding: 0;
+}
+.arrow em[data-v-f3bf5228] {
+    display: block;
+    position: absolute;
+    left: -9px;
+    border-width: 9px;
+    border-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+.arrow-type-top[data-v-f3bf5228] {
+  bottom: 1px;
+}
+.arrow-type-top i[data-v-f3bf5228] {
+    border-top-color: #d9d9d9;
+    border-style: solid dashed dashed;
+    top: 0;
+}
+.arrow-type-top em[data-v-f3bf5228] {
+    border-style: solid dashed dashed;
+    border-top-color: #ffffff;
+    top: -10px;
+}
+.arrow-type-bottom[data-v-f3bf5228] {
+  top: 1px;
+}
+.arrow-type-bottom i[data-v-f3bf5228] {
+    border-bottom-color: #d9d9d9;
+    border-style: dashed dashed solid;
+    top: -10px;
+}
+.arrow-type-bottom em[data-v-f3bf5228] {
+    border-style: dashed dashed solid;
+    border-bottom-color: #ffffff;
+    top: -8px;
+}
+.reader-night-mode .tips-card-loading[data-v-f3bf5228] {
+  background-color: #3F3F3F;
+  border-color: #2F2F2F;
+}
+.reader-night-mode .tips-card-loading .avatar[data-v-f3bf5228], .reader-night-mode .tips-card-loading .name[data-v-f3bf5228], .reader-night-mode .tips-card-loading .text[data-v-f3bf5228], .reader-night-mode .tips-card-loading .text-delay[data-v-f3bf5228], .reader-night-mode .tips-card-loading .count[data-v-f3bf5228], .reader-night-mode .tips-card-loading .type[data-v-f3bf5228], .reader-night-mode .tips-card-loading .button[data-v-f3bf5228] {
+    background-color: #545454;
+}
+.reader-night-mode .tips-card[data-v-f3bf5228] {
+  background-color: #3F3F3F;
+  border-color: #2F2F2F;
+}
+.reader-night-mode .tips-card .card-content .summary .name .nickname[data-v-f3bf5228] {
+    color: #C8C8C8;
+}
+.reader-night-mode .tips-card .card-content .summary .name .nickname[data-v-f3bf5228]:hover {
+      color: #ffffff;
+}
+.reader-night-mode .tips-card .card-content .summary .intro[data-v-f3bf5228] {
+    color: #C8C8C8;
+}
+.reader-night-mode .tips-card .card-footer[data-v-f3bf5228] {
+    border-top-color: #2F2F2F;
+}
+.reader-night-mode .tips-card .card-footer .profile div .count[data-v-f3bf5228] {
+      color: #C8C8C8;
+}
+.reader-night-mode .arrow.arrow-type-top em[data-v-f3bf5228] {
+  border-top-color: #3F3F3F;
+}
+.reader-night-mode .arrow.arrow-type-top i[data-v-f3bf5228] {
+  border-top-color: #2F2F2F;
+}
+.reader-night-mode .arrow.arrow-type-bottom em[data-v-f3bf5228] {
+  border-bottom-color: #3F3F3F;
+}
+.reader-night-mode .arrow.arrow-type-bottom i[data-v-f3bf5228] {
+  border-bottom-color: #2F2F2F;
+}
+</style><style type="text/css">
+.v-tooltip-container,
+.v-tooltip-content {
+  display: inline-block;
+}
+.v-tooltip-container {
+  position: relative;
+}
+.v-tooltip-container .v-tooltip-content {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+.v-tooltip-container .v-tooltip-wrap {
+    position: absolute;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-top {
+      bottom: 100%;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+          -ms-transform: translateX(-50%);
+              transform: translateX(-50%);
+      padding-bottom: 10px;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-bottom {
+      top: 100%;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+          -ms-transform: translateX(-50%);
+              transform: translateX(-50%);
+      padding-top: 10px;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-left {
+      top: 50%;
+      right: 100%;
+      -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+              transform: translateY(-50%);
+      padding-right: 10px;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-right {
+      top: 50%;
+      left: 100%;
+      -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+              transform: translateY(-50%);
+      padding-left: 10px;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-top-start {
+      bottom: 100%;
+      left: 0;
+      padding-bottom: 10px;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-top-end {
+      bottom: 100%;
+      right: 0;
+      padding-bottom: 10px;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-bottom-start {
+      top: 100%;
+      left: 0;
+      padding-top: 10px;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-bottom-end {
+      top: 100%;
+      right: 0;
+      padding-top: 10px;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-left-start {
+      top: 0;
+      right: 100%;
+      padding-right: 10px;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-left-end {
+      bottom: 0;
+      right: 100%;
+      padding-right: 10px;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-right-start {
+      top: 0;
+      left: 100%;
+      padding-left: 10px;
+}
+.v-tooltip-container .v-tooltip-wrap.v-tooltip-wrap-right-end {
+      bottom: 0;
+      left: 100%;
+      padding-left: 10px;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.like-button[data-v-cdecbe24] {
+  position: relative;
+  padding-left: 23px;
+}
+.like-button[data-v-cdecbe24]:before {
+    content: '';
+    position: absolute;
+    left: -16px;
+    top: -16px;
+    width: 50px;
+    height: 50px;
+    background-image: url(//cdn2.jianshu.io/assets/web/zan_animation_steps-8d65a474b670eb6a022516f4e0b8e9a4.png);
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: 1050px 50px;
+}
+.like-button[data-v-cdecbe24]:hover:before {
+    background-position: -50px;
+}
+.like-button.zan-animation span[data-v-cdecbe24], .like-button.active span[data-v-cdecbe24] {
+    color: #333333;
+}
+body.reader-night-mode .like-button.zan-animation span[data-v-cdecbe24], body.reader-night-mode .like-button.active span[data-v-cdecbe24] {
+      color: #C8C8C8;
+}
+.like-button.zan-animation[data-v-cdecbe24]:before {
+    -webkit-animation: likeBlast-data-v-cdecbe24 0.6s 1 steps(19);
+            animation: likeBlast-data-v-cdecbe24 0.6s 1 steps(19);
+    background-position: right;
+}
+@-webkit-keyframes likeBlast {
+0% {
+    background-position: -50px;
+}
+100% {
+    background-position: right;
+}
+}
+@keyframes likeBlast-data-v-cdecbe24 {
+0% {
+    background-position: -50px;
+}
+100% {
+    background-position: right;
+}
+}
+.like-button.active[data-v-cdecbe24]:before {
+    background-position: right;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.youdao-recommended-ad {
+  position: relative;
+  display: block;
+}
+.youdao-recommended-ad .img {
+    display: block;
+    float: right;
+    width: 150px;
+    height: 120px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: RGB(241, 243, 244);
+    border-radius: 6px;
+    margin: -5px 0 0 15px;
+}
+body.reader-night-mode .youdao-recommended-ad .img {
+      background-color: #4f4f4f;
+}
+.youdao-recommended-ad .info {
+    overflow: hidden;
+}
+.youdao-recommended-ad .info .title {
+      display: block;
+      color: #333;
+      line-height: 27px;
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: -4px;
+      cursor: pointer;
+}
+body.reader-night-mode .youdao-recommended-ad .info .title {
+        color: #969696;
+}
+.youdao-recommended-ad .info .intro {
+      display: block;
+      font-size: 13px;
+      color: #999;
+      overflow: hidden;
+      -o-text-overflow: ellipsis;
+         text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 24px;
+      max-height: 48px;
+      -webkit-box-sizing: content-box;
+              box-sizing: content-box;
+      white-space: normal;
+}
+.youdao-recommended-ad .info .ad-badge {
+      position: absolute;
+      left: 0;
+      top: 95px;
+      display: block;
+      width: 38px;
+      height: 18px;
+      line-height: 16px;
+      text-align: center;
+      border-radius: 2px;
+      border: solid 1px #999999;
+      color: #999999;
+      font-size: 12px;
+}
+</style></head><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div>
+
+  <!-- 只给10%的用户添加代码 -->
+  <!-- ###第四范式-智能推荐：代码直接复制 无需修改参数### -->
+  <!-- ###功能：上报内容并反馈用户行为### -->
+  <!--
+  -->
+  <body lang="zh-CN" class="reader-black-font" style="" data-gr-c-s-loaded="true">
+    <!-- 全局顶部导航栏 -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="width-limit">
+    <!-- 左上方 Logo -->
+    <a class="logo" href="https://www.jianshu.com/"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" alt="Nav logo"></a>
+
+    <!-- 右上角 -->
+      <!-- 未登录显示登录/注册/写文章 -->
+      <a class="btn write-btn" target="_blank" href="https://www.jianshu.com/writer#/">
+        <i class="iconfont ic-write"></i>写文章
+</a>      <a class="btn sign-up" id="sign_up" href="https://www.jianshu.com/sign_up">注册</a>
+      <a class="btn log-in" id="sign_in" href="https://www.jianshu.com/sign_in">登录</a>
+
+    <!-- 如果用户登录，显示下拉菜单 -->
+
+    <div class="style-mode"><a class="style-mode-btn"><i class="iconfont ic-navigation-mode"></i></a> <div class="popover-modal" style="left: 0px; display: none;"><div class="meta"><i class="iconfont ic-navigation-night"></i><span>夜间模式</span></div> <div class="switch day-night-group"><a class="switch-btn">开</a> <a class="switch-btn active">关</a></div> <hr> <div class="switch font-family-group"><a class="switch-btn font-song">宋体</a> <a class="switch-btn font-hei active">黑体</a></div> <div class="switch"><a class="switch-btn active">简</a> <a class="switch-btn">繁</a></div></div></div>
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="nav navbar-nav">
+            <li class="tab ">
+              <a href="https://www.jianshu.com/">
+                <span class="menu-text">首页</span><i class="iconfont ic-navigation-discover menu-icon"></i>
+</a>            </li>
+            <li class="tab ">
+              <a id="web-nav-app-download-btn" class="app-download-btn" href="https://www.jianshu.com/apps?utm_medium=desktop&amp;utm_source=navbar-apps"><span class="menu-text">下载App</span><i class="iconfont ic-navigation-download menu-icon"></i></a>
+            </li>
+          <li class="search">
+            <form target="_blank" action="https://www.jianshu.com/search" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="✓">
+              <input type="text" name="q" id="q" value="" autocomplete="off" placeholder="搜索" class="search-input">
+              <a class="search-btn" href="javascript:void(null)"><i class="iconfont ic-search"></i></a>
+</form>          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+    
+<div class="note">
+  <div id="note-fixed-ad-container">
+    <div id="fixed-ad-container">
+      <div style="display: block;"><a target="_blank" href="https://www.jianshu.com/apps/redirect?utm_source=side-banner-click" id="web-note-ad-fixed"><span class="close">×</span></a></div>
+      <div><a href="https://dsp-click.youdao.com/clk/request.s?slot=30edd91dd8637d9f645baa8448ba90b3&amp;k=%2Bswy8WL9T9jWDUYrHqCXnF2FQOYMROOb1vjEf9kqI73Xxo%2BoRxcJpjjAgKuViCqvIxCHqA9N%2F2c%2F9Be%2FcwcSr7163AOvhGGLEFs6FcF5%2Fp5sD%2F1s%2Bihdxr1CZYK%2Fas%2FQnrV3IuZ928mg7I4vHyOy4YUFWTUQNdsPnsEsllaLFroFeGRyUzC2c0O28sEmaM8CdQ6xzCHA6LbCjhJesRfNbrBB%2B%2FsQXwKVl54XVE7fdVcrYeYhn6D7pat9vXoe89QSSfw8EzOdbocVm1S%2Bs9X8PXUOh6RyqG6Eek4VgNfkGmuGpGUWhROEByf9m5%2FBhkb7CqZIfzsZdBqI78r8u1xr21NSiu7R%2FGglmFCjKZ7g3fNzMVAcyTI0%2Bz04ZLMQNvVBH9vr6oEO3UN6UdgHVZUPqzTC6aMIdY6i2cz4scANkROfTeRamq9pswF2f%2Fbfm0%2FtyDnzVDsTdL1%2FCqTP9zPVh%2F%2BDOfgupSwUAwgfSyNPQSmkVP%2BWX4H1XOJ0dv8LoODV5iLeGOqZOudXhpNBF3Oc%2BHPEDCO1xP63LsZ8aKcpM8Wk2gAWeN2jnBMRUtiv2uJGCf487f%2BopTYj4sLy90tKfbGHqEYJuvXMCJAFSrgrIciCDha6iuh7jL87EgqaCt3xPvUnS0ga3YxHMIuGoJBalpwJz67mnnobghsuR1vahHGNfe%2Bg7FnX8AyU1%2B1Thzg4n0lskMXncCwYu4mC%2Bsnff6USxcnSMHFT2P2kcORkY3abgP%2F%2BKv%2BLDs0iZQWN8OvXMDf06js%2BBi8m1dqv408OyGarRQxT4q3YWbCD1iov4gYEac4yxs4ehvT5kAMj8KM3uBXkbMs%2F23eWtpM2gmEIrC9Avj%2BixAHzMeTx1C3sb8PE9mU6H%2FqZlHSvYBU%2ByxaBHABmVN%2BpgWIZ20oqEnFrJMgeM6SXtjYz9fT3WAmPnIZzthz5jI0k4AY1LXfSC5JlVOFjHq5GJzELf64h%2Fz5sJj8zX%2FTj3hQ%2FwNkDNwAVVvcqGbM2ublX3prQnInL8DxgLeJCHRqOzKvQMWxcJFxa8sJNv4VwU3%2FhpZua1q27liEogqj2jUr%2F3wfGm9mnJui82%2BA%2FhPiZ8mhH2qzUPSolTMrKdc3YHttC6Gg%2BJZGPllO1ANNz3%2FHGjr08ybuifui%2B18aPqEcXCaY4wICrlYgqr9fGj6hHFwmmOMCAq5WIKq%2FXxo%2BoRxcJpjjAgKuViCqvAM1bKYknMi5MJgRF7p0gfw%3D%3D&amp;youdao_bid=505f19c6-267f-439f-b774-1ab6a7ff41f6&amp;iid=%7B%221592605208704938054%22%3A4%7D&amp;sid=17024" target="_blank" class="youdao-fixed-ad"><div class="img" style="background-image: url(&quot;https://oimagea3.ydstatic.com/image?id=1592605208704938054&amp;product=adpublish&amp;w=360&amp;h=360&amp;sc=0&amp;rm=2&amp;gsb=0&amp;gsbd=60&quot;);"></div> <span class="ad-badge">广告</span></a> <!----></div>
+      <a href="http://e.cn.miaozhen.com/r/k=2110413&amp;p=7L9Gn&amp;dx=__IPDX__&amp;rt=2&amp;ns=__IP__&amp;ni=__IESID__&amp;v=__LOC__&amp;xa=__ADPLATFORM__&amp;tr=__REQUESTID__&amp;mo=__OS__&amp;m0=__OPENUDID__&amp;m0a=__DUID__&amp;m1=__ANDROIDID1__&amp;m1a=__ANDROIDID__&amp;m2=__IMEI__&amp;m4=__AAID__&amp;m5=__IDFA__&amp;m6=__MAC1__&amp;m6a=__MAC__&amp;vo=3f2e070eb&amp;vr=2&amp;o=https%3A%2F%2Fwww.jianshu.com%2Fp%2Fee05f7eff678" target="_blank" class="yuxi-fixed-ad" style="display: none;"><div class="img"></div> <span class="ad-badge">广告</span></a>
+      <div id="_so_pdsBy_0"></div>
+    </div>
+  </div>
+  <div class="post">
+    <div class="article">
+        <h1 class="title">干货 | BERT fine-tune 终极实践教程</h1>
+
+        <!-- 作者区域 -->
+        <div class="author">
+          <a class="avatar" href="https://www.jianshu.com/u/81cb320df714">
+            <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/34cf2b17-fee5-457a-a257-c4e03df06820.jpg" alt="96">
+</a>          <div class="info">
+            <span class="name"><a href="https://www.jianshu.com/u/81cb320df714">奇点机智</a></span>
+            <!-- 关注用户按钮 -->
+            <a class="btn btn-success follow"><i class="iconfont ic-follow"></i><span>关注</span></a>
+            <!-- 文章数据信息 -->
+            <div class="meta">
+              <!-- 简书钻 -->
+                <span class="jsd-meta">
+                  <i class="iconfont ic-paid1"></i> 9.9
+                </span>
+              <!-- 如果文章更新时间大于发布时间，那么使用 tooltip 显示更新时间 -->
+                <span class="publish-time" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="最后编辑于 2018.11.23 17:08">2018.11.23 16:48*</span>
+              <span class="wordage">字数 2362</span>
+            <span class="views-count">阅读 17824</span><span class="comments-count">评论 37</span><span class="likes-count">喜欢 51</span></div>
+          </div>
+          <!-- 如果是当前作者，加入编辑按钮 -->
+        </div>
+
+
+        <!-- 文章内容 -->
+        <div data-note-content="" class="show-content">
+          <div class="show-content-free">
+            <p>从11月初开始，<a href="https://github.com/google-research" target="_blank" rel="nofollow">google-research</a>就陆续开源了<a href="https://github.com/google-research/bert" target="_blank" rel="nofollow">BERT</a>的各个版本。google此次开源的BERT是通过tensorflow高级API—— <code>tf.estimator</code>进行封装(wrapper)的。因此对于不同数据集的适配，只需要修改代码中的processor部分，就能进行代码的训练、交叉验证和测试。</p>
+<p>奇点机智技术团队将结合利用BERT在AI-Challenger机器阅读理解赛道的实践表现以及多年的NLP经验积累，为大家奉上<strong>BERT在中文数据集上的fine tune全攻略</strong>。</p>
+<h2><a href="https://github.com/PsYear/Articles/blob/master/bert%20fine%20tune%08%E5%AE%9E%E8%B7%B5.md#%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8A%E8%BF%90%E8%A1%8Cbert" target="_blank" rel="nofollow"></a></h2>
+<h2>在自己的数据集上运行 BERT</h2>
+<p>BERT的代码同论文里描述的一致，主要分为两个部分。一个是训练语言模型（language model）的预训练（pretrain）部分。另一个是训练具体任务(task)的fine-tune部分。在开源的代码中，预训练的入口是在<code>run_pretraining.py</code>而fine-tune的入口针对不同的任务分别在<code>run_classifier.py</code>和<code>run_squad.py</code>。其中<code>run_classifier.py</code>适用的任务为分类任务。如CoLA、MRPC、MultiNLI这些数据集。而<code>run_squad.py</code>适用的是阅读理解(MRC)任务，如squad2.0和squad1.1。</p>
+<p>预训练是BERT很重要的一个部分，与此同时，预训练需要巨大的运算资源。按照论文里描述的参数，其Base的设定在消费级的显卡Titan x 或Titan 1080ti(12GB RAM)上，甚至需要近几个月的时间进行预训练，同时还会面临显存不足的问题。不过所幸的是谷歌满足了<a href="https://github.com/google-research/bert/issues/2" target="_blank" rel="nofollow">Issues#2</a>里各国开发者的请求，针对大部分语言都公布了BERT的<a href="https://github.com/google-research/bert/blob/master/multilingual.md" target="_blank" rel="nofollow">预训练模型</a>。因此在我们可以比较方便地在自己的数据集上进行fine-tune。</p>
+<h3>
+<a href="https://github.com/PsYear/Articles/blob/master/bert%20fine%20tune%08%E5%AE%9E%E8%B7%B5.md#%E4%B8%8B%E8%BD%BD%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B" target="_blank" rel="nofollow"></a>下载预训练模型</h3>
+<p>对于中文而言，google公布了一个参数较小的BERT预训练模型。具体参数数值如下所示：</p>
+<blockquote>
+<p>Chinese Simplified and Traditional, 12-layer, 768-hidden, 12-heads, 110M parameters</p>
+</blockquote>
+<p>模型的<a href="https://storage.googleapis.com/bert_models/2018_11_03/chinese_L-12_H-768_A-12.zip" target="_blank" rel="nofollow">下载链接</a>可以在github上google的开源代码里找到。对下载的压缩文件进行解压，可以看到文件里有五个文件，其中bert_model.ckpt开头的文件是负责模型变量载入的，而vocab.txt是训练时中文文本采用的字典，最后bert_config.json是BERT在训练时，可选调整的一些参数。</p>
+<h3>
+<a href="https://github.com/PsYear/Articles/blob/master/bert%20fine%20tune%08%E5%AE%9E%E8%B7%B5.md#%E4%BF%AE%E6%94%B9processor" target="_blank" rel="nofollow"></a>修改 processor</h3>
+<p>任何模型的训练、预测都是需要有一个明确的输入，而BERT代码中processor就是负责对模型的输入进行处理。我们以分类任务的为例，介绍如何修改processor来运行自己数据集上的fine-tune。在<code>run_classsifier.py</code>文件中我们可以看到，google对于一些公开数据集已经写了一些processor，如<code>XnliProcessor</code>,<code>MnliProcessor</code>,<code>MrpcProcessor</code>和<code>ColaProcessor</code>。这给我们提供了一个很好的示例，指导我们如何针对自己的数据集来写processor。</p>
+<p>对于一个需要执行训练、交叉验证和测试完整过程的模型而言，自定义的processor里需要继承DataProcessor，并重载获取label的<code>get_labels</code>和获取单个输入的<code>get_train_examples</code>,<code>get_dev_examples</code>和<code>get_test_examples</code>函数。其分别会在<code>main</code>函数的<code>FLAGS.do_train</code>、<code>FLAGS.do_eval</code>和<code>FLAGS.do_predict</code>阶段被调用。<br>
+这三个函数的内容是相差无几的，区别只在于需要指定各自读入文件的地址。</p>
+<p>以<code>get_train_examples</code>为例，函数需要返回一个由<code>InputExample</code>类组成的<code>list</code>。<code>InputExample</code>类是一个很简单的类，只有初始化函数，需要传入的参数中guid是用来区分每个example的，可以按照<code>train-%d'%(i)</code>的方式进行定义。text_a是一串字符串，text_b则是另一串字符串。在进行后续输入处理后(BERT代码中已包含，不需要自己完成) text_a和text_b将组合成<code>[CLS] text_a [SEP] text_b [SEP]</code>的形式传入模型。最后一个参数label也是字符串的形式，label的内容需要保证出现在<code>get_labels</code>函数返回的<code>list</code>里。</p>
+<p>举一个例子，假设我们想要处理一个能够判断句子相似度的模型，现在在<code>data_dir</code>的路径下有一个名为<code>train.csv</code>的输入文件，如果我们现在输入文件的格式如下csv形式：</p>
+<pre class="hljs undefined"><code>1,你好,您好
+0,你好,你家住哪 
+</code></pre>
+<p>那么我们可以写一个如下的<code>get_train_examples</code>的函数。当然对于csv的处理，可以使用诸如<code>csv.reader</code>的形式进行读入。</p>
+<pre class="hljs python"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_train_examples</span><span class="hljs-params">(self, data_dir)</span>:</span>
+    file_path = os.path.join(data_dir, <span class="hljs-string">'train.csv'</span>)
+    <span class="hljs-keyword">with</span> open(file_path, <span class="hljs-string">'r'</span>) <span class="hljs-keyword">as</span> f:
+        reader = f.readlines()
+    examples = []
+    <span class="hljs-keyword">for</span> index, line <span class="hljs-keyword">in</span> enumerate(reader):
+        guid = <span class="hljs-string">'train-%d'</span>%index
+        split_line = line.strip().split(<span class="hljs-string">','</span>)
+        text_a = tokenization.convert_to_unicode(split_line[<span class="hljs-number">1</span>])
+        text_b = tokenization.convert_to_unicode(split_line[<span class="hljs-number">2</span>])
+        label = split_line[<span class="hljs-number">0</span>]
+        examples.append(InputExample(guid=guid, text_a=text_a, 
+                                     text_b=text_b, label=label))
+    <span class="hljs-keyword">return</span> examples
+</code></pre>
+<p>同时对应判断句子相似度这个二分类任务，<code>get_labels</code>函数可以写成如下的形式：</p>
+<pre class="hljs python"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_labels</span><span class="hljs-params">(self)</span>:</span>
+    <span class="hljs-keyword">return</span> [<span class="hljs-string">'0'</span>,<span class="hljs-string">'1'</span>]
+</code></pre>
+<p>在对<code>get_dev_examples</code>和<code>get_test_examples</code>函数做类似<code>get_train_examples</code>的操作后，便完成了对processor的修改。其中<code>get_test_examples</code>可以传入一个随意的label数值，因为在模型的预测（prediction）中label将不会参与计算。</p>
+<h3>
+<a href="https://github.com/PsYear/Articles/blob/master/bert%20fine%20tune%08%E5%AE%9E%E8%B7%B5.md#%E4%BF%AE%E6%94%B9processor%E5%AD%97%E5%85%B8" target="_blank" rel="nofollow"></a>修改 processor 字典</h3>
+<p>修改完成processor后，需要在在原本<code>main</code>函数的processor字典里，加入修改后的processor类，即可在运行参数里指定调用该processor。</p>
+<pre class="hljs python"><code class="python"> processors = {
+      <span class="hljs-string">"cola"</span>: ColaProcessor,
+      <span class="hljs-string">"mnli"</span>: MnliProcessor,
+      <span class="hljs-string">"mrpc"</span>: MrpcProcessor,
+      <span class="hljs-string">"xnli"</span>: XnliProcessor, 
+      <span class="hljs-string">"selfsim"</span>: SelfProcessor <span class="hljs-comment">#添加自己的processor</span>
+  }
+</code></pre>
+<h3>
+<a href="https://github.com/PsYear/Articles/blob/master/bert%20fine%20tune%08%E5%AE%9E%E8%B7%B5.md#%E8%BF%90%E8%A1%8Cfine-tune" target="_blank" rel="nofollow"></a>运行 fine-tune</h3>
+<p>之后就可以直接运行<code>run_classsifier.py</code>进行模型的训练。在运行时需要制定一些参数，一个较为完整的运行参数如下所示：</p>
+<pre class="hljs bash"><code class="bash"><span class="hljs-built_in">export</span> BERT_BASE_DIR=/path/to/bert/chinese_L-12_H-768_A-12 <span class="hljs-comment">#全局变量 下载的预训练bert地址</span>
+<span class="hljs-built_in">export</span> MY_DATASET=/path/to/xnli <span class="hljs-comment">#全局变量 数据集所在地址</span>
+
+python run_classifier.py \
+  --task_name=selfsim \ <span class="hljs-comment">#自己添加processor在processors字典里的key名</span>
+  --do_train=<span class="hljs-literal">true</span> \
+  --do_eval=<span class="hljs-literal">true</span> \
+  --dopredict=<span class="hljs-literal">true</span> \
+  --data_dir=<span class="hljs-variable">$MY_DATASET</span> \
+  --vocab_file=<span class="hljs-variable">$BERT_BASE_DIR</span>/vocab.txt \
+  --bert_config_file=<span class="hljs-variable">$BERT_BASE_DIR</span>/bert_config.json \
+  --init_checkpoint=<span class="hljs-variable">$BERT_BASE_DIR</span>/bert_model.ckpt \
+  --max_seq_length=128 \ <span class="hljs-comment">#模型参数</span>
+  --train_batch_size=32 \
+  --learning_rate=5e-5 \
+  --num_train_epochs=2.0 \
+  --output_dir=/tmp/selfsim_output/ <span class="hljs-comment">#模型输出路径</span>
+</code></pre>
+<h2><a href="https://github.com/PsYear/Articles/blob/master/bert%20fine%20tune%08%E5%AE%9E%E8%B7%B5.md#bert%E6%BA%90%E4%BB%A3%E7%A0%81%E9%87%8C%E8%BF%98%E6%9C%89%E4%BB%80%E4%B9%88" target="_blank" rel="nofollow"></a></h2>
+<h2>
+<a href="https://github.com/PsYear/Articles/blob/master/bert%20fine%20tune%08%E5%AE%9E%E8%B7%B5.md#bert%E6%BA%90%E4%BB%A3%E7%A0%81%E9%87%8C%E8%BF%98%E6%9C%89%E4%BB%80%E4%B9%88" target="_blank" rel="nofollow"></a>BERT 源代码里还有什么</h2>
+<p>在开始训练我们自己fine-tune的BERT后，我们可以再来看看BERT代码里除了processor之外的一些部分。<br>
+我们可以发现，process在得到字符串形式的输入后，在<code>file_based_convert_examples_to_features</code>里先是对字符串长度，加入[CLS]和[SEP]等一些处理后，将其写入成TFrecord的形式。这是为了能在estimator里有一个更为高效和简易的读入。</p>
+<p>我们还可以发现，在<code>create_model</code>的函数里，除了从<code>modeling.py</code>获取模型主干输出之外，还有进行fine-tune时候的loss计算。因此，如果对于fine-tune的结构有自定义的要求，可以在这部分对代码进行修改。如进行NER任务的时候，可以按照BERT论文里的方式，不只读第一位的logits，而是将每一位logits进行读取。</p>
+<p>BERT这次开源的代码，由于是考虑在google自己的TPU上高效地运行，因此采用的estimator是<code>tf.contrib.tpu.TPUEstimator</code>,虽然TPU的estimator同样可以在gpu和cpu上运行，但若想在gpu上更高效地做一些提升，可以考虑将其换成<code>tf.estimator.Estimator</code>,于此同时model_fn里一些<code>tf.contrib.tpu.TPUEstimatorSpec</code>也需要修改成<code>tf.estimator.EstimatorSpec</code>的形式，以及相关调用参数也需要做一些调整。在转换成较普通的estimator后便可以使用常用的方式对estimator进行处理，如生成用于部署的<code>.pb</code>文件等。</p>
+<h2>
+<a href="https://github.com/PsYear/Articles/blob/master/bert%20fine%20tune%08%E5%AE%9E%E8%B7%B5.md#issues%E9%87%8C%E4%B8%80%E4%BA%9B%E6%9C%89%E8%B6%A3%E7%9A%84%E5%86%85%E5%AE%B9" target="_blank" rel="nofollow"></a>GitHub Issues 里一些有趣的内容</h2>
+<p>从google对BERT进行开源开始，Issues里的讨论便异常活跃，BERT论文第一作者Jacob Devlin也积极地在Issues里进行回应，在交流讨论中，产生了一些很有趣的内容。</p>
+<p>在GitHub <a href="https://github.com/google-research/bert/issues/95" target="_blank" rel="nofollow">Issues#95</a> 中大家讨论了BERT模型在今年AI-Challenger比赛上的应用。我们也同样尝试了BERT在AI-Challenger的机器阅读理解（mrc）赛道的表现。如果简单得地将mrc的文本连接成一个长字符串的形式，可以在dev集上得到79.1%的准确率。</p>
+<p>如果参考openAI的GPT<a href="https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf" target="_blank" rel="nofollow">论文</a>里multi-choice的形式对BERT的输入输出代码进行修改则可以将准确率提高到79.3%。采用的参数都是BERT默认的参数，而单一模型成绩在赛道的test a排名中已经能超过榜单上的第一名。因此，在相关中文的任务中，bert能有很大的想象空间。</p>
+<p>在GitHub <a href="https://github.com/google-research/bert/issues/123" target="_blank" rel="nofollow">Issues#123</a> 中，<a href="https://github.com/hanxiao" target="_blank" rel="nofollow">@hanxiao</a>给出了一个采用ZeroMQ便捷部署BERT的service，可以直接调用训练好的模型作为应用的接口。同时他将BERT改为一个大的encode模型，将文本通过BERT进行encode，来实现句子级的encode。此外，他对比了多GPU上的性能，发现bert在多GPU并行上的出色表现。</p>
+<h2>
+<a href="https://github.com/PsYear/Articles/blob/master/bert%20fine%20tune%08%E5%AE%9E%E8%B7%B5.md#%E6%80%BB%E7%BB%93" target="_blank" rel="nofollow"></a>总结</h2>
+<p>总的来说，google此次开源的BERT和其预训练模型是非常有价值的，可探索和改进的内容也很多。相关数据集上已经出现了对BERT进行修改后的复合模型，如squad2.0上哈工大(HIT)的<code>AoA + DA + BERT</code>以及西湖大学（DAMO）的<code>SLQA + BERT</code>。 在感谢google这份付出的同时，我们也可以借此站在巨人的肩膀上，尝试将其运用在自然语言处理领域的方方面面，让人工智能的梦想更近一步。</p>
+<p>对NLP领域感兴趣的朋友，欢迎投简历到 <a href="mailto:jobs@naturali.io" target="_blank" rel="nofollow">jobs@naturali.io</a>，2018机器阅读理解技术竞赛冠军团队期待你的加入！</p>
+
+          </div>
+        </div>
+    </div>
+
+    <!-- 如果是付费文章，未购买，则显示购买按钮 -->
+
+    <!-- 连载目录项 -->
+
+    <!-- 如果是付费文章 -->
+      <!-- 如果是付费连载，已购买，且作者允许赞赏，则显示付费信息和赞赏 -->
+        <div id="free-reward-panel" class="support-author"><p>小礼物走一走，来简书关注我</p> <div class="btn btn-pay">赞赏支持</div> <div class="supporter"><ul class="support-list"></ul> <!----></div> <!----> <!----></div>
+
+      <div class="show-foot">
+        <a class="notebook" href="https://www.jianshu.com/nb/25299805">
+          <i class="iconfont ic-search-notebook"></i>
+          <span>日记本</span>
+</a>        <div class="copyright" data-toggle="tooltip" data-html="true" data-original-title="转载请联系作者获得授权，并标注“简书作者”。">
+          © 著作权归作者所有
+        </div>
+        <div class="modal-wrap" data-report-note="">
+          <a id="report-modal">举报文章</a>
+        </div>
+      </div>
+
+      <!-- 文章底部作者信息 -->
+        <div class="follow-detail">
+          <div class="info">
+            <a class="avatar" href="https://www.jianshu.com/u/81cb320df714">
+              <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/34cf2b17-fee5-457a-a257-c4e03df06820.jpg" alt="96">
+</a>            <a class="btn btn-success follow"><i class="iconfont ic-follow"></i><span>关注</span></a>
+            <a class="title" href="https://www.jianshu.com/u/81cb320df714">奇点机智</a>
+          <p>写了 121970 字，被 169 人关注，获得了 200 个喜欢</p></div>
+        </div>
+
+    <div class="meta-bottom">
+      <div data-v-6ddd02c6="" class="like"><div data-v-6ddd02c6="" class="btn like-group"><div data-v-6ddd02c6="" class="btn-like"><a data-v-6ddd02c6="">喜欢</a></div> <div data-v-6ddd02c6="" class="modal-wrap"><a data-v-6ddd02c6="">51</a></div></div> <!----></div>
+      <div class="share-group">
+        <a class="share-circle" data-action="weixin-share" data-toggle="tooltip" data-original-title="分享到微信">
+          <i class="iconfont ic-wechat"></i>
+        </a>
+        <a class="share-circle" data-action="weibo-share" data-toggle="tooltip" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f=&#39;http://v.t.sina.com.cn/share/share.php?appkey=1881139527&#39;,u=z||d.location,p=[&#39;&amp;url=&#39;,e(u),&#39;&amp;title=&#39;,e(t||d.title),&#39;&amp;source=&#39;,e(r),&#39;&amp;sourceUrl=&#39;,e(l),&#39;&amp;content=&#39;,c||&#39;gb2312&#39;,&#39;&amp;pic=&#39;,e(p||&#39;&#39;)].join(&#39;&#39;);function%20a(){if(!window.open([f,p].join(&#39;&#39;),&#39;mb&#39;,[&#39;toolbar=0,status=0,resizable=1,width=440,height=430,left=&#39;,(s.width-440)/2,&#39;,top=&#39;,(s.height-430)/2].join(&#39;&#39;)))u.href=[f,p].join(&#39;&#39;);};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,&#39;&#39;,&#39;&#39;,&#39;&#39;, &#39;推荐 奇点机智 的文章《干货 | BERT fine-tune 终极实践教程》（ 分享自 @简书 ）&#39;,&#39;https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=weibo&#39;,&#39;页面编码gb2312|utf-8默认gb2312&#39;));" data-original-title="分享到微博">
+          <i class="iconfont ic-weibo"></i>
+        </a>
+        <a class="share-circle" data-toggle="tooltip" id="longshare" target="_blank" data-original-title="" title="">
+            <div class="qrcode" id="qrcode">
+             <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/download-index-side-qrcode-cb13fc9106a478795f8d10f9f632fccf.png" alt="Download index side qrcode">
+             <p>下载app生成长微博图片</p>
+             </div>
+          <i class="iconfont ic-picture"></i>
+        </a>
+        <a class="share-circle more-share" tabindex="0" data-toggle="popover" data-placement="top" data-html="true" data-trigger="focus" href="javascript:void(0);" data-content="
+          &lt;ul class=&quot;share-list&quot;&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=&#39;+e(&#39;https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=qzone&#39;)+&#39;&amp;title=&#39;+e(&#39;推荐 奇点机智 的文章《干货 | BERT fine-tune 终极实践教程》&#39;),x=function(){if(!window.open(r,&#39;qzone&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-zone&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到QQ空间&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://twitter.com/share?url=&#39;+e(&#39;https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=twitter&#39;)+&#39;&amp;text=&#39;+e(&#39;推荐 奇点机智 的文章《干货 | BERT fine-tune 终极实践教程》（ 分享自 @jianshucom ）&#39;)+&#39;&amp;related=&#39;+e(&#39;jianshucom&#39;),x=function(){if(!window.open(r,&#39;twitter&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-twitter&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Twitter&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://www.facebook.com/dialog/share?app_id=483126645039390&amp;display=popup&amp;href=https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=facebook&#39;,x=function(){if(!window.open(r,&#39;facebook&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-facebook&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Facebook&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://plus.google.com/share?url=&#39;+e(&#39;https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=google_plus&#39;),x=function(){if(!window.open(r,&#39;google_plus&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-google&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Google+&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:&#39;&#39;,r=&#39;http://www.douban.com/recommend/?url=&#39;+e(&#39;https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=douban&#39;)+&#39;&amp;title=&#39;+e(&#39;干货 | BERT fine-tune 终极实践教程&#39;)+&#39;&amp;sel=&#39;+e(s)+&#39;&amp;v=1&#39;,x=function(){if(!window.open(r,&#39;douban&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r+&#39;&amp;r=1&#39;};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-douban&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到豆瓣&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        " data-original-title="" title="">更多分享</a>
+      </div>
+    </div>
+
+      <a id="web-note-ad-1" target="_blank" href="https://www.jianshu.com/apps/redirect?utm_source=note-bottom-click"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/web-note-ad-1-c2e1746859dbf03abe49248893c9bea4.png" alt="Web note ad 1"></a>
+
+    <!--
+    <div id="note-comment-above-ad-container">
+      <span id="youdao-comment-ad" class="ad-badge">广告</span>
+    </div>
+    -->
+    <div><div id="comment-list" class="comment-list"><div><form class="new-comment"><a class="avatar"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/avatar_default-78d4d1f68984cd6d4379508dd94b4210.png"></a> <div class="sign-container"><a href="https://www.jianshu.com/sign_in?utm_source=desktop&amp;utm_medium=not-signed-in-comment-form" class="btn btn-sign">登录</a> <span>后发表评论</span></div></form> <!----></div> <!----> <div class="comments-placeholder" style="display: none;"><div class="author"><div class="avatar"></div> <div class="info"><div class="name"></div> <div class="meta"></div></div></div> <div class="text"></div> <div class="text animation-delay"></div> <div class="tool-group"><i class="iconfont ic-zan-active"></i><div class="zan"></div> <i class="iconfont ic-list-comments"></i><div class="zan"></div></div></div> <div id="normal-comment-list" class="normal-comment-list"><div><div><div class="top-title"><span>37条评论</span> <a class="author-only">只看作者</a> <a class="close-btn" style="display: none;">关闭评论</a> <div class="pull-right"><a class="active">按时间倒序</a><a class="">按时间正序</a></div></div></div> <!----> <!----> <div class="comments-placeholder" style="display: none;"><div class="author"><div class="avatar"></div> <div class="info"><div class="name"></div> <div class="meta"></div></div></div> <div class="text"></div> <div class="text animation-delay"></div> <div class="tool-group"><i class="iconfont ic-zan-active"></i><div class="zan"></div> <i class="iconfont ic-list-comments"></i><div class="zan"></div></div></div> <div id="comment-37521659" class="comment"><div><div class="author"><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/3d8262cee7ef" target="_blank" class="avatar"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/530d3529-8c4e-4713-ac20-a5a085a4a2d9"></a>  </div> <!----></div> <div class="info"><a href="https://www.jianshu.com/u/3d8262cee7ef" target="_blank" class="name">Kelly_a2bd</a> <!----> <!----> <div class="meta"><span>11楼 · 2019.03.19 15:03</span></div></div></div> <div class="comment-wrap"><p>新人想请教一下，如果想用bert做中文纠错（detect 和 候选纠错排序），选用run_classsifier.py还是run_squad.py?</p> <!----> <div class="tool-group"><a data-v-cdecbe24="" id="like-button-37521659" class="like-button"><span data-v-cdecbe24="">赞</span></a> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div></div> <div class="sub-comment-list"><div id="comment-37588137" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span>run_classifier.py对应的是“分类任务”，run_squad.py对应的是“基于squad数据集的标注任务”，对于非squad格式的输入需要比较大的改动。如果是标注类型的纠错，建议可以在run_classifier.py的基础上参照run_squad.py的标注处理进行修改。</span> <!----></p> <div class="sub-tool-group"><span>2019.03.20 17:28</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div> <div class="sub-comment more-comment"><a class="add-comment-btn"><i class="iconfont ic-subcomment"></i> <span>添加新评论</span></a> <!----> <!----> <!----></div> <!----></div></div><div id="comment-35957515" class="comment"><div><div class="author"><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/107f254bb30d" target="_blank" class="avatar"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/539c3a96-0f77-4e13-b7d9-4a5e9362ab61"></a>  </div> <!----></div> <div class="info"><a href="https://www.jianshu.com/u/107f254bb30d" target="_blank" class="name">曹鹏_dbef</a> <!----> <!----> <div class="meta"><span>10楼 · 2019.02.21 20:21</span></div></div></div> <div class="comment-wrap"><p>你好，我执行代码，报错：<br>File "D:\python\lib\site-packages\tensorflow\python\estimator\estimator.py", line 342, in train<br>'Must specify max_steps &gt; 0, given: {}'.format(max_steps))<br>ValueError: Must specify max_steps &gt; 0, given: 0<br>请问这是什么原因呀？</p> <!----> <div class="tool-group"><a data-v-cdecbe24="" id="like-button-35957515" class="like-button"><span data-v-cdecbe24="">赞</span></a> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div></div> <div class="sub-comment-list"><div id="comment-35988220" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span><a href="https://www.jianshu.com/u/107f254bb30d" class="maleskine-author" target="_blank" data-user-slug="107f254bb30d">@曹鹏_dbef</a> 可能是训练数据传入有问题，bert构建example和tf_record的数据失败了。建议检查一下--data_dir参数和--task_name参数对应的processer是否匹配。</span> <!----></p> <div class="sub-tool-group"><span>2019.02.22 10:44</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div><div id="comment-36281695" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/c699c347dfe6" target="_blank">Swifer</a>：
+            </div> <!----></div> <span><a href="https://www.jianshu.com/u/81cb320df714" class="maleskine-author" target="_blank" data-user-slug="81cb320df714">@奇点机智</a> 按照您文章内容去修改代码，我也遇到同样的问题。<br>--data_dir参数和--task_name参数对应的processer是有对应匹配的。</span> <!----></p> <div class="sub-tool-group"><span>2019.02.27 08:48</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div><div id="comment-37521287" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/3d8262cee7ef" target="_blank">Kelly_a2bd</a>：
+            </div> <!----></div> <span>train的数据集不够大</span> <!----></p> <div class="sub-tool-group"><span>2019.03.19 14:54</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div> <div class="sub-comment more-comment"><a class="add-comment-btn"><i class="iconfont ic-subcomment"></i> <span>添加新评论</span></a> <span class="line-warp">
+          还有1条评论，
+          <a>展开查看</a></span> <!----> <!----></div> <!----></div></div><div id="comment-35698584" class="comment"><div><div class="author"><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/7a57e5cc1fae" target="_blank" class="avatar"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/f015cce4-67c8-439b-8a8c-3e47dd1f8fa1"></a>  </div> <!----></div> <div class="info"><a href="https://www.jianshu.com/u/7a57e5cc1fae" target="_blank" class="name">Kerry_bbb8</a> <!----> <!----> <div class="meta"><span>9楼 · 2019.02.17 15:53</span></div></div></div> <div class="comment-wrap"><p>你好，请问一下，运行代码，出现InvalidArgumentError: indices[15,0,0] = 30623 is not in [0,30522)如何解决，谢谢！</p> <!----> <div class="tool-group"><a data-v-cdecbe24="" id="like-button-35698584" class="like-button"><span data-v-cdecbe24="">赞</span></a> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div></div> <div class="sub-comment-list"><div id="comment-35698712" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/7a57e5cc1fae" target="_blank">Kerry_bbb8</a>：
+            </div> <!----></div> <span>数据用MRPC的(Google的example)</span> <!----></p> <div class="sub-tool-group"><span>2019.02.17 15:55</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div><div id="comment-35740242" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span><a href="https://www.jianshu.com/u/7a57e5cc1fae" class="maleskine-author" target="_blank" data-user-slug="7a57e5cc1fae">@Kerry_bbb8</a> 因为值30623没有在词embedding的查找空间内，如果使用已经预训练好的模型，需要使用预训练时同样的字典（google预训练使用的英文字典的大小为30522），可以检查一下传入字典路径参数“--vocab_file”是否是google提供的字典。</span> <!----></p> <div class="sub-tool-group"><span>2019.02.18 10:14</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div><div id="comment-35757877" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/7a57e5cc1fae" target="_blank">Kerry_bbb8</a>：
+            </div> <!----></div> <span>謝謝你!</span> <!----></p> <div class="sub-tool-group"><span>2019.02.18 16:34</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div> <div class="sub-comment more-comment"><a class="add-comment-btn"><i class="iconfont ic-subcomment"></i> <span>添加新评论</span></a> <span class="line-warp">
+          还有1条评论，
+          <a>展开查看</a></span> <!----> <!----></div> <!----></div></div><div id="comment-33975351" class="comment"><div><div class="author"><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/51812bee875a" target="_blank" class="avatar"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/d1074258-59a9-4d17-b9a8-60e6a85267b0"></a>  </div> <!----></div> <div class="info"><a href="https://www.jianshu.com/u/51812bee875a" target="_blank" class="name">XXP_43da</a> <!----> <!----> <div class="meta"><span>8楼 · 2019.01.15 19:21</span></div></div></div> <div class="comment-wrap"><p>请问 “squad2.0上哈工大(HIT)的AoA + DA + BERT以及西湖大学（DAMO）的SLQA + BERT”有参考论文吗？</p> <!----> <div class="tool-group"><a data-v-cdecbe24="" id="like-button-33975351" class="like-button"><span data-v-cdecbe24="">赞</span></a> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div></div> <div class="sub-comment-list"><div id="comment-34006293" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span><a href="https://www.jianshu.com/u/51812bee875a" class="maleskine-author" target="_blank" data-user-slug="51812bee875a">@XXP_43da</a> 可以参考此前preprint的一些论文<br><a href="https://arxiv.org/abs/1607.04423" rel="nofollow" target="_blank">https://arxiv.org/abs/1607.04423</a> AOA模型<br><a href="http://www.aclweb.org/anthology/P18-1158" rel="nofollow" target="_blank">http://www.aclweb.org/anthology/P18-1158</a> SLQA模型</span> <!----></p> <div class="sub-tool-group"><span>2019.01.16 10:15</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div> <div class="sub-comment more-comment"><a class="add-comment-btn"><i class="iconfont ic-subcomment"></i> <span>添加新评论</span></a> <!----> <!----> <!----></div> <!----></div></div><div id="comment-33382806" class="comment"><div><div class="author"><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/083b936f52ca" target="_blank" class="avatar"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/670bf137-6678-4fee-ab7f-af87194c27b3.jpeg"></a>  </div> <!----></div> <div class="info"><a href="https://www.jianshu.com/u/083b936f52ca" target="_blank" class="name">明年十三岁</a> <!----> <!----> <div class="meta"><span>7楼 · 2019.01.05 10:19</span></div></div></div> <div class="comment-wrap"><p>您好，我有一个问题，希望您能帮我解决一下。<br>对于aspect-level情感分析，除了输入句子，还会输入aspect用于做attention，对于这个分类任务，只修改processor怕是不行，因为processor并没有提到处理aspect的部分，我一直不知道该怎么做，您能给我解答一下吗?</p> <!----> <div class="tool-group"><a data-v-cdecbe24="" id="like-button-33382806" class="like-button"><span data-v-cdecbe24="">赞</span></a> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div></div> <div class="sub-comment-list"><div id="comment-33553940" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span><a href="https://www.jianshu.com/u/083b936f52ca" class="maleskine-author" target="_blank" data-user-slug="083b936f52ca">@明年十三岁</a> 你好，bert的核心特征提取结构是transformer，通常使用的transformer并没有加入aspect进行attention计算的能力，可以考虑修改transformer的结构来实现aspect的attention的计算。</span> <!----></p> <div class="sub-tool-group"><span>2019.01.08 11:03</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div> <div class="sub-comment more-comment"><a class="add-comment-btn"><i class="iconfont ic-subcomment"></i> <span>添加新评论</span></a> <!----> <!----> <!----></div> <!----></div></div><div id="comment-33286348" class="comment"><div><div class="author"><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/fe966a313562" target="_blank" class="avatar"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/15-a7ac401939dd4df837e3bbf82abaa2a8.jpg"></a>  </div> <!----></div> <div class="info"><a href="https://www.jianshu.com/u/fe966a313562" target="_blank" class="name">西溪雷神</a> <!----> <!----> <div class="meta"><span>6楼 · 2019.01.03 14:18</span></div></div></div> <div class="comment-wrap"><p>您好，感谢分享！“如squad2.0上哈工大(HIT)的AoA + DA + BERT以及西湖大学（DAMO）的SLQA + BERT”能否提供下相关地址（代码和数据），谢谢！</p> <!----> <div class="tool-group"><a data-v-cdecbe24="" id="like-button-33286348" class="like-button"><span data-v-cdecbe24="">赞</span></a> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div></div> <div class="sub-comment-list"><div id="comment-33291335" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span><a href="https://www.jianshu.com/u/fe966a313562" class="maleskine-author" target="_blank" data-user-slug="fe966a313562">@西溪雷神</a> 您好，这个提供不了哦，他们并没有进行开源</span> <!----></p> <div class="sub-tool-group"><span>2019.01.03 16:08</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div> <div class="sub-comment more-comment"><a class="add-comment-btn"><i class="iconfont ic-subcomment"></i> <span>添加新评论</span></a> <!----> <!----> <!----></div> <!----></div></div><div id="comment-32801372" class="comment"><div><div class="author"><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/589dc1472646" target="_blank" class="avatar"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/3f4eb72c91e4"></a>  </div> <!----></div> <div class="info"><a href="https://www.jianshu.com/u/589dc1472646" target="_blank" class="name">589dc1472646</a> <!----> <!----> <div class="meta"><span>5楼 · 2018.12.25 15:32</span></div></div></div> <div class="comment-wrap"><p>你好，文章中说尝试了BERT在AI-Challenger的机器阅读理解（mrc）赛道的表现。如果简单得地将mrc的文本连接成一个长字符串的形式，可以在dev集上得到79.1%的准确率。这个是怎么个连接呢？query和paragraph连接么</p> <!----> <div class="tool-group"><a data-v-cdecbe24="" id="like-button-32801372" class="like-button"><span data-v-cdecbe24="">赞</span></a> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div></div> <div class="sub-comment-list"><div id="comment-32804227" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span><a href="https://www.jianshu.com/u/589dc1472646" class="maleskine-author" target="_blank" data-user-slug="589dc1472646">@589dc1472646</a> 你好！是的，以[CLS] paragraph [SEP] query [SEP]的形式连接。</span> <!----></p> <div class="sub-tool-group"><span>2018.12.25 16:43</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div><div id="comment-32807907" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/589dc1472646" target="_blank">589dc1472646</a>：
+            </div> <!----></div> <span><a href="https://www.jianshu.com/u/81cb320df714" class="maleskine-author" target="_blank" data-user-slug="81cb320df714">@奇点机智</a> 那answer呢？感觉只能这种形式来输入训练。[CLS] query + paragraph [SEP] answer[SEP]</span> <!----></p> <div class="sub-tool-group"><span>2018.12.25 17:59</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div><div id="comment-32858326" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span><a href="https://www.jianshu.com/u/589dc1472646" class="maleskine-author" target="_blank" data-user-slug="589dc1472646">@589dc1472646</a> 可以采用您说的这种方式，我们是把answer作为label来训练</span> <!----></p> <div class="sub-tool-group"><span>2018.12.26 16:40</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div> <div class="sub-comment more-comment"><a class="add-comment-btn"><i class="iconfont ic-subcomment"></i> <span>添加新评论</span></a> <span class="line-warp">
+          还有1条评论，
+          <a>展开查看</a></span> <!----> <!----></div> <!----></div></div><div id="comment-32456114" class="comment"><div><div class="author"><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/cecdb77146d2" target="_blank" class="avatar"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/6-fd30f34c8641f6f32f5494df5d6b8f3c.jpg"></a>  </div> <!----></div> <div class="info"><a href="https://www.jianshu.com/u/cecdb77146d2" target="_blank" class="name">jizx</a> <!----> <!----> <div class="meta"><span>4楼 · 2018.12.18 20:35</span></div></div></div> <div class="comment-wrap"><p>你好，我想问一下使用谷歌预训练好的模型，进行fine-tune时，硬件有什么要求，GPU的显存要多少？</p> <!----> <div class="tool-group"><a data-v-cdecbe24="" id="like-button-32456114" class="like-button"><span data-v-cdecbe24="">赞</span></a> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div></div> <div class="sub-comment-list"><div id="comment-32457528" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span>普通1080 ti的显卡就可以。</span> <!----></p> <div class="sub-tool-group"><span>2018.12.18 20:57</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div> <div class="sub-comment more-comment"><a class="add-comment-btn"><i class="iconfont ic-subcomment"></i> <span>添加新评论</span></a> <!----> <!----> <!----></div> <!----></div></div><div id="comment-32181251" class="comment"><div><div class="author"><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/35d51c1243f7" target="_blank" class="avatar"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/f31c52c3-24f4-430c-bbef-c1b96c536cf0.jpg"></a>  </div> <!----></div> <div class="info"><a href="https://www.jianshu.com/u/35d51c1243f7" target="_blank" class="name">毛毛虫_wendy</a> <!----> <!----> <div class="meta"><span>3楼 · 2018.12.13 15:21</span></div></div></div> <div class="comment-wrap"><p>你好,我想请问一下在运行时需要制定一些参数，这些定制的参数是放在哪儿的啊?</p> <!----> <div class="tool-group"><a data-v-cdecbe24="" id="like-button-32181251" class="like-button"><span data-v-cdecbe24="">赞</span></a> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div></div> <div class="sub-comment-list"><div id="comment-32457529" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span>运行 .py文件在命令行添加的参数。</span> <!----></p> <div class="sub-tool-group"><span>2018.12.18 20:58</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div> <div class="sub-comment more-comment"><a class="add-comment-btn"><i class="iconfont ic-subcomment"></i> <span>添加新评论</span></a> <!----> <!----> <!----></div> <!----></div></div><div id="comment-31714650" class="comment"><div><div class="author"><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/c93c788917fe" target="_blank" class="avatar"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/74a2ede9-b05a-465f-8db6-a49651201186"></a>  </div> <!----></div> <div class="info"><a href="https://www.jianshu.com/u/c93c788917fe" target="_blank" class="name">Aze_fa56</a> <!----> <!----> <div class="meta"><span>2楼 · 2018.12.04 21:17</span></div></div></div> <div class="comment-wrap"><p>您好，我想问下，下载那个中文的pretrain模型后，怎么能取出embeddings，想去评估一下这个pretrain出来的embeddings，求问！！！</p> <!----> <div class="tool-group"><a data-v-cdecbe24="" id="like-button-31714650" class="like-button"><span data-v-cdecbe24="">赞</span></a> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div></div> <div class="sub-comment-list"><div id="comment-31757595" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span><a href="https://www.jianshu.com/u/c93c788917fe" class="maleskine-author" target="_blank" data-user-slug="c93c788917fe">@Aze_fa56</a> 三个embedding的tensor名字为:<br>bert/embeddings/word_embeddings:0<br>bert/embeddings/token_type_embeddings:0<br>bert/embeddings/position_embeddings:0<br>可以在载入后用如下的方式获取,通过sess.run()打印或者写入文件<br>embedding_variables = [ var for var in tf.global_variables()<br>    if var.name in embedding_name_list]</span> <!----></p> <div class="sub-tool-group"><span>2018.12.05 18:14</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div><div id="comment-32855682" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/c548de2beff2" target="_blank">海秀_659d</a>：
+            </div> <!----></div> <span>请问一下，运行代码，出现 module 'tensorflow.contrib.tpu' has no attribute 'InputPipelineConfig'如何解决</span> <!----></p> <div class="sub-tool-group"><span>2018.12.26 15:42</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div><div id="comment-32858356" class="sub-comment"><p><div data-v-f3bf5228="" class="v-tooltip-container" style="z-index: 0;"><div class="v-tooltip-content"><a href="https://www.jianshu.com/u/81cb320df714" target="_blank">奇点机智</a>：
+            </div> <!----></div> <span><a href="https://www.jianshu.com/u/c548de2beff2" class="maleskine-author" target="_blank" data-user-slug="c548de2beff2">@海秀_659d</a> 您好，可能是因为您tensorflow版本不是1.11,如果不是版本问题可以在<a href="https://github.com/google-research/bert/issues" rel="nofollow" target="_blank">https://github.com/google-research/bert/issues</a>提交issue</span> <!----></p> <div class="sub-tool-group"><span>2018.12.26 16:41</span> <a class=""><i class="iconfont ic-comment"></i> <span>回复</span></a> <!----> <!----></div></div> <div class="sub-comment more-comment"><a class="add-comment-btn"><i class="iconfont ic-subcomment"></i> <span>添加新评论</span></a> <span class="line-warp">
+          还有6条评论，
+          <a>展开查看</a></span> <!----> <!----></div> <!----></div></div></div></div> <!----> <div><!----></div></div></div>
+  </div>
+
+  <div class="side-tool"><ul><li data-placement="left" data-toggle="tooltip" data-container="body" data-original-title="回到顶部" style="display: none;"><a class="function-button"><i class="iconfont ic-backtop"></i></a></li> <!----> <!----> <!----> <!----> <li data-placement="left" data-toggle="tooltip" data-container="body" data-original-title="分享文章" id="share"><a tabindex="0" role="button" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" href="javascript:void(0);" data-content="&lt;ul class=&#39;share-list&#39; style=&quot;width:220px&quot;&gt;
+                  &lt;li&gt;&lt;a class=&quot;weixin-share&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-weixin&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到微信&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f=&#39;http://v.t.sina.com.cn/share/share.php?appkey=1881139527&#39;,u=z||d.location,p=[&#39;&amp;url=&#39;,e(u),&#39;&amp;title=&#39;,e(t||d.title),&#39;&amp;source=&#39;,e(r),&#39;&amp;sourceUrl=&#39;,e(l),&#39;&amp;content=&#39;,c||&#39;gb2312&#39;,&#39;&amp;pic=&#39;,e(p||&#39;&#39;)].join(&#39;&#39;);function%20a(){if(!window.open([f,p].join(&#39;&#39;),&#39;mb&#39;,[&#39;toolbar=0,status=0,resizable=1,width=440,height=430,left=&#39;,(s.width-440)/2,&#39;,top=&#39;,(s.height-430)/2].join(&#39;&#39;)))u.href=[f,p].join(&#39;&#39;);};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,&#39;&#39;,&#39;&#39;,&#39;&#39;, &#39;推荐 奇点机智 的文章《干货 | BERT fine-tune 终极实践教程》（ 分享自 @简书 ）&#39;,&#39;https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=weibo&#39;,&#39;页面编码gb2312|utf-8默认gb2312&#39;));&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-weibo&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到微博&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=&#39;+e(&#39;https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=qzone&#39;)+&#39;&amp;title=&#39;+e(&#39;推荐 奇点机智 的文章《干货 | BERT fine-tune 终极实践教程》&#39;),x=function(){if(!window.open(r,&#39;qzone&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-zone&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到QQ空间&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://twitter.com/share?url=&#39;+e(&#39;https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=twitter&#39;)+&#39;&amp;text=&#39;+e(&#39;推荐 奇点机智 的文章《干货 | BERT fine-tune 终极实践教程》（ 分享自 @jianshucom ）&#39;)+&#39;&amp;related=&#39;+e(&#39;jianshucom&#39;),x=function(){if(!window.open(r,&#39;twitter&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-twitter&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到Twitter&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://www.facebook.com/dialog/share?app_id=483126645039390&amp;display=popup&amp;href=https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=facebook&#39;,x=function(){if(!window.open(r,&#39;facebook&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-facebook&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到Facebook&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r=&#39;https://plus.google.com/share?url=&#39;+e(&#39;https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=google_plus&#39;),x=function(){if(!window.open(r,&#39;google_plus&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-google&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到Google+&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:&#39;&#39;,r=&#39;http://www.douban.com/recommend/?url=&#39;+e(&#39;https://www.jianshu.com/p/aa2eff7ec5c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=douban&#39;)+&#39;&amp;title=&#39;+e(&#39;干货 | BERT fine-tune 终极实践教程&#39;)+&#39;&amp;sel=&#39;+e(s)+&#39;&amp;v=1&#39;,x=function(){if(!window.open(r,&#39;douban&#39;,&#39;toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330&#39;))location.href=r+&#39;&amp;r=1&#39;};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()&quot;&gt;&lt;i class=&#39;social-icon-sprite social-icon-douban&#39;&gt;&lt;/i&gt;&lt;span&gt;分享到豆瓣&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;" data-original-title="" title="" class="function-button"><i class="iconfont ic-share"></i></a> <!----></li> <!----></ul></div>
+</div>
+<div class="note-bottom">
+  <div><div class="main"><div class="title">被以下专题收入，发现更多相似内容</div> <!----> <div class="include-collection"><!----> <a href="https://www.jianshu.com/c/86ff829f995f?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/u_2582065815_2360012304_fm_21_gp_0.jpg"><div class="name">大数据，机器学...</div></a><a href="https://www.jianshu.com/c/NEt52a?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/computer_guy.jpg"><div class="name">程序员</div></a><a href="https://www.jianshu.com/c/9010d00e0450?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/1074431302.jpg"><div class="name">深度学习</div></a><a href="https://www.jianshu.com/c/4b3f92364497?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/ml.jpg"><div class="name">Machine...</div></a><a href="https://www.jianshu.com/c/0041ac293d6b?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/屏幕快照_2017-01-04_22.10.19.png"><div class="name">自然语言处理—学习</div></a><a href="https://www.jianshu.com/c/579f0cedd7aa?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/google-ai-logo.jpg"><div class="name">Bert</div></a><a href="https://www.jianshu.com/c/1e63f26a5d8b?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/timg.jpg"><div class="name">自然语言处理类</div></a> <a class="show-more">
+        展开更多
+        <i class="iconfont ic-show"></i></a></div></div> <!----> <!----></div>
+  <div><div class="recommend-note"><div class="meta"><div class="title">
+        推荐阅读
+        <a target="_blank" href="https://www.jianshu.com/" class="more">
+           更多精彩内容<i class="iconfont ic-link"></i></a></div></div> <div class="list"><div class="note have-img"><a target="_blank" href="https://www.jianshu.com/p/e6bb7ac12a5f?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="cover" style="background-image: url(&quot;//upload-images.jianshu.io/upload_images/15522296-adfbcf8dd1d7bfb6.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240/format/webp&quot;);"></a> <a target="_blank" href="https://www.jianshu.com/p/e6bb7ac12a5f?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="title">小白写作故事</a> <p class="description">老师拿出一幅画，举在胸前晃了晃，然后对着下边的同学们说：“你们看仔细了，回家之后以这幅画的内容，一人写一篇作文，字数不限，体裁不限。”下边的学生一片哗然，“啊啊啊，又是作文，怎么天天要写作文……”老师继续喊道“安静安静！”学生便停止了声响，他接着说：“你们得了吧，我都把要写的内容画好了，只是要求你们按照画面内容，用文字描述出来而已，如果这都做不到，以后还怎么从事写作啊！？要知道那些诗人小说家，他们在创作的时候，可没有人给他们画画，他们需要自己在脑子里先勾勒出自己想要说的图像，然后再将这个图像写下来，我还没要求你们自己想像、预先设计场景呢，一个个都别叽叽歪歪了，明天一早把作文交上来，好了，...</p> <a target="_blank" href="https://www.jianshu.com/u/810b74a369dc?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="author"><div class="avatar" style="background-image: url(&quot;//upload.jianshu.io/users/upload_avatars/15522296/1e60ef14-c31d-4f02-b63c-b24245b39585.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/24/h/24/format/webp&quot;);"></div> <span class="name">韩氏子</span></a></div><div class="note"><a href="https://dsp-click.youdao.com/clk/request.s?slot=f2ac00aef0eb6b673f4e4639046bc6f8&amp;k=Ne5EYFUHYIRIEVoa2EAnsnMKslaKaGNvvKVfpF7iH%2BnXxo%2BoRxcJpjjAgKuViCqvIxCHqA9N%2F2c%2F9Be%2FcwcSr%2F41p17%2BINqIAltgtrn2lhOo1sQCdtTZsttEd8f1v7WtlIoiz8NAULXwKDY4ykbBxoUFWTUQNdsPnsEsllaLFroFeGRyUzC2c0O28sEmaM8CdQ6xzCHA6LbCjhJesRfNbsaQg1r5g3glCaU4CVzvUcfSrx2UO76VBl22RXqOjj9ioG%2FQjm0%2BB2EBLiosgyxcgHUOh6RyqG6Eek4VgNfkGmuGpGUWhROEByf9m5%2FBhkb7CqZIfzsZdBqI78r8u1xr21NSiu7R%2FGglmFCjKZ7g3fP5Mbk9KegfY2RMsPNF2spZWd6OZ7riIFAKqpNM3wNr3M6YojAAoCrnfTmpOVfC8mOfTeRamq9pswF2f%2Fbfm0%2FtyDnzVDsTdL1%2FCqTP9zPVh%2F%2BDOfgupSwUAwgfSyNPQSmkVP%2BWX4H1XOJ0dv8LoODV5iLeGOqZOudXhpNBF3Oc%2BHPEDCO1xP63LsZ8aKcpM8V6GRmWzBOtyq%2FF2OvCq60ek6sled1nrRTz%2Fp2ZJwdQE%2F4GufIFNZn0ktmT4lD0XTKCDha6iuh7jL87EgqaCt3xPvUnS0ga3YxHMIuGoJBalk73EaS82Z69P95iTqujAHx9UIVNEph39%2BMtt5DygDvKubio1FCgAy3DRnEGJfqHOueyeekhYbXdcDk%2FA18DSHGhQpvezedAnSTpO%2Fs8M5rU6XFPJzNpNL%2BiT2wYsG8dmkYag697OvSxRG3gj7pnjBUD0RiPBQirHo6rXtbcwP15X2rxDp9XQ7XGWBKYiCX6WBSZXu8uKzLcoqFh1IMpWTLo2cMBq%2FJqClROt6h2s0iA4Ae4BAsiUQ4Z8IDVOyNWtCYdwQDKLDhU7F6R6Lk%2FZvUJFicI%2FCamGEdL1yk4xXrMIQjBXZzC7wmOzS6QBQso0YtjEVNxQwdDhOLhHIihAyRKfbiJJisOV8akppj7OxQIwjwtBZc%2BTxjgeVAsprHkE9fGj6hHFwmmOMCAq5WIKq%2FXxo%2BoRxcJpjjAgKuViCqvqrGajPZ7V8Z0bA9d09Odl7L%2BgchVEWB5AdS1TNreugA%3D&amp;youdao_bid=402743eb-93cb-4f86-9e4c-27694aab25ea&amp;iid=%7B%223869149685785434046%22%3A1%7D&amp;sid=17836" target="_blank" class="youdao-recommended-ad clearfix"><span class="img" style="background-image: url(&quot;https://oimageb8.ydstatic.com/image?id=3869149685785434046&amp;product=adpublish&amp;w=320&amp;h=240&amp;sc=0&amp;rm=0&quot;);"></span> <div class="info"><span class="title">【华为云】域名1元购，全场1折起</span> <span class="intro">华为云采购季，注册即可免费抽奖，100%中奖！立即注册&gt;&gt;</span> <span class="ad-badge">广告</span></div></a></div><div class="note have-img"><a target="_blank" href="https://www.jianshu.com/p/fe60b0a3badc?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="cover" style="background-image: url(&quot;//upload-images.jianshu.io/upload_images/7713084-3176e83658e09a36.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240/format/webp&quot;);"></a> <a target="_blank" href="https://www.jianshu.com/p/fe60b0a3badc?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="title">黄花菜是怎么“凉”的？</a> <p class="description">作者：山色归读  侵权必究，授权转载请见文尾 黄花菜属于百合科多年草本植物，又名金针菜、柠檬萱草、母亲花等，因食用主要是淡黄色的花被部分，故名“黄花菜”。它还有一个名称叫“忘忧草”，周华健有一首遮风避雨的民谣——《忘忧草》，唱道“让软弱的我们懂得残忍 ，狠狠面对人生每次寒冷”，就是借它来咏叹人生风雨变幻的境遇。 黄花菜性味甘凉，有止血、消炎、清热、利湿、消食、明目、安神等功效，我国湖南祁东、甘肃庆阳和四川渠县等地都是有名的黄花菜产地，山西大同更盛产一种七芯黄花菜。相对于黄花菜，有一句关于黄花菜的俗语“黄花菜都凉了”流传更广，或许很多人就是因为这句话才知道黄花菜。 这句话是怎么来的呢？很久...</p> <a target="_blank" href="https://www.jianshu.com/u/9aba7c25aca1?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="author"><div class="avatar" style="background-image: url(&quot;//upload.jianshu.io/users/upload_avatars/7713084/768e9862-bacf-4f83-b1a8-77a392fd1d74.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/24/h/24/format/webp&quot;);"></div> <span class="name">山色归读</span></a></div><div class="note have-img"><a target="_blank" href="https://www.jianshu.com/p/6dbee72d854b?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="cover" style="background-image: url(&quot;//upload-images.jianshu.io/upload_images/12615935-7cbb550fd3fabab2.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240/format/webp&quot;);"></a> <a target="_blank" href="https://www.jianshu.com/p/6dbee72d854b?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="title">【诚善者】歪理邪说：对于付费阅读的文章，你怎么理解呀</a> <p class="description">为知识阅读而付费， 在互联网各大平台很平常。 而在简书运行阅读付费， 可不是一般的事情呀！ 简书的纯阅读者少而更少， 因为大家都是创造者，即作者。 付费阅读的消费者是粉丝群体， 而不是朋友之间的互相给面子， 也不是互相捧场，没有持续性呀！ 有简友想，我的文章内容有价值呀！ 朋友！醒醒吧！ 您身边是一些志同道合的难兄难弟呀！ 为了写作而写作， 为了日更而日更。 简书是自由者的天堂， 简书不是创业者的场所。 简友之间，少一些套路； 简友之间，多一些温暖。 简书还是那个曾经的简书吗？ 诚善者聂风，永远是诚善者聂风！</p> <a target="_blank" href="https://www.jianshu.com/u/063836621d8a?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="author"><div class="avatar" style="background-image: url(&quot;//upload.jianshu.io/users/upload_avatars/12615935/c4fecbf9-27fc-465d-b114-aa4396eea6bd.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/24/h/24/format/webp&quot;);"></div> <span class="name">诚善者聂风</span></a></div><div class="note have-img"><a target="_blank" href="https://www.jianshu.com/p/1e16a84b5b1a?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="cover" style="background-image: url(&quot;//upload-images.jianshu.io/upload_images/10359654-2c05a4f9cd28e8e6.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240/format/webp&quot;);"></a> <a target="_blank" href="https://www.jianshu.com/p/1e16a84b5b1a?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="title">90后美女“爱”上了60后大爷</a> <p class="description">我年过花甲，姥爷级别，好在简书涂鸦。最近，简村入驻一批美女，老夫寒舍也是门庭若市，每天有不少90后、95后、甚至00后的小美女光顾、来访并关注我，他们的基本特征是：头像美女；不点赞，是否阅读文章不知道，估计也不会看；不写文，0字0喜欢；暂无简介。看她们的动态，这些人关注量很大，既关注作者，也关注作者的某一篇文章。 对这样的一批人，尽然还有好多粉丝，说明我们简友们不明真相，出于礼貌而回了粉。 简书其他好友也有反映这一问题的。那么对突然冒出来的这么多90后0字美女粉丝，她们是真的关注你吗？她们是真人注册的吗？她们注册简书的真实目的又是什么呢……？一连串的问号在我脑海里盘旋不去。 我分析，这些...</p> <a target="_blank" href="https://www.jianshu.com/u/b95c2c17ac78?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="author"><div class="avatar" style="background-image: url(&quot;//upload.jianshu.io/users/upload_avatars/10359654/91a9139e-f1ee-46e3-94c3-c15c4c802b22.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/24/h/24/format/webp&quot;);"></div> <span class="name">沙舟wang</span></a></div><div class="note have-img"><a target="_blank" href="https://www.jianshu.com/p/fd9f9f2c1fe6?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="cover" style="background-image: url(&quot;//upload-images.jianshu.io/upload_images/4014747-7bf9bb38e9e9bbf1.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240/format/webp&quot;);"></a> <a target="_blank" href="https://www.jianshu.com/p/fd9f9f2c1fe6?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="title">整理 旧时光</a> <p class="description">冬天 已经过去需要收起厚棉衣当我  折叠着那些膨胀的柔软仿佛再次抚摸温暖的记忆一年的新衣叠加着又一层的不舍衣橱显得 如此拥挤一如我们的心里藏着多少旧日的故事很久很久不曾触及这一次  我忍不住把手伸向了箱底那件最古老的棉衣承载过无限欢喜可是今天我即将把它舍弃只为腾出些许空间装下正在走来的春意 Folding  the old memories The winter is gone, so the thick coats need folding.Folding the soft clothes ,I’m touching the past memories.The memories are...</p> <a target="_blank" href="https://www.jianshu.com/u/92de5f7f27e6?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" class="author"><div class="avatar" style="background-image: url(&quot;//upload.jianshu.io/users/upload_avatars/4014747/5a7ad73c-a89f-4c14-853e-d2bf4d0688bb.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/24/h/24/format/webp&quot;);"></div> <span class="name">浅浅淡淡言</span></a></div></div></div></div>
+  <!-- 相关文章 -->
+    <!-- 未登录用户 -->
+    <div class="seo-recommended-notes">
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/36b7fcd1591f?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/3039546-5530ee465093c49c.png" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/36b7fcd1591f?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">&lt;转载&gt;TensorFlow Wide And Deep 模型详解与应用</a>
+            <p class="description">该文章为转载文章，作者简介：汪剑，现在在出门问问负责推荐与个性化。曾在微软雅虎工作，从事过搜索和推荐相关工作。 TensorFlow Wide And Deep 模型详解与应用（一）TensorFlow Wide And Deep 模型详解与应用（二） 这个系列应该是介绍W...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/65a751648086?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/9-cceda3cf5072bcdd77e8ca4f21c40998.jpg" alt="48">
+              </div>
+              <span class="name">名字真的不重要</span>
+</a>          </div>
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/e2aae3fafd65?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/9166374-053f57146f75c30b.png" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/e2aae3fafd65?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">SpaCy v2.0 （二）浅译--训练分析模型</a>
+            <p class="description">Training spaCy’s Statistical Models训练spaCy模型 This guide describe show to train new statistical models for spaCy's part-of-speech tagger, ...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/3b77f85cc918?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/953f0f74-bee6-425b-bd0f-f50585a0f129" alt="48">
+              </div>
+              <span class="name">Joe_Gao_89f1</span>
+</a>          </div>
+
+          <div class="note ">
+                        <a class="title" target="_blank" href="https://www.jianshu.com/p/40ee8ffe4432?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">今日学术视野(2017.12.1)</a>
+            <p class="description">astro-ph.IM - 仪器仪表和天体物理学方法cs.AI - 人工智能cs.CL - 计算与语言cs.CV - 机器视觉与模式识别cs.CY - 计算与社会cs.DC - 分布式、并行与集群计算cs.DS - 数据结构与算法cs.HC - 人机接口cs.IR - 信息...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/ZQtGe6?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/4a2ea682281d.jpg" alt="48">
+              </div>
+              <span class="name">爱可可_爱生活</span>
+</a>          </div>
+
+          <div class="note ">
+                        <a class="title" target="_blank" href="https://www.jianshu.com/p/e92cdbbcba24?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">今日学术视野(2018.6.20)</a>
+            <p class="description">cs.AI - 人工智能cs.CL - 计算与语言cs.CR - 加密与安全cs.CV - 机器视觉与模式识别cs.CY - 计算与社会cs.DB - 数据库cs.DC - 分布式、并行与集群计算cs.DS - 数据结构与算法cs.GT - 计算机科学与博弈论cs.IR -...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/ZQtGe6?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/4a2ea682281d.jpg" alt="48">
+              </div>
+              <span class="name">爱可可_爱生活</span>
+</a>          </div>
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/26ca6f6bd1a1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/3232548-c642d73ad24cb3a3.png" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/26ca6f6bd1a1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">Faster R-CNN论文翻译——中英文对照</a>
+            <p class="description">文章作者：Tyan博客：noahsnail.com | CSDN | 简书 声明：作者翻译论文仅为学习，如有侵权请联系作者删除博文，谢谢！ 翻译论文汇总：https://github.com/SnailTyan/deep-learning-papers-translatio...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/7731e83f3a4e?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/242eb25c-3001-4411-a856-74b33312fdff.jpg" alt="48">
+              </div>
+              <span class="name">SnailTyan</span>
+</a>          </div>
+
+          <div class="note ">
+                        <a class="title" target="_blank" href="https://www.jianshu.com/p/1b2ffbc49dd3?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">细数大客户营销，那些我们不经意间犯下的致命错误</a>
+            <p class="description">大客户是业务人员又爱又头疼的对象，其实拿下大客户没有那么难。 首先是避雷。直线管理咨询的 营销顾问 致命错误01：不能用心倾听 很多营销人习惯于以大量的述说来缓解沟通中的紧张和不安，或者错将客户的沉默误以为接受而滔滔不绝。所以，倾听在销售中很容易被忽略。过多的陈述一方面容易...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/6b32809923f8?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/6-fd30f34c8641f6f32f5494df5d6b8f3c(1).jpg" alt="48">
+              </div>
+              <span class="name">直线管理咨询</span>
+</a>          </div>
+
+          <div class="note ">
+                        <a class="title" target="_blank" href="https://www.jianshu.com/p/c5a9f571113e?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">基金训练营毕业感言</a>
+            <p class="description">自从在朋友圈看到小白营广告后，带着随便玩玩的心态加入了小白营，学完小白营觉得自己需要学习的东西还很多，所以进入了基金营。自己真的不想再过靠自己死工资过活的人，身边的人都愈发优秀，自己也不甘心再过这样的生活，所以我要改变！加入到基金营，有幽默风趣又学识渊博班班，有贴贴的学长跟...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/dc8bfa585a6d?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/c105f224-d10a-42d4-bae4-87bbdee78631" alt="48">
+              </div>
+              <span class="name">泡沫_ab79</span>
+</a>          </div>
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/742728f0b56e?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/4680887-3380d6e9777cec2b.jpg" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/742728f0b56e?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">高科体能课笔记 20170219</a>
+            <p class="description">高科体能课笔记20170219 课程内容： 1. 下台阶 旋胯，体会腿内旋，注意脚和膝盖向前，不要因为旋胯而跟着旋。 2. 蹲起 同上周，下蹲注意头坐骨脚跟三点一线，起立注意压脚跟与摆臂和背部放松 蹲起的蹬脚跟与背部撑起与摆臂，发力同爬行 3. 定点跳 发力跟蹲起相通，手向...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/82ad9762d61b?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/ec037a206c17.jpg" alt="48">
+              </div>
+              <span class="name">梁绛_体态塑身</span>
+</a>          </div>
+
+          <div class="note ">
+                        <a class="title" target="_blank" href="https://www.jianshu.com/p/fdc724a1a465?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">【Java】【集合框架】集合框架</a>
+            <p class="description">集合框架 集合体系根接口:Collection 区别：数组可以存储基本数据类型和引用数据类型集合只能存储引用数据类型==（集合也可以存储基本数据类型，但是在存储过程中会自动装箱变成对象类型）==数组长度是固定的集合长度是可变的数组使用for遍历集合使用**iterator遍...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/46d0adbc3872?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/4f0555882937.jpg" alt="48">
+              </div>
+              <span class="name">JerichoPH</span>
+</a>          </div>
+
+          <div class="note ">
+                        <a class="title" target="_blank" href="https://www.jianshu.com/p/d5630dd2b3b5?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">颜值续航是亮点，南卡N1无线蓝牙耳机体验测评</a>
+            <p class="description">耳机是已经是生活中的标准配置，我们对耳机的依赖和要求也是越来越高，无论是外观、音质还是便携性都有了更高的要求。蓝牙耳机也就成为了我们的优先选择，免受线材束缚，也不用去担心接口适配问题。现在的蓝牙耳机都在形态和功能方面做了升级，最典型的就是行业引领者苹果的AirPods，凭借...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/6092d924b7f8?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/c5705201jw8fbsmxtke10j21hc0u0dol.jpg" alt="48">
+              </div>
+              <span class="name">科技客</span>
+</a>          </div>
+    </div>
+</div>
+
+    <script type="application/json" data-name="page-data">{"user_signed_in":false,"locale":"zh-CN","os":"mac","read_mode":"day","read_font":"font2","note_show":{"is_author":false,"is_following_author":false,"is_liked_note":false,"follow_state":0,"uuid":"ef33c186-d671-4b19-a6cb-594b2b372225"},"note":{"id":37204149,"slug":"aa2eff7ec5c1","user_id":12080649,"notebook_id":25299805,"commentable":true,"likes_count":51,"views_count":17824,"public_wordage":2362,"comments_count":37,"featured_comments_count":0,"total_rewards_count":0,"is_author":false,"paid_type":"free","paid":false,"paid_content_accessible":false,"author":{"nickname":"奇点机智","total_wordage":121970,"followers_count":169,"total_likes_count":200}}}</script>
+    
+    <script src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/babel-polyfill-d171e3dec4b6c15634dd.js" ></script>
+    <script src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/web-base-bfb64d2f92620b6c677d.js" ></script>
+<script src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/web-bf9cc18ee0ea47617bdc.js" ></script>
+    
+    <script src="./干货 _ BERT fine-tune 终极实践教程 - 简书_files/entry-febe43dca9f1e653bc22.js" ></script>
+    <script>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+  
+
+<!----><!----></body><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255); height: 12959px; width: 1479px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 12959px; width: 1479px;"></div></html>

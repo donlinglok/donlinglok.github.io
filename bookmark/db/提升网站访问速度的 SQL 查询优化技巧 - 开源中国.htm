@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://www.oschina.net/translate/sql-query-optimization -->
+<html class="cye-disabled cye-nm gr__oschina_net"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="referrer" content="always">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>提升网站访问速度的 SQL 查询优化技巧 - 开源中国</title>
+            <meta name="keywords" content="开源,OSC,开源软件,开源硬件,开源网站,开源社区,java开源,perl开源,python开源,ruby开源,php开源,开源项目,开源代码">
+                <meta name="description" content="开源中国 www.oschina.net 是目前中国最大的开源技术社区。我们传播开源的理念，推广开源项目，为 IT 开发者提供了一个发现、使用、并交流开源技术的平台。目前开源中国社区已收录近五万款开源软件。">
+        <link rel="stylesheet" type="text/css" href="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/semantic.min.css"><style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style>
+                <link type="text/css" rel="stylesheet" href="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/web.7381c4eb.css">        <script src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/hm.js"></script><script src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/push.js"></script><script type="text/javascript">window.__STATIC_DOMAIN = "https://static.oschina.net";</script>
+    <script src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/jquery.min.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="https://static.oschina.net/new-osc/img/favicon.ico">
+    <link rel="alternate" type="application/rss+xml" title="最新开源项目" href="https://www.oschina.net/project/rss">
+    <link rel="alternate" type="application/rss+xml" title="最新开源资讯" href="https://www.oschina.net/news/rss">
+    <link rel="alternate" type="application/rss+xml" title="最新问题列表" href="https://www.oschina.net/question/rss">
+    <link rel="alternate" type="application/rss+xml" title="最新翻译列表" href="https://www.oschina.net/translate/rss">
+    <link rel="alternate" type="application/rss+xml" title="最新博客列表" href="https://www.oschina.net/blog/rss">
+    <link rel="alternate" type="application/rss+xml" title="推荐博客列表" href="https://www.oschina.net/blog/rss?show=more">
+    <link rel="alternate" type="application/rss+xml" title="推荐软件列表" href="https://www.oschina.net/project/rss?show=recomms">
+    <link rel="alternate" type="application/rss+xml" title="最新代码分享列表" href="https://www.oschina.net/code/rss">
+    <link rel="alternate" type="application/rss+xml" title="开源中国 - 源码列表" href="https://www.oschina.net/code/source_rss">
+<script src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/share.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/jquery.serialize-object.min.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/jquery.serialize-object.min.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/jquery.serialize-object.min.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/radarChart.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/vue.min.js"></script><link rel="stylesheet" type="text/css" href="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/viewer.min.css"><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/viewer.min.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/vue.min.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/osc-message.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/osc-message.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/osc-message.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/jquery-viewer.min.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/jquery.caret.min.js"></script><script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/jquery.atwho.min.js"></script></head><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div>
+<body data-gr-c-s-loaded="true" class="dimmable pushable" style=""><svg aria-hidden="true" style="position: absolute; width: 0px; height: 0px; overflow: hidden;"><symbol id="oicon-world" viewBox="0 0 1024 1024"><path d="M921.6 204.8h-1.024A510.464 510.464 0 0 0 512 0C229.696 0 0 229.696 0 512s229.696 512 512 512c167.04 0 315.072-80.64 408.576-204.8h1.024v-1.28C985.6 732.416 1024 626.816 1024 512s-38.4-220.416-102.4-305.92V204.8zM358.4 891.456A409.984 409.984 0 0 1 102.4 512c0-17.408 1.408-34.432 3.52-51.2H153.6l51.2 102.4v102.4L307.2 768l51.2 51.2v72.256zM512 921.6a408.32 408.32 0 0 1-96.448-11.904L460.8 819.2l51.2-102.4V614.4H409.6l-51.2-51.2h-51.2L256 460.8l51.2-102.4 51.2-51.2 51.2-51.2 51.2-102.4v-47.68c16.768-2.112 33.792-3.52 51.2-3.52a407.04 407.04 0 0 1 256 90.368V256l-51.2 102.4 51.2 51.2v51.2l-102.4 51.2-51.2 52.032 51.2 50.368 51.2 51.2 51.2 102.4 33.472 33.472A408.32 408.32 0 0 1 512 921.6z"></path></symbol><symbol id="oicon-setting" viewBox="0 0 1162 1024"><path d="M1055.479204 128.810127H442.676311c-10.415913-55.551537-57.287523-97.21519-116.311031-97.21519-57.287523 0-105.895118 41.663653-116.31103 97.21519H53.815552c-10.415913 0-19.095841 8.679928-19.095841 20.831826s8.679928 20.831826 20.831826 20.831826h156.238698c10.415913 55.551537 57.287523 97.21519 116.311031 97.21519 57.287523 0 105.895118-41.663653 116.311031-97.21519h611.066907c12.151899 0 20.831826-8.679928 20.831827-20.831826s-8.679928-20.831826-20.831827-20.831826zM328.101266 224.289331c-41.663653 0-76.383363-34.719711-76.383364-76.383364 0-41.663653 34.719711-76.383363 76.383364-76.383363 41.663653 0 76.383363 34.719711 76.383363 76.383363 0 41.663653-34.719711 76.383363-76.383363 76.383364zM1055.479204 840.564195H637.106691c-10.415913-55.551537-57.287523-97.21519-116.311031-97.21519-57.287523 0-105.895118 41.663653-116.311031 97.21519H55.551537c-12.151899 0-20.831826 8.679928-20.831826 20.831827s8.679928 20.831826 20.831826 20.831826h348.933092c10.415913 55.551537 57.287523 97.21519 116.311031 97.21519 57.287523 0 105.895118-41.663653 116.311031-97.21519H1055.479204c12.151899 0 20.831826-8.679928 20.831827-20.831826 0-10.415913-8.679928-20.831826-20.831827-20.831827z m-534.683544 97.21519c-41.663653 0-76.383363-34.719711-76.383363-76.383363 0-41.663653 34.719711-76.383363 76.383363-76.383364 41.663653 0 76.383363 34.719711 76.383364 76.383364-1.735986 41.663653-34.719711 76.383363-76.383364 76.383363zM1055.479204 484.687161h-67.703435c-10.415913-55.551537-57.287523-97.21519-116.311031-97.21519-57.287523 0-105.895118 41.663653-116.311031 97.21519H55.551537c-12.151899 0-20.831826 8.679928-20.831826 20.831826s8.679928 20.831826 20.831826 20.831827h699.60217c10.415913 55.551537 57.287523 97.21519 116.311031 97.21519 57.287523 0 105.895118-41.663653 116.311031-97.21519h67.703435c12.151899 0 20.831826-8.679928 20.831827-20.831827s-8.679928-20.831826-20.831827-20.831826z m-184.014466 97.21519c-41.663653 0-76.383363-34.719711-76.383364-76.383364 0-41.663653 34.719711-76.383363 76.383364-76.383363 41.663653 0 76.383363 34.719711 76.383363 76.383363 0 41.663653-34.719711 76.383363-76.383363 76.383364z"></path></symbol><symbol id="oicon-gitee" viewBox="0 0 1024 1024"><path d="M966.524718 400.672821H456.520205c-24.497231 0-44.347077 19.954872-44.347077 44.557128v133.540102c0 24.602256 19.849846 44.530872 44.347077 44.530872h288.295385c33.266872 0 44.320821 11.132718 44.347077 44.530872 0.026256 89.035487-50.884923 133.566359-133.041231 133.566359h-376.779487c-24.602256 0-44.530872-19.954872-44.530872-44.530872v-400.67282c0-73.780513 59.575795-133.592615 133.014974-133.592616h598.593641c24.470974 0 44.320821-19.928615 44.320821-44.504615V44.530872C1010.740513 19.928615 990.916923 0 966.419692 0H367.826051C171.979487 0 13.128205 159.455179 13.128205 356.168205v623.32718C13.128205 1004.045128 32.978051 1024 57.475282 1024h598.646154c196.187897 0 352.439795-170.325333 354.619077-367.327179 0.131282-11.106462 0.131282-200.33641 0.131282-211.442872a44.478359 44.478359 0 0 0-44.347077-44.530872z"></path></symbol><symbol id="oicon-trending" viewBox="0 0 1106 1024"><path d="M0 290.766798m55.308301 0l0 0q55.308301 0 55.3083 55.3083l0 608.391307q0 55.308301-55.3083 55.3083l0 0q-55.308301 0-55.308301-55.3083l0-608.391307q0-55.308301 55.308301-55.3083Z" fill="#F5A623"></path><path d="M331.849803 14.225295m55.308301 0l0 0q55.308301 0 55.308301 55.3083l0 884.93281q0 55.308301-55.308301 55.3083l0 0q-55.308301 0-55.308301-55.3083l0-884.93281q0-55.308301 55.308301-55.3083Z" fill="#F5A623" opacity=".8"></path><path d="M663.699607 401.383399m55.3083 0l0 0q55.308301 0 55.308301 55.3083l0 497.774706q0 55.308301-55.308301 55.3083l0 0q-55.308301 0-55.3083-55.3083l0-497.774706q0-55.308301 55.3083-55.3083Z" fill="#F5A623" opacity=".6"></path><path d="M995.54941 124.841896m55.308301 0l0 0q55.308301 0 55.3083 55.308301l0 774.316208q0 55.308301-55.3083 55.3083l0 0q-55.308301 0-55.308301-55.3083l0-774.316208q0-55.308301 55.308301-55.308301Z" fill="#F5A623" opacity=".4"></path></symbol></svg>
+        <val data-name="space_user_url" data-value=""></val>      <val data-name="g_user_url" data-value=""></val>      <val data-name="api_prefix" data-value=""></val>      <val data-name="g_user_code" data-value=""></val>     <val data-name="g_user_id" data-value=""></val>     <val data-name="g_user" data-value=""></val>     <val data-name="login_page" data-value="https://www.oschina.net/home/login?goto_page=https%3A%2F%2Fwww.oschina.net%2Ftranslate%2Fsql-query-optimization"></val>     
+    
+                <val data-name="weixinAppId" data-value=""></val>
+        <val data-name="weixinTimestamp" data-value=""></val>
+        <val data-name="weixinNonceStr" data-value=""></val>
+        <val data-name="weixinSignature" data-value=""></val>
+        <val data-name="weixinShareUrl" data-value=""></val>                             
+                <val data-name="is_detail_page" data-value="true"></val>
+
+        
+        <div class="ui left inverted sidebar vertical menu" id="mobileNavSidebar">
+        <a href="https://www.oschina.net/project" class="item project">开源软件</a>
+        <a href="https://www.oschina.net/question" class="item question" "="">问答</a>
+        <a href="https://www.oschina.net/tweets" class="item tweet">动弹</a>
+        <a href="https://www.oschina.net/blog" class="item blog">博客</a>
+        <a href="https://www.oschina.net/translate" class="item translate active">翻译</a>
+        <a href="https://www.oschina.net/news" class="item news">资讯</a>
+        <a href="https://gitee.com/?from=osc-index" class="item gitee" target="_blank">码云</a>
+        <a href="https://zb.oschina.net/" class="item" target="_blank">众包</a>
+        <a href="https://www.oschina.net/event/ych" class="item meetup">源创会</a>
+        <a href="https://www.oschina.net/event" class="item">活动</a>
+        <a href="https://job.oschina.net/" class="item" target="_blank">求职/招聘</a>
+        <a href="https://www.oschina.net/question/topic/masteronline" class="item">高手问答</a>
+        <a href="https://www.oschina.net/question/topic/osc-interview" class="item">开源访谈</a>
+        <a href="https://my.oschina.net/editorial-story" class="item">周刊</a>
+        <a href="https://www.oschina.net/company" class="item">公司开源导航页</a>
+    </div>
+        <div class="ui right inverted sidebar vertical menu" id="mobileUserSidebar">
+                    <a class="item" href="https://www.oschina.net/home/login?goto_page=https%3A%2F%2Fwww.oschina.net%2Ftranslate%2Fsql-query-optimization">登录</a>
+            <a class="item" href="https://www.oschina.net/home/reg?goto_page=https%3A%2F%2Fwww.oschina.net%2Ftranslate%2Fsql-query-optimization">注册</a>
+            </div>
+
+        <div class="pusher  mobile-disabled-fixed-menu  ">
+                <div class="ui secondary inverted fixed menu" id="headerNavMenu">
+            <a class="item logo" href="https://www.oschina.net/" title="开源中国"><img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/logo.svg" alt="开源中国"></a>
+                                                <form action="https://www.oschina.net/search" class="item search-item">
+                <div class="ui icon input">
+                    <input type="hidden" name="scope" value="translate">
+                    <input placeholder="大家都在搜...." id="keyword" name="q" size="24" value="" type="text">
+                    <i class="search link icon"></i>
+                </div>
+                <div class="results"></div>
+            </form>
+            <div class="item download-item">
+                <a class="ui primary button" id="btnDownloadApp" href="https://www.oschina.net/app" target="_blank">下载APP</a>
+            </div>
+            <div class="ui popup top left transition hidden" id="btnDownloadAppContent">
+                <h3 class="header">开源中国 App —— <br>关注技术领域的头条文章</h3>
+                <p>聚合全网技术文章，根据你的阅读喜好进行个性推荐</p>
+                <img width="200" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/osc_app_download_qrcode.png" alt="下载APP">
+            </div>
+            <div class="ui secondary text menu" id="menuList">
+                <a href="https://www.oschina.net/project" class="item project">开源软件</a>
+                <a href="https://www.oschina.net/question" class="item question">问答</a>
+                <a href="https://www.oschina.net/tweets" class="item tweet">动弹</a>
+                <a href="https://www.oschina.net/blog" class="item blog">博客</a>
+                <a href="https://www.oschina.net/translate" class="item translate active">翻译</a>
+                <a href="https://www.oschina.net/news" class="item news">资讯</a>
+                <a href="https://gitee.com/?from=osc-index" class="item gitee" target="_blank">码云<span class="floating ui red label giteetip">代码托管</span></a>
+                <a href="https://zb.oschina.net/" class="item" target="_blank">众包</a>
+                <a href="https://www.oschina.net/event" class="item event">活动</a>
+            </div>
+            <div class="ui dropdown item" id="moreMenu" tabindex="0">
+                更多 <i class="dropdown icon" tabindex="0"><div class="menu" tabindex="-1"></div></i>
+                <div class="menu" tabindex="-1">
+                    <a href="https://www.oschina.net/event/ych" class="item meetup"><i class="world icon"></i>源创会</a>
+                    <a href="https://job.oschina.net/" class="item" target="_blank"><i class="address card outline icon"></i>求职/招聘</a>
+                    <a href="https://www.oschina.net/question/topic/masteronline" class="item"><i class="spy icon"></i>高手问答</a>
+                    <a href="https://www.oschina.net/question/topic/osc-interview" class="item"><i class="coffee icon"></i>开源访谈</a>
+                    <a href="https://my.oschina.net/editorial-story" class="item"><i class="calendar outline icon"></i>周刊</a>
+                    <a href="https://www.oschina.net/company" class="item"><i class="building outline icon"></i>公司开源导航页</a>
+                </div>
+            </div>
+            <div class="right menu">
+                                    <a class="item" href="https://www.oschina.net/home/login?goto_page=https%3A%2F%2Fwww.oschina.net%2Ftranslate%2Fsql-query-optimization">登录</a>
+                    <a class="item" href="https://www.oschina.net/home/reg?goto_page=https%3A%2F%2Fwww.oschina.net%2Ftranslate%2Fsql-query-optimization">注册</a>
+                            </div>
+        </div>
+                <div class="ui secondary inverted fixed menu" id="mobileHeaderNavMenu">
+            <a class="icon item toggle-mobile-nav-sidebar">
+                <i class="large content icon"></i>
+            </a>
+            <div class="logo back-to-top-toggle"><img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/logo.svg" alt="开源中国"></div>
+            <a class="icon item toggle-mobile-user-sidebar">
+                                    <i class="large user outline icon"></i>
+                            </a>
+        </div>
+                <div id="mainScreen">
+            <div class="ui container">
+                
+
+                        
+
+
+
+
+ 
+ 
+
+
+
+
+
+<x-foo-define data-define="web-translate-detail"></x-foo-define> 
+<val data-name="objId" data-value="4113"></val> 
+<val data-name="fetchCommentsUrl" data-value="?type=comments"></val>              <val data-name="publishCommentUrl" data-value="/translate/comment"></val>         <val data-name="replyCommentUrl" data-value="/translate/comment"></val>           <val data-name="deleteCommentUrl" data-value="/translate/delete_comments"></val>  
+<val data-name="weixinShareTitle" data-value="提升网站访问速度的 SQL 查询优化技巧"></val> <val data-name="weixinShareImgUrl" data-value="https://static.oschina.net/uploads/space/2017/1129/151440_XE4o_2720166.jpg"></val> 
+<div class="outer-float-menu-wrap" style="height: 7300px; min-height: 256px;">
+    <div class="ui sticky float-menu fixed top" id="floatMenu" style="left: -12.5px; width: 92px !important; height: 256px !important; margin-top: 200px;">
+        <div class="ui vertical large compact menu">
+            <a class="item comment-btn" href="https://www.oschina.net/translate/sql-query-optimization#comments" title="共有 7 条评论"><i class="comment outline icon"></i>评论</a>
+            <a class="item collect-btn " data-id="4113" data-user-id="1" data-obj-type="7" data-max="99" data-tag-required="" data-current-user-id="" data-recommend-tags=""><i class="star outline icon"></i>收藏</a>
+            <h5 class="ui item inverted brown header">分享文章</h5>
+            <div class="bdsharebuttonbox reset left-menu bdshare-button-style0-16" data-tag="share-translate" data-bd-bind="1553507454383">
+                <a class="item" data-cmd="tsina" title="分享到新浪微博"><i class="weibo icon"></i>微博</a>
+                <a class="item" data-cmd="sqq" title="分享到QQ好友"><i class="qq icon"></i>QQ</a>
+                <a class="item" data-cmd="weixin" title="分享到微信"><i class="weixin icon"></i>微信</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui internally centered grid translate-detail bg-wrap">
+    <div class="row">
+        <div class="fourteen wide widescreen screen fourteen wide large screen fourteen wide computer sixteen wide tablet sixteen wide mobile column body-container">
+            <div class="float-menu-content">
+                                <div class="ui large breadcrumb">
+                    <a class="section" href="https://www.oschina.net/translate">协作翻译</a>
+                                                                <i class="right chevron icon divider"></i>
+                        <a class="section" href="https://www.oschina.net/translate/list/10">DBA/数据库</a>
+                                        <i class="right chevron icon divider"></i>
+                    <div class="active section">正文</div>
+                </div>
+
+                <div class="article-detail">
+                                        <div class="header-wrap">
+                        <div class="header-info">
+                                                        <h2 class="ui header">
+                                <a href="https://www.oschina.net/translate/sql-query-optimization">提升网站访问速度的 SQL 查询优化技巧</a>
+                                                                    <span class="ui teal  large label">已翻译 100%</span>
+                                                            </h2>
+                                                        <div class="ui horizontal list meta-wrap">
+                                <div class="item">
+                                    <a href="https://my.oschina.net/osadmin" class="__user" target="_blank"><span>oschina</span></a>
+                                    投递于 2017/11/29 15:32 (共 11 段, 翻译完成于 12-04)
+                                </div>
+                                <div class="item">阅读 3202</div>
+                                                                                                                                <div class="item collect-btn " data-id="4113" data-user-id="1" data-obj-type="7" data-max="99" data-tag-required="" data-current-user-id="" data-recommend-tags="">收藏 <span data-collect-count="" data-id="4113" data-obj-type="7">142</span></div>
+                                <div class="item comment-count"><a href="https://www.oschina.net/translate/sql-query-optimization#comments" class="normal"><i class="comment outline icon"></i> 评论 <span data-article-reply-count="">7</span></a></div>
+                                                            </div>
+                                                                                        <div class="ui horizontal labels tags">
+                                                                            <a class="ui label" href="https://www.oschina.net/translate/tag/mysql" target="_blank">MySQL</a>
+                                                                            <a class="ui label" href="https://www.oschina.net/translate/tag/php" target="_blank">PHP</a>
+                                                                    </div>
+                                                                                    <div class="en-link">
+                                英文原文：<a class="en-title" href="https://deliciousbrains.com/sql-query-optimization/" target="_blank">SQL Query Optimization for Faster Sites</a>
+                            </div>
+                        </div>
+                        <div class="header-vote">
+                            <div class="ui huge right labeled icon primary button translate-vote-btn">
+                                <span><i class="thumbs up outline icon"></i> 顶</span>
+                                <i class="icon vote-count">3</i>
+                            </div>
+                        </div>
+                    </div>
+
+                                        <div class="ad-wrap" style="max-height: 90px;">
+                                                <div name="www_translate_detail" data-traceid="www_translate_detail_ad" data-tracepid="www_translate_detail">
+                <script async="" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/f.txt"></script>
+<!-- ostools-top-970x90 -->
+<ins class="adsbygoogle" style="display:inline-block;width:100%;height:90px;margin-bottom: 10px;" data-ad-client="ca-pub-7090564139599510" data-ad-slot="9002503316"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+            </div>
+                                </div>
+
+                                        <div class="action-bar">
+                                                                            <div class="translator-list">
+                                <h4 class="ui header">
+                                    参与翻译 (6人) :
+                                                                                                                                                                        <a class="translator-user" href="https://my.oschina.net/u/3717567" target="_blank">南宫冰郁</a>,                                                                                                                                                                                                                                                            <a class="translator-user" href="https://my.oschina.net/u/3635230" target="_blank">rever4433</a>,                                                                                                                                                                                                                                                            <a class="translator-user" href="https://my.oschina.net/soaring" target="_blank">soaring</a>,                                                                                                                                                                                                                                                            <a class="translator-user" href="https://my.oschina.net/yixiajiuliangle" target="_blank">凉凉_</a>,                                                                                                                                                                                                                                                            <a class="translator-user" href="https://my.oschina.net/elitetao" target="_blank">孤独的阅读者</a>,                                                                                                                                                                                                                                                            <a class="translator-user" href="https://my.oschina.net/crooner" target="_blank">溪边九节</a>                                                                                                                                                        </h4>
+                            </div>
+                                                <div class="switch-buttons">
+                                                        <div class="ui basic mini buttons left-buttons">
+                                <a class="ui button" href="https://www.oschina.net/translate/sql-query-optimization?print" target="_blank"><i class="icon print"></i> 打印</a>
+                            </div>
+                            <div class="ui basic mini buttons right-buttons">
+                                <a class="ui button lang-switch-btn active" href="https://www.oschina.net/translate/sql-query-optimization?lang=chs">仅中文</a>
+                                <a class="ui button" href="https://www.oschina.net/translate/sql-query-optimization?cmp">中英文对照</a>
+                                <a class="ui button lang-switch-btn" href="https://www.oschina.net/translate/sql-query-optimization?lang=eng">仅英文</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui divider"></div>
+
+                                        <div id="paragraphsContainer">
+                                                <div class="ui inverted dimmer paragraph-loader">
+                            <div class="ui text loader">加载中</div>
+                        </div>
+                        <div class="paragraphs-wrap">
+                            
+                                              
+
+
+                                 
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="60990" data-translated-paragraph-id="61015">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <p>
+	<img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/151440_XE4o_2720166.jpg" class="zoom-in-cursor">你一定知道，一个快速访问的网站能让用户喜欢，可以帮助网站从Google 上提高排名，可以帮助网站增加转化率。如果你看过网站性能优化方面的文章，例如<a href="https://deliciousbrains.com/hosting-wordpress-setup-secure-virtual-server/" rel="nofollow">设置服务器的最佳实现</a>、到<a href="https://deliciousbrains.com/finding-bottlenecks-wordpress-code/" rel="nofollow">干掉慢速代码</a>以及&nbsp;<a href="https://deliciousbrains.com/wp-offload-s3/doc/why-use-a-cdn/" rel="nofollow">使用CDN 加载图片</a>，就认为你的 WordPress 网站已经足够快了。但是事实果真如此吗？
+</p>
+<p>
+	使用动态数据库驱动的网站，例如WordPress，你的网站可能依然有一个问题亟待解决：数据库查询拖慢了网站访问速度。
+</p>
+<p>
+	在这篇文章中，我将介绍如何识别导致性能出现问题的查询，如何找出它们的问题所在，以及快速修复这些问题和其他加快查询速度的方法。我会把门户网站&nbsp;deliciousbrains.com 出现的拖慢查询速度的情况作为实际的案例。
+</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/u/3635230" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="rever4433" data-user-id="3635230">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/3635230_50.jpeg" alt="rever4433" title="rever4433">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/u/3635230" target="_blank" class="ui small header user __user">rever4433</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2017/11/29 16:33</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="61015">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="60991" data-translated-paragraph-id="61018">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <p>
+	定位</p><p>
+	处理慢SQL查询的第一步是找到慢查询。Ashley已经在之前的<a href="https://deliciousbrains.com/finding-bottlenecks-wordpress-code/#query-monitor" target="_blank" rel="nofollow">博客</a>里面赞扬了调试插件<a href="https://wordpress.org/plugins/query-monitor/" target="_blank" rel="nofollow">Query Monitor</a>，而且这个插件的数据库查询特性使其成为定位慢SQL查询的宝贵工具。该插件会报告所有页面请求过程中的数据库请求，并且可以通过调用这些查询代码或者原件(插件，主题，WordPress核)过滤这些查询，高亮重复查询和慢查询。</p><p><img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/151546_IYs7_2720166.png" class="zoom-in-cursor"></p><p>
+	要是不愿意在生产安环境装调试插件(性能开销原因)，也可以打开<a href="https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html" target="_blank" rel="nofollow">MySQL Slow Query Log</a>，这样在特定时间执行的所有查询都会被记录下来。这种方法配置和设置存放查询位置相对简单。由于这是一个服务级别的调整，性能影响会小于使用调试插件，但当不用的时候也应该关闭。</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/soaring" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="soaring" data-user-id="94670">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/94670_50.jpeg" alt="soaring" title="soaring">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/soaring" target="_blank" class="ui small header user __user">soaring</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2017/11/29 17:28</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="61018">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="60992" data-translated-paragraph-id="61019">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h1>
+	理解</h1><p>
+	一旦你找到了一个你要花很大代价找到的查询，那么接下来就是尝试去理解它并找到是什么让查询变慢。最近，在我们开发我们网站的时候，我们找到了一个要执行8秒的查询。</p><p>
+	我们使用WooCommerce和定制版的WooCommerce软件插件来运行我们的插件商店。此查询的目的是获取那些我们知道客户号的客户的所有订阅。<span style="font-family:&quot;font-size:13.3333px;background-color:#F6F6F6;">WooCommerce是一个稍微复杂的数据模型，</span>即使订单以自定义的类型存储，用户的ID（商店为每一个用户创建的WordPress）也没有存储在<span style="font-family:monospace, monospace;font-size:13.3333px;background-color:#F6F6F6;">post_author，</span>而是作为后期数据的一部分。订阅软件插件给自义定表创建了一对链接。让我们深入了解查询的更多信息。</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/u/3717567" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="南宫冰郁" data-user-id="3717567">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/3717567_50.jpeg" alt="南宫冰郁" title="南宫冰郁">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/u/3717567" target="_blank" class="ui small header user __user">南宫冰郁</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2017/11/29 17:40</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="61019">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                            <a class="show-other-translated-btn">其它翻译版本 (1)</a>
+                                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="other-translated-wrap" data-paragraph-id="60992" data-load="false" style="display: none;">
+            <div class="loader-wrap">
+                <div class="ui basic segment">
+                    <div class="ui active inverted dimmer">
+                        <div class="ui text loader">加载中</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="60993" data-translated-paragraph-id="61017">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h1>
+	MySQL是你的朋友
+</h1>
+<p>
+	MySQL有一个很方便的语句<a href="https://dev.mysql.com/doc/refman/5.7/en/describe.html" target="_blank" rel="nofollow">DESCRIBE</a>，它可以输出表结构的信息，比如字段名，数据类型等等。所以，当你执行DESCRIBE wp_postmeta;你将会看到如下的结果：
+</p>
+<p>
+	<br>
+</p>
+<table>
+	<tbody>
+		<tr>
+			<td>
+				<br>
+			</td>
+			<td>
+				<br>
+			</td>
+			<td>
+				<br>
+			</td>
+			<td>
+				<br>
+			</td>
+			<td>
+				<br>
+			</td>
+			<td>
+				<br>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<th>
+				Field
+			</th>
+			<th>
+				Type
+			</th>
+			<th>
+				Null
+			</th>
+			<th>
+				Key
+			</th>
+			<th>
+				Default
+			</th>
+			<th>
+				Extra
+			</th>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<td>
+				<br>
+			</td>
+			<td>
+				<br>
+			</td>
+			<td>
+				<br>
+			</td>
+			<td>
+				<br>
+			</td>
+			<td>
+				<br>
+			</td>
+			<td>
+				<br>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<td>
+				meta_id
+			</td>
+			<td>
+				bigint(20) unsigned
+			</td>
+			<td>
+				NO
+			</td>
+			<td>
+				PRI
+			</td>
+			<td>
+				NULL
+			</td>
+			<td>
+				auto_increment
+			</td>
+		</tr>
+		<tr>
+			<td>
+				post_id
+			</td>
+			<td>
+				bigint(20) unsigned
+			</td>
+			<td>
+				NO
+			</td>
+			<td>
+				MUL
+			</td>
+			<td>
+				0
+			</td>
+			<td>
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td>
+				meta_key
+			</td>
+			<td>
+				varchar(255)
+			</td>
+			<td>
+				YES
+			</td>
+			<td>
+				MUL
+			</td>
+			<td>
+				NULL
+			</td>
+			<td>
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td>
+				meta_value
+			</td>
+			<td>
+				longtext
+			</td>
+			<td>
+				YES
+			</td>
+			<td>
+				&nbsp;
+			</td>
+			<td>
+				NULL<br>
+<br>
+			</td>
+			<td>
+				<br>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	你可能已经知道了这个语句。但是你知道DESCRIBE语句可以放在SELECT,&nbsp;INSERT,&nbsp;UPDATE,&nbsp;REPLACE&nbsp;和&nbsp;DELETE语句前边使用吗？更为人们所熟知的是他的同义词&nbsp;<a href="https://dev.mysql.com/doc/refman/5.7/en/explain.html" target="_blank" rel="nofollow">EXPLAIN</a>&nbsp;，并将提供有关该语句如何执行的详细信息。
+</p>
+<p>
+	这是我们查询到的结果：
+</p>
+<p>
+	<br>
+</p>
+<table>
+	<tbody>
+		<tr>
+			<th>
+				id
+			</th>
+			<th>
+				select_type
+			</th>
+			<th>
+				table
+			</th>
+			<th>
+				type
+			</th>
+			<th>
+				possible_keys
+			</th>
+			<th>
+				key
+			</th>
+			<th>
+				key_len
+			</th>
+			<th>
+				ref
+			</th>
+			<th>
+				rows
+			</th>
+			<th>
+				Extra
+			</th>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<td>
+				1
+			</td>
+			<td>
+				SIMPLE
+			</td>
+			<td>
+				pm2
+			</td>
+			<td>
+				ref
+			</td>
+			<td>
+				meta_key
+			</td>
+			<td>
+				meta_key
+			</td>
+			<td>
+				576
+			</td>
+			<td>
+				const
+			</td>
+			<td>
+				28
+			</td>
+			<td>
+				Using where; Using temporary; Using filesort
+			</td>
+		</tr>
+		<tr>
+			<td>
+				1
+			</td>
+			<td>
+				SIMPLE
+			</td>
+			<td>
+				pm
+			</td>
+			<td>
+				ref
+			</td>
+			<td>
+				post_id,meta_key
+			</td>
+			<td>
+				meta_key
+			</td>
+			<td>
+				576
+			</td>
+			<td>
+				const
+			</td>
+			<td>
+				37456
+			</td>
+			<td>
+				Using where
+			</td>
+		</tr>
+		<tr>
+			<td>
+				1
+			</td>
+			<td>
+				SIMPLE
+			</td>
+			<td>
+				p
+			</td>
+			<td>
+				eq_ref
+			</td>
+			<td>
+				PRIMARY,type_status_date
+			</td>
+			<td>
+				PRIMARY
+			</td>
+			<td>
+				8
+			</td>
+			<td>
+				deliciousbrainsdev.pm.post_id
+			</td>
+			<td>
+				1
+			</td>
+			<td>
+				Using where
+			</td>
+		</tr>
+		<tr>
+			<td>
+				1
+			</td>
+			<td>
+				SIMPLE
+			</td>
+			<td>
+				l
+			</td>
+			<td>
+				ref
+			</td>
+			<td>
+				PRIMARY,order_id
+			</td>
+			<td>
+				order_id
+			</td>
+			<td>
+				8
+			</td>
+			<td>
+				deliciousbrainsdev.pm.post_id
+			</td>
+			<td>
+				1
+			</td>
+			<td>
+				Using index condition; Using where
+			</td>
+		</tr>
+		<tr>
+			<td>
+				1
+			</td>
+			<td>
+				SIMPLE
+			</td>
+			<td>
+				s
+			</td>
+			<td>
+				eq_ref
+			</td>
+			<td>
+				PRIMARY
+			</td>
+			<td>
+				PRIMARY
+			</td>
+			<td>
+				8
+			</td>
+			<td>
+				deliciousbrainsdev.l.key_id
+			</td>
+			<td>
+				1
+			</td>
+			<td>
+				NULL
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	<br>
+</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/u/3717567" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="南宫冰郁" data-user-id="3717567">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/3717567_50.jpeg" alt="南宫冰郁" title="南宫冰郁">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/u/3717567" target="_blank" class="ui small header user __user">南宫冰郁</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2017/11/29 17:23</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="61017">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">1</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                            <a class="show-other-translated-btn">其它翻译版本 (1)</a>
+                                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="other-translated-wrap" data-paragraph-id="60993" data-load="false" style="display: none;">
+            <div class="loader-wrap">
+                <div class="ui basic segment">
+                    <div class="ui active inverted dimmer">
+                        <div class="ui text loader">加载中</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="60994" data-translated-paragraph-id="61026">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <p>
+	乍一看，这很难解释。幸运的是，人们通过SitePoint总结了一个<a href="https://www.sitepoint.com/using-explain-to-write-better-mysql-queries/" target="_blank" rel="nofollow">理解语句的全面指南</a>。
+</p>
+<p>
+	最重要的字段是type，它描述了一张表是怎么构成的。如果你想看全部的内容，那就意味着MySQL要从内存读取整张表，增加I/O的速度并在CPU上加载。这种被称为“全表浏览”—稍后将对此进行详细介绍。
+</p>
+<p>
+	rows字段也是一个好的标识，标识着MySQL将要不得不做的事情，它显示了结果中查找了多少行。
+</p>
+<p>
+	Explain也给了我们很多可以优化的信息。例如，pm2表（(wp_postmeta），告诉我们是Using filesort，因为我们使用了&nbsp;ORDER BY语句对结果进行了排序。如果我们要对查询结果进行分组，这将会给执行增加开销。
+</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/u/3717567" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="南宫冰郁" data-user-id="3717567">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/3717567_50.jpeg" alt="南宫冰郁" title="南宫冰郁">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/u/3717567" target="_blank" class="ui small header user __user">南宫冰郁</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2017/11/29 20:11</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="61026">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                            <a class="show-other-translated-btn">其它翻译版本 (1)</a>
+                                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="other-translated-wrap" data-paragraph-id="60994" data-load="false" style="display: none;">
+            <div class="loader-wrap">
+                <div class="ui basic segment">
+                    <div class="ui active inverted dimmer">
+                        <div class="ui text loader">加载中</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="60995" data-translated-paragraph-id="61022">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>
+	可视化研究
+</h3>
+<p>
+	对于这种类型的研究，<a href="https://www.mysql.com/products/workbench/" target="_blank" rel="nofollow">MySQL Workbench</a>是另外一个方便，免费的工具。将数据库用MySQL5.6及其以上的版本打开，EXPLAIN的结果可以用JSON格式输出，同时MySQL Workbench将JSON转换成可视化执行语句：
+</p>
+<p>
+	<img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/151804_xraB_2720166.png" class="zoom-in-cursor"> 
+</p>
+<p>
+	它自动将查询的问题用颜色着重表示提醒用户去注意。我们可以马上看到，连接wp_woocommerce_software_licences（别名l）的表有严重的问题。
+</p>
+<h3>
+	解决
+</h3>
+<p>
+	你<a href="https://dev.mysql.com/doc/refman/5.7/en/table-scan-avoidance.html" target="_blank" rel="nofollow">应该避免</a>这种全部表浏览的查询，因为他使用非索引字段order_id去连接wp_woocommerce_software_licences表和wp_posts表。这对于查询慢是常见的问题，而且也是比较容易解决的问题。
+</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/u/3717567" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="南宫冰郁" data-user-id="3717567">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/3717567_50.jpeg" alt="南宫冰郁" title="南宫冰郁">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/u/3717567" target="_blank" class="ui small header user __user">南宫冰郁</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2017/11/29 17:58</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="61022">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="60996" data-translated-paragraph-id="61023">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>索引</h3><p>
+	order_id在表中是一个相当重要的标志性数据，如果想像这种方式查询，我们需要在列上建立一个<a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-indexes.html" target="_blank" rel="nofollow">索引</a>，除此之外，MySQL将逐字扫描表的每一行，直到找到我们想要的行为止。让我们添加一个索引并看看它是怎么样工作的：</p><pre class="brush:sql;toolbar: true; auto-links: false; hljs"><span class="hljs-keyword">CREATE</span>&nbsp;<span class="hljs-keyword">INDEX</span>&nbsp;order_id&nbsp;<span class="hljs-keyword">ON</span>&nbsp;wp_woocommerce_software_licences(order_id)</pre><p><img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/151855_RDjO_2720166.png" class="zoom-in-cursor"></p><p>
+	哇，干的漂亮！我们成功的添加了索引并将查询的时间缩短了5s.</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/u/3717567" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="南宫冰郁" data-user-id="3717567">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/3717567_50.jpeg" alt="南宫冰郁" title="南宫冰郁">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/u/3717567" target="_blank" class="ui small header user __user">南宫冰郁</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2017/11/29 18:07</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="61023">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="60997" data-translated-paragraph-id="61030">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>
+	了解你的查询语句
+</h3>
+<p>
+	检查下查询语句——看看每一个join，每一个子查询。它们做了它们不该做的事了吗？这里能做什么优化吗？
+</p>
+<p>
+	这个例子中，我们把licenses 表和posts 表通过order_id 连接起来同时限制post type 为shop_order。这是为了通过保持数据的完整性来保证我们只使用正确的订单记录，但是事实上这在查询中是多余的。我们知道这是一个关于安全的赌注，在posts 表中software license 行是通过order_id 来跟 WooCommerce order 相关联的，这在PHP 插件代码中是强制的。让我们移除join 来看看有什么提升没有：
+</p>
+<p>
+	<img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/151918_Wcjz_2720166.png" class="zoom-in-cursor"> 
+</p>
+<p>
+	提升并不算很大但现在查询时间低于3 秒了。
+</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/u/3635230" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="rever4433" data-user-id="3635230">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/3635230_50.jpeg" alt="rever4433" title="rever4433">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/u/3635230" target="_blank" class="ui small header user __user">rever4433</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2017/11/30 07:13</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="61030">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="60998" data-translated-paragraph-id="61037">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>
+	缓存一切数据
+</h3>
+<p>
+	如果你的服务器默认情况下没有使用MySQL查询缓存，那么你应该开启缓存。开启缓存意味着MySQL 会把所有的语句和语句执行的结果保存下来，如果随后有一条与缓存中完全相同的语句需要执行，那么MySQL 就会返回缓存的结果。缓存不会过时，因为MySQL 会在表数据更新后刷新缓存。
+</p>
+<p>
+	查询监视器发现在加载一个页面时我们的查询语句执行了四次，尽管有MySQL查询缓存很好，但是在一个请求中重复读取数据库的数据是应该完全避免的。你的PHP 代码中的静态缓存很简单并且可以很高效的解决这个问题。基本上，首次请求时从数据库中获取查询结果，并将其存储在类的静态属性中，然后后续的查询语句调用将从静态属性中返回结果：
+</p>
+<p>
+	<br>
+</p>
+<pre class="brush:php;toolbar: true; auto-links: false; hljs"><span class="hljs-class"><span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">WC_Software_Subscription</span>&nbsp;</span>{
+
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">protected</span>&nbsp;<span class="hljs-keyword">static</span>&nbsp;$subscriptions&nbsp;=&nbsp;<span class="hljs-keyword">array</span>();
+
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">public</span>&nbsp;<span class="hljs-keyword">static</span>&nbsp;<span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">get_user_subscriptions</span><span class="hljs-params">(&nbsp;$user_id&nbsp;)</span>&nbsp;</span>{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">if</span>&nbsp;(&nbsp;<span class="hljs-keyword">isset</span>(&nbsp;<span class="hljs-keyword">static</span>::$subscriptions[&nbsp;$user_id&nbsp;]&nbsp;)&nbsp;)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-keyword">static</span>::$subscriptions[&nbsp;$user_id&nbsp;];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">global</span>&nbsp;$wpdb;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$sql&nbsp;=&nbsp;<span class="hljs-string">'...'</span>;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$results&nbsp;=&nbsp;$wpdb-&gt;get_results(&nbsp;$sql,&nbsp;ARRAY_A&nbsp;);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">static</span>::$subscriptions[&nbsp;$user_id&nbsp;]&nbsp;=&nbsp;$results;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;$results;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}</pre>
+<p>
+	<br>
+</p>
+<p>
+	缓存有一个生命周期，具体地说是实例化对象有一个生命周期。如果你正在查看跨请求的查询结果，那么你需要实现一个持久对象缓存。然而不管怎样，你的代码应该负责设置缓存，并且当基础数据变更时让缓存失效。
+</p>
+<p>
+	<br>
+</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/u/3635230" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="rever4433" data-user-id="3635230">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/3635230_50.jpeg" alt="rever4433" title="rever4433">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/u/3635230" target="_blank" class="ui small header user __user">rever4433</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2017/11/30 11:26</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="61037">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                             
+    <div class="ui internally grid translate-paragraph" data-paragraph-id="60999" data-translated-paragraph-id="61032">
+        <div class="row">
+                        <div class="twelve wide computer twelve wide tablet sixteen wide mobile column content translate-content">
+                <h3>
+	跳出箱子外思考<br>
+</h3>
+<p>
+	不仅仅是调整查询或添加索引，还有其他方法可以加快查询的执行速度。 我们查询的最慢的部分是从客户ID到产品ID再到加入表格所做的工作，我们必须为每个客户做到。我们是不是可以在需要的时候抓取客户的数据？如果是那样，那我们就只需要加入一次。
+</p>
+<p>
+	您可以通过创建数据表来存储许可数据，以及所有许可用户标识和产品标识符来对数据进行非规范化（反规范化）处理，并针对特定客户进行查询。 您需要使用INSERT / UPDATE / DELETE上的<a href="https://dev.mysql.com/doc/refman/5.7/en/create-trigger.html" target="_blank" rel="nofollow">MySQL触发器</a>来重建表格（不过这要取决于数据来更改的表格），这会显着提高查询数据的性能。
+</p>
+<p>
+	类似地，如果一些连接在MySQL中减慢了查询速度，那么将查询分解为两个或更多语句并在PHP中单独执行它们可能会更快，然后可以在代码中收集和过滤结果。 Laravel 通过<a href="https://laravel.com/docs/5.5/eloquent-relationships#eager-loading" target="_blank" rel="nofollow">预加载</a>在 Eloquent 中就做了类似的事情。
+</p>
+<p>
+	如果您有大量数据和许多不同的自定义帖子类型，WordPress可能会在wp_posts表上减慢查询速度。 如果您发现查询的帖子类型较慢，那么可以考虑从自定义帖子类型的存储模型移动到<a href="https://deliciousbrains.com/creating-custom-table-php-wordpress/" target="_blank" rel="nofollow">自定义表格</a>中&nbsp;- 更多内容将在后面的文章中介绍。
+</p>
+<p>
+	<br>
+</p>
+            </div>
+                        <div class="four wide computer tablet only column translate-user">
+                <div class="ui items">
+                    <div class="item">
+                                                <a class="ui image" href="https://my.oschina.net/crooner" target="_blank">
+                                                <div class="osc-avatar small-portrait _35x35 avatar" title="溪边九节" data-user-id="553781">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/553781_50.jpeg" alt="溪边九节" title="溪边九节">
+        </div>
+                                    </a>
+                        <div class="content">
+                            <a href="https://my.oschina.net/crooner" target="_blank" class="ui small header user __user">溪边九节</a>
+                            <div class="extra">
+                                <div class="ui mini list">
+                                    <div class="item">翻译于 2017/11/30 09:18</div>
+                                </div>
+                                <div class="ui mini labeled button">
+                                    <div class="ui mini basic button vote-up-btn" data-translated-paragraph-id="61032">
+                                        <i class="thumbs up outline icon"></i> 顶
+                                    </div>
+                                    <span class="ui active disabled basic label vote-count">0</span>
+                                </div>
+                                <div class="ui small horizontal list actions">
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item footer-info">
+                                                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                
+        <div class="ui basic center aligned segment pagination-wrap">
+                                                                                            <div class="ui pagination menu">
+                                                    <a class="disabled item prev-item">&lt;</a>
+                                                                                                                                            <a href="https://www.oschina.net/translate/sql-query-optimization?lang=chs&amp;p=1" class="active item page-num-item">1</a>
+                                                                                <a href="https://www.oschina.net/translate/sql-query-optimization?lang=chs&amp;p=2" class="item page-num-item">2</a>
+                                                                                                                        <a href="https://www.oschina.net/translate/sql-query-optimization?lang=chs&amp;p=2" class="item next-item">&gt;</a>
+                                                            </div>
+                </div>
+                        </div>
+                    </div>
+
+                                        <div class="ad-wrap" style="max-height: 90px;">
+                                                <center><script async="" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/f.txt"></script>
+<ins class="adsbygoogle" style="display:inline-block;width:100%;height:90px" data-ad-client="ca-pub-7090564139599510" data-ad-slot="1653373318" <="" ins="">
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></ins></center>
+                                </div>
+
+                                        <div class="ui warning message">
+                        <div>本文中的所有译文仅用于学习和交流目的，转载请务必注明文章译者、出处、和本文链接。</div>
+                        <div>我们的翻译工作遵照 <a href="http://zh.wikipedia.org/wiki/Wikipedia:CC" target="_blank">CC 协议</a>，如果我们的工作有侵犯到您的权益，请及时联系我们。</div>
+                    </div>
+                </div>
+                <div class="ui divider hidden"></div>
+
+                                <div class="ui threaded comments" id="commentsContainer">
+        <div class="ui inverted dimmer comments-loader">
+        <div class="ui text loader">加载中</div>
+    </div>
+
+        <div class="comments-wrap">
+                    
+
+
+<h3 id="comments" class="ui header">评论(<span>7</span>)</h3>
+
+            
+            <div class="comment" data-comment-id="34369" data-comment-user-id="3719995">
+            <a class="ui circular image avatar" href="https://my.oschina.net/u/3719995" target="_blank">
+                                    <div class="osc-avatar small-portrait _35x35" title="zb1509553891471" data-user-id="3719995">
+            <span class="text-portrait" style="background: #bdc3c7">z</span>
+        </div>
+                        </a>
+            <div class="content">
+                <a class="author" href="https://my.oschina.net/u/3719995" name="rpl_34369" target="_blank">zb1509553891471</a>
+                <div class="metadata">
+                    <span class="date">2017/12/11 16:28</span>
+                </div>
+                <div class="text" data-emoji-render="">
+                    强势
+                </div>
+                <div class="actions">
+                                                            <a class="ban" ban-report="" data-id="34369" data-obj-type="15" data-url="https://www.oschina.net/translate/sql-query-optimization#rpl_34369">
+                        <i class="ban icon"></i> 举报
+                    </a>
+                </div>
+            </div>
+        </div>
+                
+            <div class="comment" data-comment-id="34368" data-comment-user-id="571932">
+            <a class="ui circular image avatar" href="https://my.oschina.net/u/571932" target="_blank">
+                                    <div class="osc-avatar small-portrait _35x35" title="wamper" data-user-id="571932">
+            <span class="text-portrait" style="background: #f39c12">w</span>
+        </div>
+                        </a>
+            <div class="content">
+                <a class="author" href="https://my.oschina.net/u/571932" name="rpl_34368" target="_blank">wamper</a>
+                <div class="metadata">
+                    <span class="date">2017/12/11 15:58</span>
+                </div>
+                <div class="text" data-emoji-render="">
+                    全都转单表查询最快了 
+                </div>
+                <div class="actions">
+                                                            <a class="ban" ban-report="" data-id="34368" data-obj-type="15" data-url="https://www.oschina.net/translate/sql-query-optimization#rpl_34368">
+                        <i class="ban icon"></i> 举报
+                    </a>
+                </div>
+            </div>
+        </div>
+                
+            <div class="comment" data-comment-id="34356" data-comment-user-id="74323">
+            <a class="ui circular image avatar" href="https://my.oschina.net/lindily" target="_blank">
+                                    <div class="osc-avatar small-portrait _35x35" title="张林" data-user-id="74323">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/74323_50.jpg" alt="张林" title="张林">
+        </div>
+                        </a>
+            <div class="content">
+                <a class="author" href="https://my.oschina.net/lindily" name="rpl_34356" target="_blank">张林</a>
+                <div class="metadata">
+                    <span class="date">2017/12/10 02:33</span>
+                </div>
+                <div class="text" data-emoji-render="">
+                    <div class="ref"><h4>引用来自“蒲少涛”的评论</h4>like语句查询有什么好的优化方案吗</div>避免前%，如果一定要使用，创建全文索引<br>创建全文索引的sql语法是：<br>ALTER TABLE `table` ADD FULLTEXT INDEX `idx_xxx` (`xxx`); 
+                </div>
+                <div class="actions">
+                                                            <a class="ban" ban-report="" data-id="34356" data-obj-type="15" data-url="https://www.oschina.net/translate/sql-query-optimization#rpl_34356">
+                        <i class="ban icon"></i> 举报
+                    </a>
+                </div>
+            </div>
+        </div>
+                
+            <div class="comment" data-comment-id="34354" data-comment-user-id="3720026">
+            <a class="ui circular image avatar" href="https://my.oschina.net/u/3720026" target="_blank">
+                                    <div class="osc-avatar small-portrait _35x35" title="蒲少涛" data-user-id="3720026">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/3720026_50.jpg" alt="蒲少涛" title="蒲少涛">
+        </div>
+                        </a>
+            <div class="content">
+                <a class="author" href="https://my.oschina.net/u/3720026" name="rpl_34354" target="_blank">蒲少涛</a>
+                <div class="metadata">
+                    <span class="date">2017/12/09 13:31</span>
+                </div>
+                <div class="text" data-emoji-render="">
+                    like语句查询有什么好的优化方案吗
+                </div>
+                <div class="actions">
+                                                            <a class="ban" ban-report="" data-id="34354" data-obj-type="15" data-url="https://www.oschina.net/translate/sql-query-optimization#rpl_34354">
+                        <i class="ban icon"></i> 举报
+                    </a>
+                </div>
+            </div>
+        </div>
+                
+            <div class="comment" data-comment-id="34353" data-comment-user-id="1269352">
+            <a class="ui circular image avatar" href="https://my.oschina.net/rocbin" target="_blank">
+                                    <div class="osc-avatar small-portrait _35x35" title="蓝水晶飞机" data-user-id="1269352">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/50x50" alt="蓝水晶飞机" title="蓝水晶飞机">
+        </div>
+                        </a>
+            <div class="content">
+                <a class="author" href="https://my.oschina.net/rocbin" name="rpl_34353" target="_blank">蓝水晶飞机</a>
+                <div class="metadata">
+                    <span class="date">2017/12/09 12:28</span>
+                </div>
+                <div class="text" data-emoji-render="">
+                    JOIN 慢也是活该。
+                </div>
+                <div class="actions">
+                                                            <a class="ban" ban-report="" data-id="34353" data-obj-type="15" data-url="https://www.oschina.net/translate/sql-query-optimization#rpl_34353">
+                        <i class="ban icon"></i> 举报
+                    </a>
+                </div>
+            </div>
+        </div>
+                
+            <div class="comment" data-comment-id="34352" data-comment-user-id="1765022">
+            <a class="ui circular image avatar" href="https://my.oschina.net/publiccms" target="_blank">
+                                    <div class="osc-avatar small-portrait _35x35" title="湖水没了" data-user-id="1765022">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/50x50(1)" alt="湖水没了" title="湖水没了">
+        </div>
+                        </a>
+            <div class="content">
+                <a class="author" href="https://my.oschina.net/publiccms" name="rpl_34352" target="_blank">湖水没了</a>
+                <div class="metadata">
+                    <span class="date">2017/12/09 11:09</span>
+                </div>
+                <div class="text" data-emoji-render="">
+                    wordpress的吞吐量大该在 10到20每秒
+                </div>
+                <div class="actions">
+                                                            <a class="ban" ban-report="" data-id="34352" data-obj-type="15" data-url="https://www.oschina.net/translate/sql-query-optimization#rpl_34352">
+                        <i class="ban icon"></i> 举报
+                    </a>
+                </div>
+            </div>
+        </div>
+                
+            <div class="comment" data-comment-id="34351" data-comment-user-id="164404">
+            <a class="ui circular image avatar" href="https://my.oschina.net/u/164404" target="_blank">
+                                    <div class="osc-avatar small-portrait _35x35" title="任意球" data-user-id="164404">
+            <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/164404_50.jpg" alt="任意球" title="任意球">
+        </div>
+                        </a>
+            <div class="content">
+                <a class="author" href="https://my.oschina.net/u/164404" name="rpl_34351" target="_blank">任意球</a>
+                <div class="metadata">
+                    <span class="date">2017/12/09 10:34</span>
+                </div>
+                <div class="text" data-emoji-render="">
+                    最快难道不是不使用WordPress吗 好吧 开玩笑
+                </div>
+                <div class="actions">
+                                                            <a class="ban" ban-report="" data-id="34351" data-obj-type="15" data-url="https://www.oschina.net/translate/sql-query-optimization#rpl_34351">
+                        <i class="ban icon"></i> 举报
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ui basic center aligned segment pagination-wrap">
+                </div>
+    </div>
+
+        </div>
+
+
+
+
+                <div class="ui divider hidden"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="ui small edit-tags modal">
+    <div class="header">设置标签</div>
+    <div class="content">
+        <form class="ui form" id="editTagsForm">
+            <div class="field">
+                <label>分类</label>
+                <div class="four wide field">
+                    <select name="category" class="ui dropdown category">
+                                                                                                                                                                                                            <option value="1">Web/WAP应用开发</option>
+                                                                                                                                <option value="2">游戏开发</option>
+                                                                                                                                <option value="3">手机软件开发</option>
+                                                                                                                                <option value="4">桌面软件开发</option>
+                                                                                                                                <option value="5">服务器端开发</option>
+                                                                                                                                <option value="6">网页设计/UI/UED</option>
+                                                                                                                                <option value="7">软件测试/QA</option>
+                                                                                                                                <option value="8">软件开发管理</option>
+                                                                                                                                <option value="9">系统及网络管理</option>
+                                                                                                                                <option value="10" selected="">DBA/数据库</option>
+                                                                                                                                <option value="11">编程语言技巧</option>
+                                                                                                                                <option value="13">安全相关</option>
+                                                                                                                                <option value="12">其它领域</option>
+                                                                                                        </select>
+                </div>
+            </div>
+            <div class="field">
+                <label>软件</label>
+                <div class="ui fluid multiple search selection dropdown project-name">
+                    <input type="hidden" name="prj" value="MySQL,PHP,larbin">
+                    <input type="text" class="search">
+                    <div class="default text">关联的软件标签(最多5个)</div>
+                    <div class="menu">
+                                                                                    <div class="item" data-value="MySQL">MySQL</div>
+                                                                                                                <div class="item" data-value="PHP">PHP</div>
+                                                                        </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>标签</label>
+                <input type="text" name="tags" placeholder="多个标签必须用逗号(,)隔开" value="">
+            </div>
+            <div class="ui positive mini message osc hidden"></div>
+            <div class="ui negative mini message osc hidden"></div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">取消</div>
+        <div class="ui green ok button">确定</div>
+    </div>
+</div>
+
+<script>
+    // 百度分享
+    window._bd_share_config = {
+        common : {
+            bdText : '提升网站访问速度的 SQL 查询优化技巧 - 开源中国',
+            bdDesc : '',
+            bdUrl  : '',
+            bdPic  : ''
+        },
+        share : [{
+            bdSize : 16
+        }]
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://static.oschina.net/new-osc/js/utils/plugins/bdshare_api/share.js?v='+~(-new Date()/36e5)];
+</script>
+    <script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/translate"></script>
+            
+            </div>
+        </div>
+
+                <div id="footer" class="ui vertical footer segment mb-hide">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="eight wide mobile four wide tablet four wide computer column">
+                <h4 class="ui header">开源中国社区</h4>
+                <div class="ui link list">
+                    <a class="item" href="https://www.oschina.net/home/aboutosc" target="_blank">关于我们</a>
+                    <a class="item" href="https://www.oschina.net/home/aboutosc" target="_blank">联系我们</a>
+                    <a class="item" href="https://www.oschina.net/home/aboutosc#partners#" target="_blank">合作伙伴</a>
+                    <a class="item" href="https://www.oschina.net/openapi" target="_blank">Open API</a>
+                </div>
+            </div>
+            <div class="eight wide mobile four wide tablet four wide computer column">
+                <h4 class="ui header">在线工具</h4>
+                <div class="ui link list">
+                    <a class="item" href="https://gitee.com/?from=osc-bottom" target="_blank">码云 Gitee.com</a>
+                    <a class="item" href="https://gitee.com/enterprises?from=osc-bottom" target="_blank">企业研发管理</a>
+                    <a class="item" href="https://copycat.gitee.com/?from=osc-bottom" target="_blank">CopyCat-代码克隆检测</a>
+                    <a class="item" href="https://tool.oschina.net/" target="_blank">实用在线工具</a>
+                </div>
+            </div>
+            <div class="center aligned eight wide mobile two wide tablet two wide computer column">
+                <h4 class="ui header">微信公众号</h4>
+                <img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/wechat_qrcode.jpg" alt="微信公众号">
+            </div>
+            <div class="center aligned eight wide mobile six wide tablet six wide computer column">
+                <h3 class="ui header">开源中国 APP</h3>
+                <p>聚合全网技术文章，根据你的阅读喜好进行个性推荐</p>
+                <a href="https://www.oschina.net/app" target="_blank" class="ui large primary button">下载 APP</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="copyright">
+    <div class="ui container">
+        <div class="ui clearing basic segment">
+            <div class="ui left floated horizontal link list">
+                <div class="item">©开源中国(OSChina.NET)</div>
+                <div class="item mb-hide">工信部</div>
+                <a class="item mb-hide" href="http://www.copu.org.cn/" target="_blank" title="开源软件推进联盟">开源软件推进联盟</a>
+                <div class="item mb-hide">指定官方社区</div>
+            </div>
+            <div class="ui right floated horizontal link list">
+                <div class="item mb-hide">深圳市奥思网络科技有限公司版权所有</div>
+                <a href="http://www.miitbeian.gov.cn/" target="_blank" class="item">粤ICP备12009483号-3</a>
+            </div>
+        </div>
+    </div>
+</div>    </div>
+                                                        <div class="back-to-top back-to-top-toggle" style="display: block;">
+        <div class="icon"><img src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/back-to-top.svg" alt="返回顶部"></div>
+        <div class="text">顶部</div>
+    </div>
+
+        <script src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/semantic.min.js"></script>
+    <script src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/jweixin-1.2.0.js"></script>
+                <script type="text/javascript" src="./提升网站访问速度的 SQL 查询优化技巧 - 开源中国_files/web.4852322f.js"></script>                
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else{
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?a411c4d1664dd70048ee98afe7b28f0b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+    
+
+<!-- Generated by oschina (init:1[ms],page:483[ms],ip:202.126.56.4) //--><div class="ui dimmer modals page"><div class="ui mini delete-paragraph modal">
+    <div class="header">删除段落</div>
+    <div class="content">
+        <p>段落删除后无法恢复，确定取消删除此段落吗？</p>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">取消</div>
+        <div class="ui red ok button">确定</div>
+    </div>
+</div><div class="ui mini delete-comment modal">
+    <div class="header">删除一条评论</div>
+    <div class="content">
+        <p>评论删除后，数据将无法恢复</p>
+    </div>
+    <div class="actions">
+        <div class="ui positive button">取消</div>
+        <div class="ui negative button">确定</div>
+    </div>
+</div></div></body><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(84, 84, 84); height: 7602px; width: 1295px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 7602px; width: 1295px;"></div></html>

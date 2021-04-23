@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)http://www.199it.com/archives/718587.html -->
+<html itemscope="itemscope" itemtype="http://schema.org/Blog" lang="zh-CN" class="cye-disabled cye-nm js-enabled gr__199it_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/123b33d6.js"></script>
+	<style id="znBdcsStyle" type="text/css">.bdcs-container .bdcs-main,.bdcs-container .bdcs-main *{box-sizing:content-box;margin:0;padding:0;float:none;clear:none;overflow:hidden;white-space:nowrap;word-wrap:normal;border:0;background:0 0;width:auto;height:auto;max-width:none;min-width:none;max-height:none;min-height:none;border-radius:0;box-shadow:none;transition:none;text-align:left}.bdcs-container .bdcs-clearfix:after{content:'';display:block;clear:both;height:0}.bdcs-container .bdcs-clearfix{zoom:1}.bdcs-container .bdcs-main{overflow:visible}.bdcs-container .bdcs-search{display:block;overflow:visible;position:relative;border-style:solid}.bdcs-container .bdcs-search-form-input-wrap{display:inline-block}.bdcs-container .bdcs-search-form-input{border-width:1px;border-style:solid;display:inline-block;vertical-align:top;text-indent:5px;background-color:#fff;float:left}.bdcs-container .bdcs-search-form-input:focus{border-width:1px;border-style:solid;outline:0}.bdcs-container .bdcs-search-form-submit-wrap{display:inline-block}.bdcs-container .bdcs-search-form-submit{display:inline-block;cursor:pointer;border-width:1px;border-style:solid;vertical-align:top;text-align:center;width:50px;//_overflow:hidden}.bdcs-container .bdcs-search-form-submit-magnifier{width:45px;padding:0;text-indent:-999em;overflow:hidden;background:url(http://znsv.baidu.com/static/customer-search/component/search/magnifier-icon.png) no-repeat center center;_background:url(http://znsv.baidu.com/static/customer-search/component/search/magnifier-icon_ie6.png) no-repeat center center}div#default-searchbox .default-channel-meun{position:relative;width:75px;display:inline-block;vertical-align:middle;cursor:pointer;background:#fff;float:left;overflow:visible}div#default-searchbox .default-channel-current{border:1px solid;position:relative;width:100%;border-right:0}div#default-searchbox .default-channel-current span{margin-left:8px}div#default-searchbox .default-channel-current i{overflow:hidden;width:0;height:0;border-width:6px 6px 0;border-color:#9E9E9E #fff;border-style:solid;display:block;position:absolute;right:10px;top:11px}div.cse-default-channel-container{display:block;position:absolute;z-index:30061000000}div.cse-default-channel-container .default-channel-list{display:none;width:99%;list-style:none;background:#fff;border:1px solid #DDD;border-top:0;margin:0;padding:0}div.cse-default-channel-container .default-channel-list li{background:0 0;line-height:24px;list-style:none;display:block;padding-left:7px;cursor:pointer}div.cse-default-channel-container .default-channel-list li:hover{background:#DDD}.bdcs-container .bdcs-search-form-input-wrap{}.bdcs-container .bdcs-search-form-input-notspan{margin-left:0px;font-family:Arial,SimSun,sans-serif;color:#000000;font-size:14px;}.bdcs-container .bdcs-search-form-input .icon-nofocus{left:;right:;top:;height:;width:;}.bdcs-container .bdcs-search{width:531px;height:40px;overflow:hidden;border-color:#1a89ed;border-radius:5px;border-width:2px;box-shadow:none;background-color:#1a89ed;}.bdcs-container .bdcs-search-form-input{border-color:#1a89ed;margin-right:0px;width:478px;height:38px;line-height:38px;font-family:Arial,SimSun,sans-serif;color:#000000;font-size:14px;border-radius:1px;background-color:#FFFFFF;}.bdcs-container .bdcs-search-form-input:focus{border-color:#f79646;}.bdcs-container .bdcs-search-form-submit-wrap{}.bdcs-container .bdcs-search-form-submit{border-color:#1a89ed;height:38px;width:50px;background-color:#1a89ed;color:#ffffff;font-family:Arial,SimSun,sans-serif;font-size:14px;border-radius:0px;}.bdcs-container .bdcs-hot{width:300px;height:30px;line-height:30px;}.bdcs-container .bdcs-hot-item{color:#000000;font-family:Arial,Microsoft YaHei,sans-serif;font-size:14px;}.bdcs-container .bdcs-search-form-submit{*height:40px;*margin-top:1px;}.bdcs-container .bdcs-search-form-submit{line-height:38px;}.bdcs-container .bdcs-search-form-input{margin-right:-1px;}.bdcs-container .bdcs-clearfix:after{content:'';display:block;clear:both;height:0}.bdcs-container .bdcs-clearfix{zoom:1}.bdcs-container .bdcs-hot,.bdcs-container .bdcs-hot *{box-sizing:content-box;margin:0;padding:0;float:none;clear:none;overflow:hidden;white-space:nowrap;word-wrap:normal;border:0;background:0 0;width:auto;height:auto;max-width:none;min-width:none;max-height:none;min-height:none;border-radius:0;box-shadow:none;transition:none;text-align:left}.bdcs-container .bdcs-hot{display:block;white-space:normal}.bdcs-container .bdcs-hot-item{margin-right:10px}.bdcs-container .bdcs-hot{width:300px;height:30px;line-height:30px;}.bdcs-container .bdcs-hot-item{color:#000000;font-family:Arial,Microsoft YaHei,sans-serif;font-size:14px;}.bdcs-container .bdcs-search{float:left} .bdcs-container .bdcs-hot{float:right}#bdcs-rec{display:none;}</style>
+	        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="pingback" href="http://www.199it.com/xmlrpc.php">
+	<!--[if lt IE 9]>
+	<script src="http://www.199it.com/wp-content/themes/newsplus-20171127/js/html5.js"></script>
+	<![endif]-->
+	
+
+
+<meta name="description" content="Apache软件基金会公开邮件档案：截止到2011年7月11日全部公开可用的Apache软件基金会邮件档案。（200 GB）">
+<meta name="keywords" content="数据集,自然语言处理,自然语言处理数据集">
+
+				  
+	
+	<title itemprop="name">专业贴：100+个自然语言处理数据集 | 互联网数据资讯中心-199IT | 中文互联网数据研究资讯中心-199IT</title>
+<link rel="dns-prefetch" href="http://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="互联网数据资讯中心-199IT » Feed" href="http://www.199it.com/feed">
+<link rel="alternate" type="application/rss+xml" title="互联网数据资讯中心-199IT » 评论Feed" href="http://www.199it.com/comments/feed">
+		<script type="text/javascript" async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/auto_dup"></script><script type="text/javascript" async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/pta.js"></script><script type="text/javascript" async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/pts.js"></script><script type="text/javascript" async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/dc.js"></script><script type="text/javascript" async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/js"></script><script src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/hm.js"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/www.199it.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.42"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56794,8205,9794,65039],[55358,56794,8203,9794,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="newsplus-fontawesome-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/font-awesome.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="newsplus-shortcodes-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/newsplus-shortcodes.css" type="text/css" media="all">
+<link rel="stylesheet" id="newsplus-owl-carousel-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/owl.carousel.css" type="text/css" media="all">
+<link rel="stylesheet" id="newsplus-prettyphoto-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/prettyPhoto.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-header-notification-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/style.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-rest-filter-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/wp-rest-filter-public.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-pagenavi-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/pagenavi-css.css" type="text/css" media="all">
+<link rel="stylesheet" id="newsplus-style-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/style.css" type="text/css" media="all">
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='newsplus-ie-css'  href='http://www.199it.com/wp-content/themes/newsplus-20171127/css/ie.css?ver=4.9.42' type='text/css' media='all' />
+<![endif]-->
+<link rel="stylesheet" id="newsplus-responsive-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/responsive.css" type="text/css" media="all">
+<link rel="stylesheet" id="newsplus-color-scheme-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/blue.css" type="text/css" media="all">
+<link rel="stylesheet" id="newsplus-user-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/user.css" type="text/css" media="all">
+<link rel="stylesheet" id="roboto-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="kc-general-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/kingcomposer.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="kc-animate-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/animate.css" type="text/css" media="all">
+<link rel="stylesheet" id="kc-icon-1-css" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/icons.css" type="text/css" media="all">
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/jquery(1).js"></script><style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/jquery-migrate.min(1).js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var wp_header_notification_info = {"button_link":"http:\/\/www.199it.com\/wp-content\/uploads\/2017\/03\/WechatIMG293111111111-2.png","renotice_time":"10"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/script.min.js"></script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/wp-rest-filter-public.js"></script>
+<link rel="https://api.w.org/" href="http://www.199it.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.199it.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.199it.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="未来三十年的世界人口重心大转移" href="http://www.199it.com/archives/718553.html">
+<link rel="next" title="Trustdata：2017二手车电商用户购车行为分析报告（附下载）" href="http://www.199it.com/archives/718752.html">
+<meta name="generator" content="WordPress 4.9.42">
+<link rel="canonical" href="http://www.199it.com/archives/718587.html">
+<link rel="shortlink" href="http://www.199it.com/?p=718587">
+<link rel="alternate" type="application/json+oembed" href="http://www.199it.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.199it.com%2Farchives%2F718587.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.199it.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.199it.com%2Farchives%2F718587.html&amp;format=xml">
+<script type="text/javascript">var kc_script_data={ajax_url:"http://www.199it.com/wp-admin/admin-ajax.php"}</script><script type="text/javascript">
+	window._wp_rp_static_base_url = 'https://wprp.zemanta.com/static/';
+	window._wp_rp_wp_ajax_url = "http://www.199it.com/wp-admin/admin-ajax.php";
+	window._wp_rp_plugin_version = '3.6.4';
+	window._wp_rp_post_id = '718587';
+	window._wp_rp_num_rel_posts = '15';
+	window._wp_rp_thumbnails = false;
+	window._wp_rp_post_title = '%E4%B8%93%E4%B8%9A%E8%B4%B4%EF%BC%9A100%2B%E4%B8%AA%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E9%9B%86';
+	window._wp_rp_post_tags = ['%E6%95%B0%E6%8D%AE%E9%9B%86', '%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86', '%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E9%9B%86', '199it%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0', '%E4%B8%93%E4%B8%9A%E7%9F%A5%E8%AF%86', 'movi', '100', 'alt', 'a', 'lab'];
+	window._wp_rp_promoted_content = false;
+</script>
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?47366c78fc67d7eef4915d26493d8cf0";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/share.js"></script><style></style><link rel="stylesheet" href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/share_style0_32.css"></head><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div>
+
+<body class="post-template-default single single-post postid-718587 single-format-standard kc-css-system is-boxed split-66-33 layout-ca scheme-blue" data-gr-c-s-loaded="true" style=""><div id="BAIDU_DUP_fp_wrapper" style="position: absolute; left: -1px; bottom: -1px; z-index: 0; width: 0px; height: 0px; overflow: hidden; visibility: hidden; display: none;"><iframe id="BAIDU_DUP_fp_iframe" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/o.html" style="width: 0px; height: 0px; visibility: hidden; display: none;"></iframe></div><div id="top_notice">
+	<div class="top_notice_close" onclick="wp_header_notification_pushdownclose();"> × </div>
+	<div class="top_notice_text_box">
+		<span class="top_notice_text">支持199IT发展可加入知识交流群（4000+用户），最有价值数据分享和讨论！</span>
+		<div class="top_notice_button" onclick="wp_header_notification_pushdownyes();">点击即可加入！</div>
+		<div class="top_notice_button" onclick="wp_header_notification_pushdownclose();">关闭</div>
+	</div>
+</div>
+	    <div id="page" class="hfeed site clear">
+            <div id="utility-top" class="top-nav">
+            <div class="wrap clear">
+                                <nav id="optional-nav" class="secondary-nav">
+                    <ul id="menu-%e5%85%b3%e4%ba%8e%e6%88%91%e4%bb%ac" class="sec-menu clear"><li id="menu-item-114270" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-114270"><a href="http://www.199it.com/newly" itemprop="url"><strong style="color: 	#FF0000;">简洁版</strong></a></li>
+<li id="menu-item-359396" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-359396"><a href="http://hao.199it.com/" itemprop="url"><strong style="color: 	#FF0000;">大数据导航</strong></a></li>
+<li id="menu-item-103323" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-103323"><a href="http://e.weibo.com/199it/" itemprop="url"><strong style="color: 	#2E86C1;">官方微博</strong></a></li>
+<li id="menu-item-318556" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-318556"><a href="http://www.199it.com/company" itemprop="url">企业专区</a></li>
+<li id="menu-item-103339" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103339"><a href="http://www.199it.com/%e5%8f%8b%e7%ab%99" itemprop="url">友站</a></li>
+<li id="menu-item-581920" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-581920"><a href="http://www.199it.com/b" itemprop="url">投稿与合作</a></li>
+</ul>                </nav><!-- #optional-nav -->
+                                <!--div id="search-bar" role="complementary">
+
+                    <script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=913566115233094367' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
+                </div--><!-- #search-bar -->
+                            </div><!-- .top-nav .wrap -->
+        </div><!-- .top-nav-->
+		            <header id="header" class="site-header">
+                <div class="wrap full-width clear">    
+                    <div class="brand column one-fourth">
+        <h4 class="site-title"><a itemprop="url" href="http://www.199it.com/" title="互联网数据资讯中心-199IT" rel="home"><img src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/199itlogo.png" alt="互联网数据资讯中心-199IT"></a></h4>    </div><!-- .column one-third -->
+        <div class="column header-widget-area right last">
+        <aside id="text-14" class="hwa-wrap widget_text">			<div class="textwidget"><script async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/f.txt"></script>
+<!-- Banner广告 -->
+<ins class="adsbygoogle" style="display:inline-block;width:468px;height:60px" data-ad-client="ca-pub-9891438663259768" data-ad-slot="4540682372"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+		</aside>        </div><!-- .header-widget-area -->
+	                </div><!-- #header .wrap -->
+            </header><!-- #header -->
+        					<div id="responsive-menu" class="resp-main">
+                        <div class="wrap">
+							                         
+                            <h3 class="menu-button"><span class="screen-reader-text">菜单</span>Menu<span class="toggle-icon"><span class="bar-1"></span><span class="bar-2"></span><span class="bar-3"></span></span></h3>
+                        </div><!-- /.wrap -->
+						<nav itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" class="menu-drop"><ul id="menu-%e4%ba%92%e8%81%94%e7%bd%91" class="clear"><li id="menu-item-103331" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-103331"><a href="http://www.199it.com/" itemprop="url">首页</a></li>
+<li id="menu-item-450711" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-450711"><a href="http://www.199it.com/archives/category/report" itemprop="url">报告</a></li>
+<li id="menu-item-336634" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-336634"><a href="http://www.199it.com/archives/category/emerging" itemprop="url">战略新兴产业</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-418530" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-418530"><a href="http://www.199it.com/archives/category/emerging/%e6%96%b0%e8%83%bd%e6%ba%90" itemprop="url">新能源产业</a></li>
+	<li id="menu-item-418529" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-418529"><a href="http://www.199it.com/archives/category/emerging/%e4%ba%ba%e5%b7%a5%e6%99%ba%e8%83%bd" itemprop="url">人工智能</a></li>
+	<li id="menu-item-706940" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706940"><a href="http://www.199it.com/archives/category/emerging/ngit" itemprop="url">新一代信息技术产业</a></li>
+	<li id="menu-item-518342" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-518342"><a href="http://www.199it.com/archives/category/emerging/smartcar" itemprop="url">智能汽车</a></li>
+	<li id="menu-item-706942" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706942"><a href="http://www.199it.com/archives/category/emerging/bioindustry" itemprop="url">生物产业</a></li>
+	<li id="menu-item-706943" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706943"><a href="http://www.199it.com/archives/category/emerging/heemi" itemprop="url">高端装备制造产业</a></li>
+	<li id="menu-item-418528" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-418528"><a href="http://www.199it.com/archives/category/emerging/%e7%89%a9%e8%81%94%e7%bd%91" itemprop="url">物联网</a></li>
+	<li id="menu-item-706948" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706948"><a href="http://www.199it.com/archives/category/emerging/nmi" itemprop="url">新材料产业</a></li>
+	<li id="menu-item-418531" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-418531"><a href="http://www.199it.com/archives/category/emerging/%e5%b7%a5%e4%b8%9a4-0" itemprop="url">工业4.0</a></li>
+	<li id="menu-item-706950" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706950"><a href="http://www.199it.com/archives/category/emerging/nev" itemprop="url">新能源汽车产业</a></li>
+	<li id="menu-item-706954" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706954"><a href="http://www.199it.com/archives/category/emerging/esepp" itemprop="url">节能环保产业</a></li>
+	<li id="menu-item-706955" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706955"><a href="http://www.199it.com/archives/category/emerging/cg" itemprop="url">数字创意</a></li>
+</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+<li id="menu-item-706958" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706958"><a href="http://www.199it.com/archives/category/sharingeconomy" itemprop="url">共享经济</a></li>
+<li id="menu-item-749996" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-749996"><a href="http://www.199it.com/archives/category/economic-data/internetfinance/blockchain" itemprop="url">区块链</a></li>
+<li id="menu-item-30935" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30935"><a title="移动互联网" href="http://www.199it.com/archives/category/mobile-internet" itemprop="url">移动</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-30937" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30937"><a href="http://www.199it.com/archives/category/service/3g" itemprop="url">电信产业</a></li>
+	<li id="menu-item-113808" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-113808"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-device" itemprop="url">移动设备</a></li>
+	<li id="menu-item-30936" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30936"><a href="http://www.199it.com/archives/category/advertising/mobile-marketing/mobile-ad" itemprop="url">移动互联网广告</a></li>
+	<li id="menu-item-30938" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30938"><a href="http://www.199it.com/archives/category/mobile-internet/2-dimensional-bar-code" itemprop="url">二维码</a></li>
+	<li id="menu-item-30940" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30940"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-browser" itemprop="url">手机浏览器</a></li>
+	<li id="menu-item-30943" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30943"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-mail" itemprop="url">手机邮箱</a></li>
+	<li id="menu-item-30946" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30946"><a href="http://www.199it.com/archives/category/mobile-internet/location-based-service" itemprop="url">移动地理位置服务</a></li>
+	<li id="menu-item-30947" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30947"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-value" itemprop="url">移动增值</a></li>
+	<li id="menu-item-30948" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30948"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-app" itemprop="url">移动应用</a></li>
+	<li id="menu-item-30949" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30949"><a href="http://www.199it.com/archives/category/mobile-internet/m-search" itemprop="url">移动搜索</a></li>
+	<li id="menu-item-30950" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30950"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-payment" itemprop="url">移动支付</a></li>
+</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+<li id="menu-item-30803" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30803"><a title="电子商务" href="http://www.199it.com/archives/category/electronic-commerce" itemprop="url">电商</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-103315" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-103315"><a href="http://www.199it.com/archives/category/electronic-commerce/eshopping" itemprop="url">网络购物</a></li>
+	<li id="menu-item-30952" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30952"><a href="http://www.199it.com/archives/category/electronic-commerce/mobile-e-commerce" itemprop="url">移动电子商务</a></li>
+	<li id="menu-item-30804" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30804"><a href="http://www.199it.com/archives/category/electronic-commerce/b2b" itemprop="url">B2B</a></li>
+	<li id="menu-item-30826" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30826"><a href="http://www.199it.com/archives/category/electronic-commerce/group-ec" itemprop="url">团购</a></li>
+	<li id="menu-item-30865" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30865"><a href="http://www.199it.com/archives/category/electronic-commerce/online-payment" itemprop="url">网上支付</a></li>
+</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+<li id="menu-item-30851" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30851"><a title="社交网络" href="http://www.199it.com/archives/category/social-network" itemprop="url">社交</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-30866" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30866"><a href="http://www.199it.com/archives/category/social-network/network-friends" itemprop="url">网络交友</a></li>
+	<li id="menu-item-30758" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30758"><a href="http://www.199it.com/archives/category/social-network/instant-messaging" itemprop="url">即时通讯</a></li>
+	<li id="menu-item-30859" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30859"><a href="http://www.199it.com/archives/category/social-network/micro-blog" itemprop="url">微博</a></li>
+	<li id="menu-item-30852" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30852"><a href="http://www.199it.com/archives/category/social-network/sns" itemprop="url">SNS</a></li>
+	<li id="menu-item-30856" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30856"><a href="http://www.199it.com/archives/category/social-network/%e5%9b%be%e7%89%87%e5%88%86%e4%ba%ab" itemprop="url">图片分享</a></li>
+	<li id="menu-item-30864" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30864"><a href="http://www.199it.com/archives/category/social-network/q-a-website" itemprop="url">问答类网站</a></li>
+	<li id="menu-item-30830" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30830"><a href="http://www.199it.com/archives/category/service/email" itemprop="url">电子邮件</a></li>
+</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+<li id="menu-item-30708" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30708"><a title="网络广告" href="http://www.199it.com/archives/category/advertising" itemprop="url">营销</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-30640" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30640"><a href="http://www.199it.com/archives/category/advertising/edm-marketing" itemprop="url">EDM营销</a></li>
+	<li id="menu-item-30673" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30673"><a href="http://www.199it.com/archives/category/advertising/social-network-marketing" itemprop="url">社会化网络营销</a></li>
+	<li id="menu-item-30674" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30674"><a title="付费搜索广告" href="http://www.199it.com/archives/category/advertising/paid-search-advertising" itemprop="url">搜索营销</a></li>
+	<li id="menu-item-30944" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30944"><a href="http://www.199it.com/archives/category/advertising/mobile-marketing" itemprop="url">移动营销</a></li>
+	<li id="menu-item-30678" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30678"><a href="http://www.199it.com/archives/category/advertising/word-of-mouth-marketing" itemprop="url">口碑营销</a></li>
+	<li id="menu-item-30707" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30707"><a href="http://www.199it.com/archives/category/advertising/video-ads" itemprop="url">视频广告营销</a></li>
+	<li id="menu-item-27449" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-27449"><a href="http://www.199it.com/archives/category/advertising/display-advertise" itemprop="url">展示广告</a></li>
+	<li id="menu-item-30710" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30710"><a href="http://www.199it.com/archives/category/advertising/ig-marketing" itemprop="url">整合营销</a></li>
+	<li id="menu-item-30679" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30679"><a href="http://www.199it.com/archives/category/advertising/brand-advertising" itemprop="url">品牌网络广告</a></li>
+	<li id="menu-item-30711" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30711"><a href="http://www.199it.com/archives/category/advertising/ad-agency" itemprop="url">营销服务</a></li>
+	<li id="menu-item-30680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30680"><a href="http://www.199it.com/archives/category/advertising/ad-network" itemprop="url">广告联盟</a></li>
+	<li id="menu-item-28198" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-28198"><a href="http://www.199it.com/archives/category/advertising/tech-marketing" itemprop="url">技术营销</a></li>
+</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+<li id="menu-item-160231" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-160231"><a title="投资&amp;经济，互联网金融" href="http://www.199it.com/archives/category/economic-data" itemprop="url">投资</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-608295" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-608295"><a href="http://www.199it.com/archives/category/economic-data/internetfinance/blockchain" itemprop="url">区块链</a></li>
+	<li id="menu-item-160232" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-160232"><a href="http://www.199it.com/archives/category/economic-data/internetfinance" itemprop="url">互联网金融</a></li>
+	<li id="menu-item-160309" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-160309"><a href="http://www.199it.com/archives/category/economic-data/china-economic-data/venture-capital" itemprop="url">创业投资</a></li>
+	<li id="menu-item-160310" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-160310"><a href="http://www.199it.com/archives/category/economic-data/enterprise-financial-reporting" itemprop="url">企业财务报告</a></li>
+</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+<li id="menu-item-103317" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-103317"><a href="http://www.199it.com/archives/category/service" itemprop="url">服务</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-33790" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-33790"><a title="网络媒体行业" href="http://www.199it.com/archives/category/omg" itemprop="url">媒体</a>
+	<ul class="sub-menu" style="display: none;">
+		<li id="menu-item-30773" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30773"><a href="http://www.199it.com/archives/category/omg/news" itemprop="url">新闻门户</a></li>
+		<li id="menu-item-30774" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30774"><a href="http://www.199it.com/archives/category/omg/it-vertical-website" itemprop="url">IT垂直网站</a></li>
+		<li id="menu-item-30775" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30775"><a href="http://www.199it.com/archives/category/omg/caijing" itemprop="url">垂直财经网站</a></li>
+		<li id="menu-item-30868" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30868"><a href="http://www.199it.com/archives/category/service/network-recruitment" itemprop="url">网络招聘</a></li>
+		<li id="menu-item-30757" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30757"><a href="http://www.199it.com/archives/category/electronic-commerce/online-travel" itemprop="url">旅行预订</a></li>
+		<li id="menu-item-445689" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-445689"><a href="http://www.199it.com/archives/tag/fashion-website" itemprop="url">时尚网站</a></li>
+		<li id="menu-item-30776" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30776"><a href="http://www.199it.com/archives/category/omg/literature" itemprop="url">文学网站</a></li>
+		<li id="menu-item-30778" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30778"><a href="http://www.199it.com/archives/category/omg/icar-website" itemprop="url">汽车网站</a></li>
+	</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+	<li id="menu-item-103318" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-103318"><a title="网络娱乐行业" href="http://www.199it.com/archives/category/entertain" itemprop="url">娱乐</a>
+	<ul class="sub-menu" style="display: none;">
+		<li id="menu-item-30799" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30799"><a href="http://www.199it.com/archives/category/entertain/video" itemprop="url">网络视频</a></li>
+		<li id="menu-item-30889" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30889"><a href="http://www.199it.com/archives/category/entertain/online-game" itemprop="url">网络游戏</a>
+		<ul class="sub-menu" style="display: none;">
+			<li id="menu-item-30890" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30890"><a href="http://www.199it.com/archives/category/entertain/online-game/social-games" itemprop="url">社交游戏</a></li>
+			<li id="menu-item-30891" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30891"><a href="http://www.199it.com/archives/category/entertain/online-game/webgames" itemprop="url">网页游戏</a></li>
+		</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+		<li id="menu-item-30759" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30759"><a href="http://www.199it.com/archives/category/entertain/online-music" itemprop="url">在线音乐</a></li>
+		<li id="menu-item-30945" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30945"><a href="http://www.199it.com/archives/category/entertain/mobile-music" itemprop="url">无线音乐</a></li>
+		<li id="menu-item-30942" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30942"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-video" itemprop="url">手机视频</a></li>
+		<li id="menu-item-30951" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30951"><a href="http://www.199it.com/archives/category/entertain/mobile-games" itemprop="url">移动游戏</a></li>
+	</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+	<li id="menu-item-113807" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-113807"><a href="http://www.199it.com/archives/category/service/notebook" itemprop="url">硬件设备业</a></li>
+	<li id="menu-item-30770" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30770"><a href="http://www.199it.com/archives/category/service/cloud-computing" itemprop="url">云计算</a></li>
+	<li id="menu-item-30756" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30756"><a href="http://www.199it.com/archives/category/service/category" itemprop="url">分类信息</a></li>
+	<li id="menu-item-30802" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30802"><a href="http://www.199it.com/archives/category/service/search-engine" itemprop="url">搜索引擎</a></li>
+	<li id="menu-item-30867" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30867"><a href="http://www.199it.com/archives/category/service/security" itemprop="url">网络安全</a></li>
+	<li id="menu-item-30894" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30894"><a href="http://www.199it.com/archives/category/service/online-map" itemprop="url">在线地图</a></li>
+</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+<li id="menu-item-30740" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30740"><a title="网络服务行业" href="http://www.199it.com/archives/category/dataindustry" itemprop="url">行业</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-160571" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-160571"><a href="http://www.199it.com/archives/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE" itemprop="url">大数据</a></li>
+	<li id="menu-item-30741" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30741"><a href="http://www.199it.com/archives/category/dataindustry/industry-news" itemprop="url">行业资讯</a></li>
+	<li id="menu-item-30742" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30742"><a href="http://www.199it.com/archives/category/dataindustry/webanalytics" itemprop="url">Web分析</a></li>
+	<li id="menu-item-30745" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30745"><a href="http://www.199it.com/archives/category/dataindustry/data-mining" itemprop="url">数据挖掘</a></li>
+</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+<li id="menu-item-160313" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-160313"><a title="用户研究" href="http://www.199it.com/archives/category/internet-users" itemprop="url">用研</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-418534" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-418534"><a href="http://www.199it.com/archives/category/info-graphics" itemprop="url">信息图</a>
+	<ul class="sub-menu" style="display: none;">
+		<li id="menu-item-418535" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-418535"><a href="http://www.199it.com/archives/category/info-graphics/shuju" itemprop="url">数局</a></li>
+	</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+</ul>
+<a class="expand-menu" href="http://www.199it.com/archives/718587.html#" title="展开或折叠子菜单"><i class="fa fa-angle-down"></i></a></li>
+</ul><ul id="menu-%e5%85%b3%e4%ba%8e%e6%88%91%e4%bb%ac" class="clear"><li id="menu-item-114270" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-114270"><a href="http://www.199it.com/newly" itemprop="url"><strong style="color: 	#FF0000;">简洁版</strong></a></li>
+<li id="menu-item-359396" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-359396"><a href="http://hao.199it.com/" itemprop="url"><strong style="color: 	#FF0000;">大数据导航</strong></a></li>
+<li id="menu-item-103323" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-103323"><a href="http://e.weibo.com/199it/" itemprop="url"><strong style="color: 	#2E86C1;">官方微博</strong></a></li>
+<li id="menu-item-318556" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-318556"><a href="http://www.199it.com/company" itemprop="url">企业专区</a></li>
+<li id="menu-item-103339" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103339"><a href="http://www.199it.com/%e5%8f%8b%e7%ab%99" itemprop="url">友站</a></li>
+<li id="menu-item-581920" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-581920"><a href="http://www.199it.com/b" itemprop="url">投稿与合作</a></li>
+</ul></nav><!-- /.menu-drop -->                        
+					</div><!-- /#responsive-menu -->
+				            <nav itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" id="main-nav" class="primary-nav">
+                <div class="wrap clearfix">
+                    <ul id="menu-%e4%ba%92%e8%81%94%e7%bd%91" class="nav-menu clear"><li id="menu-item-103331" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-103331"><a href="http://www.199it.com/" itemprop="url">首页</a></li>
+<li id="menu-item-450711" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-450711"><a href="http://www.199it.com/archives/category/report" itemprop="url">报告</a></li>
+<li id="menu-item-336634" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-336634"><a href="http://www.199it.com/archives/category/emerging" itemprop="url">战略新兴产业</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-418530" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-418530"><a href="http://www.199it.com/archives/category/emerging/%e6%96%b0%e8%83%bd%e6%ba%90" itemprop="url">新能源产业</a></li>
+	<li id="menu-item-418529" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-418529"><a href="http://www.199it.com/archives/category/emerging/%e4%ba%ba%e5%b7%a5%e6%99%ba%e8%83%bd" itemprop="url">人工智能</a></li>
+	<li id="menu-item-706940" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706940"><a href="http://www.199it.com/archives/category/emerging/ngit" itemprop="url">新一代信息技术产业</a></li>
+	<li id="menu-item-518342" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-518342"><a href="http://www.199it.com/archives/category/emerging/smartcar" itemprop="url">智能汽车</a></li>
+	<li id="menu-item-706942" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706942"><a href="http://www.199it.com/archives/category/emerging/bioindustry" itemprop="url">生物产业</a></li>
+	<li id="menu-item-706943" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706943"><a href="http://www.199it.com/archives/category/emerging/heemi" itemprop="url">高端装备制造产业</a></li>
+	<li id="menu-item-418528" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-418528"><a href="http://www.199it.com/archives/category/emerging/%e7%89%a9%e8%81%94%e7%bd%91" itemprop="url">物联网</a></li>
+	<li id="menu-item-706948" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706948"><a href="http://www.199it.com/archives/category/emerging/nmi" itemprop="url">新材料产业</a></li>
+	<li id="menu-item-418531" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-418531"><a href="http://www.199it.com/archives/category/emerging/%e5%b7%a5%e4%b8%9a4-0" itemprop="url">工业4.0</a></li>
+	<li id="menu-item-706950" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706950"><a href="http://www.199it.com/archives/category/emerging/nev" itemprop="url">新能源汽车产业</a></li>
+	<li id="menu-item-706954" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706954"><a href="http://www.199it.com/archives/category/emerging/esepp" itemprop="url">节能环保产业</a></li>
+	<li id="menu-item-706955" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706955"><a href="http://www.199it.com/archives/category/emerging/cg" itemprop="url">数字创意</a></li>
+</ul>
+</li>
+<li id="menu-item-706958" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-706958"><a href="http://www.199it.com/archives/category/sharingeconomy" itemprop="url">共享经济</a></li>
+<li id="menu-item-749996" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-749996"><a href="http://www.199it.com/archives/category/economic-data/internetfinance/blockchain" itemprop="url">区块链</a></li>
+<li id="menu-item-30935" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30935"><a title="移动互联网" href="http://www.199it.com/archives/category/mobile-internet" itemprop="url">移动</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-30937" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30937"><a href="http://www.199it.com/archives/category/service/3g" itemprop="url">电信产业</a></li>
+	<li id="menu-item-113808" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-113808"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-device" itemprop="url">移动设备</a></li>
+	<li id="menu-item-30936" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30936"><a href="http://www.199it.com/archives/category/advertising/mobile-marketing/mobile-ad" itemprop="url">移动互联网广告</a></li>
+	<li id="menu-item-30938" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30938"><a href="http://www.199it.com/archives/category/mobile-internet/2-dimensional-bar-code" itemprop="url">二维码</a></li>
+	<li id="menu-item-30940" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30940"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-browser" itemprop="url">手机浏览器</a></li>
+	<li id="menu-item-30943" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30943"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-mail" itemprop="url">手机邮箱</a></li>
+	<li id="menu-item-30946" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30946"><a href="http://www.199it.com/archives/category/mobile-internet/location-based-service" itemprop="url">移动地理位置服务</a></li>
+	<li id="menu-item-30947" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30947"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-value" itemprop="url">移动增值</a></li>
+	<li id="menu-item-30948" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30948"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-app" itemprop="url">移动应用</a></li>
+	<li id="menu-item-30949" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30949"><a href="http://www.199it.com/archives/category/mobile-internet/m-search" itemprop="url">移动搜索</a></li>
+	<li id="menu-item-30950" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30950"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-payment" itemprop="url">移动支付</a></li>
+</ul>
+</li>
+<li id="menu-item-30803" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30803"><a title="电子商务" href="http://www.199it.com/archives/category/electronic-commerce" itemprop="url">电商</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-103315" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-103315"><a href="http://www.199it.com/archives/category/electronic-commerce/eshopping" itemprop="url">网络购物</a></li>
+	<li id="menu-item-30952" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30952"><a href="http://www.199it.com/archives/category/electronic-commerce/mobile-e-commerce" itemprop="url">移动电子商务</a></li>
+	<li id="menu-item-30804" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30804"><a href="http://www.199it.com/archives/category/electronic-commerce/b2b" itemprop="url">B2B</a></li>
+	<li id="menu-item-30826" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30826"><a href="http://www.199it.com/archives/category/electronic-commerce/group-ec" itemprop="url">团购</a></li>
+	<li id="menu-item-30865" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30865"><a href="http://www.199it.com/archives/category/electronic-commerce/online-payment" itemprop="url">网上支付</a></li>
+</ul>
+</li>
+<li id="menu-item-30851" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30851"><a title="社交网络" href="http://www.199it.com/archives/category/social-network" itemprop="url">社交</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-30866" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30866"><a href="http://www.199it.com/archives/category/social-network/network-friends" itemprop="url">网络交友</a></li>
+	<li id="menu-item-30758" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30758"><a href="http://www.199it.com/archives/category/social-network/instant-messaging" itemprop="url">即时通讯</a></li>
+	<li id="menu-item-30859" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30859"><a href="http://www.199it.com/archives/category/social-network/micro-blog" itemprop="url">微博</a></li>
+	<li id="menu-item-30852" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30852"><a href="http://www.199it.com/archives/category/social-network/sns" itemprop="url">SNS</a></li>
+	<li id="menu-item-30856" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30856"><a href="http://www.199it.com/archives/category/social-network/%e5%9b%be%e7%89%87%e5%88%86%e4%ba%ab" itemprop="url">图片分享</a></li>
+	<li id="menu-item-30864" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30864"><a href="http://www.199it.com/archives/category/social-network/q-a-website" itemprop="url">问答类网站</a></li>
+	<li id="menu-item-30830" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30830"><a href="http://www.199it.com/archives/category/service/email" itemprop="url">电子邮件</a></li>
+</ul>
+</li>
+<li id="menu-item-30708" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30708"><a title="网络广告" href="http://www.199it.com/archives/category/advertising" itemprop="url">营销</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-30640" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30640"><a href="http://www.199it.com/archives/category/advertising/edm-marketing" itemprop="url">EDM营销</a></li>
+	<li id="menu-item-30673" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30673"><a href="http://www.199it.com/archives/category/advertising/social-network-marketing" itemprop="url">社会化网络营销</a></li>
+	<li id="menu-item-30674" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30674"><a title="付费搜索广告" href="http://www.199it.com/archives/category/advertising/paid-search-advertising" itemprop="url">搜索营销</a></li>
+	<li id="menu-item-30944" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30944"><a href="http://www.199it.com/archives/category/advertising/mobile-marketing" itemprop="url">移动营销</a></li>
+	<li id="menu-item-30678" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30678"><a href="http://www.199it.com/archives/category/advertising/word-of-mouth-marketing" itemprop="url">口碑营销</a></li>
+	<li id="menu-item-30707" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30707"><a href="http://www.199it.com/archives/category/advertising/video-ads" itemprop="url">视频广告营销</a></li>
+	<li id="menu-item-27449" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-27449"><a href="http://www.199it.com/archives/category/advertising/display-advertise" itemprop="url">展示广告</a></li>
+	<li id="menu-item-30710" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30710"><a href="http://www.199it.com/archives/category/advertising/ig-marketing" itemprop="url">整合营销</a></li>
+	<li id="menu-item-30679" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30679"><a href="http://www.199it.com/archives/category/advertising/brand-advertising" itemprop="url">品牌网络广告</a></li>
+	<li id="menu-item-30711" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30711"><a href="http://www.199it.com/archives/category/advertising/ad-agency" itemprop="url">营销服务</a></li>
+	<li id="menu-item-30680" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30680"><a href="http://www.199it.com/archives/category/advertising/ad-network" itemprop="url">广告联盟</a></li>
+	<li id="menu-item-28198" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-28198"><a href="http://www.199it.com/archives/category/advertising/tech-marketing" itemprop="url">技术营销</a></li>
+</ul>
+</li>
+<li id="menu-item-160231" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-160231"><a title="投资&amp;经济，互联网金融" href="http://www.199it.com/archives/category/economic-data" itemprop="url">投资</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-608295" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-608295"><a href="http://www.199it.com/archives/category/economic-data/internetfinance/blockchain" itemprop="url">区块链</a></li>
+	<li id="menu-item-160232" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-160232"><a href="http://www.199it.com/archives/category/economic-data/internetfinance" itemprop="url">互联网金融</a></li>
+	<li id="menu-item-160309" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-160309"><a href="http://www.199it.com/archives/category/economic-data/china-economic-data/venture-capital" itemprop="url">创业投资</a></li>
+	<li id="menu-item-160310" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-160310"><a href="http://www.199it.com/archives/category/economic-data/enterprise-financial-reporting" itemprop="url">企业财务报告</a></li>
+</ul>
+</li>
+<li id="menu-item-103317" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-103317"><a href="http://www.199it.com/archives/category/service" itemprop="url">服务</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-33790" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-33790"><a title="网络媒体行业" href="http://www.199it.com/archives/category/omg" itemprop="url">媒体</a>
+	<ul class="sub-menu" style="display: none;">
+		<li id="menu-item-30773" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30773"><a href="http://www.199it.com/archives/category/omg/news" itemprop="url">新闻门户</a></li>
+		<li id="menu-item-30774" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30774"><a href="http://www.199it.com/archives/category/omg/it-vertical-website" itemprop="url">IT垂直网站</a></li>
+		<li id="menu-item-30775" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30775"><a href="http://www.199it.com/archives/category/omg/caijing" itemprop="url">垂直财经网站</a></li>
+		<li id="menu-item-30868" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30868"><a href="http://www.199it.com/archives/category/service/network-recruitment" itemprop="url">网络招聘</a></li>
+		<li id="menu-item-30757" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30757"><a href="http://www.199it.com/archives/category/electronic-commerce/online-travel" itemprop="url">旅行预订</a></li>
+		<li id="menu-item-445689" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-445689"><a href="http://www.199it.com/archives/tag/fashion-website" itemprop="url">时尚网站</a></li>
+		<li id="menu-item-30776" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30776"><a href="http://www.199it.com/archives/category/omg/literature" itemprop="url">文学网站</a></li>
+		<li id="menu-item-30778" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30778"><a href="http://www.199it.com/archives/category/omg/icar-website" itemprop="url">汽车网站</a></li>
+	</ul>
+</li>
+	<li id="menu-item-103318" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-103318"><a title="网络娱乐行业" href="http://www.199it.com/archives/category/entertain" itemprop="url">娱乐</a>
+	<ul class="sub-menu" style="display: none;">
+		<li id="menu-item-30799" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30799"><a href="http://www.199it.com/archives/category/entertain/video" itemprop="url">网络视频</a></li>
+		<li id="menu-item-30889" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30889"><a href="http://www.199it.com/archives/category/entertain/online-game" itemprop="url">网络游戏</a>
+		<ul class="sub-menu" style="display: none;">
+			<li id="menu-item-30890" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30890"><a href="http://www.199it.com/archives/category/entertain/online-game/social-games" itemprop="url">社交游戏</a></li>
+			<li id="menu-item-30891" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30891"><a href="http://www.199it.com/archives/category/entertain/online-game/webgames" itemprop="url">网页游戏</a></li>
+		</ul>
+</li>
+		<li id="menu-item-30759" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30759"><a href="http://www.199it.com/archives/category/entertain/online-music" itemprop="url">在线音乐</a></li>
+		<li id="menu-item-30945" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30945"><a href="http://www.199it.com/archives/category/entertain/mobile-music" itemprop="url">无线音乐</a></li>
+		<li id="menu-item-30942" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30942"><a href="http://www.199it.com/archives/category/mobile-internet/mobile-video" itemprop="url">手机视频</a></li>
+		<li id="menu-item-30951" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30951"><a href="http://www.199it.com/archives/category/entertain/mobile-games" itemprop="url">移动游戏</a></li>
+	</ul>
+</li>
+	<li id="menu-item-113807" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-113807"><a href="http://www.199it.com/archives/category/service/notebook" itemprop="url">硬件设备业</a></li>
+	<li id="menu-item-30770" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30770"><a href="http://www.199it.com/archives/category/service/cloud-computing" itemprop="url">云计算</a></li>
+	<li id="menu-item-30756" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30756"><a href="http://www.199it.com/archives/category/service/category" itemprop="url">分类信息</a></li>
+	<li id="menu-item-30802" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30802"><a href="http://www.199it.com/archives/category/service/search-engine" itemprop="url">搜索引擎</a></li>
+	<li id="menu-item-30867" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30867"><a href="http://www.199it.com/archives/category/service/security" itemprop="url">网络安全</a></li>
+	<li id="menu-item-30894" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30894"><a href="http://www.199it.com/archives/category/service/online-map" itemprop="url">在线地图</a></li>
+</ul>
+</li>
+<li id="menu-item-30740" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-30740"><a title="网络服务行业" href="http://www.199it.com/archives/category/dataindustry" itemprop="url">行业</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-160571" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-160571"><a href="http://www.199it.com/archives/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE" itemprop="url">大数据</a></li>
+	<li id="menu-item-30741" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30741"><a href="http://www.199it.com/archives/category/dataindustry/industry-news" itemprop="url">行业资讯</a></li>
+	<li id="menu-item-30742" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30742"><a href="http://www.199it.com/archives/category/dataindustry/webanalytics" itemprop="url">Web分析</a></li>
+	<li id="menu-item-30745" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-30745"><a href="http://www.199it.com/archives/category/dataindustry/data-mining" itemprop="url">数据挖掘</a></li>
+</ul>
+</li>
+<li id="menu-item-160313" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-160313"><a title="用户研究" href="http://www.199it.com/archives/category/internet-users" itemprop="url">用研</a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-418534" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-418534"><a href="http://www.199it.com/archives/category/info-graphics" itemprop="url">信息图</a>
+	<ul class="sub-menu" style="display: none;">
+		<li id="menu-item-418535" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-418535"><a href="http://www.199it.com/archives/category/info-graphics/shuju" itemprop="url">数局</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+</ul>     
+                    
+                </div><!-- .primary-nav .wrap -->
+            </nav><!-- #main-nav -->
+		
+		                <div id="main">
+            <div class="wrap clearfix">
+            	<div class="main-row clearfix">
+<div id="primary" class="site-content">
+	<div class="primary-row">
+        <div id="content" role="main">
+        <div class="home-space-one">
+        	<div class="home-ads-two">
+        		<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=913566115233094367'+'&amp;'.replace('amp;','')+'plate_url=http%3A%2F%2Fwww.199it.com'+'&amp;'.replace('amp;','')+'t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script><div id="bdcs"><div class="bdcs-container"><meta http-equiv="x-ua-compatible" content="IE=9">   <!-- 嵌入式 -->  <div class="bdcs-main bdcs-clearfix" id="default-searchbox">      <div class="bdcs-search bdcs-clearfix" id="bdcs-search-inline">          <form action="http://s.199it.com/cse/search" method="get" target="_blank" class="bdcs-search-form" autocomplete="off" id="bdcs-search-form">              <input type="hidden" name="s" value="913566115233094367">              <input type="hidden" name="entry" value="1">                                                                        <input type="text" name="q" class="bdcs-search-form-input" id="bdcs-search-form-input" placeholder="请输入您想查找的数据" style="height: 40px; line-height: 40px;">              <input type="submit" class="bdcs-search-form-submit " id="bdcs-search-form-submit" value="查询">                       </form>      </div>                     <div class="bdcs-hot" id="bdcs-hot">               </div>       </div>                           </div></div>
+          </div>
+        </div>   
+<div style="text-align:center;" class="listad_01">
+<script async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/f.txt"></script>
+<ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;margin:0 auto;height:90px;margin-bottom:20px;" data-ad-client="ca-pub-9891438663259768" data-ad-slot="4460869298"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+			                    
+                    <article itemscope="" itemtype="http://schema.org/BlogPosting" itemprop="blogPost" id="post-718587" class="newsplus main-article post-718587 post type-post status-publish format-standard has-post-thumbnail hentry category-feature category-74400 tag-76615 tag-58312 tag-92355">
+                        <header class="entry-header">
+                            <h1 itemprop="headline mainEntityOfPage" class="entry-title">专业贴：100+个自然语言处理数据集</h1><aside class="meta-row row-3"><div class="meta-col"><ul class="entry-meta"><li class="publisher-schema" itemscope="" itemtype="http://schema.org/Organization" itemprop="publisher"><meta itemprop="name" content="互联网数据资讯中心-199IT"><div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject"><img itemprop="url" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/199itlogo.png" alt="互联网数据资讯中心-199IT"></div></li><li class="post-time"><time itemprop="datePublished" class="entry-date" datetime="2018-04-30T22:58:10+00:00">2018年04月30日</time><meta itemprop="dateModified" content="2018年04月30日"></li><li itemscope="" itemtype="http://schema.org/Person" itemprop="author" class="post-author hidden"><span class="screen-reader-text">作者 </span><a href="http://www.199it.com/archives/author/admin"><span itemprop="name">DinK</span></a></li></ul></div><div class="meta-col"><ul class="post-categories single"><li><a href="http://www.199it.com/archives/category/feature">199IT推荐文章</a></li><li><a href="http://www.199it.com/archives/category/%e4%b8%93%e4%b8%9a%e7%9f%a5%e8%af%86">专业知识</a></li></ul></div></aside>                        </header>
+
+                        <div class="entry-content articlebody" itemprop="articleBody">
+                            <p><a href="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/78ef6cef39d644dabbd2c6aa97f9c987.jpeg"><img class="size-full wp-image-718588 aligncenter" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/78ef6cef39d644dabbd2c6aa97f9c987.jpeg" alt="" width="640" height="428" srcset="http://www.199it.com/wp-content/uploads/2018/04/78ef6cef39d644dabbd2c6aa97f9c987.jpeg 640w, http://www.199it.com/wp-content/uploads/2018/04/78ef6cef39d644dabbd2c6aa97f9c987-150x100.jpeg 150w, http://www.199it.com/wp-content/uploads/2018/04/78ef6cef39d644dabbd2c6aa97f9c987-300x201.jpeg 300w" sizes="(max-width: 640px) 100vw, 640px"></a></p>
+<p>&nbsp;</p>
+<p>奉上100多个按字母顺序排列的开源自然语言处理文本数据集列表（原始未结构化的文本数据），快去按图索骥下载数据自己研究吧！</p>
+<p>数据集</p>
+<p>Apache软件基金会公开邮件档案：截止到2011年7月11日全部公开可用的Apache软件基金会邮件档案。（200 GB）</p>
+<p>http://aws.amazon.com/de/datasets/apache-software-foundation-public-mail-archives/</p>
+<p>博主原创语料库：包含2004年8月从blogger.com网站收集的19,320位博主的帖子。681,288个帖子以及140多万字。（298 MB）</p>
+<p>http://u.cs.biu.ac.il/~koppel/BlogCorpus.htm</p>
+<p>亚马逊美食评论[Kaggle]：包含亚马逊用户在2012年10月前留下的568,454条食评。（240MB）</p>
+<p>https://www.kaggle.com/snap/amazon-fine-food-reviews</p>
+<p>亚马逊评论：斯坦福收集了3500万条亚马逊评论。（11GB）</p>
+<p>https://snap.stanford.edu/data/web-Amazon.html</p>
+<p>ArXiv上：所有收录论文全文（270GB）+源文件（190GB）</p>
+<p>http://arxiv.org/help/bulk_data_s3</p>
+<p>ASAP自动作文评分[Kaggle]：在本次比赛中，有8个作文集。每个作文都由一个单独提示所得回答所生成。所选作文长度为150到550个字不等。部分作文依赖于源信息，而另其他则不是。所有论文都是由7年级到10年级的学生所写。所有的作文都由人工打分，并采用双评分制。（100MB）</p>
+<p>https://www.kaggle.com/c/asap-aes/data</p>
+<p>ASAP简答题评分[Kaggle]：每个数据集都是由单个提示所得回答生成的。所选回答的平均长度为50个字。某些回答依赖于源信息，而其他则不是。所有回答由10年级学生所写。所有回答均为人工打分，并采用双评分制。（35MB）</p>
+<p>https://www.kaggle.com/c/asap-sas/data</p>
+<p>政治社交媒体分类：按内容分类来自政客的社交媒体消息。（4MB）</p>
+<p>https://www.crowdflower.com/data-for-everyone/</p>
+<p>CLiPS文体学研究（CSI）语料库：每年扩展两种类型的学生写作：文章和综述。这个语料库的目的主要在于文体学研究，当然也可用于其他研究。（数据集需要申请获得）</p>
+<p>http://www.clips.uantwerpen.be/datasets/csi-corpus</p>
+<p>ClueWeb09 FACC：带有Freebase注释的ClueWeb09（72GB）</p>
+<p>http://lemurproject.org/clueweb09/FACC1/</p>
+<p>ClueWeb11 FACC：带有Freebase注释的ClueWeb11（92GB）</p>
+<p>http://lemurproject.org/clueweb12/FACC1/</p>
+<p>常见爬虫语料库：由超过50亿个网页（541TB）爬虫数据构成。</p>
+<p>http://aws.amazon.com/de/datasets/common-crawl-corpus/</p>
+<p>康奈尔电影对话语料库（Cornell Movie Dialog Corpus）：包含大量丰富的元数据，从原始电影剧本中提取的对话集合：617部电影，10,292对电影人物之间的220,579次会话交流。（9.5MB）</p>
+<p>http://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html</p>
+<p>企业信息：分类企业在社交媒体上到底谈论了什么的工作。要求志愿者将企业陈述分类为信息（关于公司或其活动的客观陈述），对话（回复用户等）或行动（要求投票或要求用户点击链接等的信息）。（600KB）</p>
+<p>http://aws.amazon.com/de/datasets/common-crawl-corpus/</p>
+<p>Crosswikis：关联英语短语与维基百科文章的数据库。（11GB）</p>
+<p>http://nlp.stanford.edu/data/crosswikis-data.tar.bz2/</p>
+<p>一个网络社区关于从维基百科中提取结构化信息并使得此信息在网络上可用的共同成果。（17GB）</p>
+<p>http://aws.amazon.com/de/datasets/dbpedia-3-5-1/?tag=datasets%23keywords%23encyclopedic</p>
+<p>Death Row：自1984年以来处决的每个犯人的遗言。（HTML表格）</p>
+<p>http://www.tdcj.state.tx.us/death_row/dr_executed_offenders.html</p>
+<p>Del.icio.us：delicious.com上的125万个书签。</p>
+<p>http://arvindn.livejournal.com/116137.html</p>
+<p>社交媒体上的灾难推文：1万条推文，注释了是否涉及灾难事件。（2MB）</p>
+<p>https://www.crowdflower.com/data-for-everyone/</p>
+<p>经济新闻相关文章：确定新闻文章与美国经济是否相关，如果相关，文章的基调是什么。时间范围从1951年到2014年。（12MB）</p>
+<p>https://www.crowdflower.com/data-for-everyone/</p>
+<p>安然公司电子邮件数据：包含1,227,255封电子邮件，其中493,384个附件覆盖151位管理者。（210GB）</p>
+<p>http://aws.amazon.com/de/datasets/enron-email-data/</p>
+<p>事件注册：免费工具，可以实时访问全球100,000个媒体的新闻文章。有API接口。（查询工具）</p>
+<p>http://eventregistry.org/</p>
+<p>Examiner.com—用新闻头条钓鱼的垃圾邮件[Kaggle]：现已停用的钓鱼网站The Examiner从2010年到2015年发布的3百万众包新闻头条。（200MB）</p>
+<p>https://www.kaggle.com/therohk/examine-the-examiner</p>
+<p>联邦采购数据中心的联邦合同（USASpending.gov）：来自USASpending.gov的联邦采购数据中心所有联邦合同的数据库。（180GB）</p>
+<p>http://aws.amazon.com/de/datasets/federal-contracts-from-the-federal-procurement-data-center-usaspending-gov/</p>
+<p>Flickr个人分类法：个人标签的树结构数据集。（40MB）</p>
+<p>http://www.isi.edu/~lerman/downloads/flickr/flickr_taxonomies.html</p>
+<p>Freebase数据库：Freebase中所有当前事实和推断的数据库（26GB）</p>
+<p>http://aws.amazon.com/de/datasets/freebase-data-dump/</p>
+<p>Freebase简单主题库：Freebase中每个主题中基本的可识别事实的数据库（5GB）</p>
+<p>http://aws.amazon.com/de/datasets/freebase-simple-topic-dump/</p>
+<p>Freebase四元库：Freebase中所有当前事实和推断的数据库[LZ1]。（35GB）</p>
+<p>http://aws.amazon.com/de/datasets/freebase-quad-dump/</p>
+<p>GigaOM WordPress挑战赛[Kaggle]：博客文章，元数据，用户喜好。（1.5GB）</p>
+<p>https://www.kaggle.com/c/predict-wordpress-likes/data</p>
+<p>谷歌图书n元语法：也可通过亚马逊S3上hadoop格式文件获取。（2.2TB）</p>
+<p>http://storage.googleapis.com/books/ngrams/books/datasetsv2.html</p>
+<p>谷歌网页5元语法：含有英文单词的n元序列，及其观测频率计数（24GB）</p>
+<p>https://catalog.ldc.upenn.edu/LDC2006T13</p>
+<p>Gutenberg电子书清单：带注释电子书清单（2MB）</p>
+<p>http://www.gutenberg.org/wiki/Gutenberg:Offline_Catalogs</p>
+<p>加拿大议会文本块：来自加拿大第36届议会正式记录（Hansards）的130万标准文本块（句子或更小的片段）。（82MB）</p>
+<p>http://www.isi.edu/natural-language/download/hansard/</p>
+<p>哈佛图书馆：超过1,200万册哈佛图书馆所藏资料的书目记录，包括书籍，期刊，电子资源，手稿，档案资料，乐谱，音频，视频和其他资料。（4GB）</p>
+<p>http://library.harvard.edu/open-metadata#Harvard-Library-Bibliographic-Dataset</p>
+<p>仇恨言论识别：志愿人查看短文，并确定它是否a）包含仇恨言论，b）冒犯性的，但没有仇恨言论，或c）一点也没有冒犯性。包含近15千行，每个文本字符串有三个志愿者判断。（3MB）</p>
+<p>https://github.com/t-davidson/hate-speech-and-offensive-language</p>
+<p>希拉里克林顿的电子邮件[Kaggle]：整理了近7,000页克林顿的电子邮件。（12MB）</p>
+<p>https://www.kaggle.com/kaggle/hillary-clinton-emails</p>
+<p>家得宝公司产品搜索关联[Kaggle]：包含家得宝公司网站的许多产品和客户搜索条款。挑战是预测搜索条目组合和产品的相关性分数。为了创建真实标签，家得宝公司将搜索/产品配对众包给多个评分者打分。（65MB）</p>
+<p>https://www.kaggle.com/c/home-depot-product-search-relevance/data</p>
+<p>确定文本中的关键短语：问题/答案对和文本组成；判断上下文文本是否与问题/答案相关。（8MB）</p>
+<p>https://www.crowdflower.com/data-for-everyone/</p>
+<p>美国电视节目‘危险’：216930个过去出现在‘危险’节目的问题合集。（53MB）</p>
+<div class="embedly-card"><div class="embedly-card-hug" style="max-width: 600px; padding: 0px; position: relative; min-width: 200px; margin: 5px auto;"><iframe frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true" id="emb_71p8el" class="embedly-card" style="border: none; position: relative; visibility: visible; display: block; margin: 0px; padding: 0px; max-width: 100%; min-width: 200px;" height="1070" width="600" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/saved_resource.html"></iframe></div></div>
+<p>    <script async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/platform.js" charset="UTF-8"></script></p>
+<p>200k英语明文笑话：208000种不同来源的明文笑话存档。</p>
+<p>https://github.com/taivop/joke-dataset</p>
+<p>欧洲语言机器翻译：（612MB）</p>
+<p>http://statmt.org/wmt11/translation-task.html#download</p>
+<p>材料安全数据表：230000材料安全数据表。（3GB）</p>
+<p>http://aws.amazon.com/de/datasets/material-safety-data-sheets/</p>
+<p>百万新闻头条-澳大利亚ABC[Kaggle]：由澳大利亚ABC新闻发布的从2003到2017年的130万新闻。（56MB）</p>
+<p>https://www.kaggle.com/therohk/million-headlines</p>
+<p>MCTest：可免费使用的660个故事集和相关问题，可用于研究文本机器理解、问答（1MB）。</p>
+<p>http://research.microsoft.com/en-us/um/redmond/projects/mctest/index.html</p>
+<p>Negra：德国报纸文本的语法标注语料库。可供所有大学及非营利机构免费使用。需要签署协议并发送申请才能获得。</p>
+<p>http://www.coli.uni-saarland.de/projects/sfb378/negra-corpus/negra-corpus.html</p>
+<p>新闻头条-印度时报[Kaggle]：印度时报发表的从2001到2017年的270万类新闻头条。（185MB）</p>
+<p>https://www.crowdflower.com/data-for-everyone/</p>
+<p>新闻文章/维基百科页面配对：志愿者阅读一篇短文，被问及最匹配的两篇维基百科文章是哪一篇。（6MB）</p>
+<p>https://www.kaggle.com/benhamner/nips-2015-papers/version/2</p>
+<p>2015 NIPS论文（版本2）[Kaggle]：所有2015年nips论文全文。（335MB）</p>
+<p>https://www.kaggle.com/benhamner/nips-2015-papers/version/2</p>
+<p>纽约时报脸谱网数据：所有纽约时报在脸谱网的帖子。（5MB）</p>
+<p>http://minimaxir.com/2015/07/facebook-scraper/</p>
+<p>全球新闻一周供稿[Kaggle]：在2017年8月的一周，用20多种语言全球发表的140万篇新闻事件数据集。（115MB）</p>
+<p>https://www.kaggle.com/therohk/global-news-week</p>
+<p>句子/概念对的正确性：志愿者读关于两个概念的句子。例如，“狗是一种动物”，或者“船长可以和主人有同样的意思”，然后他们被问到这个句子是否正确，并将其1-5评级。（700KB）</p>
+<p>https://www.crowdflower.com/data-for-everyone/</p>
+<p>公开图书馆数据库：公开图书馆中所有记录的修改合集。（16GB）</p>
+<p>https://openlibrary.org/developers/dumps</p>
+<p>人物语料库：收集了作者文章风格和个性预测的实验。由145名学生的145篇荷兰语文章组成。（获得需要申请）</p>
+<p>http://www.clips.uantwerpen.be/datasets/personae-corpus</p>
+<p>Reddit评论：截至2015年7月，reddit论坛所有公开的评论。共计17亿条评论。（250GB）</p>
+<div class="embedly-card"><div class="embedly-card-hug" style="max-width: 600px; padding: 0px; position: relative; min-width: 200px; margin: 5px auto;"><iframe frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true" id="emb_8tplvq" class="embedly-card" style="border: none; position: relative; visibility: visible; display: block; margin: 0px; padding: 0px; max-width: 100%; min-width: 200px;" height="2564" width="600" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/saved_resource(1).html"></iframe></div></div>
+<p>    <script async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/platform.js" charset="UTF-8"></script></p>
+<p>Reddit评论（2015年5月）：Kaggle子数据集（8GB）</p>
+<p>https://www.kaggle.com/reddit/reddit-comments-may-2015</p>
+<p>Reddit提交语料库：2006年1月-2015年8月31日所有公开可得的Reddit提交内容。（42GB）</p>
+<div class="embedly-card"><div class="embedly-card-hug" style="max-width: 600px; padding: 0px; position: relative; min-width: 200px; margin: 5px auto;"><iframe frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true" id="emb_p8hgmv" class="embedly-card" style="border: none; position: relative; visibility: visible; display: block; margin: 0px; padding: 0px; max-width: 100%; min-width: 200px;" height="1454" width="600" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/saved_resource(2).html"></iframe></div></div>
+<p>    <script async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/platform.js" charset="UTF-8"></script></p>
+<p>路透社语料库：一个包含路透社新闻报道的数据集，用于自然语言处理的研究开发、信息检索和机器学习系统。该语料库又被称为“路透社语录1”或RCV1，它远远大于原来在文本分类中被广泛使用的著名的路透社21578数据集。该语料库数据需要通过签署协议和发送邮件获取。（2.5GB）</p>
+<p>https://trec.nist.gov/data/reuters/reuters.html</p>
+<p>SaudiNewsNet：31030条从不同沙特阿拉伯的网络报纸上摘取的标题和元数据。（2MB）</p>
+<p>https://github.com/ParallelMazen/SaudiNewsNet</p>
+<p>垃圾短信数据集：5574条被标记为合法/不合法的、未经编码的真实英文短信消息。（200KB）</p>
+<p>http://www.dt.fee.unicamp.br/~tiago/smsspamcollection/</p>
+<p>《南方公园》数据集：csv格式文件，包含季、集、角色和台词的剧本信息。（3.6MB）</p>
+<p>https://github.com/BobAdamsEE/SouthParkData</p>
+<p>Stackoverflow：730万条stackoverflow问题和其他stackexchange（问答工具）上的问答。</p>
+<p>http://data.stackexchange.com/</p>
+<p>Twitter的Cheng-Caverlee-lee用户定位数据集：2009年9月-2010年1月的推文定位。（400MB）</p>
+<p>https://archive.org/details/twitter_cikm_2010</p>
+<p>Twitter上关于新英格兰爱国者队“放气门”事件的舆情：在2015年超级碗比赛前，人们对被放了气的橄榄球以及爱国者队是否存在欺骗行为议论纷纷。该数据集提供了丑闻发生的这段时间里Twitter上的舆情，以便评估公众对整个事件的感受。（2MB）</p>
+<blockquote class="wp-embedded-content" data-secret="7wFR0ih6Ic" style="display: none;"><p><a href="https://www.figure-eight.com/data-for-everyone/">Data For Everyone</a></p></blockquote>
+<p><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/saved_resource(3).html" data-secret="7wFR0ih6Ic" width="600" height="338" title="“Data For Everyone” — Figure Eight" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></p>
+<p>Twitter上对于左倾相关事件的舆情分析：关于堕胎合法化、女权主义、希拉里·克林顿等各种左倾相关事件的推文，推文将根据内容推断被分类为For（支持）、Against（反对）、Neutral（中立）或None of the above（以上都不是）。（600KB）</p>
+<blockquote class="wp-embedded-content" data-secret="7wFR0ih6Ic" style="display: none;"><p><a href="https://www.figure-eight.com/data-for-everyone/">Data For Everyone</a></p></blockquote>
+<p><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/saved_resource(4).html" data-secret="7wFR0ih6Ic" width="600" height="338" title="“Data For Everyone” — Figure Eight" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></p>
+<p>Twitter的Sentiment140（情感分析数据集）：关于品牌/关键词的推文，网站包括论文和研究想法。（77MB）</p>
+<p>http://help.sentiment140.com/for-students/</p>
+<p>Twitter上关于自动驾驶汽车的舆情分析：贡献者们阅读推文后，将推文里对于自动驾驶的态度分为非常积极、较积极、中立、较消极和非常消极。如果推文与自动驾驶汽车无关，他们也要标记出来。（1MB）</p>
+<blockquote class="wp-embedded-content" data-secret="7wFR0ih6Ic" style="display: none;"><p><a href="https://www.figure-eight.com/data-for-everyone/">Data For Everyone</a></p></blockquote>
+<p><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/saved_resource(5).html" data-secret="7wFR0ih6Ic" width="600" height="200" title="“Data For Everyone” — Figure Eight" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></p>
+<p>Twitter上定位于东京的推文：20万条来自东京的推文。（47MB）</p>
+<p>http://followthehashtag.com/datasets/200000-tokyo-geolocated-tweets-free-twitter-dataset/</p>
+<p>Twitter上定位于英国的推文：17万条来自英国的推文。（47MB）</p>
+<p>http://followthehashtag.com/datasets/170000-uk-geolocated-tweets-free-twitter-dataset/</p>
+<p>Twitter上定位于美国的推文：20万条来自美国的推文。（45MB）</p>
+<p>http://followthehashtag.com/datasets/free-twitter-dataset-usa-200000-free-usa-tweets/</p>
+<p>Twitter上对于美国各大航空公司的态度（Kaggle数据集）：这是一个对于美国各大航空公司存在问题的情感分析任务。该数据集爬取了2015年2月的推文，贡献者们将其分类为积极、消极和中立，对于那些分类为消极态度的推文，还会给出原因（例如“飞机晚点”或“服务态度差”等）。（2.5MB）</p>
+<p>https://www.kaggle.com/crowdflower/twitter-airline-sentiment</p>
+<p>基于新闻标题的美国经济表现：根据新闻标题头条和摘要，对新闻和美国经济的相关性进行排序。（5MB）</p>
+<blockquote class="wp-embedded-content" data-secret="7wFR0ih6Ic" style="display: none;"><p><a href="https://www.figure-eight.com/data-for-everyone/">Data For Everyone</a></p></blockquote>
+<p><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/saved_resource(6).html" data-secret="7wFR0ih6Ic" width="600" height="200" title="“Data For Everyone” — Figure Eight" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></p>
+<p>城市词典（美国在线俚语词典）里的单词和定义：一个经过清洗的CSV语料库，包含截至2016年5月的城市词典内所有260万个词汇、定义、作者和投票情况。（238MB）</p>
+<p>https://www.kaggle.com/therohk/urban-dictionary-words-dataset</p>
+<p>亚马逊的Wesbury Lab Usenet语料库：2005-2010的47,860个英文新闻组的邮件匿名汇编（40GB）</p>
+<p>http://aws.amazon.com/de/datasets/the-westburylab-usenet-corpus/</p>
+<p>维基百科的Wesbury Lab语料库：2010年4月维基百科英文部分中所有文章的快照。网站详细描述了数据是如何被处理的——即去除所有链接和不相关的材料（如导航文本等）。语料库是未经标记的原始文本，它被用于Stanford NLP。</p>
+<p>http://www.psych.ualberta.ca/~westburylab/downloads/westburylab.wikicorp.download.html</p>
+<p>Stanford NLP跳转的链接：</p>
+<p>https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=9060444488071171966&amp;as_sdt=5</p>
+<p>维基百科提取（WEX）：经处理后的英文版维基百科（66GB）</p>
+<p>http://aws.amazon.com/de/datasets/wikipedia-extraction-wex/</p>
+<p>维基百科的XML格式数据：所有维基媒体（Wikimedia）的完整复制，以维基文本元（wikitext source）和元数据的形式嵌入到XML中。（500GB）</p>
+<p>http://aws.amazon.com/de/datasets/wikipedia-xml-data/</p>
+<p>雅虎问答中的综合问题与答案：截至2007年10月25日的雅虎问答语料库，包含4,483,032条问答。（3.6GB）</p>
+<p>http://webscope.sandbox.yahoo.com/catalog.php?datatype=l</p>
+<p>雅虎问答中用法语提问的问题：2006-2015年雅虎问答语料库的子数据集，包含170万条法语问答。（3.8GB）</p>
+<p>https://webscope.sandbox.yahoo.com/catalog.php?datatype=l</p>
+<p>雅虎问答中的关于“如何做”的问题[LZ2]：根据语言属性从2007年10月25日雅虎问答语料库选出的子集，包含142,627条问答。（104MB）</p>
+<p>https://webscope.sandbox.yahoo.com/catalog.php?datatype=l</p>
+<p>雅虎从公开网页中提取的HTML格式页面：包含少量复杂HTML格式的页面和267万个复杂格式的页面。（50+ GB）</p>
+<p>https://webscope.sandbox.yahoo.com/catalog.php?datatype=l</p>
+<p>雅虎从公开网页页面中提取的元数据：1亿个RDF格式数据的三元组（2GB）</p>
+<p>https://webscope.sandbox.yahoo.com/catalog.php?datatype=l</p>
+<p>雅虎的N元语法模型表示（N-Gram Representations）数据：该数据集包含N元语法表示数据，这些数据可以用于IR研究中常见的查询重写（query rewriting）任务，也可以用于NLP研究中常见的词语和句子相似性分析任务。（2.6GB）</p>
+<p>https://webscope.sandbox.yahoo.com/catalog.php?datatype=l</p>
+<p>雅虎的N元语法模型数据（版本2.0）：n元语法模型数据（n=1-5），从一个包含1460万个文档（1.26亿条不重复的语句，34亿个运行词）的语料库中提取，这些文档是从12000个面向新闻的站点里爬取的（12 GB）</p>
+<p>https://webscope.sandbox.yahoo.com/catalog.php?datatype=l</p>
+<p>雅虎搜索日志的相关性判断：匿名雅虎搜索日志的相关性判断（1.3GB）</p>
+<p>https://webscope.sandbox.yahoo.com/catalog.php?datatype=l</p>
+<p>雅虎的英语维基百科语义注释快照：包含从2006年11月4日开始的经一些公开的NLP工具处理后的英文维基百科，共有1,490,688个条目。（6GB）</p>
+<p>https://webscope.sandbox.yahoo.com/catalog.php?datatype=l</p>
+<p>Yelp：包含餐厅排名和220万条评论</p>
+<p>https://www.yelp.com/dataset</p>
+<p>Youtube：170万条YouTube视频描述（torrent格式）</p>
+<div class="embedly-card"><div class="embedly-card-hug" style="max-width: 600px; padding: 0px; position: relative; min-width: 200px; margin: 5px auto;"><iframe frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true" id="emb_o76cup" class="embedly-card" style="border: none; position: relative; visibility: visible; display: block; margin: 0px; padding: 0px; max-width: 100%; min-width: 200px;" height="1315" width="600" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/saved_resource(7).html"></iframe></div></div>
+<p>    <script async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/platform.js" charset="UTF-8"></script></p>
+<p>资源</p>
+<p>优秀的公开NLP数据集（包含更多清单）</p>
+<p>https://github.com/awesomedata/awesome-public-datasets</p>
+<p>亚马逊公开数据集</p>
+<p>https://aws.amazon.com/de/datasets/</p>
+<p>CrowdFlower数据集（包含大量小调查和对特定任务以众包方式获得的数据）</p>
+<p>https://www.crowdflower.com/data-for-everyone/</p>
+<p>Kaggle数据集</p>
+<p>https://www.kaggle.com/datasets</p>
+<p>Kaggle比赛（请确保这些kaggle比赛数据可以在比赛之外使用）</p>
+<p>https://www.kaggle.com/competitions</p>
+<p>开放图书馆</p>
+<p>https://openlibrary.org/developers/dumps</p>
+<p>Quora（大部分为已标注好的语料库）</p>
+<p>https://www.quora.com/Datasets-What-are-the-major-text-corpora-used-by-computational-linguists-and-natural-language-processing-researchers-and-what-are-the-characteristics-biases-of-each-corpus</p>
+<p>reddit数据集（无数个数据集，大部分由业余爱好者爬取，但数据的整理和许可可能不够规范）</p>
+<p>https://www.reddit.com/r/datasets</p>
+<p>Rs.io：也是一个很长的数据集清单</p>
+<blockquote class="wp-embedded-content" data-secret="VLwp4R8hFo"><p><a href="http://rs.io/100-interesting-data-sets-for-statistics/">100+ Interesting Data Sets for Statistics</a></p></blockquote>
+<p><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/saved_resource(8).html" data-secret="VLwp4R8hFo" width="600" height="338" title="“100+ Interesting Data Sets for Statistics” — rs.io" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></p>
+<p>Stackexchange：公开数据</p>
+<p>http://opendata.stackexchange.com/</p>
+<p>斯坦福NLP组（大部分为已标注的语料库和TreeBanks，以及实用的NLP工具）</p>
+<p>https://nlp.stanford.edu/links/statnlp.html</p>
+<p>雅虎研究院的数据集汇总Webscope（还包含了使用了这些数据的论文列表）</p>
+<p>http://webscope.sandbox.yahoo.com/</p>
+<p>相关报道：</p>
+<p>https://github.com/niderhoff/nlp-datasets/blob/master/README.md</p>
+<p><strong>来自：大数据文摘</strong></p>
+
+<div class="wp_rp_wrap  wp_rp_plain" id="wp_rp_first"><div class="weixin_tuijian" style="border: 0px solid #e5e5e5;">    <h4 style="text-align: center;background-color: #e5e5e5;color: #222;font-weight: bolder;padding: 6px 0;margin-bottom: 2px;">欢 迎 关 注 微 信 号 ：i199IT</h4><div class="weixin">					<img style="float:left;margin-left:1%" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/2199it.jpg" data-bd-imgshare-binded="1"><div style="float:left;font-size:13px;margin-left:15px;margin-top:10px;line-height: 2em;"> 扫描微信二维码,数据随身查<br>扫描左侧二维码或搜索添加微信公众号：<b>i199IT</b><br>TMT最全的数据微信平台，随时随地获知有价值的数据信息</div><div style="clear:both;"></div></div></div><div class="wp_rp_content"><h3 class="related_post_title">更多阅读：</h3><ul class="related_post wp_rp"><li data-position="0" data-poid="in-483250" data-post-type="none"><a href="http://www.199it.com/archives/483250.html" class="wp_rp_title">数据集在算法</a></li><li data-position="1" data-poid="in-323934" data-post-type="none"><a href="http://www.199it.com/archives/323934.html" class="wp_rp_title">斯坦福大学自然语言处理第七课“情感分析（Sentiment Analysis）”</a></li><li data-position="2" data-poid="in-579588" data-post-type="none"><a href="http://www.199it.com/archives/579588.html" class="wp_rp_title">为什么自然语言处理是商业智能的未来</a></li><li data-position="3" data-poid="in-579939" data-post-type="none"><a href="http://www.199it.com/archives/579939.html" class="wp_rp_title">Netflix如何用数据解构好莱坞？</a></li><li data-position="4" data-poid="in-579579" data-post-type="none"><a href="http://www.199it.com/archives/579579.html" class="wp_rp_title">10款开源的压力/负载测试工具</a></li><li data-position="5" data-poid="in-770566" data-post-type="none"><a href="http://www.199it.com/archives/770566.html" class="wp_rp_title">腾讯QQ大数据：神盾推荐系统的超大规模参数学习探究</a></li><li data-position="6" data-poid="in-545062" data-post-type="none"><a href="http://www.199it.com/archives/545062.html" class="wp_rp_title">2016深度学习重大进展：从无监督学习到生成对抗网络</a></li><li data-position="7" data-poid="in-484274" data-post-type="none"><a href="http://www.199it.com/archives/484274.html" class="wp_rp_title">数据分析中6个常规的错误</a></li><li data-position="8" data-poid="in-670210" data-post-type="none"><a href="http://www.199it.com/archives/670210.html" class="wp_rp_title">我为老板做数据日报-广告业务篇</a></li><li data-position="9" data-poid="in-606502" data-post-type="none"><a href="http://www.199it.com/archives/606502.html" class="wp_rp_title">论文：数据挖掘学科发展报告（附下载）</a></li><li data-position="10" data-poid="in-569767" data-post-type="none"><a href="http://www.199it.com/archives/569767.html" class="wp_rp_title">AMMA&amp;Artprice：2016年度艺术市场报告（附下载）</a></li><li data-position="11" data-poid="in-568018" data-post-type="none"><a href="http://www.199it.com/archives/568018.html" class="wp_rp_title">Siegel+Gale：2017年全球品牌简化指数报告（附报告）</a></li><li data-position="12" data-poid="in-571976" data-post-type="none"><a href="http://www.199it.com/archives/571976.html" class="wp_rp_title">Shivon Zilis：机器学习产业生态图3.0版</a></li><li data-position="13" data-poid="in-650069" data-post-type="none"><a href="http://www.199it.com/archives/650069.html" class="wp_rp_title">Kaggle：2017机器学习及数据科学调查</a></li><li data-position="14" data-poid="in-575066" data-post-type="none"><a href="http://www.199it.com/archives/575066.html" class="wp_rp_title">Yann LeCun清华演讲：深度学习与人工智能的未来（附下载）</a></li></ul></div></div>
+<script>
+jQuery('#wp_rp_first').prepend('<div class="weixin_tuijian" style="border: 0px solid #e5e5e5;">    <h4 style="text-align: center;background-color: #e5e5e5;color: #222;font-weight: bolder;padding: 6px 0;margin-bottom: 2px;">欢 迎 关 注 微 信 号 ：i199IT</h5><div class="weixin">					<img style="float:left;margin-left:1%" src="/wp-content/uploads/2014/08/2199it.jpg" data-bd-imgshare-binded="1"><div style="float:left;font-size:13px;margin-left:15px;margin-top:10px;line-height: 2em;"> 扫描微信二维码,数据随身查<br>扫描左侧二维码或搜索添加微信公众号：<b>i199IT</b><br>TMT最全的数据微信平台，随时随地获知有价值的数据信息</div><div style="clear:both;"></div></div>');
+</script>
+<p style="text-align: center;">
+<script async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/f.txt"></script>
+<!-- 文章页320*100广告 -->
+<ins class="adsbygoogle" style="display:inline-block;width:320px;height:100px" data-ad-client="ca-pub-9891438663259768" data-ad-slot="2869083691"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</p>
+                        </div><!-- .entry-content -->
+                        
+                        <footer class="entry-footer">
+                            <div class="tag-wrap" itemprop="about"><ul class="tag-list"><li><a href="http://www.199it.com/archives/tag/%e6%95%b0%e6%8d%ae%e9%9b%86" rel="tag">数据集</a></li><li><a href="http://www.199it.com/archives/tag/%e8%87%aa%e7%84%b6%e8%af%ad%e8%a8%80%e5%a4%84%e7%90%86" rel="tag">自然语言处理</a></li><li><a href="http://www.199it.com/archives/tag/%e8%87%aa%e7%84%b6%e8%af%ad%e8%a8%80%e5%a4%84%e7%90%86%e6%95%b0%e6%8d%ae%e9%9b%86" rel="tag">自然语言处理数据集</a></li></ul></div>                    
+                        </footer><!-- .entry-footer -->
+                    </article><!-- #post-718587 -->
+                    
+                                         <h4 class="social-button-heading">分享这篇文章</h4>
+                     
+			<div class="bdsharebuttonbox bdshare-button-style0-32" data-bd-bind="1553587648518"><a href="http://www.199it.com/archives/718587.html" class="bds_more" data-cmd="more"></a><a href="http://www.199it.com/archives/718587.html#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="http://www.199it.com/archives/718587.html#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="http://www.199it.com/archives/718587.html#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="http://www.199it.com/archives/718587.html#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="http://www.199it.com/archives/718587.html#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a><a href="http://www.199it.com/archives/718587.html#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="http://www.199it.com/archives/718587.html#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="http://www.199it.com/archives/718587.html#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a><a href="http://www.199it.com/archives/718587.html#" class="bds_huaban" data-cmd="huaban" title="分享到花瓣"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+                    
+                                                <div class="marketing-area">
+                                <script>document.write(unescape('%3Cdiv id="hm_t_68194"%3E%3C/div%3E%3Cscript charset="utf-8" src="http://crs.baidu.com/t.js?siteId=47366c78fc67d7eef4915d26493d8cf0&planId=68194&async=0&referer=') + encodeURIComponent(document.referrer) + '&title=' + encodeURIComponent(document.title) + '&rnd=' + (+new Date) + unescape('"%3E%3C/script%3E'));</script><div id="hm_t_68194"><div style="display: block; margin: 0px; padding: 0px; float: none; clear: none; overflow: hidden; position: relative; border: 0px; background: none; max-width: none; max-height: none; border-radius: 0px; box-shadow: none; transition: none 0s ease 0s; text-align: left; box-sizing: content-box; width: 732px; height: 346px;"><div style="display: block; margin: 0px; padding: 0px; float: none; clear: none; overflow: hidden; position: relative; border: 0px; background: none; max-width: none; max-height: none; border-radius: 0px; box-shadow: none; transition: none 0s ease 0s; text-align: left; box-sizing: content-box; width: 100%; height: 100%;"></div></div></div><script charset="utf-8" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/t.js"></script>                            </div>
+                            
+<div id="comments" class="comments-area">
+
+	
+</div><!-- #comments -->
+        </div><!-- #content -->
+            </div><!-- .primary-row -->
+</div><!-- #primary -->
+<div id="sidebar" class="widget-area" role="complementary">
+<aside id="text-16" class="widget widget_text">			<div class="textwidget"><p><a href="http://t.xiaomiquan.com/AmqFYR3"><img class="aligncenter" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/WechatIMG293111111111-2.png" width="350" height="473"></a></p>
+<p style="text-align: center;"><strong>&nbsp;感谢您支持199IT的发展</strong></p>
+</div>
+		</aside><aside id="custom_html-16" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><p style="text-align: center;"><strong>199IT官方微信公众账号</strong><img src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/qrcode_for_gh_5a2f387c10b1_258.jpg" alt="#"></p></div></aside><aside id="text-17" class="widget widget_text">			<div class="textwidget"><p style="text-align: center;"><strong>199IT官方小程序</strong></p>
+<p><a href="http://t.xiaomiquan.com/AmqFYR3"><br>
+<img class="aligncenter" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/199IT小程序网站右侧.png" width="320" height="320"></a></p>
+<p style="text-align: center;">欢迎大家微信扫码查阅更多数据</p>
+</div>
+		</aside><aside id="custom_html-13" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><!-- 广告位：199IT右侧广告 -->
+<script type="text/javascript">BAIDU_CLB_fillSlot("1162688");</script></div></aside><aside id="custom_html-14" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><!-- 广告位：199IT网站右侧_300*100 -->
+<script>
+(function() {
+    var s = "_" + Math.random().toString(36).slice(2);
+    document.write('<div id="' + s + '"></div>');
+    (window.slotbydup=window.slotbydup || []).push({
+        id: '2832638',
+        container: s,
+        size: '300,100',
+        display: 'inlay-fix'
+    });
+})();
+</script><div id="_mnn8806jvrm"></div>
+<script src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/os.js"></script><script charset="utf-8" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/hcmm"></script></div></aside><aside id="custom_html-15" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><script async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/f.txt"></script>
+<!-- 336x280 -->
+<ins class="adsbygoogle" style="display:inline-block;width:336px;height:280px" data-ad-client="ca-pub-9891438663259768" data-ad-slot="9001279291"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div></aside><aside id="custom_html-11" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><img src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/group-3.png" alt="#"></div></aside>		<aside id="recent-posts-3" class="widget widget_recent_entries">		<h3 class="sb-title">近期文章</h3>		<ul>
+											<li>
+					<a href="http://www.199it.com/archives/850170.html">Facebook：解读网络时代消费者的购车流程</a>
+									</li>
+											<li>
+					<a href="http://www.199it.com/archives/850166.html">Printerest上市IPO报告及主要数据</a>
+									</li>
+											<li>
+					<a href="http://www.199it.com/archives/850014.html">pwc：2019全球消费者洞察报告</a>
+									</li>
+											<li>
+					<a href="http://www.199it.com/archives/826363.html">尼尔森报告：美国无线电视复苏</a>
+									</li>
+											<li>
+					<a href="http://www.199it.com/archives/846384.html">YouGov：一半的美国用户离开智能手机会焦虑</a>
+									</li>
+											<li>
+					<a href="http://www.199it.com/archives/850038.html">日本中央银行：2018年日本家庭持有金融资产为1830万亿日元</a>
+									</li>
+											<li>
+					<a href="http://www.199it.com/archives/850011.html">3M：2019科学现状指数</a>
+									</li>
+											<li>
+					<a href="http://www.199it.com/archives/850007.html">CareerCast：2019年工作压力最小的五种工作</a>
+									</li>
+											<li>
+					<a href="http://www.199it.com/archives/850001.html">58同城：二手车消费者调研</a>
+									</li>
+											<li>
+					<a href="http://www.199it.com/archives/849978.html">路透调查：亚洲企业资本支出或平均减少4％</a>
+									</li>
+					</ul>
+		</aside><aside id="tag_cloud-6" class="widget widget_tag_cloud"><h3 class="sb-title">标签</h3><div class="tagcloud"><a href="http://www.199it.com/archives/tag/%e6%95%b0%e6%8d%ae%e4%bf%a1%e6%81%af%e5%9b%be" class="tag-cloud-link tag-link-12964 tag-link-position-1" style="font-size: 9.5pt;" aria-label="-数据信息图 (481 items)">-数据信息图</a>
+<a href="http://www.199it.com/archives/tag/199it" class="tag-cloud-link tag-link-8420 tag-link-position-2" style="font-size: 15.333333333333pt;" aria-label="199IT (1,059 items)">199IT</a>
+<a href="http://www.199it.com/archives/tag/android" class="tag-cloud-link tag-link-66453 tag-link-position-3" style="font-size: 14.5pt;" aria-label="Android (963 items)">Android</a>
+<a href="http://www.199it.com/archives/tag/cnnic" class="tag-cloud-link tag-link-66405 tag-link-position-4" style="font-size: 12pt;" aria-label="CNNIC (682 items)">CNNIC</a>
+<a href="http://www.199it.com/archives/tag/comscore" class="tag-cloud-link tag-link-66422 tag-link-position-5" style="font-size: 12.333333333333pt;" aria-label="ComScore (712 items)">ComScore</a>
+<a href="http://www.199it.com/archives/tag/emarketer" class="tag-cloud-link tag-link-66385 tag-link-position-6" style="font-size: 19.5pt;" aria-label="eMarketer (1,918 items)">eMarketer</a>
+<a href="http://www.199it.com/archives/tag/facebook" class="tag-cloud-link tag-link-181 tag-link-position-7" style="font-size: 16.5pt;" aria-label="Facebook (1,271 items)">Facebook</a>
+<a href="http://www.199it.com/archives/tag/gartner" class="tag-cloud-link tag-link-66375 tag-link-position-8" style="font-size: 12.333333333333pt;" aria-label="Gartner (708 items)">Gartner</a>
+<a href="http://www.199it.com/archives/tag/google" class="tag-cloud-link tag-link-66423 tag-link-position-9" style="font-size: 10.666666666667pt;" aria-label="Google (567 items)">Google</a>
+<a href="http://www.199it.com/archives/tag/idc" class="tag-cloud-link tag-link-66416 tag-link-position-10" style="font-size: 14.333333333333pt;" aria-label="IDC (943 items)">IDC</a>
+<a href="http://www.199it.com/archives/tag/ipad" class="tag-cloud-link tag-link-184 tag-link-position-11" style="font-size: 8pt;" aria-label="iPad (385 items)">iPad</a>
+<a href="http://www.199it.com/archives/tag/iphone" class="tag-cloud-link tag-link-66394 tag-link-position-12" style="font-size: 14.333333333333pt;" aria-label="iPhone (942 items)">iPhone</a>
+<a href="http://www.199it.com/archives/tag/iusertracker" class="tag-cloud-link tag-link-1864 tag-link-position-13" style="font-size: 8pt;" aria-label="iUserTracker (385 items)">iUserTracker</a>
+<a href="http://www.199it.com/archives/tag/nielsen" class="tag-cloud-link tag-link-261 tag-link-position-14" style="font-size: 11.166666666667pt;" aria-label="Nielsen (601 items)">Nielsen</a>
+<a href="http://www.199it.com/archives/tag/twitter" class="tag-cloud-link tag-link-66400 tag-link-position-15" style="font-size: 10.833333333333pt;" aria-label="Twitter (575 items)">Twitter</a>
+<a href="http://www.199it.com/archives/tag/chinatmt" class="tag-cloud-link tag-link-1362 tag-link-position-16" style="font-size: 19.833333333333pt;" aria-label="中国 (1,976 items)">中国</a>
+<a href="http://www.199it.com/archives/tag/%e4%ba%92%e8%81%94%e7%bd%91" class="tag-cloud-link tag-link-66373 tag-link-position-17" style="font-size: 8.6666666666667pt;" aria-label="互联网 (428 items)">互联网</a>
+<a href="http://www.199it.com/archives/tag/%e4%ba%ba%e5%b7%a5%e6%99%ba%e8%83%bd" class="tag-cloud-link tag-link-66782 tag-link-position-18" style="font-size: 10.333333333333pt;" aria-label="人工智能 (531 items)">人工智能</a>
+<a href="http://www.199it.com/archives/tag/%e4%bf%a1%e6%81%af%e5%9b%be" class="tag-cloud-link tag-link-2510 tag-link-position-19" style="font-size: 22pt;" aria-label="信息图 (2,664 items)">信息图</a>
+<a href="http://www.199it.com/archives/tag/worldwide" class="tag-cloud-link tag-link-490 tag-link-position-20" style="font-size: 16pt;" aria-label="全球 (1,179 items)">全球</a>
+<a href="http://www.199it.com/archives/tag/%e5%a4%a7%e6%95%b0%e6%8d%ae" class="tag-cloud-link tag-link-8899 tag-link-position-21" style="font-size: 17.5pt;" aria-label="大数据 (1,430 items)">大数据</a>
+<a href="http://www.199it.com/archives/tag/market-scale" class="tag-cloud-link tag-link-804 tag-link-position-22" style="font-size: 10.833333333333pt;" aria-label="市场规模 (578 items)">市场规模</a>
+<a href="http://www.199it.com/archives/tag/panel-computer" class="tag-cloud-link tag-link-66475 tag-link-position-23" style="font-size: 12.666666666667pt;" aria-label="平板电脑 (740 items)">平板电脑</a>
+<a href="http://www.199it.com/archives/tag/%e6%89%8b%e6%9c%ba%e6%b8%b8%e6%88%8f" class="tag-cloud-link tag-link-1886 tag-link-position-24" style="font-size: 9pt;" aria-label="手机游戏 (442 items)">手机游戏</a>
+<a href="http://www.199it.com/archives/tag/%e6%95%b0%e6%8d%ae%e6%97%a9%e6%8a%a5" class="tag-cloud-link tag-link-58211 tag-link-position-25" style="font-size: 14.5pt;" aria-label="数据早报 (961 items)">数据早报</a>
+<a href="http://www.199it.com/archives/tag/analysys" class="tag-cloud-link tag-link-66389 tag-link-position-26" style="font-size: 16.833333333333pt;" aria-label="易观国际 (1,322 items)">易观国际</a>
+<a href="http://www.199it.com/archives/tag/smartphones" class="tag-cloud-link tag-link-66415 tag-link-position-27" style="font-size: 21.333333333333pt;" aria-label="智能手机 (2,452 items)">智能手机</a>
+<a href="http://www.199it.com/archives/tag/internet-users" class="tag-cloud-link tag-link-66407 tag-link-position-28" style="font-size: 13.666666666667pt;" aria-label="用户研究 (846 items)">用户研究</a>
+<a href="http://www.199it.com/archives/tag/electronic-commerce" class="tag-cloud-link tag-link-66376 tag-link-position-29" style="font-size: 19.166666666667pt;" aria-label="电子商务 (1,801 items)">电子商务</a>
+<a href="http://www.199it.com/archives/tag/report" class="tag-cloud-link tag-link-66414 tag-link-position-30" style="font-size: 9.1666666666667pt;" aria-label="研究报告 (457 items)">研究报告</a>
+<a href="http://www.199it.com/archives/tag/%e7%a4%be%e4%ba%a4%e5%aa%92%e4%bd%93" class="tag-cloud-link tag-link-955 tag-link-position-31" style="font-size: 11.5pt;" aria-label="社交媒体 (635 items)">社交媒体</a>
+<a href="http://www.199it.com/archives/tag/%e7%a4%be%e4%ba%a4%e7%bd%91%e7%bb%9c" class="tag-cloud-link tag-link-66466 tag-link-position-32" style="font-size: 14pt;" aria-label="社交网络 (898 items)">社交网络</a>
+<a href="http://www.199it.com/archives/tag/mobile-internet" class="tag-cloud-link tag-link-66402 tag-link-position-33" style="font-size: 15.666666666667pt;" aria-label="移动互联网 (1,112 items)">移动互联网</a>
+<a href="http://www.199it.com/archives/tag/%e7%a7%bb%e5%8a%a8%e5%b9%bf%e5%91%8a" class="tag-cloud-link tag-link-66504 tag-link-position-34" style="font-size: 9.3333333333333pt;" aria-label="移动广告 (464 items)">移动广告</a>
+<a href="http://www.199it.com/archives/tag/mobile-app" class="tag-cloud-link tag-link-66449 tag-link-position-35" style="font-size: 10.666666666667pt;" aria-label="移动应用 (559 items)">移动应用</a>
+<a href="http://www.199it.com/archives/tag/mobile-payment" class="tag-cloud-link tag-link-66510 tag-link-position-36" style="font-size: 8.3333333333333pt;" aria-label="移动支付 (411 items)">移动支付</a>
+<a href="http://www.199it.com/archives/tag/mobile-games" class="tag-cloud-link tag-link-66516 tag-link-position-37" style="font-size: 11.833333333333pt;" aria-label="移动游戏 (659 items)">移动游戏</a>
+<a href="http://www.199it.com/archives/tag/%e7%bd%91%e7%bb%9c%e5%b9%bf%e5%91%8a" class="tag-cloud-link tag-link-12248 tag-link-position-38" style="font-size: 10.166666666667pt;" aria-label="网络广告 (520 items)">网络广告</a>
+<a href="http://www.199it.com/archives/tag/%e7%bd%91%e7%bb%9c%e8%90%a5%e9%94%80" class="tag-cloud-link tag-link-4676 tag-link-position-39" style="font-size: 8.5pt;" aria-label="网络营销 (417 items)">网络营销</a>
+<a href="http://www.199it.com/archives/tag/of-online-shopping" class="tag-cloud-link tag-link-1132 tag-link-position-40" style="font-size: 9.1666666666667pt;" aria-label="网络购物 (454 items)">网络购物</a>
+<a href="http://www.199it.com/archives/tag/%e7%be%8e%e5%9b%bd" class="tag-cloud-link tag-link-672 tag-link-position-41" style="font-size: 11.166666666667pt;" aria-label="美国 (598 items)">美国</a>
+<a href="http://www.199it.com/archives/tag/%e8%89%be%e7%91%9e" class="tag-cloud-link tag-link-757 tag-link-position-42" style="font-size: 11pt;" aria-label="艾瑞 (585 items)">艾瑞</a>
+<a href="http://www.199it.com/archives/tag/iresearch" class="tag-cloud-link tag-link-66384 tag-link-position-43" style="font-size: 18.5pt;" aria-label="艾瑞咨询 (1,669 items)">艾瑞咨询</a>
+<a href="http://www.199it.com/archives/tag/%e8%89%be%e7%91%9e%e5%92%a8%e8%af%a2" class="tag-cloud-link tag-link-203 tag-link-position-44" style="font-size: 16.833333333333pt;" aria-label="艾瑞咨询 (1,312 items)">艾瑞咨询</a>
+<a href="http://www.199it.com/archives/tag/apple-company" class="tag-cloud-link tag-link-520 tag-link-position-45" style="font-size: 8.6666666666667pt;" aria-label="苹果 (425 items)">苹果</a></div>
+</aside><aside id="text-19" class="widget widget_text">			<div class="textwidget"><p><script async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/f.txt"></script><br>
+<ins class="adsbygoogle" style="display: inline-block; width: 300px; height: 250px;" data-ad-client="ca-pub-8977109552607361" data-ad-slot="199IT"><br>
+</ins><br>
+<script>
+(adsbygoogle=window.adsbygoogle || []).push({});
+</script></p>
+</div>
+		</aside></div><!-- #sidebar -->            </div><!-- .row -->
+        </div><!-- #main .wrap -->
+    </div><!-- #main -->
+            <div id="secondary" class="columns-1" role="complementary">
+            <div class="wrap clearfix">
+                <div class="row">
+                                </div><!-- /.row -->
+            </div><!-- #secondary .wrap -->
+        </div><!-- #secondary -->
+        <footer id="footer">
+        <div class="wrap clear">
+            <div class="notes-left">© 2011-2018 <a href="http://www.199it.com/"><strong>199IT.COM</strong></a>&nbsp;&nbsp;<a href="http://www.miitbeian.gov.cn/" target="_blank">京ICP备14049259号-1</a><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010802026978" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/备案图标.png" style="float:left;"><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">京公网安备 11010802026978号</p></a></div><!-- .notes-left -->
+            <div class="notes-right"><b>法律顾问：<a href="http://www.hebolaw.com/"><strong>合博律师事务所</strong></a>&nbsp;</b><script async="" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/f.txt"></script>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({
+google_ad_client: "pub-9891438663259768",
+enable_page_level_ads: true
+});
+</script>
+如有侵权请联系我们<a href="mailto:admin@199it.com">admin@199it.com </a>
+ <a href="http://www.199it.com/copyright"><strong>本站版权说明</strong></a>
+<meta name="360-site-verification" content="8f663b467c5efbb967b0e978429433ef">
+<meta name="baidu_union_verify" content="b4080424213f0675a32088778212035a"></div><!-- .notes-right -->
+        </div><!-- #footer wrap -->
+    </footer><!-- #footer -->
+
+<div class="whitelist-overlay-modal-background" id="adblock_detected">
+	<div class="whitelist-overlay-container">
+		<div class="whitelist-content">
+			<img src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/199it_adblock_sm.jpg" class="whitelist-logo">
+			<div class="whitelist-subtitle">感谢支持199IT</div>
+			<div class="whitelist-text">我们致力为中国互联网研究和咨询及IT行业数据专业人员和决策者提供一个数据共享平台。<br><br>要继续访问我们的网站，只需关闭您的广告拦截器并刷新页面。</div>
+		</div>
+	</div>
+</div>
+    
+    <div class="fixed-widget-bar fixed-left">
+            </div><!-- /.fixed-left -->
+    
+    <div class="fixed-widget-bar fixed-right">
+            </div><!-- /.fixed-right -->
+
+</div><iframe frameborder="0" allowtransparency="true" id="emb_xcomm" class="embedly-xcomm" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/xcomm.html" style="border: none; position: absolute; top: -9999em; width: 10px; height: 10px;"></iframe> <!-- #page -->
+
+<div class="scroll-to-top" style="display: none;"><a href="http://www.199it.com/archives/718587.html#" title="滚动到顶部"><span class="sr-only">滚动到顶部</span></a></div><!-- .scroll-to-top -->
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/imagesloaded.min.js"></script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/masonry.min.js"></script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/jquery.masonry.min.js"></script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/custom.js"></script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/jquery.easing.min.js"></script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/owl.carousel.min.js"></script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/jquery.prettyPhoto.js"></script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/jquery.marquee.min.js"></script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/new-tab.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var ss_custom = {"top_bar_sticky":"","main_bar_sticky":"","expand_menu_text":"\u5c55\u5f00\u6216\u6298\u53e0\u5b50\u83dc\u5355","header_style":"default","mobile_sticky":"","collapse_lists":"","enable_responsive_menu":"true"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/custom(1).js"></script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/kingcomposer.min.js"></script>
+<script type="text/javascript" src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/wp-embed.min.js"></script>
+
+<!-- 199IT底部代码开始 -->
+
+
+<!-- Baidu Button BEGIN -->
+<!--
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{"bdSize":32},"image":{"viewList":["weixin","qzone","tsina","tqq","copy","sqq","bdhome","linkedin","tieba","mail","twi"],"viewText":"分享到：","viewSize":"24"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- Baidu Button END -->
+--&gt;
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4072628-8']);
+  _gaq.push(['_setDomainName', '199it.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<!-- 199IT底部代码结束 -->
+
+<script type="text/javascript">
+    window._pt_lt = new Date().getTime();
+    window._pt_sp_2 = [];
+    _pt_sp_2.push('setAccount,123b33d6');
+    var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    (function() {
+        var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+        atag.src = _protocol + 'js.ptengine.cn/pta.js';
+        var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+        stag.src = _protocol + 'js.ptengine.cn/pts.js';
+        var s = document.getElementsByTagName('script')[0]; 
+        s.parentNode.insertBefore(atag, s); s.parentNode.insertBefore(stag, s);
+    })();
+</script>
+<script src="./专业贴：100+个自然语言处理数据集 _ 互联网数据资讯中心-199IT _ 中文互联网数据研究资讯中心-199IT_files/fuckadblock.min.js"></script>
+<script>
+// Function called if AdBlock is not detected
+function adBlockNotDetected() {
+	jQuery('#adblock_detected').hide();
+}
+// Function called if AdBlock is detected
+function adBlockDetected() {
+	jQuery('#adblock_detected').show();
+}
+setTimeout(function() {
+	/*
+	if (typeof fuckAdBlock === 'undefined') {
+		jQuery('#adblock_detected').show();
+	} else {
+		fuckAdBlock.onDetected(adBlockDetected).onNotDetected(adBlockNotDetected);
+      	fuckAdBlock.check();
+	}
+	*/
+}, 300);
+
+</script>
+
+
+
+</body><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box white; height: 22342px; width: 1479px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 22342px; width: 1479px;"></div></html>

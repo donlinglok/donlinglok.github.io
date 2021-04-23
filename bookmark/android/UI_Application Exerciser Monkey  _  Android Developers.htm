@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://developer.android.com/studio/test/monkey.html -->
+<html lang="en" class="cye-disabled cye-nm gr__developer_android_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
+</style>
+          
+<title>UI/Application Exerciser Monkey &nbsp;|&nbsp; Android Developers</title>
+
+<meta property="og:title" content="UI/Application Exerciser Monkey  |  Android Developers">
+
+  <meta property="og:url" content="https://developer.android.com/studio/test/monkey">
+
+  <meta property="og:locale" content="en">
+
+
+  
+  
+ <style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><script type="text/javascript" async="" src="./UI_Application Exerciser Monkey  _  Android Developers_files/linkid.js"></script><script async="" src="./UI_Application Exerciser Monkey  _  Android Developers_files/gtm.js"></script><script src="./UI_Application Exerciser Monkey  _  Android Developers_files/custom-elements-es5-adapter.js"></script><script src="./UI_Application Exerciser Monkey  _  Android Developers_files/webcomponents-lite.js"></script><script src="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_app__zh_tw.js"></script><script src="./UI_Application Exerciser Monkey  _  Android Developers_files/analytics.js"></script><script src="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_code_module__zh_tw.js"></script><link rel="stylesheet" type="text/css" href="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_code.css"><script src="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_heading_module__zh_tw.js"></script><link rel="stylesheet" type="text/css" href="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_heading.css"><script src="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_page_rating_module__zh_tw.js"></script><link rel="stylesheet" type="text/css" href="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_page_rating.css"><script src="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_snackbar_module__zh_tw.js"></script><link rel="stylesheet" type="text/css" href="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_snackbar.css"><script src="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_tooltip_module__zh_tw.js"></script><link rel="stylesheet" type="text/css" href="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_tooltip.css"><link rel="stylesheet" type="text/css" href="./UI_Application Exerciser Monkey  _  Android Developers_files/devsite_content_footer.css"><style type="text/css"></style></head><body type="article" theme="android-theme" class="" layout="docs" data-gr-c-s-loaded="true" style="" ready="">&nbsp;
+
+        <meta property="og:site_name" content="Android Developers">
+    <meta property="og:type" content="website">
+    
+          <meta name="theme-color" content="#78c257">
+    
+    
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="https://developer.android.com/_pwa/android/manifest.json">
+    <link rel="preconnect" href="https://www.gstatic.com/" crossorigin="">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin="">
+    <link rel="stylesheet" href="./UI_Application Exerciser Monkey  _  Android Developers_files/css">
+    <link rel="stylesheet" href="./UI_Application Exerciser Monkey  _  Android Developers_files/app.css">
+    <noscript>
+      <link rel="stylesheet" href="https://www.gstatic.com/devrel-devsite/v64b99e7856b375caf4161a35932fd71b47bddc412a7c2f9ddea443380406e780/android/css/ce_bundle.css">
+    </noscript>
+    <link rel="shortcut icon" href="https://www.gstatic.com/devrel-devsite/v64b99e7856b375caf4161a35932fd71b47bddc412a7c2f9ddea443380406e780/android/images/favicon.png">
+    <link rel="apple-touch-icon" href="https://www.gstatic.com/devrel-devsite/v64b99e7856b375caf4161a35932fd71b47bddc412a7c2f9ddea443380406e780/android/images/touchicon-180.png"><link rel="canonical" href="https://developer.android.com/studio/test/monkey"><link rel="search" type="application/opensearchdescription+xml" href="https://developer.android.com/s/opensearch.xml" data-title="Android Developers">
+  
+    <devsite-progress id="app-progress" ds-is="progress"></devsite-progress>
+    <div class="devsite-wrapper"><devsite-header ds-is="header" top-row--height="48" bottom-row--height="104" bottom-tabs--height="48" fixed="" offset="104" bottom-row--hidden="">
+      
+
+
+
+
+
+
+
+
+<div class="devsite-header--inner">
+  <div class="devsite-top-logo-row-wrapper-wrapper">
+    <div class="devsite-top-logo-row-wrapper">
+      <div class="devsite-top-logo-row">
+        <button type="button" id="devsite-hamburger-menu" class="devsite-header-icon-button button-flat material-icons gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Navigation menu button" aria-label="Close menu">
+        </button>
+        <div class="devsite-product-name-wrapper">
+  <a href="https://developer.android.com/" class="devsite-site-logo-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Site logo">
+  <img src="./UI_Application Exerciser Monkey  _  Android Developers_files/lockup.svg" class="devsite-site-logo" alt="Android Developers">
+</a>
+            <span class="devsite-product-name">
+            <ul class="devsite-breadcrumb-list">
+    <li class="devsite-breadcrumb-item">
+                              </li>
+  </ul>
+          </span>
+        
+</div>        <div class="devsite-top-logo-row-middle">
+          <div class="devsite-header-upper-tabs">
+                          <devsite-tabs ds-is="tabs" class="upper-tabs" connected="">
+  
+<div class="devsite-tabs-wrapper">
+                  <tab>
+          <a href="https://developer.android.com/about" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: 平台">
+  平台
+</a>
+
+        </tab>
+                        <tab active="">
+          <a href="https://developer.android.com/studio" class="gc-analytics-event" aria-label="Android Studio, selected" data-category="Site-Wide Custom Events" data-label="Tab: Android Studio">
+  Android Studio
+</a>
+
+        </tab>
+                        <tab>
+          <a href="https://developer.android.com/distribute" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Google Play">
+  Google Play
+</a>
+
+        </tab>
+                        <tab>
+          <a href="https://developer.android.com/jetpack" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: Android Jetpack">
+  Android Jetpack
+</a>
+
+        </tab>
+                        <tab>
+          <a href="https://developer.android.com/docs" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: 文件">
+  文件
+</a>
+
+        </tab>
+                        <tab>
+          <a href="https://developer.android.com/news" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: 最新消息">
+  最新消息
+</a>
+
+        </tab>
+            <tab overflow-tab="" hidden=""><a href="https://developer.android.com/studio/test/monkey.html#" class="devsite-icon devsite-icon-arrow-drop-down">更多選項</a><div class="devsite-tabs-overflow-menu" scrollbars="" hidden=""></div></tab></div></devsite-tabs>
+
+                       </div>
+          <devsite-search ds-is="search" enable-search="" enable-signin="" enable-suggestions="" enable-query-completion="" project-path="">
+  <form class="devsite-search-form" action="https://developer.android.com/s/results/" method="GET">
+    <div class="devsite-search-container">
+      <div id="searchbox" class="devsite-searchbox">
+                <input placeholder="搜尋結果" type="text" class="devsite-search-field devsite-search-query" name="q" value="" autocomplete="off" aria-label="搜尋框">
+        <div class="devsite-search-image material-icons"></div>
+      </div>
+      <button type="button" search-open="" class="devsite-search-button devsite-header-icon-button button-flat material-icons" aria-label="Open search box"></button>
+    </div>
+  <div class="devsite-popout"><div class="devsite-popout-result devsite-suggest-results-container" devsite-hide="" role="menu" aria-haspopup="true"></div><div class="devsite-popout-result devsite-history-container" devsite-hide="" role="menu" aria-haspopup="true"></div></div></form>
+  <button type="button" search-close="" class="devsite-search-button devsite-header-icon-button button-flat material-icons" aria-label="Close search box"></button>
+</devsite-search>
+
+        <devsite-search-background style="opacity: 1;"></devsite-search-background></div>
+
+                          <devsite-user ds-is="user" sign-in-url="https://developer.android.com/_d/signin?continue=https%3A%2F%2Fdeveloper.android.com%2Fstudio%2Ftest%2Fmonkey.html" sign-out-url="https://developer.android.com/_d/signout?continue=https%3A%2F%2Fdeveloper.android.com%2Fstudio%2Ftest%2Fmonkey.html" url="https://developer.android.com/_d/signout?continue=https%3A%2F%2Fdeveloper.android.com%2Fstudio%2Ftest%2Fmonkey.html"><div class="ogb-wrapper ogb-si"><a href="https://developer.android.com/_d/signin?continue=https%3A%2F%2Fdeveloper.android.com%2Fstudio%2Ftest%2Fmonkey.html" class="devsite-user-signin button devsite-top-button">
+  Sign in
+</a></div></devsite-user>
+              </div>    </div>  </div>
+  <div class="devsite-collapsible-section
+    " style="transform: translate3d(0px, -104px, 0px);">
+    <div class="devsite-header-background">
+                        <div class="devsite-product-id-row">
+            <div class="devsite-product-description-row">
+                              <ul class="devsite-breadcrumb-list">
+    <li class="devsite-breadcrumb-item">
+                    <a href="https://developer.android.com/studio" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Lower Header" data-value="1">
+            Android Studio
+      
+  </a>
+        </li>
+  </ul>
+                                        </div>
+                                                                                    </div>
+                                      <div class="devsite-doc-set-nav-row">
+                              <devsite-tabs ds-is="tabs" class="lower-tabs" connected="">
+  
+<div class="devsite-tabs-wrapper">
+                  <tab>
+          <a href="https://developer.android.com/studio" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: 下載">
+  下載
+</a>
+
+        </tab>
+                        <tab>
+          <a href="https://developer.android.com/studio/features" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: 最新消息">
+  最新消息
+</a>
+
+        </tab>
+                        <tab active="">
+          <a href="https://developer.android.com/studio/intro" class="gc-analytics-event" aria-label="使用手冊, selected" data-category="Site-Wide Custom Events" data-label="Tab: 使用手冊">
+  使用手冊
+</a>
+
+        </tab>
+                        <tab>
+          <a href="https://developer.android.com/studio/preview" class="gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Tab: 預覽">
+  預覽
+</a>
+
+        </tab>
+            <tab overflow-tab="" hidden=""><a href="https://developer.android.com/studio/test/monkey.html#" class="devsite-icon devsite-icon-arrow-drop-down">更多選項</a><div class="devsite-tabs-overflow-menu" scrollbars="" hidden=""></div></tab></div></devsite-tabs>
+
+        </div>
+          </div>  </div></div>
+  
+
+  </devsite-header>      <div class="devsite-book-nav-bg" fixed=""></div><devsite-book-nav ds-is="book-nav" scrollbars="" animatable="" fixed="" style="top: 152px; max-height: 881px; transform: translate3d(0px, -104px, 0px);">
+                  
+
+<nav class="devsite-book-nav devsite-nav nocontent">
+  <div class="devsite-mobile-header">
+    <button type="button" id="devsite-close-nav" class="devsite-header-icon-button button-flat material-icons gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Close navigation" aria-label="Close navigation">
+    </button>
+  </div>
+
+  <div class="devsite-book-nav-wrapper">
+    <div class="devsite-mobile-nav-top">
+              <ul class="devsite-nav-list">
+                      <li class="devsite-nav-item">
+                                <a href="https://developer.android.com/about" class="devsite-nav-title gc-analytics-event
+            " data-category="Site-Wide Custom Events" data-label="Responsive Tab: 平台">
+      <span class="devsite-nav-text">平台</span>
+        </a>
+  
+                                        </li>
+                      <li class="devsite-nav-item">
+                                <a href="https://developer.android.com/studio" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Responsive Tab: Android Studio">
+      <span class="devsite-nav-text">Android Studio</span>
+        </a>
+  
+                                            <ul class="devsite-nav-responsive-tabs">
+                                                                                                                      <li class="devsite-nav-item">
+    <a href="https://developer.android.com/studio" class="devsite-nav-title gc-analytics-event
+            " data-category="Site-Wide Custom Events" data-label="Responsive Tab: 下載">
+      <span class="devsite-nav-text">下載</span>
+        </a>
+  </li>
+
+                                                                                                                      <li class="devsite-nav-item">
+    <a href="https://developer.android.com/studio/features" class="devsite-nav-title gc-analytics-event
+            " data-category="Site-Wide Custom Events" data-label="Responsive Tab: 最新消息">
+      <span class="devsite-nav-text">最新消息</span>
+        </a>
+  </li>
+
+                                                                                                                      <li class="devsite-nav-item">
+    <a href="https://developer.android.com/studio/intro" id="devsite-nav-forward" class="devsite-nav-title gc-analytics-event
+            " data-category="Site-Wide Custom Events" data-label="Responsive Tab: 使用手冊">
+      <span class="devsite-nav-text" menu="_book">使用手冊</span>
+        <span class="devsite-nav-icon material-icons" data-icon="forward" menu="_book">
+    </span>
+        </a>
+  </li>
+
+                                                                                                                      <li class="devsite-nav-item">
+    <a href="https://developer.android.com/studio/preview" class="devsite-nav-title gc-analytics-event
+            " data-category="Site-Wide Custom Events" data-label="Responsive Tab: 預覽">
+      <span class="devsite-nav-text">預覽</span>
+        </a>
+  </li>
+
+                                  </ul>
+                          </li>
+                      <li class="devsite-nav-item">
+                                <a href="https://developer.android.com/distribute" class="devsite-nav-title gc-analytics-event
+            " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Google Play">
+      <span class="devsite-nav-text">Google Play</span>
+        </a>
+  
+                                        </li>
+                      <li class="devsite-nav-item">
+                                <a href="https://developer.android.com/jetpack" class="devsite-nav-title gc-analytics-event
+            " data-category="Site-Wide Custom Events" data-label="Responsive Tab: Android Jetpack">
+      <span class="devsite-nav-text">Android Jetpack</span>
+        </a>
+  
+                                        </li>
+                      <li class="devsite-nav-item">
+                                <a href="https://developer.android.com/docs" class="devsite-nav-title gc-analytics-event
+            " data-category="Site-Wide Custom Events" data-label="Responsive Tab: 文件">
+      <span class="devsite-nav-text">文件</span>
+        </a>
+  
+                                        </li>
+                      <li class="devsite-nav-item">
+                                <a href="https://developer.android.com/news" class="devsite-nav-title gc-analytics-event
+            " data-category="Site-Wide Custom Events" data-label="Responsive Tab: 最新消息">
+      <span class="devsite-nav-text">最新消息</span>
+        </a>
+  
+                                        </li>
+                            </ul>
+          </div>
+          <div class="devsite-mobile-nav-bottom">
+                                      <ul class="devsite-nav-list" menu="_book">
+                                    <li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">認識 Android Studio</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/intro" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/install" class="devsite-nav-title"><span class="devsite-nav-text">安裝 Android Studio</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/intro/migrate" class="devsite-nav-title"><span class="devsite-nav-text">遷移至 Android Studio</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/intro/studio-config" class="devsite-nav-title"><span class="devsite-nav-text">設定 IDE</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/intro/keyboard-shortcuts" class="devsite-nav-title"><span class="devsite-nav-text">鍵盤快速鍵</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/intro/accessibility" class="devsite-nav-title"><span class="devsite-nav-text">無障礙功能</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/intro/update" class="devsite-nav-title"><span class="devsite-nav-text">更新 IDE 和工具</span></a></li></ul></devsite-expandable-nav></li>
+                          <li class="devsite-nav-item"><a href="https://developer.android.com/studio/workflow" class="devsite-nav-title"><span class="devsite-nav-text">工作流程基本概念</span></a></li>
+                          <li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">管理專案</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/projects" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/projects/create-project" class="devsite-nav-title"><span class="devsite-nav-text">建立專案</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/projects/add-kotlin" class="devsite-nav-title"><span class="devsite-nav-text">新增 Kotlin 程式碼</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/projects/dynamic-delivery" class="devsite-nav-title"><span class="devsite-nav-text">加入對 Dynamic Delivery 的支援</span></a></li><li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">新增 C 和 C++ 程式碼</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/projects/add-native-code" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/projects/configure-cmake" class="devsite-nav-title"><span class="devsite-nav-text">設定 CMake</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/projects/gradle-external-native-builds" class="devsite-nav-title"><span class="devsite-nav-text">連結 Gradle</span></a></li></ul></devsite-expandable-nav></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/projects/android-library" class="devsite-nav-title"><span class="devsite-nav-text">建立 Android 程式庫</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/projects/continuous-integration" class="devsite-nav-title"><span class="devsite-nav-text">設定持續整合環境</span></a></li></ul></devsite-expandable-nav></li>
+                          <li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">編寫應用程式</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/projects/templates" class="devsite-nav-title"><span class="devsite-nav-text">加入範本中的程式碼</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/sample-code" class="devsite-nav-title"><span class="devsite-nav-text">尋找程式碼範例</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/projects/add-app-module" class="devsite-nav-title"><span class="devsite-nav-text">為新裝置新增模組</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/create-java-class" class="devsite-nav-title"><span class="devsite-nav-text">建立 Java 類別或類型</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/java8-support" class="devsite-nav-title"><span class="devsite-nav-text">使用 Java 8 語言功能</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/add-resources" class="devsite-nav-title"><span class="devsite-nav-text">新增應用程式資源</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/layout-editor" class="devsite-nav-title"><span class="devsite-nav-text">使用 Layout Editor 打造 UI</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/theme-editor" class="devsite-nav-title"><span class="devsite-nav-text">設計應用程式主題</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/vector-asset-studio" class="devsite-nav-title"><span class="devsite-nav-text">新增多種密度的向量圖形</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/image-asset-studio" class="devsite-nav-title"><span class="devsite-nav-text">使用 Image Asset Studio 建立圖示</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/draw9patch" class="devsite-nav-title"><span class="devsite-nav-text">建立可調整大小的點陣圖 (九宮格)</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/convert-webp" class="devsite-nav-title"><span class="devsite-nav-text">建立 WebP 圖片</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/translations-editor" class="devsite-nav-title"><span class="devsite-nav-text">將 UI 本地化</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/app-link-indexing" class="devsite-nav-title"><span class="devsite-nav-text">新增 Android 應用程式連結</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/firebase" class="devsite-nav-title"><span class="devsite-nav-text">連結至 Firebase</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/lint" class="devsite-nav-title"><span class="devsite-nav-text">使用 lint 檢查項目改善程式碼</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/annotations" class="devsite-nav-title"><span class="devsite-nav-text">使用註解提升程式碼檢查效率</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/write/tool-attributes" class="devsite-nav-title"><span class="devsite-nav-text">工具屬性參考資料</span></a></li></ul></devsite-expandable-nav></li>
+                          <li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">建立並執行應用程式</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">在模擬器上執行應用程式</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/emulator" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/managing-avds" class="devsite-nav-title"><span class="devsite-nav-text">建立和管理虛擬裝置</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/emulator-commandline" class="devsite-nav-title"><span class="devsite-nav-text">從指令列啟動模擬器</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/emulator-console" class="devsite-nav-title"><span class="devsite-nav-text">傳送模擬器主控台指令</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/emulator-networking" class="devsite-nav-title"><span class="devsite-nav-text">設定模擬器網路</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/emulator-acceleration" class="devsite-nav-title"><span class="devsite-nav-text">設定硬體加速</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/emulator-comparison" class="devsite-nav-title"><span class="devsite-nav-text">模擬器功能比較</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/emulator-troubleshooting" class="devsite-nav-title"><span class="devsite-nav-text">排解模擬器問題</span></a></li></ul></devsite-expandable-nav></li><li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">在硬體裝置上執行應用程式</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/device" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/oem-usb" class="devsite-nav-title"><span class="devsite-nav-text">安裝原始設備製造商 (OEM) USB 驅動程式</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/win-usb" class="devsite-nav-title"><span class="devsite-nav-text">取得 Google USB Driver</span></a></li></ul></devsite-expandable-nav></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/run/rundebugconfig" class="devsite-nav-title"><span class="devsite-nav-text">建立執行/偵錯設定</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/building-cmdline" class="devsite-nav-title"><span class="devsite-nav-text">從指令列建立應用程式</span></a></li></ul></devsite-expandable-nav></li>
+                          <li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">設定版本</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/application-id" class="devsite-nav-title"><span class="devsite-nav-text">設定應用程式 ID</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/dependencies" class="devsite-nav-title"><span class="devsite-nav-text">新增版本相依性</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/optimize-your-build" class="devsite-nav-title"><span class="devsite-nav-text">為版本速度進行最佳化調整</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/build-cache" class="devsite-nav-title"><span class="devsite-nav-text">使用版本快取</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/build-variants" class="devsite-nav-title"><span class="devsite-nav-text">設定版本變體</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/configure-apk-splits" class="devsite-nav-title"><span class="devsite-nav-text">建立多個 APK</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/manifest-merge" class="devsite-nav-title"><span class="devsite-nav-text">合併多個資訊清單</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/manifest-build-variables" class="devsite-nav-title"><span class="devsite-nav-text">將版本變數插入資訊清單</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/shrink-code" class="devsite-nav-title"><span class="devsite-nav-text">縮減程式碼和資源</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/multidex" class="devsite-nav-title"><span class="devsite-nav-text">啟用 multidex</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/apk-analyzer" class="devsite-nav-title"><span class="devsite-nav-text">使用 APK Analyzer 分析版本</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/build/gradle-tips" class="devsite-nav-title"><span class="devsite-nav-text">Gradle 秘訣與方法</span></a></li></ul></devsite-expandable-nav></li>
+                          <li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">為應用程式偵錯</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/debug" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/debug/dev-options" class="devsite-nav-title"><span class="devsite-nav-text">設定開發人員選項</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/debug/am-logcat" class="devsite-nav-title"><span class="devsite-nav-text">寫入和檢視記錄</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/debug/stacktraces" class="devsite-nav-title"><span class="devsite-nav-text">分析堆疊追蹤</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/debug/layout-inspector" class="devsite-nav-title"><span class="devsite-nav-text">使用 Layout Inspector 為版面配置偵錯</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/debug/pixel-perfect" class="devsite-nav-title"><span class="devsite-nav-text">使用 Pixel Perfect 驗證設計</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/debug/device-file-explorer" class="devsite-nav-title"><span class="devsite-nav-text">檢視裝置上的檔案</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/debug/am-screenshot" class="devsite-nav-title"><span class="devsite-nav-text">擷取螢幕畫面</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/debug/am-video" class="devsite-nav-title"><span class="devsite-nav-text">錄製影片</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/debug/bug-report" class="devsite-nav-title"><span class="devsite-nav-text">擷取和讀取錯誤報告</span></a></li></ul></devsite-expandable-nav></li>
+                          <li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">測試應用程式</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/command-line" class="devsite-nav-title"><span class="devsite-nav-text">從指令列進行測試</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/espresso-test-recorder" class="devsite-nav-title"><span class="devsite-nav-text">使用 Espresso Test Recorder 建立 UI 測試</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/monkey" class="devsite-nav-title devsite-nav-active"><span class="devsite-nav-text">UI/應用程式的試驗程式 Monkey</span></a></li><li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">monkeyrunner 參考資料</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/monkeyrunner" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/monkeyrunner/MonkeyDevice" class="devsite-nav-title"><span class="devsite-nav-text">MonkeyDevice</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/monkeyrunner/MonkeyImage" class="devsite-nav-title"><span class="devsite-nav-text">MonkeyImage</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/monkeyrunner/MonkeyRunner" class="devsite-nav-title"><span class="devsite-nav-text">MonkeyRunner</span></a></li></ul></devsite-expandable-nav></li></ul></devsite-expandable-nav></li>
+                          <li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">剖析應用程式效能</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/profile" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/profile/android-profiler" class="devsite-nav-title"><span class="devsite-nav-text">測量應用程式效能</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/debug/apk-debugger" class="devsite-nav-title"><span class="devsite-nav-text">為預先建立的 APK 進行剖析和偵錯</span></a></li><li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">檢查 CPU 活動</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/profile/cpu-profiler" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/profile/generate-trace-logs" class="devsite-nav-title"><span class="devsite-nav-text">設定應用程式以產生追蹤記錄</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/profile/systrace-on-device" class="devsite-nav-title"><span class="devsite-nav-text">在裝置上執行系統追蹤</span></a></li></ul></devsite-expandable-nav></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/profile/memory-profiler" class="devsite-nav-title"><span class="devsite-nav-text">檢視堆積和記憶體分配</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/profile/network-profiler" class="devsite-nav-title"><span class="devsite-nav-text">檢查網路活動</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/profile/energy-profiler" class="devsite-nav-title"><span class="devsite-nav-text">檢查能源用量</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/profile/inspect-gpu-rendering" class="devsite-nav-title"><span class="devsite-nav-text">檢查 GPU 轉譯</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/profile/battery-historian" class="devsite-nav-title"><span class="devsite-nav-text">剖析電池用量</span></a></li></ul></devsite-expandable-nav></li>
+                          <li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">發佈應用程式</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/publish" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/publish/preparing" class="devsite-nav-title"><span class="devsite-nav-text">發佈應用程式前的準備工作</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/publish/versioning" class="devsite-nav-title"><span class="devsite-nav-text">對應用程式進行版本管理</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/publish/app-signing" class="devsite-nav-title"><span class="devsite-nav-text">簽署應用程式</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/publish/upload-bundle" class="devsite-nav-title"><span class="devsite-nav-text">上傳應用程式</span></a></li></ul></devsite-expandable-nav></li>
+                          <li class="devsite-nav-item           devsite-nav-expandable"><devsite-expandable-nav ds-is="expandable-nav" collapsed="" connected="" animatable="">
+    <a class="devsite-nav-toggle"></a><div class="devsite-nav-title devsite-nav-title-no-path" tabindex="0"><span class="devsite-nav-text">指令列工具</span></div><ul class="devsite-nav-section"><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line" class="devsite-nav-title"><span class="devsite-nav-text">總覽</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/aapt2" class="devsite-nav-title"><span class="devsite-nav-text">aapt2</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/adb" class="devsite-nav-title"><span class="devsite-nav-text">adb</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/apkanalyzer" class="devsite-nav-title"><span class="devsite-nav-text">apkanalyzer</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/apksigner" class="devsite-nav-title"><span class="devsite-nav-text">apksigner</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/avdmanager" class="devsite-nav-title"><span class="devsite-nav-text">avdmanager</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/bmgr" class="devsite-nav-title"><span class="devsite-nav-text">bmgr</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/bundletool" class="devsite-nav-title"><span class="devsite-nav-text">bundletool</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/d8" class="devsite-nav-title"><span class="devsite-nav-text">d8</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/dmtracedump" class="devsite-nav-title"><span class="devsite-nav-text">dmtracedump</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/dumpsys" class="devsite-nav-title"><span class="devsite-nav-text">dumpsys</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/etc1tool" class="devsite-nav-title"><span class="devsite-nav-text">etc1tool</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/jobb" class="devsite-nav-title"><span class="devsite-nav-text">jobb</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/jetifier" class="devsite-nav-title"><span class="devsite-nav-text">jetifier-standalone</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/logcat" class="devsite-nav-title"><span class="devsite-nav-text">logcat</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/mksdcard" class="devsite-nav-title"><span class="devsite-nav-text">mksdcard</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/sdkmanager" class="devsite-nav-title"><span class="devsite-nav-text">sdkmanager</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/systrace" class="devsite-nav-title"><span class="devsite-nav-text">systrace</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/zipalign" class="devsite-nav-title"><span class="devsite-nav-text">zipalign</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/command-line/variables" class="devsite-nav-title"><span class="devsite-nav-text">環境變數</span></a></li></ul></devsite-expandable-nav></li>
+                          <li class="devsite-nav-item"><a href="https://developer.android.com/studio/troubleshoot" class="devsite-nav-title"><span class="devsite-nav-text">疑難排解</span></a></li>
+                          <li class="devsite-nav-item"><a href="https://developer.android.com/studio/known-issues" class="devsite-nav-title"><span class="devsite-nav-text">已知問題</span></a></li>
+                          <li class="devsite-nav-item"><a href="https://developer.android.com/studio/report-bugs" class="devsite-nav-title"><span class="devsite-nav-text">回報錯誤</span></a></li>
+                      </ul>
+                                                                                                                                                                            </div>
+      </div>
+</nav>
+              </devsite-book-nav>
+      <div id="gc-wrapper" style="margin-top: 152px;">
+        <div class="devsite-main-content" has-book-nav="" has-toc="">
+          <devsite-toc ds-is="toc" class="devsite-nav devsite-toc" visible="" fixed="" max-height="240" offset="104"><ul class="devsite-nav-list" scrollbars="" style="max-height: 240px; transform: translate3d(0px, -104px, 0px); max-width: 136px;"><li class="devsite-nav-item devsite-nav-heading devsite-toc-toggle"><a href="https://developer.android.com/studio/test/monkey.html#top_of_page" class="devsite-nav-title"><span class="devsite-nav-text">目錄</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/monkey.html#overview" class="devsite-nav-title"><span class="devsite-nav-text">Overview</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/monkey.html#basic-use-of-the-monkey" class="devsite-nav-title"><span class="devsite-nav-text">Basic use of the Monkey</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/monkey.html#command-options-reference" class="devsite-nav-title devsite-nav-active"><span class="devsite-nav-text">Command options reference</span></a></li></ul></devsite-toc>
+          <devsite-content ds-is="content">
+                          
+
+<article class="devsite-article">
+  <article class="devsite-article-inner">    
+    <div class="devsite-article-meta">
+      <ul class="devsite-breadcrumb-list">
+    <li class="devsite-breadcrumb-item">
+                    <a href="https://developer.android.com/" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="1">
+            Android Developers
+      
+  </a>
+        </li>
+    <li class="devsite-breadcrumb-item">
+                <div class="devsite-breadcrumb-guillemet material-icons"></div>
+                    <a href="https://developer.android.com/studio" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="2">
+            Android Studio
+      
+  </a>
+        </li>
+    <li class="devsite-breadcrumb-item">
+                <div class="devsite-breadcrumb-guillemet material-icons"></div>
+                    <a href="https://developer.android.com/studio/intro" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="3">
+            使用手冊
+      
+  </a>
+        </li>
+  </ul>
+               <devsite-page-rating position="header" selected-rating="0" hover-rating-star="0">
+         <div><div class="devsite-rating-stars"><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="1" role="button" data-title="說明文件完全不堪使用" aria-label="Site content star ratings, rating 1 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="2" role="button" data-title="說明文件品質不良" aria-label="Site content star ratings, rating 2 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="3" role="button" data-title="說明文件品質尚可" aria-label="Site content star ratings, rating 3 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="4" role="button" data-title="說明文件品質良好" aria-label="Site content star ratings, rating 4 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="5" role="button" data-title="說明文件品質卓越" aria-label="Site content star ratings, rating 5 out of 5"></div></div><div class="devsite-rating-internal"><span class="devsite-rating-stats"></span></div></div></devsite-page-rating>
+          </div>
+
+              <devsite-heading ds-is="heading" text="UI/Application Exerciser Monkey" id="uiapplication-exerciser-monkey" level="h1" class="devsite-page-title"><h1 class="" is-upgraded="">UI/Application Exerciser Monkey</h1></devsite-heading>
+    
+    <devsite-toc ds-is="toc" class="devsite-nav devsite-toc-embedded" devsite-toc-embedded="" visible=""><ul class="devsite-nav-list" scrollbars=""><li class="devsite-nav-item devsite-nav-heading devsite-toc-toggle"><a href="https://developer.android.com/studio/test/monkey.html#top_of_page" class="devsite-nav-title"><span class="devsite-nav-text">目錄</span></a><button type="button" class="devsite-nav-show-all button-transparent material-icons" data-title="展開/收合內容"></button></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/monkey.html#overview" class="devsite-nav-title"><span class="devsite-nav-text">Overview</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/monkey.html#basic-use-of-the-monkey" class="devsite-nav-title"><span class="devsite-nav-text">Basic use of the Monkey</span></a></li><li class="devsite-nav-item"><a href="https://developer.android.com/studio/test/monkey.html#command-options-reference" class="devsite-nav-title"><span class="devsite-nav-text">Command options reference</span></a></li><li class="devsite-toc-toggle"><button type="button" class="button-flat devsite-nav-more-items material-icons" aria-hidden="true" data-title="展開/收合內容"></button></li></ul></devsite-toc>
+
+    <div class="devsite-article-body clearfix
+      ">
+
+              
+
+<p>The Monkey is a program that runs on your
+<a href="https://developer.android.com/tools/help/emulator.html">emulator</a> or device and generates pseudo-random
+streams of user events such as clicks, touches, or gestures, as well as a number of system-level
+events.  You can use the Monkey to stress-test applications that you are developing, in a random
+yet repeatable manner.</p>
+
+<a name="overview"></a>
+<devsite-heading ds-is="heading" text="Overview" id="overview" level="h2" link="" toc="" class="" back-to-top=""><h2 is-upgraded="">Overview<button role="button" class="devsite-heading-link button-flat material-icons" data-title="Copy link to this section"></button><a href="https://developer.android.com/studio/test/monkey.html#top_of_page" class="devsite-back-to-top-link material-icons" data-title="返回頁首"></a></h2></devsite-heading>
+
+<p>The Monkey is a command-line tool that you can run on any emulator
+instance or on a device.  It sends a pseudo-random stream of 
+user events into the system, which acts as a stress test on the application software you are 
+developing.</p>
+
+<p>The Monkey includes a number of options, but they break down into four primary
+categories:</p>
+
+<ul>
+  <li>Basic configuration options, such as setting the number of events to attempt.</li>
+  <li>Operational constraints, such as restricting the test to a single package.</li>
+  <li>Event types and frequencies.</li>
+  <li>Debugging options.</li>
+</ul>
+
+<p>When the Monkey runs, it generates events and sends them to the system.  It also <i>watches</i>
+the system under test and looks for three conditions, which it treats specially:</p>
+
+<ul>
+  <li>If you have constrained the Monkey to run in one or more specific packages, it 
+  watches for attempts to navigate to any other packages, and blocks them.</li>
+  <li>If your application crashes or receives any sort of unhandled exception, the Monkey
+  will stop and report the error.</li>
+  <li>If your application generates an <i>application not responding</i> error, the Monkey
+  will stop and report the error.</li>
+</ul>
+
+<p>Depending on the verbosity level you have selected, you will also see reports on the progress
+of the Monkey and the events being generated.</p>
+
+<a name="basics"></a>
+<devsite-heading ds-is="heading" text="Basic use of the Monkey" id="basic-use-of-the-monkey" level="h2" link="" toc="" class="" back-to-top=""><h2 is-upgraded="">Basic use of the Monkey<button role="button" class="devsite-heading-link button-flat material-icons" data-title="Copy link to this section"></button><a href="https://developer.android.com/studio/test/monkey.html#top_of_page" class="devsite-back-to-top-link material-icons" data-title="返回頁首"></a></h2></devsite-heading>
+
+<p>You can launch the Monkey using a command line on your development machine or from a script. 
+Because the Monkey runs in the emulator/device environment, you must launch it from a shell in 
+that environment.  You can do this by prefacing <code>adb shell</code> to each command, 
+or by entering the shell and entering Monkey commands directly.</p>
+<p>The basic syntax is: </p>
+
+<devsite-code ds-is="code"><pre class="uglyprint" is-upgraded="">$ adb shell monkey [options] &lt;event-count&gt;</pre><div class="devsite-code-buttons-container"><button class="gc-analytics-event material-icons devsite-icon-copy" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="按這裡複製"></button><button class="gc-analytics-event material-icons devsite-icon-code-dark devsite-toggle-dark" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></button><button class="gc-analytics-event material-icons devsite-icon-code-light devsite-toggle-light" data-category="Site-Wide Custom Events" data-label="Light Code Toggle" track-type="exampleCode" track-name="lightCodeToggle" data-title="Light code theme"></button></div></devsite-code>
+    
+<p>With no options specified, the Monkey will launch in a quiet (non-verbose) mode, and will send 
+events to any (and all) packages installed on your target.  Here is a more typical command line,
+which will launch your application and send 500 pseudo-random events to it:</p>
+
+<devsite-code ds-is="code"><pre class="uglyprint" is-upgraded="">$ adb shell monkey -p your.package.name -v 500</pre><div class="devsite-code-buttons-container"><button class="gc-analytics-event material-icons devsite-icon-copy" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" data-title="按這裡複製"></button><button class="gc-analytics-event material-icons devsite-icon-code-dark devsite-toggle-dark" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" data-title="Dark code theme"></button><button class="gc-analytics-event material-icons devsite-icon-code-light devsite-toggle-light" data-category="Site-Wide Custom Events" data-label="Light Code Toggle" track-type="exampleCode" track-name="lightCodeToggle" data-title="Light code theme"></button></div></devsite-code>
+
+<a name="reference"></a>
+<devsite-heading ds-is="heading" text="Command options reference" id="command-options-reference" level="h2" link="" toc="" class="" back-to-top=""><h2 is-upgraded="">Command options reference<button role="button" class="devsite-heading-link button-flat material-icons" data-title="Copy link to this section"></button><a href="https://developer.android.com/studio/test/monkey.html#top_of_page" class="devsite-back-to-top-link material-icons" data-title="返回頁首"></a></h2></devsite-heading>
+
+<p>The table below lists all options you can include on the Monkey command line.</p>
+
+<div class="devsite-table-wrapper"><table>
+<tbody><tr>
+  <th>Category</th>
+  <th>Option</th>
+  <th>Description</th>
+</tr>
+
+<tr>
+<td rowspan="2">General</td>
+<td><code>--help</code></td>
+<td>Prints a simple usage guide.</td>
+</tr>
+
+<tr>
+<td><code>-v</code></td>
+<td>Each -v on the command line will increment the verbosity level.  
+Level 0 (the default) provides little information beyond startup notification, test completion, and
+final results.  
+Level 1 provides more details about the test as it runs, such as individual events being sent to 
+your activities.  
+Level 2 provides more detailed setup information such as activities selected or not selected for 
+testing.</td>
+</tr>
+
+<tr>
+<td rowspan="10">Events</td>
+<td><code>-s &lt;seed&gt;</code></td>
+<td>Seed value for pseudo-random number generator.  If you re-run the Monkey with the same seed 
+value, it will generate the same sequence of events.</td>
+</tr>
+
+<tr>
+<td><code>--throttle &lt;milliseconds&gt;</code></td>
+<td>Inserts a fixed delay between events.  You can use this option to slow down the Monkey.  
+If not specified, there is no delay and the events are generated as rapidly as possible.</td>
+</tr>
+
+<tr>
+<td><code>--pct-touch &lt;percent&gt;</code></td>
+<td>Adjust percentage of touch events.  
+(Touch events are a down-up event in a single place on the screen.)</td>
+</tr>
+
+<tr>
+<td><code>--pct-motion &lt;percent&gt;</code></td>
+<td>Adjust percentage of motion events.
+(Motion events consist of a down event somewhere on the screen, a series of pseudo-random
+movements, and an up event.)</td>
+</tr>
+
+<tr>
+<td><code>--pct-trackball &lt;percent&gt;</code></td>
+<td>Adjust percentage of trackball events.
+(Trackball events consist of one or more random movements, sometimes followed by a click.)</td>
+</tr>
+
+<tr>
+<td><code>--pct-nav &lt;percent&gt;</code></td>
+<td>Adjust percentage of "basic" navigation events.
+(Navigation events consist of up/down/left/right, as input from a directional input device.)</td>
+</tr>
+
+<tr>
+<td><code>--pct-majornav &lt;percent&gt;</code></td>
+<td>Adjust percentage of "major" navigation events.
+(These are navigation events that will typically cause actions within your UI, such as
+the center button in a 5-way pad, the back key, or the menu key.)</td>
+</tr>
+
+<tr>
+<td><code>--pct-syskeys &lt;percent&gt;</code></td>
+<td>Adjust percentage of "system" key events.
+(These are keys that are generally reserved for use by the system, such as Home, Back, Start Call,
+End Call, or Volume controls.)</td>
+</tr>
+
+<tr>
+<td><code>--pct-appswitch &lt;percent&gt;</code></td>
+<td>Adjust percentage of activity launches.  At random intervals, the Monkey will issue a startActivity() call, as a way of maximizing
+coverage of all activities within your package.</td>
+</tr>
+
+<tr>
+<td><code>--pct-anyevent &lt;percent&gt;</code></td>
+<td>Adjust percentage of other types of events.  This is a catch-all for all other types of events such as keypresses, other less-used
+buttons on the device, and so forth.</td>
+</tr>
+
+<tr>
+<td rowspan="2">Constraints</td>
+<td><code>-p &lt;allowed-package-name&gt;</code></td>
+<td>If you specify one or more packages this way, the Monkey will <i>only</i> allow the system
+to visit activities within those packages.  If your application requires access to activities in
+other packages (e.g. to select a contact) you'll need to specify those packages as well.
+If you don't specify any packages, the Monkey will allow the system to launch activities
+in all packages.  To specify multiple packages, use the -p option multiple times — one -p 
+option per package.</td>
+</tr>
+
+<tr>
+<td><code>-c &lt;main-category&gt;</code></td>
+<td>If you specify one or more categories this way, the Monkey will <i>only</i> allow the 
+system to visit activities that are listed with one of the specified categories.  
+If you don't specify any categories, the Monkey will select activities listed with the category
+Intent.CATEGORY_LAUNCHER or Intent.CATEGORY_MONKEY.  To specify multiple categories, use the -c
+option multiple times — one -c option per category.</td>
+</tr>
+
+<tr>
+<td rowspan="8">Debugging</td>
+<td><code>--dbg-no-events</code></td>
+<td>When specified, the Monkey will perform the initial launch into a test activity, but
+will not generate any further events.
+For best results, combine with -v, one or more package constraints, and a non-zero throttle to keep the Monkey
+running for 30 seconds or more.  This provides an environment in which you can monitor package
+transitions invoked by your application.</td>
+</tr>
+
+<tr>
+<td><code>--hprof</code></td>
+<td>If set, this option will generate profiling reports immediately before and after the Monkey
+event sequence. This will generate large (~5Mb) files in data/misc, so use with care. For
+information on analyzing profiling reports, see <a href="https://developer.android.com/studio/profile">Profile your app
+performance</a>.</td>
+</tr>
+
+<tr>
+<td><code>--ignore-crashes</code></td>
+<td>Normally, the Monkey will stop when the application crashes or experiences any type of 
+unhandled exception.  If you specify this option, the Monkey will continue to send events to
+the system, until the count is completed.</td>
+</tr>
+
+<tr>
+<td><code>--ignore-timeouts</code></td>
+<td>Normally, the Monkey will stop when the application experiences any type of timeout error such
+as a "Application Not Responding" dialog.  If you specify this option, the Monkey will continue to 
+send events to the system, until the count is completed.</td>
+</tr>
+
+<tr>
+<td><code>--ignore-security-exceptions</code></td>
+<td>Normally, the Monkey will stop when the application experiences any type of permissions error,
+for example if it attempts to launch an activity that requires certain permissions.  If you specify
+this option, the Monkey will continue to send events to the system, until the count is 
+completed.</td>
+</tr>
+
+<tr>
+<td><code>--kill-process-after-error</code></td>
+<td>Normally, when the Monkey stops due to an error, the application that failed will be left
+running.  When this option is set, it will signal the system to stop the process in which the error
+occurred.
+Note, under a normal (successful) completion, the launched process(es) are not stopped, and
+the device is simply left in the last state after the final event.</td>
+</tr>
+
+<tr>
+<td><code>--monitor-native-crashes</code></td>
+<td>Watches for and reports crashes occurring in the Android system native code. If --kill-process-after-error is set, the system will stop.</td>
+</tr>
+
+<tr>
+<td><code>--wait-dbg</code></td>
+<td>Stops the Monkey from executing until a debugger is attached to it.</td>
+</tr>
+
+</tbody></table></div>
+
+<!-- TODO: add a section called "debugging" that covers ways to use it, 
+need to clear data, use of the seed, etc. -->
+
+<!-- TODO: add a section that lays down a contract for Monkey output so it can be
+scripted safely. -->
+
+
+
+          </div>
+
+    
+                   <devsite-page-rating position="footer" selected-rating="0" hover-rating-star="0">
+         <div><div class="devsite-rating-caption">Was this page helpful?</div><div class="devsite-rating-stars"><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="1" role="button" data-title="說明文件完全不堪使用" aria-label="Site content star ratings, rating 1 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="2" role="button" data-title="說明文件品質不良" aria-label="Site content star ratings, rating 2 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="3" role="button" data-title="說明文件品質尚可" aria-label="Site content star ratings, rating 3 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="4" role="button" data-title="說明文件品質良好" aria-label="Site content star ratings, rating 4 out of 5"></div><div class="devsite-rating-star devsite-rating-star-outline gc-analytics-event material-icons" data-rating-val="5" role="button" data-title="說明文件品質卓越" aria-label="Site content star ratings, rating 5 out of 5"></div></div><div class="devsite-rating-internal"><span class="devsite-rating-stats"></span></div></div></devsite-page-rating>
+                   
+          </article>
+</article>
+
+<devsite-content-footer ds-is="content-footer" class="nocontent">
+  <p>Content and code samples on this page are subject to the licenses described in the <a href="https://developer.android.com/license">Content License</a>. Java is a registered trademark of Oracle and/or its affiliates.</p>
+</devsite-content-footer>
+
+
+                      </devsite-content>
+        </div>
+        <devsite-footer-promos ds-is="footer-promos" class="devsite-footer">
+                      <nav>
+  <ul class="devsite-footer-promos-list">
+        <li class="devsite-footer-promo">
+      <a href="https://twitter.com/AndroidDev" class="devsite-footer-promo-title gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Twitter Promo">
+                        <img class="devsite-footer-promo-icon" src="./UI_Application Exerciser Monkey  _  Android Developers_files/logo-twitter.svg" alt="Twitter">
+                Twitter
+      </a>
+      <div class="devsite-footer-promo-description">在 Twitter 上追蹤 @AndroidDev</div>
+    </li>
+        <li class="devsite-footer-promo">
+      <a href="https://www.youtube.com/user/androiddevelopers" class="devsite-footer-promo-title gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer YouTube Promo">
+                        <img class="devsite-footer-promo-icon" src="./UI_Application Exerciser Monkey  _  Android Developers_files/youtube_48dp.png" alt="YouTube">
+                YouTube
+      </a>
+      <div class="devsite-footer-promo-description">造訪 Android 開發人員的 YouTube 頻道</div>
+    </li>
+      </ul>
+</nav>
+
+                  </devsite-footer-promos>
+        <devsite-footer-linkboxes ds-is="footer-linkboxes" class="devsite-footer">
+                      <nav class="devsite-footer-linkboxes nocontent">
+  <ul class="devsite-footer-linkboxes-list">
+        <li class="devsite-footer-linkbox ">
+    <h3 class="devsite-footer-linkbox-heading">深入瞭解 Android</h3>      <ul class="devsite-footer-linkbox-list">
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://www.android.com/" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+            Android
+          </a>
+        </li>
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://www.android.com/enterprise/" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+            Enterprise
+          </a>
+        </li>
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://www.android.com/security-center/" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+            安全性
+          </a>
+        </li>
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://source.android.com/" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+            原始碼
+          </a>
+        </li>
+              </ul>
+    </li>
+        <li class="devsite-footer-linkbox ">
+    <h3 class="devsite-footer-linkbox-heading">支援服務</h3>      <ul class="devsite-footer-linkbox-list">
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://issuetracker.google.com/issues/new?component=190923&amp;template=841312" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+            回報平台錯誤
+          </a>
+        </li>
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://issuetracker.google.com/issues/new?component=192697" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+            回報說明文件錯誤
+          </a>
+        </li>
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://support.google.com/googleplay/android-developer" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+            Google Play support
+          </a>
+        </li>
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSf27XIxoFmNpTjTYdk-m1uKWGqEnd7_4C_E1AD5fdCfyTBWNA/viewform?usp=pp_url&amp;entry.1909689089&amp;entry.208743710&amp;entry.408796755&amp;entry.1341430893&amp;entry.594931249&amp;entry.1640656812&amp;entry.1759804042&amp;entry.1441312344=developer.android.com" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+            參加使用者問卷調查
+          </a>
+        </li>
+              </ul>
+    </li>
+        <li class="devsite-footer-linkbox ">
+    <h3 class="devsite-footer-linkbox-heading">說明文件</h3>      <ul class="devsite-footer-linkbox-list">
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://developer.android.com/guide" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+            開發人員指南
+          </a>
+        </li>
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://developer.android.com/design" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+            設計指南
+          </a>
+        </li>
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://developer.android.com/reference" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+            API 參考資料
+          </a>
+        </li>
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://developer.android.com/samples" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+            範例
+          </a>
+        </li>
+                <li class="devsite-footer-linkbox-item">
+          <a href="https://developer.android.com/studio/intro" class="devsite-footer-linkbox-link
+                    gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Link (index 5)">
+            Android Studio
+          </a>
+        </li>
+              </ul>
+    </li>
+      </ul>
+</nav>
+                  </devsite-footer-linkboxes>
+        <devsite-footer-utility ds-is="footer-utility" class="devsite-footer">
+                      <div class="devsite-footer-utility">
+    <nav class="devsite-nav devsite-footer-sites">
+    <a href="https://developers.google.com/" class="devsite-footer-sites-logo-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+      <img class="devsite-footer-sites-logo" src="./UI_Application Exerciser Monkey  _  Android Developers_files/lockup-color.png" alt="Google Developers">
+    </a>
+    <ul class="devsite-footer-sites-list">
+            <li class="devsite-footer-sites-item">
+        <a href="https://developer.android.com/" class="devsite-footer-sites-link
+                  gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Android Link">
+          Android
+        </a>
+      </li>
+            <li class="devsite-footer-sites-item">
+        <a href="https://developer.chrome.com/home" class="devsite-footer-sites-link
+                  gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+          Chrome
+        </a>
+      </li>
+            <li class="devsite-footer-sites-item">
+        <a href="https://firebase.google.com/" class="devsite-footer-sites-link
+                  gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Firebase Link">
+          Firebase
+        </a>
+      </li>
+            <li class="devsite-footer-sites-item">
+        <a href="https://cloud.google.com/" class="devsite-footer-sites-link
+                  gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer Google Cloud Platform Link">
+          Google Cloud Platform
+        </a>
+      </li>
+            <li class="devsite-footer-sites-item">
+        <a href="https://developers.google.com/products/" class="devsite-footer-sites-link
+                  gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+          所有產品
+        </a>
+      </li>
+          </ul>
+  </nav>
+  
+  <nav class="devsite-nav">
+        <ul class="devsite-footer-utility-list">
+            <li class="devsite-footer-utility-item
+                 ">
+                        <a class="devsite-footer-utility-link
+                  gc-analytics-event" href="https://policies.google.com/privacy" data-category="Site-Wide Custom Events" data-label="Footer Privacy link">
+          隱私權
+        </a>
+              </li>
+            <li class="devsite-footer-utility-item
+                 ">
+                        <a class="devsite-footer-utility-link
+                  gc-analytics-event" href="https://developer.android.com/license" data-category="Site-Wide Custom Events" data-label="Footer License link">
+          授權
+        </a>
+              </li>
+            <li class="devsite-footer-utility-item
+                 ">
+                        <a class="devsite-footer-utility-link
+                  gc-analytics-event" href="https://developer.android.com/distribute/marketing-tools/brand-guidelines" data-category="Site-Wide Custom Events" data-label="Footer Brand guidelines link">
+          品牌宣傳指南
+        </a>
+              </li>
+            <li class="devsite-footer-utility-item
+                 devsite-footer-utility-button">
+                <span class="devsite-footer-utility-description">透過電子郵件接收最新消息與相關訣竅</span>
+                        <a class="devsite-footer-utility-link
+                  gc-analytics-event" href="https://developer.android.com/newsletter/#subscribe" data-category="Site-Wide Custom Events" data-label="Footer Subscribe link">
+          訂閱
+        </a>
+              </li>
+          </ul>
+    
+        <form class="devsite-footer-utility-language">
+      <select class="devsite-footer-utility-language-select" name="language" track-name="click" track-type="languageSelector">
+                  <option value="id" track-metadata-original-language="zh_tw" track-metadata-selected-language="id" track-name="changed" track-type="languageSelector">
+            Bahasa Indonesia
+          </option>
+                  <option value="de" track-metadata-original-language="zh_tw" track-metadata-selected-language="de" track-name="changed" track-type="languageSelector">
+            Deutsch
+          </option>
+                  <option value="en" track-metadata-original-language="zh_tw" track-metadata-selected-language="en" track-name="changed" track-type="languageSelector">
+            English
+          </option>
+                  <option value="es" track-metadata-original-language="zh_tw" track-metadata-selected-language="es" track-name="changed" track-type="languageSelector">
+            Español
+          </option>
+                  <option value="es_419" track-metadata-original-language="zh_tw" track-metadata-selected-language="es_419" track-name="changed" track-type="languageSelector">
+            Español (América Latina)
+          </option>
+                  <option value="pt_br" track-metadata-original-language="zh_tw" track-metadata-selected-language="pt_br" track-name="changed" track-type="languageSelector">
+            Português Brasileiro
+          </option>
+                  <option value="vi" track-metadata-original-language="zh_tw" track-metadata-selected-language="vi" track-name="changed" track-type="languageSelector">
+            Tiếng Việt
+          </option>
+                  <option value="tr" track-metadata-original-language="zh_tw" track-metadata-selected-language="tr" track-name="changed" track-type="languageSelector">
+            Türkçe
+          </option>
+                  <option value="fr" track-metadata-original-language="zh_tw" track-metadata-selected-language="fr" track-name="changed" track-type="languageSelector">
+            français
+          </option>
+                  <option value="ru" track-metadata-original-language="zh_tw" track-metadata-selected-language="ru" track-name="changed" track-type="languageSelector">
+            Русский
+          </option>
+                  <option value="th" track-metadata-original-language="zh_tw" track-metadata-selected-language="th" track-name="changed" track-type="languageSelector">
+            ภาษาไทย
+          </option>
+                  <option value="ja" track-metadata-original-language="zh_tw" track-metadata-selected-language="ja" track-name="changed" track-type="languageSelector">
+            日本語
+          </option>
+                  <option value="zh_cn" track-metadata-original-language="zh_tw" track-metadata-selected-language="zh_cn" track-name="changed" track-type="languageSelector">
+            简体中文
+          </option>
+                  <option value="zh_tw" track-metadata-original-language="zh_tw" track-metadata-selected-language="zh_tw" track-name="changed" track-type="languageSelector" selected="selected">
+            繁體中文
+          </option>
+                  <option value="ko" track-metadata-original-language="zh_tw" track-metadata-selected-language="ko" track-name="changed" track-type="languageSelector">
+            한국어
+          </option>
+              </select>
+    </form>
+      </nav>
+</div>
+                  </devsite-footer-utility>
+      </div></div>
+    <devsite-sitemask ds-is="site-mask"></devsite-sitemask>
+    <devsite-snackbar ds-is="snackbar"></devsite-snackbar>
+    <devsite-tooltip ds-is="tooltip"></devsite-tooltip>
+    <devsite-analytics ds-is="analytics">
+              <script async="" src="./UI_Application Exerciser Monkey  _  Android Developers_files/app_loader.js"></script><script type="application/json" analytics="">[{"metrics": {"ratings_value": "metric1", "ratings_count": "metric2"}, "dimensions": {"dimension6": "en", "dimension4": "Android Developers", "dimension5": "zh-tw", "dimension3": false, "dimension1": "Signed out"}, "gaid": "UA-5831155-1"}, {"metrics": {"ratings_value": "metric1", "ratings_count": "metric2"}, "dimensions": {"dimension6": "en", "dimension4": "Android Developers", "dimension5": "zh-tw", "dimension3": false, "dimension1": "Signed out"}, "gaid": "UA-49880327-2"}]</script>
+<script type="application/json" gtm="">["GTM-KMSWPCJ"]</script>
+          </devsite-analytics>
+    <script>
+    (function(d,e,v,E,l,o,p,r,s,_,__){d['GoogleDevelopersObject']=[!0,l,o,p,r,s];
+    _=e.createElement(v);_.async=1;_.src=E;__=e.getElementsByTagName(v)[0];
+    __.parentNode.insertBefore(_,__);})(window, document, 'script',
+      'https://www.gstatic.com/devrel-devsite/v64b99e7856b375caf4161a35932fd71b47bddc412a7c2f9ddea443380406e780/android/js/app_loader.js',
+      'zh_tw',
+      'https://www.gstatic.com/devrel-devsite/v64b99e7856b375caf4161a35932fd71b47bddc412a7c2f9ddea443380406e780/android/js/devsite_app.js',
+      'https://www.gstatic.com/devrel-devsite/v64b99e7856b375caf4161a35932fd71b47bddc412a7c2f9ddea443380406e780/android',
+      !1,
+      ['/_pwa/android/manifest.json',
+       '/_static/images/video-placeholder.svg',
+       'https://www.gstatic.com/devrel-devsite/v64b99e7856b375caf4161a35932fd71b47bddc412a7c2f9ddea443380406e780/android/images/favicon.png','https://www.gstatic.com/devrel-devsite/v64b99e7856b375caf4161a35932fd71b47bddc412a7c2f9ddea443380406e780/android/images/lockup.svg','https://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic|Roboto+Mono:400,500,700|Material+Icons'],
+       'https://android-dot-devsite-v2-prod.appspot.com')
+   </script>  
+</body><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(232, 234, 237); height: 4165px; width: 1341px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 4165px; width: 1341px;"></div></html>

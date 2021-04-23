@@ -1,0 +1,2079 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0130)http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io -->
+<html xmlns="http://www.w3.org/1999/xhtml" id="sixapart-standard" class="cye-disabled cye-nm gr__ruanyifeng_com"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+<meta name="generator" content="Movable Type  5.2.2">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--link rel="stylesheet" href="http://www.ruanyifeng.com/blog/styles.css" type="text/css" /-->
+<link rel="start" href="http://www.ruanyifeng.com/blog/" title="Home">
+<link rel="alternate" type="application/atom+xml" title="Recent Entries" href="http://feeds.feedburner.com/ruanyifeng">
+<script src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/hm.js"></script><script async="" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/analytics.js"></script><script type="text/javascript" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/mt.js"></script>
+<!--
+<rdf:RDF xmlns="http://web.resource.org/cc/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<Work rdf:about="http://www.ruanyifeng.com/blog/2018/06/ddos.html">
+<dc:title>DDOS 攻击的防范教程</dc:title>
+<dc:description>一个多月前，我的个人网站遭受 DDOS 攻击，下线了50多个小时。这篇文章就来谈谈，如何应对这种攻击。...</dc:description>
+<dc:creator>阮一峰</dc:creator>
+<dc:date>2018-06-26T17:49:53+08:00</dc:date>
+<license rdf:resource="http://creativecommons.org/licenses/by-nc-nd/3.0/" />
+</Work>
+<License rdf:about="http://creativecommons.org/licenses/by-nc-nd/3.0/">
+</License>
+</rdf:RDF>
+-->
+
+<style>
+body {
+  background-color: #f5f5d5;
+}
+
+#container::before {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: rgba(0,0,0,0.1);
+  text-align: center;
+  content: "本站显示不正常，可能因为您使用了广告拦截器。";
+}
+
+</style>
+<script>
+function loadjscssfile(filename, filetype){
+    if (filetype=="js"){ //if filename is a external JavaScript file
+        var fileref=document.createElement('script')
+        fileref.setAttribute("type","text/javascript")
+        fileref.setAttribute("src", filename)
+    }
+    else if (filetype=="css"){ //if filename is an external CSS file
+        var fileref=document.createElement("link")
+        fileref.setAttribute("rel", "stylesheet")
+        fileref.setAttribute("type", "text/css")
+        fileref.setAttribute("href", filename)
+    }
+    if (typeof fileref!="undefined")
+        document.getElementsByTagName("head")[0].appendChild(fileref)
+}
+//loadjscssfile("http://www.ruanyifeng.com/blog/styles.css", "css");
+loadjscssfile('/static/themes/theme_scrapbook/theme_scrapbook.css', "css");
+
+for (var jxx = 0; jxx < 10000; jxx++) {
+  for (var jxy = 0; jxy < 10000; jxy++) {
+  }
+}
+</script><link rel="stylesheet" type="text/css" href="./RESTful API 最佳实践 - 阮一峰的网络日志_files/theme_scrapbook.css">
+
+    
+    <link rel="prev" href="http://www.ruanyifeng.com/blog/2018/09/weekly-issue-24.html" title="每周分享第 24 期">
+    <link rel="next" href="http://www.ruanyifeng.com/blog/2018/10/weekly-issue-25.html" title="每周分享第 25 期">
+    
+    <title>RESTful API 最佳实践 - 阮一峰的网络日志</title>
+<style id="nightModeStyle">
+html.cye-enabled.cye-nm:not(*:-webkit-full-screen) body,
+ html.cye-enabled.cye-nm:not(*:-webkit-full-screen) #cye-workaround-body {-webkit-filter:contrast(91%) brightness(84%) invert(1);}</style><style id="cyebody">html.cye-enabled.cye-lm body{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyediv">html.cye-enabled.cye-lm div{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetable">html.cye-enabled.cye-lm th{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm td{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyetextInput">html.cye-enabled.cye-lm input[type=text]{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}html.cye-enabled.cye-lm textarea{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeselect">html.cye-enabled.cye-lm select{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeul">html.cye-enabled.cye-lm ul{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><style id="cyeChangeByClick">html.cye-enabled.cye-lm .cye-lm-tag,html.cye-enabled.cye-lm.cye-lm-tag{background-color:#c9e5cc !important;border-color:rgb(50, 57, 51) !important;color:#000000  !important}</style><script src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/bsStatic.js" type="text/javascript" charset="utf-8"></script><script src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/bs-engine.js" type="text/javascript" charset="utf-8"></script><style type="text/css">a.bshareDiv,#bsPanel,#bsMorePanel,#bshareF{border:none;background:none;padding:0;margin:0;font:12px Helvetica,Calibri,Tahoma,Arial,宋体,sans-serif;line-height:14px;}#bsPanel div,#bsMorePanel div,#bshareF div{display:block;}.bsRlogo .bsPopupAwd,.bsRlogoSel .bsPopupAwd,.bsLogo .bsPopupAwd,.bsLogoSel .bsPopupAwd{line-height:16px !important;}a.bshareDiv div,#bsFloatTab div{*display:inline;zoom:1;display:inline-block;}a.bshareDiv img,a.bshareDiv div,a.bshareDiv span,a.bshareDiv a,#bshareF table,#bshareF tr,#bshareF td{text-decoration:none;background:none;margin:0;padding:0;border:none;line-height:1.2}a.bshareDiv span{display:inline;float:none;}div.buzzButton{cursor:pointer;font-weight:bold;}.buzzButton .shareCount a{color:#333}.bsStyle1 .shareCount a{color:#fff}span.bshareText{white-space:nowrap;}span.bshareText:hover{text-decoration:underline;}a.bshareDiv .bsPromo,div.bshare-custom .bsPromo{display:none;position:absolute;z-index:100;}a.bshareDiv .bsPromo.bsPromo1,div.bshare-custom .bsPromo.bsPromo1{width:51px;height:18px;top:-18px;left:0;line-height:16px;font-size:12px !important;font-weight:normal !important;color:#fff;text-align:center;background:url(http://static.bshare.cn/frame/images/bshare_box_sprite2.gif) no-repeat 0 -606px;}div.bshare-custom .bsPromo.bsPromo2{background:url(http://static.bshare.cn/frame/images/bshare_promo_sprite.gif) no-repeat;cursor:pointer;}</style><style type="text/css">.bsBox{display:none;z-index:100000001;font-size:12px;background:url(http://static.bshare.cn/frame/images//background-opaque-dark.gif) !important;padding:6px !important;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}.bsClose{_overflow:hidden;cursor:pointer;position:absolute;z-index:10000000;color:#666;font-weight:bold;font-family:Helvetica,Arial;font-size:14px;line-height:20px;}.bsTop{color:#666;background:#f2f2f2;height:24px;line-height:24px;border-bottom:1px solid #e8e8e8;}.bsTop span{float:left;}.bsFrameDiv,#bsMorePanel{border:none;background:#fff;}.bsReturn{float:right;*margin-right:20px;margin-right:36px;text-align:right;cursor:pointer;line-height:24px;color:#666;opacity:0.5;}#bsReturn:hover{text-decoration:underline;opacity:1;}</style><script src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/bsMore.js" type="text/javascript" charset="utf-8"></script><script src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/bshareS1.js" type="text/javascript" charset="utf-8"></script><style type="text/css">div.bsClear{clear:both;height:0;line-height:0;overflow:hidden;font-size:0;}.bsSearchDiv{padding:5px 15px;background-color:#fafafa;}.bFind-wrapper-top{background:#fff;border-color:#ccc #aaa #aaa #ccc;border-style:solid;border-width:1px;height:16px;padding:4px;margin:0;}.bFind-wrapper-top input{padding:0 !important;border:none !important;box-shadow:none !important;line-height:16px !important;}.bFind-placeholder{background:url("http://static.bshare.cn/css/images/search-icon.gif") no-repeat;display:block;float:left;height:16px;width:16px;}.bFind{background:none;border:none;float:left;font-size:11px !important;height:16px !important;margin-left:3px;outline:none;padding:0;width:400px;}.bsPlatDiv{height:322px;background:#fff;overflow:auto;padding:0 15px;}#bsLogoList{display:block;list-style:none;overflow:hidden;margin:0;padding:0;}#bsLogoList li{float:left;display:inline-block;width:71px;text-align:center;font-size:12px;height:80px;margin:0 !important;}#bsLogoList .bsPlatIcon{cursor:pointer;display:block !important;text-align:center;}#bsLogoList .bsPlatImg{width:32px;height:32px;border:none !important;display:inline-block;}#bsLogoList .bsPlatImg:hover{-moz-border-radius:7px;-webkit-border-radius:7px;border-radius:7px;box-shadow:0 0 15px #a7a8ac;}#bsLogoList .bsPlatName{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;text-align:center;color:#333 !important;margin-top:2px;line-height:140%;*width:70px;}#bsLogoList .bsPromoM{text-align:center;}.bsFooterDiv{height:24px;line-height:24px;padding:0 15px;border-top:1px solid #e8e8e8;background:#f2f2f2;text-align:right;}a.bsLogoLink{color:#666;}.bsLogoLink:hover{text-decoration:underline;}.bsPromoM{background:url(http://static.bshare.cn/frame/images//bshare_box_sprite2.gif) no-repeat top left;}.bsNew,.bsHot,.bsRec,.bsAwd{background-position:0 -552px;width:19px;margin:5px auto 1px;line-height:16px;height:18px;font-size:12px;color:#fff;overflow:hidden;}.bsNew{background-position:0 -570px;}.bsRec{width:30px;background-position:0 -588px;}.bsAwd{background:url(http://static.bshare.cn/frame/images//promot/promote.gif) no-repeat;}</style><script src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/bshare_view" type="text/javascript" charset="utf-8"></script><style type="text/css">a.bsSiteLink{text-decoration:none;color:#666;}a.bsSiteLink:hover{text-decoration:underline;}a.bshareDiv{overflow:hidden;height:16px;line-height:18px;font-size:14px;color:#333;padding-left:0;}a.bshareDiv:hover{text-decoration:none;}div.bsTitle{padding:0 8px;border-bottom:1px solid #e8e8e8;color:#666;background:#f2f2f2;text-align:left;}div.buzzButton{cursor:pointer;}div.bsRlogo,div.bsRlogoSel{width:68px;float:left;margin:0;padding:2px 0;}div.bsRlogo a,div.bsRlogoSel a{float:left;}div.bsLogo,div.bsLogoSel{float:left;width:111px;text-align:left;height:auto;padding:2px 4px;margin:2px 0;white-space:nowrap;overflow:hidden;}div.bsLogoSel,div.bsRlogoSel{border:1px solid #ddd;background:#f1f1f1;}div.bsLogo,div.bsRlogo{border:1px solid #fff;background:#fff;}div.bsLogo a,div.bsLogoSel a{display:block;height:16px;line-height:16px;padding:0 0 0 24px;text-decoration:none;float:left;overflow:hidden;}div.bsLogoSel a,div.bsRlogoSel a{color:#000;border:none;}div.bsLogo a,div.bsRlogo a{color:#666;border:none;}div.bsLogoLink{width:121px;overflow:hidden;background:#FFF;float:left;margin:3px 0;}#bsLogin{float:right;text-align:right;overflow:hidden;height:100%;}#bsPanel{position:absolute;z-index:100000000;font-size:12px;width:258px;background:url(http://static.bshare.cn/frame/images/background-opaque-dark.png) !important;padding:6px !important;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}div.bsClear{clear:both;height:0;line-height:0;font-size:0;overflow:hidden;}div.bsPopupAwd{background:url(http://static.bshare.cn/frame/images//bshare_box_sprite2.gif) no-repeat top left;background-position:0 -624px;width:18px;padding-left:3px;text-align:center;float:left;margin-left: 2px;height:15px;font-size:12px;color:#fff;overflow:hidden;}div.bsRlogo .bsPopupAwd,div.bsRlogoSel .bsPopupAwd{float:left;margin:5px 0 0 -14px;}</style><style type="text/css">a.bsSiteLink{text-decoration:none;color:#666;}a.bsSiteLink:hover{text-decoration:underline;}a.bshareDiv{overflow:hidden;height:16px;line-height:18px;font-size:14px;color:#333;padding-left:0;}a.bshareDiv:hover{text-decoration:none;}div.bsTitle{padding:0 8px;border-bottom:1px solid #e8e8e8;color:#666;background:#f2f2f2;text-align:left;}div.buzzButton{cursor:pointer;}div.bsRlogo,div.bsRlogoSel{width:68px;float:left;margin:0;padding:2px 0;}div.bsRlogo a,div.bsRlogoSel a{float:left;}div.bsLogo,div.bsLogoSel{float:left;width:111px;text-align:left;height:auto;padding:2px 4px;margin:2px 0;white-space:nowrap;overflow:hidden;}div.bsLogoSel,div.bsRlogoSel{border:1px solid #ddd;background:#f1f1f1;}div.bsLogo,div.bsRlogo{border:1px solid #fff;background:#fff;}div.bsLogo a,div.bsLogoSel a{display:block;height:16px;line-height:16px;padding:0 0 0 24px;text-decoration:none;float:left;overflow:hidden;}div.bsLogoSel a,div.bsRlogoSel a{color:#000;border:none;}div.bsLogo a,div.bsRlogo a{color:#666;border:none;}div.bsLogoLink{width:121px;overflow:hidden;background:#FFF;float:left;margin:3px 0;}#bsLogin{float:right;text-align:right;overflow:hidden;height:100%;}#bsPanel{position:absolute;z-index:100000000;font-size:12px;width:258px;background:url(http://static.bshare.cn/frame/images/background-opaque-dark.png) !important;padding:6px !important;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}div.bsClear{clear:both;height:0;line-height:0;font-size:0;overflow:hidden;}div.bsPopupAwd{background:url(http://static.bshare.cn/frame/images//bshare_box_sprite2.gif) no-repeat top left;background-position:0 -624px;width:18px;padding-left:3px;text-align:center;float:left;margin-left: 2px;height:15px;font-size:12px;color:#fff;overflow:hidden;}div.bsRlogo .bsPopupAwd,div.bsRlogoSel .bsPopupAwd{float:left;margin:5px 0 0 -14px;}</style></head>
+<body id="scrapbook" class="mt-entry-archive one-column" data-gr-c-s-loaded="true" style="">
+<script>
+if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) document.body.classList.add('mobile');
+
+/*
+window.addEventListener('load', function(event) {
+  setTimeout(function () {
+    hab('#sup-post-2');
+    hab('#cre-inner');
+  }, 1000);
+});
+*/
+</script>
+    <div id="container">
+        <div id="container-inner">
+
+            <div id="header">
+    <div id="header-inner">
+        <div id="header-content">
+
+
+            <div id="header-name">阮一峰的网络日志 <span id="site_location"> » <a href="http://www.ruanyifeng.com/blog/" accesskey="1">首页</a></span><span id="site_archive"> » <a href="http://www.ruanyifeng.com/blog/archives.html">档案</a></span>
+</div>
+
+<div id="google_search">
+<!-- SiteSearch Google -->
+<form action="https://www.baidu.com/s" target="_blank" method="get" id="cse-search-box">
+  <div>
+  <input type="text" size="20" name="origin" class="searchbox" id="sbi" value="">
+  <input type="hidden" name="wd" value="">
+  <!--input type="image" src="/static/themes/theme_scrapbook/images/top_search_submit.gif" class="searchbox_submit" value="" alt="搜索" name="sa" onclick="this.form.wd.value = this.form.origin.value + ' inurl:www.ruanyifeng.com/blog'" /-->
+  <input type="image" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/top_search_submit.gif" class="searchbox_submit" value="" alt="搜索" name="sa" onclick="this.form.wd.value = this.form.origin.value + &#39; 阮一峰&#39;">
+</div>
+</form>
+
+<!-- SiteSearch Google -->
+</div>
+<div id="feed_icon">
+<a href="http://www.ruanyifeng.com/feed.html" title="订阅Feed">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAUzSURBVHjavFdbbFRVFF3nPjoz7dTWTittaW0jUDRAUqaNojyqREnEQKgfUj9MqqAmhqRt/OCD4CuY+Kckoh+aiGKC+gMJbdHoRysJ8dkhhmJLNdDKtJU+6GMK87j3Hs85d2Z6HzNtMYWb3Dn3NWftvfba+5xNYDl+e6Fkj6yqb/oDRbWq14vlPBLRKCITkxf0ROLt+hNjp1PPSRK4kA3vF1dXNRcWlyA2OQU9eos9opAkAiKxD+XkKO6t15aRWO7J/MgmAZU8MEgexgZHMX518Dh72sYMmVKShnxWuWHdHtxKIDIYTgMuDzgfmSOIQkYMpdUF8OY92Hytt4/jvkg47czzU16iQovM3QFwmNck+Yyduu7D6NA0Z6JR4THntFs9V4tWQg6Ui3s6MwKDncsFTnXKLJhDSeUK3AgPtyhccDzmVs999buRt/1Vm4i0od+hX7+MRG87jPGB/w1u8FPj9xEw7McVrnYuOCvtpjTth3J/nTg99c8LRhKhr6D3dTB5R24bXFwbMXBsyZzeoXaycEpJ95TB09AGX/NpqLVNtw8urnVzLvHjFNxiFqRy2OOHuqUVnue+ACkoWzo4O6lGzTmuHq6nPvY2m9rVqjrIK2rMEKxqyG5NPAKt+wjo0LklgfNxJkZMA3KJvqRUk3z5UFY3QH14P0h+WUY79HPvgv7VuSg4ZRGY1YgZgqXmORccF17sy2ehnf9AeO085K2HQFbtXBScj0LcpgF2cN+WV+DZ/LJQu6gD4R7oV7pBJwbSgtMvfiPoVp56DySwxm7EtkMs1WdAB7qzggsDJKQYsHucSkOudrkiCPWR/fA2nYCn8SNIK4NptSMyAu3sAdDRkIsJdfth0LzSrODUoPNZ4KI9SxJI5UHk7D4GdQfz2us31c7CoHMjRkKuDPHseCMrONVhNcDJwMJpKFVvg9L4OaTiNWm1x789KCqkrXhVBiEz0WYCT2nAzQAD1/vaETv1GrRfP4Vx5cfMNcDPwvP0h0DhanPym7OIf/+O67vcJ1/PCJ4KgdzaUP6Wz+dU+5yIL6fV+PsHGAOdwlPpvvUOyeeAVGyCdqkDNB6DPjsBSrnndfOGevOh3RhGItxvA+fX1CtbGFhgYUFkFMZPR6F1HnClHq8HyubWtJexX06CRmdt33hrd7nA7SFY4qoGpnYuOKcRykPPgDCBcsHx9Iv+fNL2PueBehCWUfYQIIMGLOCcOmXDXsh1+yCt35tUPfvzGFuSvzvoinXOxqa02qOhM6733nVP2MAdaej2XN11DPKjLZCD+yBvahGCo7JfTKAN9UD7s8Oe9zUNIhz8fWI8DG2k38WCFdxugANcXrvTVd1IEbuv3Jour7Hzn7jLMBNfKs7R3i67gRVrbeCOEDhinmWhAatsqdquM2XzHZINhK2cqTjHr/XZdVJUbgN3MWAVXKbSyg9jesRW2xP9di+lwrL5ojM3m2H/kG9hwcIA37c71W6wJdW2J2S5nrjYbq/t1AHAhJsKQeyfPvf6IMJgghPJhFZ4x0KlfLFvt22du45Au/A1SOlGc0P672XXwhLtOcM0kTTEMMd0qkVmMNXxMd/tsedUjInr4SQDgOfeXMSiN0FCL5WHah4L1qqYXPJOJlttd+a5M+YpcG5poLYKQ5f+6JJ4r8bbJYP47hq4r7QAs9PjYNhHJd4o8l5taiwuOpa7AS4XKqI/5NjJbTnaWK92nLdLuhQAJayRNMiygXPBeQN+Qbvu0zDc3y+aUzhbkGR73sI7ljvUnndx2q3t+X8CDAD66FtrIL864AAAAABJRU5ErkJggg==" alt="" style="border: 0pt none;">
+</a></div>
+
+        </div>
+    </div>
+</div>
+
+
+
+            <div id="content">
+                <div id="content-inner">
+
+
+                    <div id="alpha">
+                        <div id="alpha-inner">
+
+
+                            <div id="entry-2025" class="entry-asset asset hentry">
+                                <div class="asset-header">
+<div class="asset-nav entry-nav">
+
+<div class="entry-location">
+<ul>
+<li>上一篇：<a href="http://www.ruanyifeng.com/blog/2018/09/weekly-issue-24.html" title="每周分享第 24 期">每周分享第&nbsp;24&nbsp;期&nbsp;</a></li>
+<li>下一篇：<a href="http://www.ruanyifeng.com/blog/2018/10/weekly-issue-25.html" title="每周分享第 25 期">每周分享第&nbsp;25&nbsp;期&nbsp;</a></li>
+</ul>
+</div>
+
+
+    
+                                    <div class="entry-categories">
+                                        <p>分类<span class="delimiter">：</span></p>
+                                        <ul>
+                                            <li><a href="http://www.ruanyifeng.com/blog/developer/" rel="tag">开发者手册</a></li>
+                                        </ul>
+                                    </div>
+    
+
+
+                                            
+<div class="entry-location-mobile" style="float: right;">
+<ul>
+<li><a href="http://www.ruanyifeng.com/blog/2018/09/weekly-issue-24.html" title="每周分享第 24 期">⇐&nbsp;</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2018/10/weekly-issue-25.html" title="每周分享第 25 期">&nbsp;⇒</a></li>
+</ul>
+</div>
+
+</div>
+</div>
+
+                          
+<article class="hentry">
+                                    <h1 id="page-title" class="asset-name entry-title">RESTful API 最佳实践</h1>
+                                            <div id="share_button" class="social-share" style="float:right;padding-right:2em;padding-top:1em;">
+<a class="bshareDiv" href="http://www.bshare.cn/share" style="display: block; text-decoration: none; padding: 0px; margin: 0px; font-size: 12px; height: 21px; width: 51px;"><div class="bsPromo bsPromo1"></div><div class="buzzButton bsStyle10" style="height:21px;color:#333;;background:transparent url(http://static.bshare.cn/frame/images/button_custom10-zh-Orange.gif) no-repeat;text-align:center;width:51px;"></div><div style="clear:both;"></div></a>
+
+
+
+<script type="text/javascript" charset="utf-8" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/buttonLite.js"></script>
+<script type="text/javascript" charset="utf-8">
+bShare.addEntry({
+    title: document.getElementById("page-title").innerHTML,
+url:window.location.href
+});
+</script>
+</div>
+
+<div class="asset-meta">
+                                        
+
+                                            <p class="vcard author">作者： <a class="fn url" href="http://www.ruanyifeng.com/">阮一峰</a></p>
+                                    <p>日期： <a href="http://www.ruanyifeng.com/blog/2018/10/"><abbr class="published" title="2018-10-03T18:53:24+08:00">2018年10月 3日</abbr></a></p>
+
+
+                                    
+</div>
+
+                    
+<div class="entry-sponsor">
+<a title="腾讯课堂 NEXT 学院" href="https://ke.qq.com/next_detail/index.html?id=1&amp;from=800007110" target="_blank">
+<p style="box-sizing: border-box;
+    text-align: center;
+    width: 100%;
+    border: 1px solid #e5e4e9;
+    background-color: #d0e4a9;
+    margin: 1em 0 0;
+    padding: 0.6em 0.6em 0.4em 0.6em;
+    border-radius: 0.3em 0.3em 0.1em 0.1em;
+    color: #076a66;">
+  感谢 <span style="text-decoration: underline;">腾讯课堂NEXT学院</span> 的赞助，腾讯官方的 <span style="text-decoration: underline;">前端工程师培训课程</span> 正在招生。
+</p>
+
+<p style="padding:0em;margin:0 0 1.5em 0;border: 1px solid #e5e4e9;border-radius: 0.1em 0.1em 0.3em 0.3em;background-color: #e5f0fc;text-align: center;" class="entry-sponsor-img">
+  <img alt="腾讯课堂 NEXT 学院" id="support-img" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/bg2019301803.jpg" style="border: none;width: 90%;max-width: 90%;display: inline-block;">
+
+</p>
+</a>
+</div>
+
+
+                                
+                                <div class="asset-content entry-content" id="main-content">
+
+                                    <!-- div class="asset-body" -->
+                                        <p><a href="http://www.ruanyifeng.com/blog/2011/09/restful.html" target="_blank">RESTful</a> 是目前最流行的 API 设计规范，用于 Web 数据接口的设计。</p>
+
+                                    <!-- /div -->
+
+
+                                    <!-- div id="more" class="asset-more" -->
+                                        <p>它的大原则容易把握，但是细节不容易做对。本文总结 RESTful 的设计细节，介绍如何设计出易于理解和使用的 API。</p>
+
+<p><img src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/bg2018100301.jpg" alt="" title=""></p>
+
+<h2>一、URL 设计</h2>
+
+<h3>1.1 动词 + 宾语</h3>
+
+<p>RESTful 的核心思想就是，客户端发出的数据操作指令都是"动词 + 宾语"的结构。比如，<code>GET /articles</code>这个命令，<code>GET</code>是动词，<code>/articles</code>是宾语。</p>
+
+<p>动词通常就是五种 HTTP 方法，对应 CRUD 操作。</p>
+
+<blockquote>
+  <ul>
+<li>GET：读取（Read）</li>
+<li>POST：新建（Create）</li>
+<li>PUT：更新（Update）</li>
+<li>PATCH：更新（Update），通常是部分更新</li>
+<li>DELETE：删除（Delete）</li>
+</ul>
+</blockquote>
+
+<p>根据 HTTP 规范，动词一律大写。</p>
+
+<h3>1.2 动词的覆盖</h3>
+
+<p>有些客户端只能使用<code>GET</code>和<code>POST</code>这两种方法。服务器必须接受<code>POST</code>模拟其他三个方法（<code>PUT</code>、<code>PATCH</code>、<code>DELETE</code>）。</p>
+
+<p>这时，客户端发出的 HTTP 请求，要加上<code>X-HTTP-Method-Override</code>属性，告诉服务器应该使用哪一个动词，覆盖<code>POST</code>方法。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+POST /api/Person/4 HTTP/1.1  
+<span class="token keyword">X-HTTP-Method-Override:</span> PUT
+</code></pre></blockquote>
+
+<p>上面代码中，<code>X-HTTP-Method-Override</code>指定本次请求的方法是<code>PUT</code>，而不是<code>POST</code>。</p>
+
+<h3>1.3 宾语必须是名词</h3>
+
+<p>宾语就是 API 的 URL，是 HTTP 动词作用的对象。它应该是名词，不能是动词。比如，<code>/articles</code>这个 URL 就是正确的，而下面的 URL 不是名词，所以都是错误的。</p>
+
+<blockquote>
+  <ul>
+<li>/getAllCars</li>
+<li>/createNewCar</li>
+<li>/deleteAllRedCars</li>
+</ul>
+</blockquote>
+
+<h3>1.4 复数 URL</h3>
+
+<p>既然 URL 是名词，那么应该使用复数，还是单数？</p>
+
+<p>这没有统一的规定，但是常见的操作是读取一个集合，比如<code>GET /articles</code>（读取所有文章），这里明显应该是复数。</p>
+
+<p>为了统一起见，建议都使用复数 URL，比如<code>GET /articles/2</code>要好于<code>GET /article/2</code>。</p>
+
+<h3>1.5 避免多级 URL</h3>
+
+<p>常见的情况是，资源需要多级分类，因此很容易写出多级的 URL，比如获取某个作者的某一类文章。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+GET /authors/12/categories/2
+</code></pre></blockquote>
+
+<p>这种 URL 不利于扩展，语义也不明确，往往要想一会，才能明白含义。</p>
+
+<p>更好的做法是，除了第一级，其他级别都用查询字符串表达。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+GET /authors/12?categories=2
+</code></pre></blockquote>
+
+<p>下面是另一个例子，查询已发布的文章。你可能会设计成下面的 URL。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+GET /articles/published
+</code></pre></blockquote>
+
+<p>查询字符串的写法明显更好。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+GET /articles?published=true
+</code></pre></blockquote>
+
+<h2>二、状态码</h2>
+
+<h3>2.1 状态码必须精确</h3>
+
+<p>客户端的每一次请求，服务器都必须给出回应。回应包括 HTTP 状态码和数据两部分。</p>
+
+<p>HTTP 状态码就是一个三位数，分成五个类别。</p>
+
+<blockquote>
+  <ul>
+<li><code>1xx</code>：相关信息</li>
+<li><code>2xx</code>：操作成功</li>
+<li><code>3xx</code>：重定向</li>
+<li><code>4xx</code>：客户端错误</li>
+<li><code>5xx</code>：服务器错误</li>
+</ul>
+</blockquote>
+
+<p>这五大类总共包含<a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes" target="_blank">100多种</a>状态码，覆盖了绝大部分可能遇到的情况。每一种状态码都有标准的（或者约定的）解释，客户端只需查看状态码，就可以判断出发生了什么情况，所以服务器应该返回尽可能精确的状态码。</p>
+
+<p>API 不需要<code>1xx</code>状态码，下面介绍其他四类状态码的精确含义。</p>
+
+<h3>2.2 2xx 状态码</h3>
+
+<p><code>200</code>状态码表示操作成功，但是不同的方法可以返回更精确的状态码。</p>
+
+<blockquote>
+  <ul>
+<li>GET: 200 OK</li>
+<li>POST: 201 Created</li>
+<li>PUT: 200 OK</li>
+<li>PATCH: 200 OK</li>
+<li>DELETE: 204 No Content</li>
+</ul>
+</blockquote>
+
+<p>上面代码中，<code>POST</code>返回<code>201</code>状态码，表示生成了新的资源；<code>DELETE</code>返回<code>204</code>状态码，表示资源已经不存在。</p>
+
+<p>此外，<code>202 Accepted</code>状态码表示服务器已经收到请求，但还未进行处理，会在未来再处理，通常用于异步操作。下面是一个例子。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+HTTP/1.1 202 Accepted
+
+{
+  "task": {
+    "href": "/api/company/job-management/jobs/2130040",
+    "id": "2130040"
+  }
+}
+</code></pre></blockquote>
+
+<h3>2.3 3xx 状态码</h3>
+
+<p>API 用不到<code>301</code>状态码（永久重定向）和<code>302</code>状态码（暂时重定向，<code>307</code>也是这个含义），因为它们可以由应用级别返回，浏览器会直接跳转，API 级别可以不考虑这两种情况。</p>
+
+<p>API 用到的<code>3xx</code>状态码，主要是<code>303 See Other</code>，表示参考另一个 URL。它与<code>302</code>和<code>307</code>的含义一样，也是"暂时重定向"，区别在于<code>302</code>和<code>307</code>用于<code>GET</code>请求，而<code>303</code>用于<code>POST</code>、<code>PUT</code>和<code>DELETE</code>请求。收到<code>303</code>以后，浏览器不会自动跳转，而会让用户自己决定下一步怎么办。下面是一个例子。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+HTTP/1.1 303 See Other
+<span class="token keyword">Location:</span> /api/orders/12345
+</code></pre></blockquote>
+
+<h3>2.4 4xx 状态码</h3>
+
+<p><code>4xx</code>状态码表示客户端错误，主要有下面几种。</p>
+
+<p><code>400 Bad Request</code>：服务器不理解客户端的请求，未做任何处理。</p>
+
+<p><code>401 Unauthorized</code>：用户未提供身份验证凭据，或者没有通过身份验证。</p>
+
+<p><code>403 Forbidden</code>：用户通过了身份验证，但是不具有访问资源所需的权限。</p>
+
+<p><code>404 Not Found</code>：所请求的资源不存在，或不可用。</p>
+
+<p><code>405 Method Not Allowed</code>：用户已经通过身份验证，但是所用的 HTTP 方法不在他的权限之内。</p>
+
+<p><code>410 Gone</code>：所请求的资源已从这个地址转移，不再可用。</p>
+
+<p><code>415 Unsupported Media Type</code>：客户端要求的返回格式不支持。比如，API 只能返回 JSON 格式，但是客户端要求返回 XML 格式。</p>
+
+<p><code>422 Unprocessable Entity</code> ：客户端上传的附件无法处理，导致请求失败。</p>
+
+<p><code>429 Too Many Requests</code>：客户端的请求次数超过限额。</p>
+
+<h3>2.5 5xx 状态码</h3>
+
+<p><code>5xx</code>状态码表示服务端错误。一般来说，API 不会向用户透露服务器的详细信息，所以只要两个状态码就够了。</p>
+
+<p><code>500 Internal Server Error</code>：客户端请求有效，服务器处理时发生了意外。</p>
+
+<p><code>503 Service Unavailable</code>：服务器无法处理请求，一般用于网站维护状态。</p>
+
+<h2>三、服务器回应</h2>
+
+<h3>3.1 不要返回纯本文</h3>
+
+<p>API 返回的数据格式，不应该是纯文本，而应该是一个 JSON 对象，因为这样才能返回标准的结构化数据。所以，服务器回应的 HTTP 头的<code>Content-Type</code>属性要设为<code>application/json</code>。</p>
+
+<p>客户端请求时，也要明确告诉服务器，可以接受 JSON 格式，即请求的 HTTP 头的<code>ACCEPT</code>属性也要设成<code>application/json</code>。下面是一个例子。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+GET /orders/2 HTTP/1.1 
+<span class="token keyword">Accept:</span> application/json
+</code></pre></blockquote>
+
+<h3>3.2 发生错误时，不要返回 200 状态码</h3>
+
+<p>有一种不恰当的做法是，即使发生错误，也返回<code>200</code>状态码，把错误信息放在数据体里面，就像下面这样。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+HTTP/1.1 200 OK
+<span class="token keyword">Content-Type:</span> application/json<span class="token application/json">
+
+<span class="token punctuation">{</span>
+  <span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"failure"</span><span class="token punctuation">,</span>
+  <span class="token string">"data"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"error"</span><span class="token punctuation">:</span> <span class="token string">"Expected at least two items in list."</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre></blockquote>
+
+<p>上面代码中，解析数据体以后，才能得知操作失败。</p>
+
+<p>这张做法实际上取消了状态码，这是完全不可取的。正确的做法是，状态码反映发生的错误，具体的错误信息放在数据体里面返回。下面是一个例子。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+HTTP/1.1 400 Bad Request
+<span class="token keyword">Content-Type:</span> application/json<span class="token application/json">
+
+<span class="token punctuation">{</span>
+  <span class="token string">"error"</span><span class="token punctuation">:</span> <span class="token string">"Invalid payoad."</span><span class="token punctuation">,</span>
+  <span class="token string">"detail"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+     <span class="token string">"surname"</span><span class="token punctuation">:</span> <span class="token string">"This field is required."</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre></blockquote>
+
+<h3>3.3 提供链接</h3>
+
+<p>API 的使用者未必知道，URL 是怎么设计的。一个解决方法就是，在回应中，给出相关链接，便于下一步操作。这样的话，用户只要记住一个 URL，就可以发现其他的 URL。这种方法叫做 HATEOAS。</p>
+
+<p>举例来说，GitHub 的 API 都在 <a href="https://api.github.com/" target="_blank">api.github.com</a> 这个域名。访问它，就可以得到其他 URL。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+{
+  ...
+  "feeds_url": "<a class="token url-link" href="https://api.github.com/feeds">https://api.github.com/feeds</a>",
+  "followers_url": "<a class="token url-link" href="https://api.github.com/user/followers">https://api.github.com/user/followers</a>",
+  "following_url": "<a class="token url-link" href="https://api.github.com/user/following">https://api.github.com/user/following</a>{/target}",
+  "gists_url": "<a class="token url-link" href="https://api.github.com/gists">https://api.github.com/gists</a>{/gist_id}",
+  "hub_url": "<a class="token url-link" href="https://api.github.com/hub">https://api.github.com/hub</a>",
+  ...
+}
+</code></pre></blockquote>
+
+<p>上面的回应中，挑一个 URL 访问，又可以得到别的 URL。对于用户来说，不需要记住  URL 设计，只要从 api.github.com 一步步查找就可以了。</p>
+
+<p>HATEOAS 的格式没有统一规定，上面例子中，GitHub 将它们与其他属性放在一起。更好的做法应该是，将相关链接与其他属性分开。</p>
+
+<blockquote><pre class=" language-http"><code class=" language-http">
+HTTP/1.1 200 OK
+<span class="token keyword">Content-Type:</span> application/json<span class="token application/json">
+
+<span class="token punctuation">{</span>
+  <span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"In progress"</span><span class="token punctuation">,</span>
+   <span class="token string">"links"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">[</span>
+    <span class="token punctuation">{</span> <span class="token string">"rel"</span><span class="token punctuation">:</span><span class="token string">"cancel"</span><span class="token punctuation">,</span> <span class="token string">"method"</span><span class="token punctuation">:</span> <span class="token string">"delete"</span><span class="token punctuation">,</span> <span class="token string">"href"</span><span class="token punctuation">:</span><span class="token string">"/api/status/12345"</span> <span class="token punctuation">}</span> <span class="token punctuation">,</span>
+    <span class="token punctuation">{</span> <span class="token string">"rel"</span><span class="token punctuation">:</span><span class="token string">"edit"</span><span class="token punctuation">,</span> <span class="token string">"method"</span><span class="token punctuation">:</span> <span class="token string">"put"</span><span class="token punctuation">,</span> <span class="token string">"href"</span><span class="token punctuation">:</span><span class="token string">"/api/status/12345"</span> <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre></blockquote>
+
+<h2>四、参考链接</h2>
+
+<ul>
+<li><a href="https://blog.florimondmanca.com/restful-api-design-13-best-practices-to-make-your-users-happy" target="_blank">RESTful API Design: 13 Best Practices to Make Your Users Happy</a>, by Florimond Manca</li>
+<li><a href="https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design" target="_blank">API design</a>, by MicroSoft Azure </li>
+</ul>
+
+<p>（完）</p>
+
+                                    <!-- /div -->
+
+                                </div>
+    <script type="text/javascript" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/newwindow.js"></script>
+                                <div class="asset-footer">
+
+<h3>文档信息</h3>
+<ul>
+<li>版权声明：自由转载-非商用-非衍生-保持署名（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</li>
+<li>发表日期： <abbr class="published" title="2018-10-03T18:53:24+08:00">2018年10月 3日</abbr></li>
+
+</ul>
+                                </div>
+</article>
+                            </div>
+
+  <div style="display: inline-block ! important;width: 100%;">
+  <p style="text-align:center;font-size: 16px;">
+    <a title="Teambition" target="_blank" href="https://www.teambition.com/agile?utm_source=ruanyifeng&amp;utm_media=blog&amp;utm_content=bannerB&amp;utm_term=dev">Teambition：研发管理工具</a>
+    <br>
+    <a title="Teambition" href="https://www.teambition.com/agile?utm_source=ruanyifeng&amp;utm_media=blog&amp;utm_content=bannerB&amp;utm_term=dev" target="_blank"><img alt="Teambition" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/bg2019031201.jpg" style="border: 1px solid #666;display: block !important;width:100%;max-width:100%;"></a>
+  </p>
+  
+  <p style="text-align:center;font-size: 16px;">
+    <a title="Coding" target="_blank" href="https://e.coding.net/?utm_source=ruanyifeng&amp;utm_medium=banner&amp;utm_campaign=march2019">CODING：企业级软件研发协作平台</a>
+    <br>
+    <a title="Coding" href="https://e.coding.net/?utm_source=ruanyifeng&amp;utm_medium=banner&amp;utm_campaign=march2019" target="_blank"><img alt="Coding" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/bg2019032101.jpg" style="border: 1px solid #666;display: block !important;width:100%;max-width:100%;"></a>
+  </p> 
+  </div>
+
+<div id="related_entries">
+<h2>相关文章</h2>
+<ul>
+
+<li><strong>2019.03.25: <a href="http://www.ruanyifeng.com/blog/2019/03/grid-layout-tutorial.html">Grid 布局教程</a></strong>
+
+                           <div class="entry-body">
+                              一、概述
+
+网格布局（Grid）是最强大的 CSS 布局方案。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2019.03.16: <a href="http://www.ruanyifeng.com/blog/2019/03/coloring-scheme.html">普通人的网页配色方案</a></strong>
+
+                           <div class="entry-body">
+                              网页需要配色。一种好看、易用、符合心意的配色，是很不容易的，尤其在没有设计师时。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2019.03.06: <a href="http://www.ruanyifeng.com/blog/2019/03/agile-development.html">敏捷开发入门教程</a></strong>
+
+                           <div class="entry-body">
+                              敏捷开发（agile development）是非常流行的软件开发方法。据统计，2018年90%的软件开发采用敏捷开发。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2019.02.18: <a href="http://www.ruanyifeng.com/blog/2019/02/orm-tutorial.html">ORM 实例教程</a></strong>
+
+                           <div class="entry-body">
+                              一、概述
+
+面向对象编程和关系型数据库，都是目前最流行的技术，但是它们的模型是不一样的。
+
+                           </div>
+
+</li>
+
+ 
+</ul>
+</div>
+
+
+<div id="cre" style="display: block !important;">
+<h2>广告<a href="http://www.ruanyifeng.com/support.html">（购买广告位）</a></h2>
+<div id="cre-inner">
+<div id="cre-left">
+<p style="font-size:16px;text-align:center;"><a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank">&nbsp;</a></p>
+<a title="未来世界的幸存者" href="http://www.ruanyifeng.com/blog/2019/01/survivor-preface.html" target="_blank"><img alt="未来世界的幸存者" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/bg2019032401.jpg" style="border:none;"></a></div>
+<div id="cre-right">
+<p style="font-size:16px;text-align:center;"><a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io" target="_blank">&nbsp;</a></p>
+<a href="http://www.ruanyifeng.com/support.html" target="_blank"><img src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/sup_sale_s.png" style="border:none;"></a>
+
+</div>
+</div>
+</div>
+
+                    
+
+                    <div id="comments" class="comments">
+
+
+    
+    
+        
+    <h2 class="comments-header">留言（38条）</h2>
+
+    <div id="comments-content" class="comments-content" style="clear: left;">
+        
+        <div id="comment-393640" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.banjuanshu.com/?w=真想写个广告哈哈哈" href="http://www.banjuanshu.com/?w=%E7%9C%9F%E6%83%B3%E5%86%99%E4%B8%AA%E5%B9%BF%E5%91%8A%E5%93%88%E5%93%88%E5%93%88" target="_blank" rel="nofollow">半卷书</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393640">
+            <p>请问 RESTful API 对SEO友好吗?由其是像 GET /authors/12?categories=2这种的url</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  3, 2018  8:24 PM">2018年10月 3日 20:24</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393640">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用半卷书的这条留言" onclick="return CommentQuote(&#39;comment-quote-393640&#39;,&#39;半卷书&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393641" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://flipped.leanapp.cn" href="http://flipped.leanapp.cn/" target="_blank" rel="nofollow">felbry</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393641">
+            <p>发现阮老师博客head也新加上了下border。我之前自己加过一段时间，后来觉得还是太丑了，哈哈</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  3, 2018  9:02 PM">2018年10月 3日 21:02</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393641">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用felbry的这条留言" onclick="return CommentQuote(&#39;comment-quote-393641&#39;,&#39;felbry&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393643" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Alexu</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393643">
+            <p>github的api似乎也是倾向于使用多级而不是查询字符串，这么说也不符合最佳实践吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  3, 2018  9:28 PM">2018年10月 3日 21:28</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393643">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Alexu的这条留言" onclick="return CommentQuote(&#39;comment-quote-393643&#39;,&#39;Alexu&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393646" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Jamie</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393646">
+            <p>上一篇REST还有印象hhh</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  4, 2018  1:26 AM">2018年10月 4日 01:26</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393646">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Jamie的这条留言" onclick="return CommentQuote(&#39;comment-quote-393646&#39;,&#39;Jamie&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393653" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://godruoyi.com" href="https://godruoyi.com/" target="_blank" rel="nofollow">Godruoyi</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393653">
+            <p>大佬来写果然深度不一样，也欢迎大家去看看我总结的 restful  api 规范</p>
+
+<p><a href="https://godruoyi.com/posts/resetful-api-design-specifications" rel="nofollow">https://godruoyi.com/posts/resetful-api-design-specifications</a></p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  4, 2018  1:41 PM">2018年10月 4日 13:41</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393653">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Godruoyi的这条留言" onclick="return CommentQuote(&#39;comment-quote-393653&#39;,&#39;Godruoyi&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393655" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">t</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393655">
+            <p>请教一下大家，如果遇到动词不在常见的几种之中，甚至是需要自定义的动词，怎么做比较合理？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  4, 2018  3:46 PM">2018年10月 4日 15:46</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393655">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用t的这条留言" onclick="return CommentQuote(&#39;comment-quote-393655&#39;,&#39;t&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393657" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://mingda.net" href="http://mingda.net/" target="_blank" rel="nofollow">明达</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393657">
+            <p>422说的有点含糊，换个意思说，其实最常用的场景是服务器端表单验证失败</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  4, 2018  4:44 PM">2018年10月 4日 16:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393657">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用明达的这条留言" onclick="return CommentQuote(&#39;comment-quote-393657&#39;,&#39;明达&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393658" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://mingda.net" href="http://mingda.net/" target="_blank" rel="nofollow">明达</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393658">
+            <blockquote>
+<pre>引用t的发言：</pre>
+
+<p>请教一下大家，如果遇到动词不在常见的几种之中，甚至是需要自定义的动词，怎么做比较合理？</p>
+
+</blockquote>
+
+<p>这个动词是HTTP固定的吧，其实更多的动词场景，我理解都可以区分成几种，只要是获取信息，都可以用GET，如果是在基本信息表增加记录，就是POST，其他只要是修改，或者是修改关系表这种情况，应该都是UPDATE，update和put其实是有差别的。如果要update的行为很多，我会在后面增加?type= 这类参数，如果要是特别直接的动作，比如upload这种，直接放在最高的级别也ok啊。 abc.com/upload</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  4, 2018  4:51 PM">2018年10月 4日 16:51</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393658">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用明达的这条留言" onclick="return CommentQuote(&#39;comment-quote-393658&#39;,&#39;明达&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393664" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://wangnianyi2001.github.io" href="http://wangnianyi2001.github.io/" target="_blank" rel="nofollow">WangNianyi2001</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393664">
+            <p>3.1 不要返回纯本文<br>
+标题打错啦</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  5, 2018 10:07 AM">2018年10月 5日 10:07</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393664">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用WangNianyi2001的这条留言" onclick="return CommentQuote(&#39;comment-quote-393664&#39;,&#39;WangNianyi2001&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393695" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">etworker</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393695">
+            <p>请问对于登录操作，可以用restful api的格式吗？如果可以，对应的资源是什么呢？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  6, 2018  1:45 AM">2018年10月 6日 01:45</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393695">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用etworker的这条留言" onclick="return CommentQuote(&#39;comment-quote-393695&#39;,&#39;etworker&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393755" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">code</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393755">
+            <blockquote>
+<pre>引用etworker的发言：</pre>
+
+<p>请问对于登录操作，可以用restful api的格式吗？如果可以，对应的资源是什么呢？</p>
+
+</blockquote>
+
+<p>POST /session</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  8, 2018 11:26 AM">2018年10月 8日 11:26</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393755">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用code的这条留言" onclick="return CommentQuote(&#39;comment-quote-393755&#39;,&#39;code&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393778" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://bayescafe.com" href="http://bayescafe.com/" target="_blank" rel="nofollow">fengchang</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393778">
+            <p>204 No Content 应该是指没有需要返回给客户端的内容，而不是服务端的内容已经不存在</p>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204" rel="nofollow">https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204</a></p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  8, 2018  5:56 PM">2018年10月 8日 17:56</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393778">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用fengchang的这条留言" onclick="return CommentQuote(&#39;comment-quote-393778&#39;,&#39;fengchang&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393781" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">萌一秒</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393781">
+            <p>前几天看完您的js全栈，正好在查REST，最近您就出了，真的厉害！</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  8, 2018  9:56 PM">2018年10月 8日 21:56</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393781">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用萌一秒的这条留言" onclick="return CommentQuote(&#39;comment-quote-393781&#39;,&#39;萌一秒&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393801" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://www.tanglei.name" href="https://www.tanglei.name/" target="_blank" rel="nofollow">tanglei</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393801">
+            <p>我们的实践: 400 用于表示客户端传参错误(或者不完全),  200 有可能也是不正常的响应(当然不能算是错误), 比如用户名或者密码不匹配. </p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  9, 2018  9:55 AM">2018年10月 9日 09:55</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393801">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用tanglei的这条留言" onclick="return CommentQuote(&#39;comment-quote-393801&#39;,&#39;tanglei&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393824" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">xiaohuangmao</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393824">
+            <p>通俗易懂 深受启发</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October  9, 2018  5:52 PM">2018年10月 9日 17:52</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393824">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用xiaohuangmao的这条留言" onclick="return CommentQuote(&#39;comment-quote-393824&#39;,&#39;xiaohuangmao&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-393991" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">robinson</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-393991">
+            <p>关于restful风格和rpc风格的api设计和公司同事有过争论，感觉是主义之争，不会有什么结果。不过关于rest风格，在实际应用中，也遇到过难处理的问题，比如，client验证用户名或者电话是否存在，就不知如何设计怎么好，最后“强行”设计成：GET /users/checking(validating)?username=xx，反倒是，rpc风格，GET /users.check?username=xx是否表达力更强一些？再如，某个操作导致状态更新，总结下，就是对于有很强的“动作”在内的api，应该如何用rest风格设计？这个问题困扰我很久了，望阮老师解惑，先在这里谢过了。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October 13, 2018 10:48 AM">2018年10月13日 10:48</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-393991">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用robinson的这条留言" onclick="return CommentQuote(&#39;comment-quote-393991&#39;,&#39;robinson&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-394053" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Shuo Wang</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-394053">
+            <p>多个资源的关联关系的变更，URL 如何设计比较好？</p>
+
+<p>比如将某个用户加入到某个 Team 中</p>
+
+<p>PUT  /users/${user_id}/teams/${team_id}<br>
+PUT  /users/${user_id}?team_id=${team_id}</p>
+
+<p>如果是第二种，是不是不太好区分 users 和 teams 是两种资源？如果是第一种，就会比较明确一些。</p>
+
+<p>又或者将某个 Team 中的某个用户设置为非激活状态</p>
+
+<p>PUT  /users/${user_id}/teams/${team_id}?status=inactive<br>
+PUT  /users/${user_id}?team_id=${team_id}?status=inactive</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October 15, 2018  4:07 PM">2018年10月15日 16:07</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-394053">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Shuo Wang的这条留言" onclick="return CommentQuote(&#39;comment-quote-394053&#39;,&#39;Shuo Wang&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-394074" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">dada0z</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-394074">
+            <p>公司进行nessus扫描时，报告web server只允许使用GET和POST，不允许使用其他方法。方法覆写也是禁止的。请问，这种冲突，应该如何解决？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October 16, 2018  1:05 PM">2018年10月16日 13:05</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-394074">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用dada0z的这条留言" onclick="return CommentQuote(&#39;comment-quote-394074&#39;,&#39;dada0z&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-394306" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Joshua</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-394306">
+            <p>@robinson：</p>
+
+<p>可以看阮老师的这篇文章中7、误区，里面有讲述服务的设计。<br>
+<a href="http://www.ruanyifeng.com/blog/2011/09/restful.html" rel="nofollow">http://www.ruanyifeng.com/blog/2011/09/restful.html</a></p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October 23, 2018 10:16 AM">2018年10月23日 10:16</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-394306">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Joshua的这条留言" onclick="return CommentQuote(&#39;comment-quote-394306&#39;,&#39;Joshua&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-394310" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">李</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-394310">
+            <p>老师，请问，如果跨域前端能取得到http错误码吗，我们公司前端说跨域的时候只能取到200其他的取不到，所有如果真的取不到，那请问是不是比如：404的时候也要返回200，然后把错误信息和404错误码放在数据体里面。是吗</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October 23, 2018 11:56 AM">2018年10月23日 11:56</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-394310">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用李的这条留言" onclick="return CommentQuote(&#39;comment-quote-394310&#39;,&#39;李&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-394362" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Bob</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-394362">
+            <p>关于1.5节，仅仅举了GET命令的例子，但是对二级资源做POST/PUT/DELETE的时候，是否还可以使用查询字符串表达？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October 24, 2018  5:39 PM">2018年10月24日 17:39</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-394362">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Bob的这条留言" onclick="return CommentQuote(&#39;comment-quote-394362&#39;,&#39;Bob&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-394393" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Rui</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-394393">
+            <p>对于查询字符串，我们在应用的范式是当定位某种资源时，用多级地址，但当定义response如何返回时，用查询字符串，比如返回是否是paginate的，最大返回多少</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October 26, 2018  6:10 AM">2018年10月26日 06:10</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-394393">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Rui的这条留言" onclick="return CommentQuote(&#39;comment-quote-394393&#39;,&#39;Rui&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-394442" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">betty</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-394442">
+            <blockquote>
+<pre>引用半卷书的发言：</pre>
+
+<p>请问 RESTful API 对SEO友好吗?由其是像 GET /authors/12?categories=2这种的url</p>
+
+</blockquote>
+
+<p>这个没关系吧,看你的页面是服务端渲染还是前端渲染吧</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October 26, 2018  4:17 PM">2018年10月26日 16:17</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-394442">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用betty的这条留言" onclick="return CommentQuote(&#39;comment-quote-394442&#39;,&#39;betty&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-394512" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">robinson</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-394512">
+            <p>@Joshua</p>
+
+<p>那篇文章，我也拜读过，但还是有疑惑的，我们是可以向都是名词化靠拢，但这个世界难道都可以“资源化”吗？比如我遇到的问题，检查用户是否存在，难道一定要按用户名查询用户？如果返回了用户，那就是存在？同样的情况还有：验证验证码是否正确。还有订单的情景，我下单后订单状态成为“待发货”，但如果按照“资源化”的思路，应该如何设计呢？“PUT /orders/{id}?action=下单”？还是PUT /orders/{id}?status=代发货？或者/orders/{id}/status/待发货？我感觉后面的这种情况更严重，这样封装性很差，把逻辑交给了下游，有为了rest而rest之嫌，如果是指定action的情况，那么也比较糟糕，难道我们对订单的接口只有四个？其余的都只能通过参数表达？后端实现也会成为一锅粥。还望各位大牛解惑</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="October 29, 2018 10:47 AM">2018年10月29日 10:47</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-394512">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用robinson的这条留言" onclick="return CommentQuote(&#39;comment-quote-394512&#39;,&#39;robinson&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-394686" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">陈生</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-394686">
+            <p>感觉没看懂呀。。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="November  3, 2018  8:42 PM">2018年11月 3日 20:42</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-394686">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用陈生的这条留言" onclick="return CommentQuote(&#39;comment-quote-394686&#39;,&#39;陈生&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-394818" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">枪骑兵叔叔</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-394818">
+            <p>勘误下：<br>
+3.2里 “Invalid payoad.”<br>
+是payload吧，单词拼写错误</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="November  8, 2018  3:18 PM">2018年11月 8日 15:18</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-394818">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用枪骑兵叔叔的这条留言" onclick="return CommentQuote(&#39;comment-quote-394818&#39;,&#39;枪骑兵叔叔&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-396223" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Lightc</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-396223">
+            <blockquote>
+<pre>引用robinson的发言：</pre>
+
+<p>关于restful风格和rpc风格的api设计和公司同事有过争论，感觉是主义之争，不会有什么结果。不过关于rest风格，在实际应用中，也遇到过难处理的问题，比如，client验证用户名或者电话是否存在，就不知如何设计怎么好，最后“强行”设计成：GET /users/checking(validating)?username=xx，反倒是，rpc风格，GET /users.check?username=xx是否表达力更强一些？再如，某个操作导致状态更新，总结下，就是对于有很强的“动作”在内的api，应该如何用rest风格设计？这个问题困扰我很久了，望阮老师解惑，先在这里谢过了。</p>
+
+</blockquote>
+
+<p>我觉得这样的设计成这样比较 GET /users/{userName}?c=check  ,c代表command的意思，对userName进行check操作 </p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="November 29, 2018  4:46 PM">2018年11月29日 16:46</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-396223">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Lightc的这条留言" onclick="return CommentQuote(&#39;comment-quote-396223&#39;,&#39;Lightc&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-397724" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">not3</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-397724">
+            <p>PUT /user/${user_id}.join-to/team/${team_id}<br>
+是否可以</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 19, 2018 11:01 PM">2018年12月19日 23:01</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-397724">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用not3的这条留言" onclick="return CommentQuote(&#39;comment-quote-397724&#39;,&#39;not3&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-397780" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">英武</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-397780">
+            <p>怎么看都觉得少了点什么，也许功能测试都没有什么问题，各种cornner都要测到，但是性能测试可否详细谈一下？locust？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 20, 2018 11:46 AM">2018年12月20日 11:46</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-397780">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用英武的这条留言" onclick="return CommentQuote(&#39;comment-quote-397780&#39;,&#39;英武&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-397796" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">not3</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-397796">
+            <p>比如获取某个作者的某一类文章。</p>
+
+<p>这个例子写的示例语义上不太好，返回的资源其实是文章，那么应该表述为</p>
+
+<p>GET /articles?authorId=12&amp;categoryId=2</p>
+
+<p>本来就没有层级关系</p>
+
+<p>另外，某类的所有文章，某作者的所有文章<br>
+GET /category/2/articles<br>
+GET /author/12/articles</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 20, 2018  2:44 PM">2018年12月20日 14:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-397796">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用not3的这条留言" onclick="return CommentQuote(&#39;comment-quote-397796&#39;,&#39;not3&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-407349" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">binger</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-407349">
+            <p>有个疑问，发生错误了状态码不能为200，应该给出具体状态码，错误放在返回值中，反正都是要解析返回值的，状态码200不是少判断一步状态码么。。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 31, 2019  3:49 PM">2019年1月31日 15:49</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-407349">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用binger的这条留言" onclick="return CommentQuote(&#39;comment-quote-407349&#39;,&#39;binger&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-409865" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">郑诚 </span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-409865">
+            <p>为什么没有502</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="March 12, 2019  8:30 AM">2019年3月12日 08:30</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-409865">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用郑诚 的这条留言" onclick="return CommentQuote(&#39;comment-quote-409865&#39;,&#39;郑诚 &#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-410020" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Xanthuim</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-410020">
+            <blockquote>
+<pre>引用李的发言：</pre>
+
+<p>老师，请问，如果跨域前端能取得到http错误码吗，我们公司前端说跨域的时候只能取到200其他的取不到，所有如果真的取不到，那请问是不是比如：404的时候也要返回200，然后把错误信息和404错误码放在数据体里面。是吗</p>
+
+</blockquote>
+
+<p>怎么可能取不到，只要是基于http协议的都可以。只是他们没有这么做，要么是前端技术low，对于这种你就把这篇文章丢给他即可，其他什么都不要说。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="March 20, 2019  2:38 PM">2019年3月20日 14:38</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-410020">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Xanthuim的这条留言" onclick="return CommentQuote(&#39;comment-quote-410020&#39;,&#39;Xanthuim&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-410021" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Xanthuim</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-410021">
+            <blockquote>
+<pre>引用郑诚 的发言：</pre>
+
+<p>为什么没有502</p>
+
+</blockquote>
+
+<p>文章都说的很清楚，对于服务端异常，一般不会透露过多的信息：<br>
+5xx状态码表示服务端错误。一般来说，API 不会向用户透露服务器的详细信息，所以只要两个状态码就够了。</p>
+
+<p>当然你也要把更多的异常信息往外抛，看你了，只是不建议。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="March 20, 2019  2:40 PM">2019年3月20日 14:40</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-410021">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Xanthuim的这条留言" onclick="return CommentQuote(&#39;comment-quote-410021&#39;,&#39;Xanthuim&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-410022" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Xanthuim</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-410022">
+            <blockquote>
+<pre>引用binger的发言：</pre>
+
+<p>有个疑问，发生错误了状态码不能为200，应该给出具体状态码，错误放在返回值中，反正都是要解析返回值的，状态码200不是少判断一步状态码么。。。</p>
+
+</blockquote>
+
+<p>你可以返回实际的状态码，比如你现在要返回的HTTP状态码是404，那么返回的JSON中状态码也可以用404，其他也是类似的。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="March 20, 2019  2:42 PM">2019年3月20日 14:42</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-410022">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Xanthuim的这条留言" onclick="return CommentQuote(&#39;comment-quote-410022&#39;,&#39;Xanthuim&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-410023" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Xanthuim</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-410023">
+            <p>@Shuo Wang：</p>
+
+<p>你这种就不应该放在一起，分开写</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="March 20, 2019  2:44 PM">2019年3月20日 14:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-410023">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Xanthuim的这条留言" onclick="return CommentQuote(&#39;comment-quote-410023&#39;,&#39;Xanthuim&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-410024" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Xanthuim</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-410024">
+            <blockquote>
+<pre>引用fengchang的发言：</pre>
+
+<p>204 No Content 应该是指没有需要返回给客户端的内容，而不是服务端的内容已经不存在</p>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204" rel="nofollow">https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204</a></p>
+
+</blockquote>
+
+<p>删除了是没有啊，表示这个资源已经不存在，用204没毛病。其实没必要太钻牛角尖，能基本表示清楚就可以了。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="March 20, 2019  2:49 PM">2019年3月20日 14:49</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-410024">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用Xanthuim的这条留言" onclick="return CommentQuote(&#39;comment-quote-410024&#39;,&#39;Xanthuim&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-410144" class="comment">
+    <div id="comment-last" class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">有一点梦想的咸鱼</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-410144">
+            <p>api呈现给用户可以继承swgger。哈哈哈哈......手写API文档的岁月一去不复返</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="March 26, 2019 12:26 AM">2019年3月26日 00:26</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html#comment-410144">#</a>
+ | <a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html?hmsr=toutiao.io&amp;utm_medium=toutiao.io&amp;utm_source=toutiao.io#comment-text" title="引用有一点梦想的咸鱼的这条留言" onclick="return CommentQuote(&#39;comment-quote-410144&#39;,&#39;有一点梦想的咸鱼&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    </div>
+        
+    
+
+
+    
+    
+    <div class="comments-open" id="comments-open">
+        <h2 class="comments-open-header">我要发表看法</h2>
+        <div class="comments-open-content">
+
+        
+            <div id="comment-greeting"></div>
+
+            <form method="post" action="http://www.ruanyifeng.com/cgi-bin/mtos/mt-comments.cgi" name="comments_form" id="comments-form" onsubmit="return pleaseWait();">
+                <input type="hidden" name="static" value="1">
+                <input type="hidden" name="entry_id" value="2025">
+                <input type="hidden" name="__lang" value="en">
+                <input type="hidden" name="parent_id" value="" id="comment-parent-id">
+                <input type="hidden" name="armor" value="1">
+                <input type="hidden" name="preview" value="">
+                <input type="hidden" name="sid" value="">
+                <div id="comments-open-data">
+            <div id="comments-open-text">
+                    <p><label for="comment-text">您的留言
+                    （HTML标签部分可用）</label></p>
+                    <p><textarea id="comment-text" name="text" rows="10" cols="50"></textarea></p>
+                </div>
+                    <div id="comment-form-name">
+                        <p><label for="comment-author">您的大名：</label></p>
+                        <p><input id="comment-author" name="author" size="30" value="">  <span class="hint"> «-必填</span></p>
+                    </div>
+                    <div id="comment-form-email">
+                        <p><label for="comment-email">电子邮件：</label></p>
+                        <p><input id="comment-email" name="email" size="30" value="">  <span class="hint"> «-必填，不公开</span></p>
+                    </div>
+                    <div id="comment-form-url">
+                        <p><label for="comment-url">个人网址：</label></p>
+                        <p><input id="comment-url" name="url" size="30" value="">  <span class="hint"> «-我信任你，不会填写广告链接</span></p>
+                    </div>
+                    <div id="comment-form-remember-me">
+                        <p>
+                        <label for="comment-bake-cookie">记住个人信息？</label><input type="checkbox" id="comment-bake-cookie" name="bakecookie" onclick="!this.checked?forgetMe(document.comments_form):rememberMe(document.comments_form)" value="1" accesskey="r"></p>
+                    </div>
+                </div>
+                    <div id="comment-form-reply" style="display:none">
+                    <input type="checkbox" id="comment-reply" name="comment_reply" value="" onclick="mtSetCommentParentID()">
+                    <label for="comment-reply" id="comment-reply-label"></label>
+                </div>
+                <div id="comments-open-captcha"></div>
+                <div id="comments-open-footer">
+<div id="wait" style="display:none;">
+<p><strong>正在发表您的评论，请稍候</strong></p>
+<p>
+<input type="text" name="percent" size="3" style="font-family:Arial; color:black;text-align:center; border-width:medium; border-style:none;">           
+<input type="text" name="chart" size="46" style="font-family:Arial;font-weight:bolder; color:black; padding:0px; border-style:none;">
+</p>
+</div>
+
+                    <p><input type="submit" accesskey="s" name="post" id="comment-submit" value="发表">  <span class="hint"> «- 点击按钮</span></p>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+    
+
+
+</div>
+
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        <script type="text/javascript" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/prism.js"></script>
+        <script type="text/javascript" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/checker.js"></script> 
+            <div id="footer">
+<div id="footer-inner">
+   <div id="footer-content">
+   <p><a title="微博" href="http://weibo.com/ruanyf" target="_blank">微博</a> | <a title="Twitter" target="_blank" href="https://twitter.com/ruanyf">推特</a> | <a title="GitHub" target="_blank" href="https://github.com/ruanyf">GitHub</a></p>
+   <p>2019 © <a title="电子邮件" href="http://www.ruanyifeng.com/contact.html">我的邮件</a> |</p>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46829782-1', 'ruanyifeng.com');
+  ga('send', 'pageview');
+
+</script>
+
+<script type="text/javascript" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/stats.js"></script>
+<script>
+var supportImg = document.querySelector('#support-img');
+
+if (supportImg && _hmt) {
+  _hmt.push(['_trackEvent', 'banner', 'load']);
+  supportImg.addEventListener('click', function () {
+    _hmt.push(['_trackEvent', 'banner', 'click']);
+  }, false);
+}
+
+var homepageImg = document.querySelector('#homepage_sponsor');
+if (homepageImg && _hmt) {
+  _hmt.push(['_trackEvent', 'homepage-banner', 'load']);
+  homepageImg.addEventListener('click', function () {
+    _hmt.push(['_trackEvent', 'homepage-banner', 'click']);
+  }, false);
+}
+</script>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<div id="share_button_proto" style="display:none;">
+<a class="bshareDiv" href="http://www.bshare.cn/share" style="display: block; text-decoration: none; padding: 0px; margin: 0px; font-size: 12px; height: 21px; width: 51px;"><div class="bsPromo bsPromo1"></div><div class="buzzButton bsStyle10" style="height:21px;color:#333;;background:transparent url(http://static.bshare.cn/frame/images/button_custom10-zh-Orange.gif) no-repeat;text-align:center;width:51px;"></div><div style="clear:both;"></div></a>
+
+
+
+<script type="text/javascript" charset="utf-8" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/buttonLite.js"></script>
+<script type="text/javascript" charset="utf-8">
+bShare.addEntry({
+    title: document.getElementById("page-title").innerHTML,
+url:window.location.href
+});
+</script>
+</div>
+
+<script>
+document.getElementById("share_button").innerHTML=document.getElementById("share_button_proto").innerHTML;
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+
+function checker() {
+var img = document.querySelector('img[src^="http://www.ruanyifeng.com/blog/images"]');
+  if (img && window.getComputedStyle(img).display === 'none'){
+    var sponsor = document.querySelector('.entry-sponsor');
+    var prompt = document.createElement('div');
+    prompt.style = 'border: 1px solid #c6c6c6;border-radius: 4px;background-color: #f5f2f0;padding: 15px; font-size: 16px;';
+  prompt.innerHTML = '<p>您使用了广告拦截器，导致本站内容无法显示。</p><p>请将 www.ruanyifeng.com 加入白名单，解除广告屏蔽后，刷新页面，谢谢。</p>';
+    sponsor.parentNode.replaceChild(prompt, sponsor);
+    document.querySelector('#main-content').innerHTML = '';
+  }
+}
+
+setTimeout(checker, 1000);
+
+</script>
+        </div>
+    </div>
+
+<div id="bsBox" class="bsBox"><div class="bsClose">X</div><div class="bsTop"><div class="bsReturn">选择其他平台 &gt;&gt;</div><span style="margin-left:15px;">分享到</span><span class="bsPlatName"></span></div><div class="bsFrameDiv"><iframe class="bShareFrame" name="bsFrame53" frameborder="0" scrolling="no" allowtransparency="true" src="./RESTful API 最佳实践 - 阮一峰的网络日志_files/saved_resource.html"></iframe></div><div id="bsMorePanel" style="display: none;"></div></div><div id="bsPanelHolder"><div id="bsPanel" style="display:none;"><div class="bsTitle"><a style="float:left;height:20px;line-height:20px;font-weight:bold;" class="bsSiteLink" target="_blank" href="http://www.bshare.cn/intro">分享到...</a><a class="bsSiteLink" style="cursor:pointer;float:right;height:20px;line-height:20px;font-weight:bold;" onclick="document.getElementById(&#39;bsPanel&#39;).style.display=&#39;none&#39;;">X</a><div class="bsClear"></div></div><div class="bsClear"></div><div style="padding-left:8px;background:#fff;*height:218px;"><div style="height:47px;border-bottom:1px #ccc solid;padding:4px 0 4px 16px;margin-right:8px;_padding-left:12px;"><div class="bsRlogo" onmouseover="javascript:this.className=&#39;bsRlogoSel&#39;" onmouseout="javascript:this.className=&#39;bsRlogo&#39;"><a href="javascript:;" onclick="javascript:bShare.share(event,&#39;facebook&#39;);return false;" style="text-decoration:none;line-height:120%;"><div style="cursor:pointer;width:24px;height:24px;margin:0 18px 2px;background:url(http://static.bshare.cn/frame/images//logos/m2/facebook.gif) no-repeat;"></div><div style="cursor:pointer;text-align:center;width:60px;height:16px !important;overflow:hidden;color:inherit;white-space:nowrap;line-height:120% !important;">Facebook</div></a></div><div class="bsRlogo" onmouseover="javascript:this.className=&#39;bsRlogoSel&#39;" onmouseout="javascript:this.className=&#39;bsRlogo&#39;"><a href="javascript:;" onclick="javascript:bShare.share(event,&#39;twitter&#39;);return false;" style="text-decoration:none;line-height:120%;"><div style="cursor:pointer;width:24px;height:24px;margin:0 18px 2px;background:url(http://static.bshare.cn/frame/images//logos/m2/twitter.gif) no-repeat;"></div><div style="cursor:pointer;text-align:center;width:60px;height:16px !important;overflow:hidden;color:inherit;white-space:nowrap;line-height:120% !important;">Twitter</div></a></div><div class="bsRlogo" onmouseover="javascript:this.className=&#39;bsRlogoSel&#39;" onmouseout="javascript:this.className=&#39;bsRlogo&#39;"><a href="javascript:;" onclick="javascript:bShare.share(event,&#39;sinaminiblog&#39;);return false;" style="text-decoration:none;line-height:120%;"><div style="cursor:pointer;width:24px;height:24px;margin:0 18px 2px;background:url(http://static.bshare.cn/frame/images//logos/m2/sinaminiblog.gif) no-repeat;"></div><div style="cursor:pointer;text-align:center;width:60px;height:16px !important;overflow:hidden;color:inherit;white-space:nowrap;line-height:120% !important;">新浪微博</div></a></div></div><div class="bsLogoLink"><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="微信" onclick="javascript:bShare.share(event,&#39;weixin&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//logos/s4/weixin.png) no-repeat;">微信</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="腾讯微博" onclick="javascript:bShare.share(event,&#39;qqmb&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -1512px;">腾讯微博</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="豆瓣网" onclick="javascript:bShare.share(event,&#39;douban&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -540px;">豆瓣网</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="饭否" onclick="javascript:bShare.share(event,&#39;fanfou&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -666px;">饭否</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="雪球" onclick="javascript:bShare.share(event,&#39;xueqiu&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//logos/s4/xueqiu.png) no-repeat;">雪球</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="电子邮件" onclick="javascript:bShare.share(event,&#39;email&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -612px;">电子邮件</a></div></div><div class="bsLogoLink"><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="Google+" onclick="javascript:bShare.share(event,&#39;gplus&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//logos/s4/gplus.png) no-repeat;">Google+</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="QQ空间" onclick="javascript:bShare.share(event,&#39;qzone&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -1566px;">QQ空间</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="QQ好友" onclick="javascript:bShare.share(event,&#39;qqim&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//logos/s4/qqim.png) no-repeat;">QQ好友</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="Instapaper" onclick="javascript:bShare.share(event,&#39;instapaper&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -954px;">Instapaper</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="美味书签" onclick="javascript:bShare.share(event,&#39;delicious&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -432px;">美味书签</a></div></div><div class="bsClear"></div></div><div style="height:20px;line-height:20px;padding:0 8px;border-top:1px solid #e8e8e8;color:#666;background:#f2f2f2;"><div class="buzzButton" style="float:left;">更多平台... <font style="font-weight:normal;">(133)</font></div><div id="bsPower" style="float:right;text-align:right;overflow:hidden;height:100%;"><a class="bsSiteLink" style="font-size:10px;vertical-align:text-bottom;line-height:24px;cursor:pointer;" href="http://www.bshare.cn/" target="_blank"><span style="font-size:10px;vertical-align:text-bottom;"><span style="color:#f60;">b</span>Share</span></a></div></div></div></div></body><div id="cyeBlackMaskLayer" style="background-color: rgb(19, 19, 19); position: fixed; width: 1980px; height: 1080px; z-index: -2147483648;"></div><div id="cye-workaround-body" style="position: absolute; left: 0px; top: 0px; z-index: -2147483646; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(245, 245, 213); height: 19563px; width: 1479px;"></div><div id="cye-workaround-body-image" style="position: absolute; left: 0px; top: 0px; z-index: -2147483645; background: none 0% 0% / auto repeat scroll padding-box border-box rgba(0, 0, 0, 0); height: 19563px; width: 1479px;"></div></html>
