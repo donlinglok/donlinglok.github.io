@@ -30,7 +30,8 @@ htmlStr += '<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">'
 
 console.log(listOfHTM)
 for(var i=0;i<listOfHTM.length;i++){
-    let cat = listOfHTM[i].split('/').shift();
+    listOfHTM[i] = listOfHTM[i].replace('\\','/');
+    let cat = listOfHTM[i].replace('\\','/').split('/').shift();
     if(tempTitle == '' || tempTitle != cat) {
         htmlStr += '</ul>\n';
         tempTitle = cat;
