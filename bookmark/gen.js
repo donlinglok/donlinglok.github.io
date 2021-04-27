@@ -15,6 +15,7 @@ function listAllHTM(dir){
     } else if (stat.isFile()) {
       if(filepath.endsWith('htm')) result.push(path.relative(dir, filepath));
       if(filepath.endsWith('mhtml')) result.push(path.relative(dir, filepath));
+      if(filepath.endsWith('pdf')) result.push(path.relative(dir, filepath));
     }
   } while (files.length !== 0);
 
