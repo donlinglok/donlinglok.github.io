@@ -1,0 +1,18 @@
+[submodule "carGame"]
+	path = carGame
+	url = https://github.com/donlinglok/carGame.git
+[submodule "bookmark"]
+	path = bookmark
+	url = https://github.com/donlinglok/bookmark.git
+[submodule "elevator"]
+	path = elevator
+	url = https://github.com/donlinglok/elevator.git
+[submodule "jump"]
+	path = jump
+	url = https://github.com/donlinglok/jump.git
+[submodule "jumpjump"]
+	path = jumpjump
+	url = https://github.com/donlinglok/jumpjump.git
+[submodule "kof"]
+	path = kof
+	url = https://github.com/donlinglok/kof.git
