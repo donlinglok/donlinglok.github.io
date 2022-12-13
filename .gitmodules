@@ -16,3 +16,30 @@
 [submodule "kof"]
 	path = kof
 	url = https://github.com/donlinglok/kof.git
+[submodule "SunWuKong"]
+	path = SunWuKong
+	url = https://github.com/donlinglok/SunWuKong.git
+[submodule "video_no_blocking"]
+	path = video_no_blocking
+	url = https://github.com/donlinglok/video_no_blocking.git
+[submodule "ai_workout"]
+	path = ai_workout
+	url = https://github.com/donlinglok/ai_workout.git
+[submodule "pacman_web"]
+	path = pacman_web
+	url = https://github.com/donlinglok/pacman_web.git
+[submodule "hand_maze"]
+	path = hand_maze
+	url = https://github.com/donlinglok/hand_maze.git
+[submodule "flightfight"]
+	path = flightfight
+	url = https://github.com/donlinglok/flightfight.git
+[submodule "fishtank"]
+	path = fishtank
+	url = https://github.com/donlinglok/fishtank.git
+[submodule "snack"]
+	path = snack
+	url = https://github.com/donlinglok/snack.git
+[submodule "auto_maze"]
+	path = auto_maze
+	url = https://github.com/donlinglok/auto_maze.git
